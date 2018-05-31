@@ -1,0 +1,22 @@
+object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
+  Left = 0
+  Top = 0
+  Caption = 'PlataformaERPVCLMenuPrincipal'
+  ClientHeight = 425
+  ClientWidth = 727
+  Color = clAppWorkSpace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  FormStyle = fsMDIForm
+  KeyPreview = True
+  OldCreateOrder = False
+  Visible = True
+  WindowState = wsMaximized
+  OnCreate = FormCreate
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+end
