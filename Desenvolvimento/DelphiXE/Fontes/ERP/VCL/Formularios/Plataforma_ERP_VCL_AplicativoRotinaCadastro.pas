@@ -1,16 +1,16 @@
 //
-// Arquivo..: Plataforma_ERP_VCL_MenuPrincipal.pas
+// Arquivo..: Plataforma_ERP_VCL_AplicativoRotinaCadastro.pas
 // Projeto..: ERP
 // Fonte....: Formulário VCL
 // Criação..: 31/Maio/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário VCL contendo o menu principal de opções da aplicação de ERP.
+// Descrição: Formulário VCL com o cadastro de rotinas da aplicação ERP.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
 //
 
-unit Plataforma_ERP_VCL_MenuPrincipal;
+unit Plataforma_ERP_VCL_AplicativoRotinaCadastro;
 
 interface
 
@@ -23,14 +23,10 @@ uses
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs, Vcl.Menus;
+  Vcl.Dialogs;
 
 type
-  TPlataformaERPVCLMenuPrincipal = class(TForm)
-    mnuFormulario: TMainMenu;
-    mniAplicacao: TMenuItem;
-    mniLogUsoAplicacao: TMenuItem;
-    mniLogUsoLocal: TMenuItem;
+  TPlataformaERPVCLAplicativoRotinaCadastro = class(TForm)
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
@@ -40,7 +36,7 @@ type
   end;
 
 var
-  PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal;
+  PlataformaERPVCLAplicativoRotinaCadastro: TPlataformaERPVCLAplicativoRotinaCadastro;
 
 implementation
 
@@ -49,7 +45,7 @@ implementation
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLMenuPrincipal.FormCreate(Sender: TObject);
+procedure TPlataformaERPVCLAplicativoRotinaCadastro.FormCreate(Sender: TObject);
 begin
   Exit;
 end;
@@ -57,7 +53,7 @@ end;
 //
 // Evento de exibição do formulário.
 //
-procedure TPlataformaERPVCLMenuPrincipal.FormShow(Sender: TObject);
+procedure TPlataformaERPVCLAplicativoRotinaCadastro.FormShow(Sender: TObject);
 begin
   FormularioTituloDeterminar;
 end;
@@ -65,9 +61,9 @@ end;
 //
 // Procedimento para determinar o título apropriado do formulário.
 //
-procedure TPlataformaERPVCLMenuPrincipal.FormularioTituloDeterminar;
+procedure TPlataformaERPVCLAplicativoRotinaCadastro.FormularioTituloDeterminar;
 begin
-  Caption := 'Plataforma ERP';
+  Caption := 'Cadastro de rotinas da aplicação ERP';
 end;
 
 end.

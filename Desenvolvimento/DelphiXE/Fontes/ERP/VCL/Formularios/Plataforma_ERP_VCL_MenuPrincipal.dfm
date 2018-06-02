@@ -12,6 +12,7 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
   Font.Style = []
   FormStyle = fsMDIForm
   KeyPreview = True
+  Menu = mnuFormulario
   OldCreateOrder = False
   Visible = True
   WindowState = wsMaximized
@@ -19,4 +20,17 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object mnuFormulario: TMainMenu
+    Left = 280
+    Top = 80
+    object mniAplicacao: TMenuItem
+      Caption = '&Aplica'#231#227'o'
+      object mniLogUsoAplicacao: TMenuItem
+        Caption = 'Log de uso da aplica'#231#227'o'
+        object mniLogUsoLocal: TMenuItem
+          Caption = 'Log detalhado local do computador'
+        end
+      end
+    end
+  end
 end
