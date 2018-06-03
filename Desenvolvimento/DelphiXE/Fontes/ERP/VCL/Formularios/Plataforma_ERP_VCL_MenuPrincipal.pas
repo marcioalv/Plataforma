@@ -15,6 +15,8 @@ unit Plataforma_ERP_VCL_MenuPrincipal;
 interface
 
 uses
+  Plataforma_ERP_Global,
+  Plataforma_ERP_Inicializacao,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -23,7 +25,8 @@ uses
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs, Vcl.Menus;
+  Vcl.Dialogs,
+  Vcl.Menus;
 
 type
   TPlataformaERPVCLMenuPrincipal = class(TForm)
@@ -34,6 +37,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
+    procedure Inicializar;
     procedure FormularioTituloDeterminar;
   public
     { Public declarations }
@@ -51,7 +55,7 @@ implementation
 //
 procedure TPlataformaERPVCLMenuPrincipal.FormCreate(Sender: TObject);
 begin
-  Exit;
+  Inicializar;
 end;
 
 //
@@ -60,6 +64,18 @@ end;
 procedure TPlataformaERPVCLMenuPrincipal.FormShow(Sender: TObject);
 begin
   FormularioTituloDeterminar;
+end;
+
+//
+// Procedimento para inicializar a aplicação de ERP.
+//
+procedure TPlataformaERPVCLMenuPrincipal.Inicializar;
+begin
+  // Determina o path onde a aplicação está rodando.
+  gloAppPath := ExtractFilePath(Application.ExeName);
+
+  // Inicializa o log local da aplicação.
+  PlataformaERPLogInicializar;
 end;
 
 //
