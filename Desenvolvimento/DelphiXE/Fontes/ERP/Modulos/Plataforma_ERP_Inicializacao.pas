@@ -27,7 +27,7 @@ implementation
 procedure PlataformaERPLogInicializar;
 begin
   gloLocalLog          := TPlataformaFrameworkLog.Create;
-  gloLocalLog.FilePath := gloAppPath;
+  gloLocalLog.FilePath := gloAppPath + '\Log';
   gloLocalLog.FileNameDaily('Plataforma_ERP_VCL');
 
   PlataformaERPLogar(True, 'Módulo de log inicializado com sucesso!');
