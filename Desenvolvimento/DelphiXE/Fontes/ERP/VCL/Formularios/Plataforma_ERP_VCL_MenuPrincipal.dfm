@@ -29,6 +29,7 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
         Caption = 'Log de uso da aplica'#231#227'o'
         object mniLogUsoLocal: TMenuItem
           Caption = 'Log detalhado local do computador'
+          OnClick = mniLogUsoLocalClick
         end
       end
     end

@@ -17,6 +17,7 @@ interface
 uses
   Plataforma_ERP_Global,
   Plataforma_ERP_Inicializacao,
+  Plataforma_ERP_VCL_LogLocalLista,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -36,6 +37,7 @@ type
     mniLogUsoLocal: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure mniLogUsoLocalClick(Sender: TObject);
   private
     procedure Inicializar;
     procedure FormularioTituloDeterminar;
@@ -64,6 +66,17 @@ end;
 procedure TPlataformaERPVCLMenuPrincipal.FormShow(Sender: TObject);
 begin
   FormularioTituloDeterminar;
+end;
+
+//
+// Evento de click na opção "Log detalhado local do computador".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniLogUsoLocalClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLLogLocalLista;
+begin
+  locFormulario := TPlataformaERPVCLLogLocalLista.Create(Self);
+  locFormulario.Show;
 end;
 
 //
