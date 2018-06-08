@@ -38,6 +38,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
   private
     procedure Inicializar;
     procedure FormularioTituloDeterminar;
@@ -67,6 +68,19 @@ procedure TPlataformaERPVCLMenuPrincipal.FormShow(Sender: TObject);
 begin
   FormularioTituloDeterminar;
 end;
+
+
+procedure TPlataformaERPVCLMenuPrincipal.FormResize(Sender: TObject);
+var
+  locContador: Integer;
+begin
+  for locContador := 0 to (MDIChildCount - 1) do
+  begin
+    MDIChildren[locContador].Repaint;
+  end;
+end;
+
+
 
 //
 // Evento de click na opção "Log detalhado local do computador".

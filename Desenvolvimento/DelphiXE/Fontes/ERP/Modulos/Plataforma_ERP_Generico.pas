@@ -24,19 +24,21 @@ implementation
 
 procedure PlataformaERPLogar(argCritico: Boolean; argMensagem: string);
 var
-  locDeviceName : string;
-  locDeviceUser : string;
+  locHostName   : string;
+  locUserName   : string;
   locAppName    : string;
+  locAppHashCode: string;
   locAppUserID  : string;
   locAppUserName: string;
 begin
-  locDeviceName  := HostNameRecuperar;
-  locDeviceUser  := UserNameRecuperar;
+  locHostName    := HostNameRecuperar;
+  locUserName    := UserNameRecuperar;
   locAppName     := 'Plataforma_ERP_VCL';
-  locAppUserID   := '1';
+  locAppHashCode := '123LSDNF54L2N3JBDAS34KJ5H';
+  locAppUserID   := '846';
   locAppUserName := 'Marcio Alves';
 
-  gloLocalLog.Write(locDeviceName, locDeviceUser, locAppName, locAppUserID, locAppUserName, argCritico, argMensagem);
+  gloLocalLog.Write(locHostName, locUserName, locAppName, locAppHashCode, locAppUserID, locAppUserName, argCritico, argMensagem);
 end;
 
 end.

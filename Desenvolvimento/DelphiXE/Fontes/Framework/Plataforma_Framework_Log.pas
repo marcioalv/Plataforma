@@ -43,9 +43,10 @@ type
     property FileName: string read GetFileName write SetFileName;
     property PathFile: string read GetPathFile;
 
-    procedure Write(argDeviceName : string;
-                    argDeviceUser : string;
+    procedure Write(argHostName   : string;
+                    argUserName   : string;
                     argAppName    : string;
+                    argAppHashCode: string;
                     argAppUserID  : string;
                     argAppUserName: string;
                     argCritical   : Boolean;
@@ -175,9 +176,10 @@ begin
   end;
 end;
 
-procedure TPlataformaFrameworkLog.Write(argDeviceName : string;
-                                        argDeviceUser : string;
+procedure TPlataformaFrameworkLog.Write(argHostName   : string;
+                                        argUserName   : string;
                                         argAppName    : string;
+                                        argAppHashCode: string;
                                         argAppUserID  : string;
                                         argAppUserName: string;
                                         argCritical   : Boolean;
@@ -192,13 +194,14 @@ begin
   else
     locCritical := 'F';
 
-  locLine := FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now) + '|' +
-             argDeviceName                                  + '|' +
-             argDeviceUSer                                  + '|' +
+  locLine := argHostName                                    + '|' +
+             argUserName                                    + '|' +
              argAppName                                     + '|' +
+             argAppHashCode                                 + '|' +
              argAppUserID                                   + '|' +
              argAppUserName                                 + '|' +
              locCritical                                    + '|' +
+             FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now) + '|' +
              argMessage;
 
   PathDefine;
