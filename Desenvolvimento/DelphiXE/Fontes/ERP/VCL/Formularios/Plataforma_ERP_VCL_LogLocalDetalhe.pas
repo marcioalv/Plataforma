@@ -1,16 +1,61 @@
+//
+// Arquivo..: Plataforma_ERP_VCL_LogLocalDetalhe.pas
+// Projeto..: ERP
+// Fonte....: Formulário VCL
+// Criação..: 31/Maio/2018
+// Autor....: Marcio Alves (marcioalv@yahoo.com.br)
+// Descrição: Formulário para exibir os detalhes de um log da aplicação ERP.
+//
+// Histórico de alterações:
+//   Nenhuma alteração até o momento.
+//
+
 unit Plataforma_ERP_VCL_LogLocalDetalhe;
 
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+  Plataforma_Framework_Util,
+  Plataforma_Framework_VCL,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.Buttons,
+  Vcl.ExtCtrls;
 
 type
   TPlataformaERPVCLLogLocalDetalhe = class(TForm)
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    panFormulario: TPanel;
+    lblAplicativo: TLabel;
+    txtAplicativo: TEdit;
+    lblHashCode: TLabel;
+    txtHashCode: TEdit;
+    lblHostName: TLabel;
+    txtHostName: TEdit;
+    lblUserName: TLabel;
+    txtUserName: TEdit;
+    lblUsuario: TLabel;
+    txtUsuarioID: TEdit;
+    txtUsuarioNome: TEdit;
+    lblDataHora: TLabel;
+    txtDataHora: TEdit;
+    lblCritico: TLabel;
+    txtCritico: TEdit;
+    lblMensagem: TLabel;
+    txtMensagem: TMemo;
+    btnFechar: TBitBtn;
+    procedure FormCreate(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
-    { Private declarations }
+    procedure FormularioLimpar;
   public
     { Public declarations }
   end;
@@ -22,9 +67,44 @@ implementation
 
 {$R *.dfm}
 
-procedure TPlataformaERPVCLLogLocalDetalhe.FormClose(Sender: TObject; var Action: TCloseAction);
+//
+// Evento de exibição do formulário.
+//
+procedure TPlataformaERPVCLLogLocalDetalhe.FormCreate(Sender: TObject);
 begin
-  Action := caFree;
+  FormularioLimpar;
+end;
+
+//
+// Evento de pressionamento de teclas no formulário.
+//
+procedure TPlataformaERPVCLLogLocalDetalhe.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = ESC then Close;
+end;
+
+//
+// Evento de click no botão "Fechar".
+//
+procedure TPlataformaERPVCLLogLocalDetalhe.btnFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+//
+// Procedimento para limpar os componentes do formulário.
+//
+procedure TPlataformaERPVCLLogLocalDetalhe.FormularioLimpar;
+begin
+  txtAplicativo.Text  := '';
+  txtHashCode.Text    := '';
+  txtHostName.Text    := '';
+  txtUserName.Text    := '';
+  txtUsuarioID.Text   := '';
+  txtUsuarioNome.Text := '';
+  txtCritico.Text     := '';
+  txtDataHora.Text    := '';
+  txtMensagem.Text    := '';
 end;
 
 end.

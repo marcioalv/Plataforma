@@ -1,0 +1,46 @@
+object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'PlataformaERPVCLLogLocalFiltro'
+  ClientHeight = 209
+  ClientWidth = 458
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object btnFechar: TBitBtn
+    Left = 376
+    Top = 168
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Fechar'
+    TabOrder = 0
+    OnClick = btnFecharClick
+  end
+  object panFormulario: TPanel
+    Left = 8
+    Top = 8
+    Width = 441
+    Height = 153
+    BevelKind = bkTile
+    BevelOuter = bvNone
+    Caption = 'panFormulario'
+    Color = clWindow
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 1
+  end
+end

@@ -4,40 +4,32 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
   Anchors = [akLeft, akTop, akRight, akBottom]
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'PlataformaERPVCLLogLocalLista'
-  ClientHeight = 449
-  ClientWidth = 770
+  Caption = 'Lista de mensagens de log local da aplica'#231#227'o'
+  ClientHeight = 666
+  ClientWidth = 1273
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  FormStyle = fsMDIChild
   KeyPreview = True
   OldCreateOrder = False
-  Visible = True
-  OnClose = FormClose
+  Position = poMainFormCenter
   OnCreate = FormCreate
-  OnPaint = FormPaint
-  OnResize = FormResize
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
-  DesignSize = (
-    770
-    449)
   PixelsPerInch = 96
   TextHeight = 13
   object panFormulario: TPanel
-    AlignWithMargins = True
     Left = 8
     Top = 8
-    Width = 754
-    Height = 393
+    Width = 1257
+    Height = 609
     Margins.Left = 8
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    Align = alClient
     BevelKind = bkTile
     BevelOuter = bvNone
     Caption = 'panFormulario'
@@ -45,9 +37,6 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    DesignSize = (
-      750
-      389)
     object lblArquivoLog: TLabel
       Left = 8
       Top = 8
@@ -56,12 +45,11 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       Caption = 'Arquivo log:'
     end
     object imgArquivoLogSelecionar: TImage
-      Left = 712
+      Left = 1226
       Top = 27
       Width = 17
       Height = 17
       Cursor = crHandPoint
-      Anchors = [akTop, akRight]
       AutoSize = True
       Picture.Data = {
         07544269746D6170AA030000424DAA0300000000000036000000280000001100
@@ -95,7 +83,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
         FF00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00}
       Transparent = True
-      ExplicitLeft = 720
+      OnClick = imgArquivoLogSelecionarClick
     end
     object lblInformacoes: TLabel
       Left = 8
@@ -107,7 +95,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     object txtArquivoLog: TEdit
       Left = 8
       Top = 24
-      Width = 705
+      Width = 1209
       Height = 22
       TabStop = False
       Color = clInactiveBorder
@@ -124,97 +112,109 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     object lvwInformacoes: TListView
       Left = 8
       Top = 72
-      Width = 729
-      Height = 305
+      Width = 1233
+      Height = 521
       Cursor = crHandPoint
       Columns = <
         item
           Caption = 'Icone'
+          Width = 0
         end
         item
           Caption = 'Aplicativo'
+          Width = 0
         end
         item
           Caption = 'HashCode'
+          Width = 0
         end
         item
           Caption = 'HostName'
+          Width = 0
         end
         item
           Caption = 'UserName'
+          Width = 0
         end
         item
           Alignment = taRightJustify
           Caption = 'Usu'#225'rio ID'
+          Width = 0
         end
         item
           Caption = 'Usu'#225'rio'
+          Width = 0
         end
         item
           Alignment = taCenter
           Caption = 'Critico'
+          Width = 0
         end
         item
           Alignment = taCenter
           Caption = 'Data/Hora'
+          Width = 150
         end
         item
           Caption = 'Mensagem'
+          Width = 1050
         end>
       ReadOnly = True
       RowSelect = True
       TabOrder = 1
       ViewStyle = vsReport
+      OnCustomDrawItem = lvwInformacoesCustomDrawItem
+      OnCustomDrawSubItem = lvwInformacoesCustomDrawSubItem
+      OnDblClick = lvwInformacoesDblClick
+      OnKeyPress = lvwInformacoesKeyPress
     end
   end
   object btnFiltrar: TBitBtn
     Left = 8
-    Top = 408
+    Top = 624
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Anchors = [akLeft, akBottom]
     Caption = 'Filtrar'
     TabOrder = 1
+    OnClick = btnFiltrarClick
   end
   object btnLocalizar: TBitBtn
     Left = 88
-    Top = 408
+    Top = 624
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Anchors = [akLeft, akBottom]
     Caption = 'Localizar'
     TabOrder = 2
+    OnClick = btnLocalizarClick
   end
   object btnAtualizar: TBitBtn
     Left = 168
-    Top = 408
+    Top = 624
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Anchors = [akLeft, akBottom]
     Caption = 'Atualizar'
     TabOrder = 3
     OnClick = btnAtualizarClick
   end
   object btnFechar: TBitBtn
-    Left = 688
-    Top = 408
+    Left = 1192
+    Top = 624
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Anchors = [akRight, akBottom]
     Caption = 'Fechar'
     TabOrder = 4
+    OnClick = btnFecharClick
   end
   object btnDetalhes: TBitBtn
     Left = 248
-    Top = 408
+    Top = 624
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Anchors = [akLeft, akBottom]
     Caption = 'Detalhes'
     TabOrder = 5
     OnClick = btnDetalhesClick

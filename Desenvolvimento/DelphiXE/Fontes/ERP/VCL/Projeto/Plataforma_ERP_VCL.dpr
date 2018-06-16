@@ -11,7 +11,9 @@ uses
   Plataforma_Framework_Util in '..\..\..\Framework\Plataforma_Framework_Util.pas',
   Plataforma_ERP_VCL_LogLocalLista in '..\Formularios\Plataforma_ERP_VCL_LogLocalLista.pas' {PlataformaERPVCLLogLocalLista},
   Plataforma_Framework_VCL in '..\..\..\Framework\Plataforma_Framework_VCL.pas',
-  Plataforma_ERP_VCL_LogLocalDetalhe in '..\Formularios\Plataforma_ERP_VCL_LogLocalDetalhe.pas' {PlataformaERPVCLLogLocalDetalhe};
+  Plataforma_ERP_VCL_LogLocalDetalhe in '..\Formularios\Plataforma_ERP_VCL_LogLocalDetalhe.pas' {PlataformaERPVCLLogLocalDetalhe},
+  Plataforma_ERP_VCL_LogLocalArquivoSelecao in '..\Formularios\Plataforma_ERP_VCL_LogLocalArquivoSelecao.pas' {PlataformaERPVCLLogLocalArquivoSelecao},
+  Plataforma_ERP_VCL_LogLocalFiltro in '..\Formularios\Plataforma_ERP_VCL_LogLocalFiltro.pas' {PlataformaERPVCLLogLocalFiltro};
 
 {$R *.res}
 

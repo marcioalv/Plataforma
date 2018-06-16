@@ -20,6 +20,37 @@ uses
   System.Classes,
   Winapi.Windows;
 
+const
+  ENTER      : Char = #13;
+  ESC        : Char = #27;
+  TAB        : Char = #9;
+  BACKSPACE  : Char = #8;
+  CTRL       : Char = #17;
+  CTRL_C     : Char = #3;
+  CTRL_V     : Char = #22;
+  CTRL_X     : Char = #24;
+
+  SETA_ABAIXO: Integer = 40;
+
+  F1         : Integer = 112;
+  F2         : Integer = 113;
+  F3         : Integer = 114;
+  F4         : Integer = 115;
+  F5         : Integer = 116;
+  F6         : Integer = 117;
+  F7         : Integer = 118;
+  F8         : Integer = 119;
+  F9         : Integer = 120;
+  F10        : Integer = 121;
+  F11        : Integer = 122;
+  F12        : Integer = 123;
+
+  ESQUERDA   : Byte = 0;
+  DIREITA    : Byte = 1;
+
+  FLAG_SIM   : string = 'S';
+  FLAG_NAO   : string = 'N';
+
 /// <summary>
 /// Função para retornar o nome do computador ou dispositivo.
 /// </summary>

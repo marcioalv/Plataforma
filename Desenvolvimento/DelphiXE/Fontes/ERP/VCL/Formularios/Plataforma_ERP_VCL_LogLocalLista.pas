@@ -1,3 +1,15 @@
+//
+// Arquivo..: Plataforma_ERP_VCL_LogLocalLista.pas
+// Projeto..: ERP
+// Fonte....: Formulário VCL
+// Criação..: 31/Maio/2018
+// Autor....: Marcio Alves (marcioalv@yahoo.com.br)
+// Descrição: Formulário para exibir a lista de logs da aplicação ERP.
+//
+// Histórico de alterações:
+//   Nenhuma alteração até o momento.
+//
+
 unit Plataforma_ERP_VCL_LogLocalLista;
 
 interface
@@ -5,6 +17,8 @@ interface
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
+  Plataforma_ERP_VCL_LogLocalArquivoSelecao,
+  Plataforma_ERP_VCL_LogLocalFiltro,
   Plataforma_ERP_VCL_LogLocalDetalhe,
   Winapi.Windows,
   Winapi.Messages,
@@ -48,16 +62,25 @@ type
     btnFechar: TBitBtn;
     btnDetalhes: TBitBtn;
     procedure FormShow(Sender: TObject);
-    procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormPaint(Sender: TObject);
     procedure btnAtualizarClick(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnDetalhesClick(Sender: TObject);
+    procedure lvwInformacoesCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lvwInformacoesCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lvwInformacoesDblClick(Sender: TObject);
+    procedure lvwInformacoesKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure btnFecharClick(Sender: TObject);
+    procedure imgArquivoLogSelecionarClick(Sender: TObject);
+    procedure btnFiltrarClick(Sender: TObject);
+    procedure btnLocalizarClick(Sender: TObject);
   private
-    procedure FormularioDimensionar;
-    procedure InformacoesColunasDimensionar;
     procedure InformacoesPopular;
+    procedure FormularioLimpar;
+    procedure FormularioArquivoSelecaoExibir;
+    procedure FormularioFiltroExibir;
+    procedure FormularioLocalizarExibir;
+    procedure FormularioDetalhesExibir;
   public
     { Public declarations }
   end;
@@ -69,75 +92,111 @@ implementation
 
 {$R *.dfm}
 
+//
+// Evento de criação do formulário.
+//
 procedure TPlataformaERPVCLLogLocalLista.FormCreate(Sender: TObject);
 begin
-//  DeleteMenu(GetSystemMenu(Handle, False), SC_MOVE, MF_BYCOMMAND);
+  Exit;
+end;
 
+//
+// Evento de pressionamento de teclas no formulário.
+//
+procedure TPlataformaERPVCLLogLocalLista.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = ESC then Close;
+end;
+
+//
+// Evento de exibição do formulário.
+//
+procedure TPlataformaERPVCLLogLocalLista.FormShow(Sender: TObject);
+begin
+  // Título do formulário.
+  Caption := 'Visualização do arquivo de log local';
+
+  // Limpa componentes do formulário.
+  FormularioLimpar;
+
+  // Arquivo de log padrão.
   txtArquivoLog.Text := 'C:\Plataforma\Desenvolvimento\DelphiXE\Fontes\ERP\Instalacao\Log\2018_06_06_Plataforma_ERP_VCL.log';
 end;
 
-procedure TPlataformaERPVCLLogLocalLista.FormShow(Sender: TObject);
+//
+// Procedimento para exibir o formulário de seleção do arquivo de log local.
+//
+procedure TPlataformaERPVCLLogLocalLista.imgArquivoLogSelecionarClick(Sender: TObject);
 begin
-  Top   := 0;
-  Left  := 0;
-  Width := Application.MainForm.ClientWidth - 4;
-  Height := Application.MainForm.ClientHeight - 4;
-
-  FormularioDimensionar;
+  FormularioArquivoSelecaoExibir;
 end;
 
-procedure TPlataformaERPVCLLogLocalLista.FormPaint(Sender: TObject);
+//
+// Eventos de controle do listview.
+//
+procedure TPlataformaERPVCLLogLocalLista.lvwInformacoesCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
-  FormularioDimensionar;
+  Exit;
 end;
 
-procedure TPlataformaERPVCLLogLocalLista.FormResize(Sender: TObject);
+procedure TPlataformaERPVCLLogLocalLista.lvwInformacoesCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
-  FormularioDimensionar;
+  Exit;
 end;
 
-procedure TPlataformaERPVCLLogLocalLista.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TPlataformaERPVCLLogLocalLista.lvwInformacoesDblClick(Sender: TObject);
 begin
-  Action := caFree;
+  Exit;
 end;
 
+procedure TPlataformaERPVCLLogLocalLista.lvwInformacoesKeyPress(Sender: TObject; var Key: Char);
+begin
+  Exit;
+end;
+
+//
+// Evento de click no botão "Filtrar".
+//
+procedure TPlataformaERPVCLLogLocalLista.btnFiltrarClick(Sender: TObject);
+begin
+  FormularioFiltroExibir;
+end;
+
+//
+// Evento de click no botão "Localizar".
+//
+procedure TPlataformaERPVCLLogLocalLista.btnLocalizarClick(Sender: TObject);
+begin
+  FormularioLocalizarExibir;
+end;
+
+//
+// Evento de click no botão "Atualizar".
+//
 procedure TPlataformaERPVCLLogLocalLista.btnAtualizarClick(Sender: TObject);
 begin
   InformacoesPopular;
 end;
 
+//
+// Evento de click no botão "Detalhes".
+//
 procedure TPlataformaERPVCLLogLocalLista.btnDetalhesClick(Sender: TObject);
-var
-  locFormulario: TPlataformaERPVCLLogLocalDetalhe;
 begin
-  locFormulario := TPlataformaERPVCLLogLocalDetalhe.Create(Self);
-  locFormulario.Show;
+  FormularioDetalhesExibir;
 end;
 
-procedure TPlataformaERPVCLLogLocalLista.FormularioDimensionar;
+//
+// Evento de click no botão "Fechar".
+//
+procedure TPlataformaERPVCLLogLocalLista.btnFecharClick(Sender: TObject);
 begin
-  txtArquivoLog.Width := panFormulario.Width - (txtArquivoLog.Left + 48);
-
-  lvwInformacoes.Width := panFormulario.Width - (lvwInformacoes.Left + 16);
-  lvwInformacoes.Height := panFormulario.Height - (lvwInformacoes.Top + 16);
-
-  InformacoesColunasDimensionar;
+  Close;
 end;
 
-procedure TPlataformaERPVCLLogLocalLista.InformacoesColunasDimensionar;
-begin
-  lvwInformacoes.Columns[LVW_COLUNA_ICONE        + 1].Width := 0;
-  lvwInformacoes.Columns[LVW_COLUNA_APLICATIVO   + 1].Width := 0;
-  lvwInformacoes.Columns[LVW_COLUNA_HASH_CODE    + 1].Width := 0;
-  lvwInformacoes.Columns[LVW_COLUNA_HOST_NAME    + 1].Width := 0;
-  lvwInformacoes.Columns[LVW_COLUNA_USER_NAME    + 1].Width := 0;
-  lvwInformacoes.Columns[LVW_COLUNA_USUARIO_ID   + 1].Width := 0;
-  lvwInformacoes.Columns[LVW_COLUNA_USUARIO_NOME + 1].Width := 0;
-  lvwInformacoes.Columns[LVW_COLUNA_CRITICO      + 1].Width := 0;
-  lvwInformacoes.Columns[LVW_COLUNA_DATA_HORA    + 1].Width := 150;  
-  lvwInformacoes.Columns[LVW_COLUNA_MENSAGEM     + 1].Width := lvwInformacoes.Width - (150) - 25;
-end;
-
+//
+// Popula as informações do arquivo de log no listview.
+//
 procedure TPlataformaERPVCLLogLocalLista.InformacoesPopular;
 var
   locArquivoLog    : string;
@@ -223,6 +282,69 @@ begin
 
   // Fecha arquivo texto.
   CloseFile(locTextFile);
+end;
+
+//
+// Procedimento para limpar os componentes do formulário.
+//
+procedure TPlataformaERPVCLLogLocalLista.FormularioLimpar;
+begin
+  VCLCursorTrocar;
+  txtArquivoLog.Text := '';
+  VCLListViewLimpar(lvwInformacoes);
+  VCLCursorTrocar(False);
+end;
+
+//
+// Procedimento para exibir o formulário de seleção do arquivo de log.
+//
+procedure TPlataformaERPVCLLogLocalLista.FormularioArquivoSelecaoExibir;
+var
+  locFormulario: TPlataformaERPVCLLogLocalArquivoSelecao;
+begin
+  locFormulario := TPlataformaERPVCLLogLocalArquivoSelecao.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o formulário de filtros.
+//
+procedure TPlataformaERPVCLLogLocalLista.FormularioFiltroExibir;
+var
+  locFormulario: TPlataformaERPVCLLogLocalFiltro;
+begin
+  locFormulario := TPlataformaERPVCLLogLocalFiltro.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o formulário de localizar.
+//
+procedure TPlataformaERPVCLLogLocalLista.FormularioLocalizarExibir;
+var
+  locFormulario: TPlataformaERPVCLLogLocalFiltro;
+begin
+  locFormulario := TPlataformaERPVCLLogLocalFiltro.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o formulário de detalhes do log selecionado.
+//
+procedure TPlataformaERPVCLLogLocalLista.FormularioDetalhesExibir;
+var
+  locFormulario: TPlataformaERPVCLLogLocalDetalhe;
+begin
+  locFormulario := TPlataformaERPVCLLogLocalDetalhe.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 end.

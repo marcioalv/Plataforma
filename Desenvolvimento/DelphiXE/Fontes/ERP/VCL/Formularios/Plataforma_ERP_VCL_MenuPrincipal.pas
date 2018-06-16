@@ -15,6 +15,8 @@ unit Plataforma_ERP_VCL_MenuPrincipal;
 interface
 
 uses
+  Plataforma_Framework_Util,
+  Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
   Plataforma_ERP_Inicializacao,
   Plataforma_ERP_VCL_LogLocalLista,
@@ -38,7 +40,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
-    procedure FormResize(Sender: TObject);
   private
     procedure Inicializar;
     procedure FormularioTituloDeterminar;
@@ -69,19 +70,6 @@ begin
   FormularioTituloDeterminar;
 end;
 
-
-procedure TPlataformaERPVCLMenuPrincipal.FormResize(Sender: TObject);
-var
-  locContador: Integer;
-begin
-  for locContador := 0 to (MDIChildCount - 1) do
-  begin
-    MDIChildren[locContador].Repaint;
-  end;
-end;
-
-
-
 //
 // Evento de click na opção "Log detalhado local do computador".
 //
@@ -90,7 +78,9 @@ var
   locFormulario: TPlataformaERPVCLLogLocalLista;
 begin
   locFormulario := TPlataformaERPVCLLogLocalLista.Create(Self);
-  locFormulario.Show;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 //
