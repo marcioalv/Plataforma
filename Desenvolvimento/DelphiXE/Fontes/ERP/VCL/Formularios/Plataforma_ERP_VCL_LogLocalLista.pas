@@ -120,7 +120,7 @@ begin
   FormularioLimpar;
 
   // Arquivo de log padrão.
-  txtArquivoLog.Text := 'C:\Plataforma\Desenvolvimento\DelphiXE\Fontes\ERP\Instalacao\Log\2018_06_06_Plataforma_ERP_VCL.log';
+  txtArquivoLog.Text := '';
 end;
 
 //
@@ -136,22 +136,22 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.lvwInformacoesCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
-  Exit;
+  VCLListViewZebrar(Sender, Item);
 end;
 
 procedure TPlataformaERPVCLLogLocalLista.lvwInformacoesCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
-  Exit;
+  VCLListViewZebrar(Sender, Item);
 end;
 
 procedure TPlataformaERPVCLLogLocalLista.lvwInformacoesDblClick(Sender: TObject);
 begin
-  Exit;
+  btnDetalhesClick(Sender);
 end;
 
 procedure TPlataformaERPVCLLogLocalLista.lvwInformacoesKeyPress(Sender: TObject; var Key: Char);
 begin
-  Exit;
+  if Key = ENTER then lvwInformacoesDblClick(Sender);
 end;
 
 //
@@ -214,12 +214,19 @@ var
   locMensagem      : string;
   locListItem      : TListItem;
 begin
+  // Troca cursor.
+  VCLCursorTrocar(True);
+
+  // Limpa listview.
+  VCLListViewLimpar(lvwInformacoes);
+
   // Localização do arquivo de log que será exibido.
   locArquivoLog := txtArquivoLog.Text;
 
   // Confirma se o arquivo realmente existe.
   if not FileExists(locArquivoLog) then
   begin
+    VCLCursorTrocar;
     VCLConsistenciaExibir('O arquivo de log informando não foi localizado ou não pôde ser acessado em [' + locArquivoLog + ']');
     Exit;
   end;
@@ -230,6 +237,7 @@ begin
   except
     on locErro: Exception do
     begin
+      VCLCursorTrocar;
       VCLExcecaoExibir('Impossível acessar o arquivo de log: [' + locArquivoLog + ']', locErro.Message);
       Exit;
     end;
@@ -241,6 +249,7 @@ begin
   except
     on locErro: Exception do
     begin
+      VCLCursorTrocar;
       VCLExcecaoExibir('Impossível abrir o arquivo de log para leitura: [' + locArquivoLog + ']', locErro.Message);
       Exit;
     end;
@@ -255,33 +264,50 @@ begin
     // Separa a linha em partes.
     locStringList := StringSeparar(locLinha, '|');
 
+    // Inicializa variáveis.
+    locHostName       := '';
+    locUserName       := '';
+    locAppNome        := '';
+    locAppHashCode    := '';
+    locAppUsuarioID   := 0;
+    locAppUsuarioNome := '';
+    locCritico        := False;
+    locDataHora       := 0;
+    locMensagem       := '';
+
     // Carrega cada parte separadamente.
-    locHostName       := locStringList[0];
-    locUserName       := locStringList[1];
-    locAppNome        := locStringList[2];
-    locAppHashCode    := locStringList[3];
-    locAppUsuarioID   := StringIntegerConverter(locStringList[4]);
-    locAppUsuarioNome := locStringList[5];
-    locCritico        := StringBooleanConverter(locStringList[6]);
-    locDataHora       := StringDataHoraPersistidaConverter(locStringList[7]);
-    locMensagem       := locStringList[8];
+    if locStringList.Count >= 1 then locHostName       := locStringList[0];
+    if locStringList.Count >= 2 then locUserName       := locStringList[1];
+    if locStringList.Count >= 3 then locAppNome        := locStringList[2];
+    if locStringList.Count >= 4 then locAppHashCode    := locStringList[3];
+    if locStringList.Count >= 5 then locAppUsuarioID   := StringIntegerConverter(locStringList[4]);
+    if locStringList.Count >= 6 then locAppUsuarioNome := locStringList[5];
+    if locStringList.Count >= 7 then locCritico        := StringBooleanConverter(locStringList[6]);
+    if locStringList.Count >= 8 then locDataHora       := StringDataHoraPersistidaConverter(locStringList[7]);
+    if locStringList.Count >= 9 then locMensagem       := locStringList[8];
     
     // Insere dados no listview.
-    locListItem         := lvwInformacoes.Items.Add;
-    locListItem.Caption := '';                                                                 // Ícone.
-    locListItem.SubItems.Add(locAppNome);                                                      // Aplicativo.
-    locListItem.SubItems.Add(locAppHashCode);                                                  // HashCode.
-    locListItem.SubItems.Add(locHostName);                                                     // HostName.
-    locListItem.SubItems.Add(locUserName);                                                     // UserName.
-    locListItem.SubItems.Add(IntegerStringConverter(locAppUsuarioID));                         // Usuário ID.
-    locListItem.SubItems.Add(locAppUsuarioNome);                                               // Usuário nome.
-    locListItem.SubItems.Add(BooleanStringConverter(locCritico, False));                       // Crítico.
-    locListItem.SubItems.Add(DateTimeStringConverter(locDataHora, 'dd/mm/yyyy hh:nn:ss.zzz')); // Data e hora.
-    locListItem.SubItems.Add(locMensagem);                                                     // Mensagem.
+    if Trim(locMensagem) <> '' then
+    begin
+      locListItem         := lvwInformacoes.Items.Add;
+      locListItem.Caption := '';                                                                 // Ícone.
+      locListItem.SubItems.Add(locAppNome);                                                      // Aplicativo.
+      locListItem.SubItems.Add(locAppHashCode);                                                  // HashCode.
+      locListItem.SubItems.Add(locHostName);                                                     // HostName.
+      locListItem.SubItems.Add(locUserName);                                                     // UserName.
+      locListItem.SubItems.Add(IntegerStringConverter(locAppUsuarioID));                         // Usuário ID.
+      locListItem.SubItems.Add(locAppUsuarioNome);                                               // Usuário nome.
+      locListItem.SubItems.Add(BooleanStringConverter(locCritico, False));                       // Crítico.
+      locListItem.SubItems.Add(DateTimeStringConverter(locDataHora, 'dd/mm/yyyy hh:nn:ss.zzz')); // Data e hora.
+      locListItem.SubItems.Add(locMensagem);                                                     // Mensagem.
+    end;
   end;
 
   // Fecha arquivo texto.
   CloseFile(locTextFile);
+
+  // Finaliza.
+  VCLCursorTrocar;
 end;
 
 //
@@ -300,12 +326,26 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormularioArquivoSelecaoExibir;
 var
-  locFormulario: TPlataformaERPVCLLogLocalArquivoSelecao;
+  locFormulario      : TPlataformaERPVCLLogLocalArquivoSelecao;
+  locClicouSelecionar: Boolean;
+  locArquivo         : string;
 begin
-  locFormulario := TPlataformaERPVCLLogLocalArquivoSelecao.Create(Self);
+  locArquivo := txtArquivoLog.Text;
+
+  locFormulario            := TPlataformaERPVCLLogLocalArquivoSelecao.Create(Self);
+  locFormulario.pubArquivo := locArquivo;
+
   locFormulario.ShowModal;
+
+  locClicouSelecionar := locFormulario.pubClicouSelecionar;
+  locArquivo          := locFormulario.pubArquivo;
+  
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  if not locClicouSelecionar then Exit;
+
+  txtArquivoLog.Text := locArquivo;
 end;
 
 //
@@ -339,9 +379,33 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormularioDetalhesExibir;
 var
-  locFormulario: TPlataformaERPVCLLogLocalDetalhe;
+  locIndex      : Integer;
+  locAplicativo : string;
+  locHashCode   : string;
+  locHostName   : string;
+  locUserName   : string;
+  locUsuarioID  : Integer;
+  locUsuarioNome: string;
+  locCritico    : Boolean;
+  locDataHora   : TDateTime;
+  locMensagem   : string;
+  locFormulario : TPlataformaERPVCLLogLocalDetalhe;
 begin
+  locIndex := VCLListViewIndiceItemRetornar(lvwInformacoes);
+  if locIndex = VCL_NENHUM_INDICE then Exit;
+
+  locAplicativo  := lvwInformacoes.Items[locIndex].SubItems.Strings[LVW_COLUNA_APLICATIVO];
+  locHashCode    := lvwInformacoes.Items[locIndex].SubItems.Strings[LVW_COLUNA_HASH_CODE];
+  locHostName    := lvwInformacoes.Items[locIndex].SubItems.Strings[LVW_COLUNA_HOST_NAME];
+  locUserName    := lvwInformacoes.Items[locIndex].SubItems.Strings[LVW_COLUNA_USER_NAME];
+  locUsuarioID   := StringIntegerConverter(lvwInformacoes.Items[locIndex].SubItems.Strings[LVW_COLUNA_USUARIO_ID]);
+  locUsuarioNome := lvwInformacoes.Items[locIndex].SubItems.Strings[LVW_COLUNA_USUARIO_NOME];
+  locCritico     := StringBooleanConverter(lvwInformacoes.Items[locIndex].SubItems.Strings[LVW_COLUNA_CRITICO]);
+  locDataHora    := StringDateTimeConverter(lvwInformacoes.Items[locIndex].SubItems.Strings[LVW_COLUNA_DATA_HORA]);
+  locMensagem    := lvwInformacoes.Items[locIndex].SubItems.Strings[LVW_COLUNA_MENSAGEM];
+
   locFormulario := TPlataformaERPVCLLogLocalDetalhe.Create(Self);
+  locFormulario.FormularioPopular(locAplicativo, locHashCode, locHostName, locUserName, locUsuarioID, locUsuarioNome, locCritico, locDataHora, locMensagem);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

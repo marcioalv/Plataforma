@@ -159,8 +159,14 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
           Caption = 'Mensagem'
           Width = 1050
         end>
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       ReadOnly = True
       RowSelect = True
+      ParentFont = False
       TabOrder = 1
       ViewStyle = vsReport
       OnCustomDrawItem = lvwInformacoesCustomDrawItem

@@ -4,7 +4,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'PlataformaERPVCLLogLocalFiltro'
-  ClientHeight = 209
+  ClientHeight = 186
   ClientWidth = 458
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -22,7 +22,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
   TextHeight = 13
   object btnFechar: TBitBtn
     Left = 376
-    Top = 168
+    Top = 144
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -34,7 +34,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
     Left = 8
     Top = 8
     Width = 441
-    Height = 153
+    Height = 129
     BevelKind = bkTile
     BevelOuter = bvNone
     Caption = 'panFormulario'
@@ -42,5 +42,100 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
     ParentBackground = False
     ShowCaption = False
     TabOrder = 1
+    object lblPeriodo: TLabel
+      Left = 16
+      Top = 16
+      Width = 40
+      Height = 13
+      Caption = 'Per'#237'odo:'
+    end
+    object lblPeriodoAte: TLabel
+      Left = 168
+      Top = 36
+      Width = 16
+      Height = 13
+      Caption = 'at'#233
+    end
+    object lblMensagem: TLabel
+      Left = 16
+      Top = 64
+      Width = 55
+      Height = 13
+      Caption = 'Mensagem:'
+    end
+    object txtDtPeriodoIni: TEdit
+      Left = 16
+      Top = 32
+      Width = 81
+      Height = 22
+      Alignment = taCenter
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      Text = '99/99/9999'
+    end
+    object txtHrPeriodoIni: TEdit
+      Left = 104
+      Top = 32
+      Width = 49
+      Height = 22
+      Alignment = taCenter
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      Text = '99:99'
+    end
+    object txtDtPeriodoFim: TEdit
+      Left = 200
+      Top = 32
+      Width = 81
+      Height = 22
+      Alignment = taCenter
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      Text = '99/99/9999'
+    end
+    object txtHrPeriodoFim: TEdit
+      Left = 288
+      Top = 32
+      Width = 49
+      Height = 22
+      Alignment = taCenter
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 3
+      Text = '99:99'
+    end
+    object txtMensagem: TEdit
+      Left = 16
+      Top = 80
+      Width = 401
+      Height = 22
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 4
+      Text = 'txtMensagem'
+    end
   end
 end

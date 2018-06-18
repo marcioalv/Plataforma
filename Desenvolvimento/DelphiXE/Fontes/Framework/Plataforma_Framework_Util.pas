@@ -317,6 +317,20 @@ function DateTimeStringConverter(argValor: TDateTime; argFormato: string): strin
 /// </remarks>
 function StringDataHoraPersistidaConverter(argDataHora: string): TDateTime;
 
+/// <summary>
+/// Função para retornar um currency a partir de uma string.
+/// </summary>
+/// <param name="argValor">
+/// Valor string que será convertido para um currency.
+/// </param>
+/// <returns>
+/// String convertido.
+/// </returns>
+/// <remarks>
+/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
+/// </remarks>
+function StringCurrencyConverter(argValor: string): Currency;
+
 implementation
 
 //
@@ -683,6 +697,35 @@ begin
   locAno     := Copy(argDataHora,  1,  4);
   locHorario := Copy(argDataHora, 12, 12);
   Result     := StringDateTimeConverter(locDia + '/' + locMes + '/' + locAno + ' ' + locHorario)
+end;
+
+//
+// StringCurrencyConverter.
+//
+function StringCurrencyConverter(argValor: string): Currency;
+var
+  locValor   : string;
+  locContador: Integer;
+  locCaracter: string;
+begin
+  locValor := '';
+  for locContador := 1 to Length(argValor) do
+  begin
+    locCaracter := Copy(argValor, locContador, 1);
+
+    if (SomenteNumerosValidar(locCaracter)) or
+       (locCaracter = '.') or
+       (locCaracter = ',') or
+       (locCaracter = '-') then
+    begin
+      locValor := locValor + locCaracter;
+    end;
+  end;
+
+  locValor := StringSubstituir(locValor, '.', '');
+  locValor := StringSubstituir(locValor, ',', '');
+
+  Result := StrToCurrDef(locValor, 0.00);
 end;
 
 end.

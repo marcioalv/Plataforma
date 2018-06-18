@@ -31,12 +31,20 @@ type
   TPlataformaERPVCLLogLocalFiltro = class(TForm)
     btnFechar: TBitBtn;
     panFormulario: TPanel;
+    lblPeriodo: TLabel;
+    txtDtPeriodoIni: TEdit;
+    lblPeriodoAte: TLabel;
+    txtHrPeriodoIni: TEdit;
+    txtDtPeriodoFim: TEdit;
+    txtHrPeriodoFim: TEdit;
+    lblMensagem: TLabel;
+    txtMensagem: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnFecharClick(Sender: TObject);
   private
-    { Private declarations }
+    procedure FormularioLimpar;
   public
     { Public declarations }
   end;
@@ -61,7 +69,7 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalFiltro.FormShow(Sender: TObject);
 begin
-  Exit;
+  FormularioLimpar;
 end;
 
 //
@@ -78,6 +86,20 @@ end;
 procedure TPlataformaERPVCLLogLocalFiltro.btnFecharClick(Sender: TObject);
 begin
   Close;
+end;
+
+//
+// Procedimento para limpar os componentes do formulário.
+//
+procedure TPlataformaERPVCLLogLocalFiltro.FormularioLimpar;
+begin
+  txtDtPeriodoIni.Text := '';
+  txtHrPeriodoIni.Text := '';
+
+  txtDtPeriodoFim.Text := '';
+  txtHrPeriodoFim.Text := '';
+
+  txtMensagem.Text     := '';
 end;
 
 end.

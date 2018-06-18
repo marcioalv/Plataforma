@@ -236,8 +236,14 @@ object PlataformaERPVCLLogLocalDetalhe: TPlataformaERPVCLLogLocalDetalhe
       Height = 193
       TabStop = False
       Color = clInactiveBorder
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Lines.Strings = (
         'txtMensagem')
+      ParentFont = False
       ReadOnly = True
       ScrollBars = ssVertical
       TabOrder = 8

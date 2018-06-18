@@ -57,7 +57,15 @@ type
   private
     procedure FormularioLimpar;
   public
-    { Public declarations }
+    procedure FormularioPopular(argAplicativo : string;
+                                argHashCode   : string;
+                                argHostName   : string;
+                                argUserName   : string;
+                                argUsuarioID  : Integer;
+                                argUsuarioNome: string;
+                                argCritico    : Boolean;
+                                argDataHora   : TDateTime;
+                                argMensagem   : string);
   end;
 
 var
@@ -105,6 +113,30 @@ begin
   txtCritico.Text     := '';
   txtDataHora.Text    := '';
   txtMensagem.Text    := '';
+end;
+
+//
+// Procedimento para popular o formulário com informações transferidas de outro formulário.
+//
+procedure TPlataformaERPVCLLogLocalDetalhe.FormularioPopular(argAplicativo : string;
+                                                             argHashCode   : string;
+                                                             argHostName   : string;
+                                                             argUserName   : string;
+                                                             argUsuarioID  : Integer;
+                                                             argUsuarioNome: string;
+                                                             argCritico    : Boolean;
+                                                             argDataHora   : TDateTime;
+                                                             argMensagem   : string);
+begin
+  txtAplicativo.Text  := argAplicativo;
+  txtHashCode.Text    := argHashCode;
+  txtHostName.Text    := argHostName;
+  txtUserName.Text    := argUserName;
+  txtUsuarioID.Text   := IntegerStringConverter(argUsuarioID, True);
+  txtUsuarioNome.Text := argUsuarioNome;
+  txtCritico.Text     := BooleanStringConverter(argCritico, False);
+  txtDataHora.Text    := DateTimeStringConverter(argDataHora, 'dd/mm/yyyy hh:nn:ss.zzz');
+  txtMensagem.Text    := argMensagem;
 end;
 
 end.
