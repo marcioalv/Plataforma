@@ -33,8 +33,8 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
     ShowCaption = False
     TabOrder = 0
     object imgArquivoSelecionar: TImage
-      Left = 684
-      Top = 51
+      Left = 508
+      Top = 11
       Width = 17
       Height = 17
       Cursor = crHandPoint
@@ -71,7 +71,20 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
         FF00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00}
       Transparent = True
-      OnClick = imgArquivoSelecionarClick
+    end
+    object lblDtLog: TLabel
+      Left = 526
+      Top = 114
+      Width = 27
+      Height = 13
+      Caption = 'Data:'
+    end
+    object lblArquivo: TLabel
+      Left = 32
+      Top = 40
+      Width = 41
+      Height = 13
+      Caption = 'Arquivo:'
     end
     object rbtArquivo: TRadioButton
       Left = 16
@@ -91,11 +104,11 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
     end
     object rbtHistorico: TRadioButton
       Left = 16
-      Top = 104
-      Width = 401
+      Top = 112
+      Width = 299
       Height = 17
       Cursor = crHandPoint
-      Caption = 'Selecionar uma das datas do hist'#243'rico de log da aplica'#231#227'o.'
+      Caption = 'Selecionar uma das datas do hist'#243'rico de log da aplica'#231#227'o:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -107,9 +120,9 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
     end
     object lbxHistorico: TListBox
       Left = 32
-      Top = 136
-      Width = 673
-      Height = 241
+      Top = 144
+      Width = 681
+      Height = 233
       Cursor = crHandPoint
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -124,8 +137,8 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
     end
     object txtArquivo: TEdit
       Left = 32
-      Top = 48
-      Width = 649
+      Top = 56
+      Width = 601
       Height = 22
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -135,6 +148,35 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       ParentFont = False
       TabOrder = 3
       Text = 'txtArquivo'
+    end
+    object btnDtLogLocalizar: TBitBtn
+      Left = 638
+      Top = 108
+      Width = 75
+      Height = 25
+      Cursor = crHandPoint
+      Caption = 'Localizar'
+      TabOrder = 4
+    end
+    object txtDtLog: TMaskEdit
+      Left = 558
+      Top = 110
+      Width = 73
+      Height = 21
+      Alignment = taCenter
+      EditMask = '99/99/9999'
+      MaxLength = 10
+      TabOrder = 5
+      Text = '99/99/9999'
+    end
+    object btnArquivoSelecionar: TBitBtn
+      Left = 640
+      Top = 55
+      Width = 75
+      Height = 25
+      Cursor = crHandPoint
+      Caption = 'Selecionar'
+      TabOrder = 6
     end
   end
   object btnFechar: TBitBtn

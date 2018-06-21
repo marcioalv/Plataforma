@@ -48,7 +48,18 @@ const
 procedure VCLCursorTrocar(argEspera: Boolean = False);
 
 /// <summary>
-/// Função para exibir um formulário filho MDI.
+/// Procedimento para maximizar um formulário SDI.
+/// </summary>
+/// <param name="argFormulario">
+/// Formulário SDI que será centralizado.
+/// </param>
+/// <remarks>
+/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
+/// </remarks>
+procedure VCLSDIFormularioMaximizar(argFormulario: TForm);
+
+/// <summary>
+/// Função para exibir um formulário MDI.
 /// </summary>
 /// <param name="argNomeFormulario">
 /// Nome do formulário MDI filho que será exibido, sem a letra 'T' inicial de classe.
@@ -150,6 +161,18 @@ begin
   begin
     Screen.Cursor := crHourGlass;
   end;
+end;
+
+//
+// VCLSDIFormularioMaximizar.
+//
+procedure VCLSDIFormularioMaximizar(argFormulario: TForm);
+begin
+  argFormulario.WindowState := wsMaximized;
+  argFormulario.Top := 0;
+  argFormulario.Left := 0;
+  argFormulario.BorderStyle := bsSingle;
+  argFormulario.BorderIcons := [biSystemMenu];
 end;
 
 //

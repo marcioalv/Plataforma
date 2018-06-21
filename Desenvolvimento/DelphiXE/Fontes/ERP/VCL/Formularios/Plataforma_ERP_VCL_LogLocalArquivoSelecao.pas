@@ -25,7 +25,7 @@ uses
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons;
+  Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask;
 
 type
   TPlataformaERPVCLLogLocalArquivoSelecao = class(TForm)
@@ -38,6 +38,11 @@ type
     imgArquivoSelecionar: TImage;
     btnSelecionar: TBitBtn;
     dlgArquivo: TOpenDialog;
+    lblDtLog: TLabel;
+    btnDtLogLocalizar: TBitBtn;
+    txtDtLog: TMaskEdit;
+    lblArquivo: TLabel;
+    btnArquivoSelecionar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -45,7 +50,6 @@ type
     procedure btnSelecionarClick(Sender: TObject);
     procedure rbtArquivoClick(Sender: TObject);
     procedure rbtHistoricoClick(Sender: TObject);
-    procedure imgArquivoSelecionarClick(Sender: TObject);
     procedure lbxHistoricoDblClick(Sender: TObject);
     procedure lbxHistoricoKeyPress(Sender: TObject; var Key: Char);
   private
@@ -108,10 +112,6 @@ end;
 //
 // Eventos do componente txtArquivo.
 //
-procedure TPlataformaERPVCLLogLocalArquivoSelecao.imgArquivoSelecionarClick(Sender: TObject);
-begin
-  ArquivoSelecionar;
-end;
 
 //
 // Evento de click no componente rbtHistorico.
@@ -159,6 +159,7 @@ begin
   txtArquivo.Text    := '';
 
   rbtHistorico.Checked := False;
+  txtDtLog.Text        := '  /  /   ';
   lbxHistorico.Items.Clear;
 end;
 
@@ -169,20 +170,31 @@ procedure TPlataformaERPVCLLogLocalArquivoSelecao.FormularioControlar;
 begin
   if rbtArquivo.Checked then
   begin
+    lblArquivo.Enabled           := True;
     txtArquivo.Enabled           := True;
     txtArquivo.Font.Color        := clBlack;
-    imgArquivoSelecionar.Visible := True;
-    lbxHistorico.Enabled         := False;
-    lbxHistorico.BorderStyle     := bsNone;
-    lbxHistorico.ItemIndex       := VCL_NENHUM_INDICE;
+    btnArquivoSelecionar.Enabled := True;
+
+    lblDtLog.Enabled          := False;
+    txtDtLog.Enabled          := False;
+    btnDtLogLocalizar.Enabled := False;
+
+    lbxHistorico.Enabled   := False;
+    lbxHistorico.ItemIndex := VCL_NENHUM_INDICE;
     
     txtArquivo.SetFocus;
   end
   else
   begin
+    lblArquivo.Enabled           := False;
     txtArquivo.Enabled           := False;
     txtArquivo.Font.Color        := clGray;
-    imgArquivoSelecionar.Visible := False;
+    btnArquivoSelecionar.Enabled := False;
+
+    lblDtLog.Enabled          := True;
+    txtDtLog.Enabled          := True;
+    btnDtLogLocalizar.Enabled := True;
+
     lbxHistorico.Enabled         := True;
     lbxHistorico.BorderStyle     := bsSingle;
     lbxHistorico.SetFocus;

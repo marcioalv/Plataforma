@@ -2,11 +2,9 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
   Left = 0
   Top = 0
   Anchors = [akLeft, akTop, akRight, akBottom]
-  BorderIcons = [biSystemMenu]
-  BorderStyle = bsSingle
   Caption = 'Lista de mensagens de log local da aplica'#231#227'o'
-  ClientHeight = 666
-  ClientWidth = 1273
+  ClientHeight = 508
+  ClientWidth = 1016
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,20 +14,26 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
   KeyPreview = True
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
+  DesignSize = (
+    1016
+    508)
   PixelsPerInch = 96
   TextHeight = 13
   object panFormulario: TPanel
+    AlignWithMargins = True
     Left = 8
     Top = 8
-    Width = 1257
-    Height = 609
+    Width = 1000
+    Height = 451
     Margins.Left = 8
     Margins.Top = 8
     Margins.Right = 8
-    Margins.Bottom = 48
+    Margins.Bottom = 49
+    Align = alClient
     BevelKind = bkTile
     BevelOuter = bvNone
     Caption = 'panFormulario'
@@ -37,6 +41,9 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
+    DesignSize = (
+      996
+      447)
     object lblArquivoLog: TLabel
       Left = 8
       Top = 8
@@ -45,11 +52,12 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       Caption = 'Arquivo log:'
     end
     object imgArquivoLogSelecionar: TImage
-      Left = 1226
+      Left = 971
       Top = 27
       Width = 17
       Height = 17
       Cursor = crHandPoint
+      Anchors = [akTop, akRight]
       AutoSize = True
       Picture.Data = {
         07544269746D6170AA030000424DAA0300000000000036000000280000001100
@@ -93,11 +101,17 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       Caption = 'Informa'#231#245'es:'
     end
     object txtArquivoLog: TEdit
+      AlignWithMargins = True
       Left = 8
       Top = 24
-      Width = 1209
+      Width = 950
       Height = 22
+      Margins.Left = 8
+      Margins.Top = 24
+      Margins.Right = 38
+      Margins.Bottom = 8
       TabStop = False
+      Align = alTop
       Color = clInactiveBorder
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -110,11 +124,17 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       Text = 'txtArquivoLog'
     end
     object lvwInformacoes: TListView
+      AlignWithMargins = True
       Left = 8
       Top = 72
-      Width = 1233
-      Height = 521
+      Width = 980
+      Height = 367
       Cursor = crHandPoint
+      Margins.Left = 8
+      Margins.Top = 18
+      Margins.Right = 8
+      Margins.Bottom = 8
+      Align = alClient
       Columns = <
         item
           Caption = 'Icone'
@@ -177,50 +197,55 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
   end
   object btnFiltrar: TBitBtn
     Left = 8
-    Top = 624
+    Top = 466
     Width = 73
     Height = 33
     Cursor = crHandPoint
+    Anchors = [akLeft, akBottom]
     Caption = 'Filtrar'
     TabOrder = 1
     OnClick = btnFiltrarClick
   end
   object btnLocalizar: TBitBtn
     Left = 88
-    Top = 624
+    Top = 466
     Width = 73
     Height = 33
     Cursor = crHandPoint
+    Anchors = [akLeft, akBottom]
     Caption = 'Localizar'
     TabOrder = 2
     OnClick = btnLocalizarClick
   end
   object btnAtualizar: TBitBtn
     Left = 168
-    Top = 624
+    Top = 466
     Width = 73
     Height = 33
     Cursor = crHandPoint
+    Anchors = [akLeft, akBottom]
     Caption = 'Atualizar'
     TabOrder = 3
     OnClick = btnAtualizarClick
   end
   object btnFechar: TBitBtn
-    Left = 1192
-    Top = 624
+    Left = 935
+    Top = 466
     Width = 73
     Height = 33
     Cursor = crHandPoint
+    Anchors = [akRight, akBottom]
     Caption = 'Fechar'
     TabOrder = 4
     OnClick = btnFecharClick
   end
   object btnDetalhes: TBitBtn
     Left = 248
-    Top = 624
+    Top = 466
     Width = 73
     Height = 33
     Cursor = crHandPoint
+    Anchors = [akLeft, akBottom]
     Caption = 'Detalhes'
     TabOrder = 5
     OnClick = btnDetalhesClick

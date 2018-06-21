@@ -74,7 +74,9 @@ type
     procedure imgArquivoLogSelecionarClick(Sender: TObject);
     procedure btnFiltrarClick(Sender: TObject);
     procedure btnLocalizarClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
+    function  ArquivoLogConsistir: Boolean;
     procedure InformacoesPopular;
     procedure FormularioLimpar;
     procedure FormularioArquivoSelecaoExibir;
@@ -95,6 +97,11 @@ implementation
 //
 // Evento de criação do formulário.
 //
+procedure TPlataformaERPVCLLogLocalLista.FormActivate(Sender: TObject);
+begin
+  VCLSDIFormularioMaximizar(Self);
+end;
+
 procedure TPlataformaERPVCLLogLocalLista.FormCreate(Sender: TObject);
 begin
   Exit;
@@ -113,6 +120,7 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormShow(Sender: TObject);
 begin
+
   // Título do formulário.
   Caption := 'Visualização do arquivo de log local';
 
@@ -195,6 +203,21 @@ begin
 end;
 
 //
+// ArquivoLogConsistir.
+//
+function TPlataformaERPVCLLogLocalLista.ArquivoLogConsistir: Boolean;
+begin
+  if txtArquivoLog.Text = '' then
+  begin
+    VCLConsistenciaExibir('Nenhum arquivo de log selecionado!');
+    Result := False;
+    Exit;
+  end;
+
+  Result := True;
+end;
+
+//
 // Popula as informações do arquivo de log no listview.
 //
 procedure TPlataformaERPVCLLogLocalLista.InformacoesPopular;
@@ -214,6 +237,9 @@ var
   locMensagem      : string;
   locListItem      : TListItem;
 begin
+  // Consistências.
+  if not ArquivoLogConsistir then Exit;
+
   // Troca cursor.
   VCLCursorTrocar(True);
 
