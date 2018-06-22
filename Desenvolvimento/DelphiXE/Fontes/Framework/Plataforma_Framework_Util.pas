@@ -331,6 +331,40 @@ function StringDataHoraPersistidaConverter(argDataHora: string): TDateTime;
 /// </remarks>
 function StringCurrencyConverter(argValor: string): Currency;
 
+/// <summary>
+/// Função para extrair o nome do path do arquivo.
+/// </summary>
+/// <param name="argArquivo">
+/// Arquivo completo.
+/// </param>
+/// <returns>
+/// Somente o path de onde o arquivo se encontra.
+/// </returns>
+/// <remarks>
+/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
+/// </remarks>
+function PathExtrair(argArquivo: string): string;
+
+/// <summary>
+/// Função para retornar uma lista de arquivos conforme um padrão informado.
+/// </summary>
+/// <param name="argCaminho">
+/// Caminho inicial onde a pesquisa será realizada.
+/// </param>
+/// <param name="argArquivo">
+/// Nome do arquivo que está sendo procurado incluindo caracteres máscara.
+/// </param>
+/// <param name="argSubPastas">
+/// Incluir pesquisa em subpastas.
+/// </param>
+/// <returns>
+/// Uma lista de strings com o nome de cada arquivo encontrado.
+/// </returns>
+/// <remarks>
+/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
+/// </remarks>
+function ListaArquivosRetornar(argCaminho: string; argArquivo: string; argSubPastas: Boolean): TStringList;
+
 implementation
 
 //
@@ -726,6 +760,81 @@ begin
   locValor := StringSubstituir(locValor, ',', '');
 
   Result := StrToCurrDef(locValor, 0.00);
+end;
+
+//
+// PathExtrair.
+//
+function PathExtrair(argArquivo: string): string;
+begin
+  Result := ExtractFilePath(argArquivo);
+  Result := Copy(Result, 1, Length(Result) - 1);
+end;
+
+//
+// ListaArquivosRetornar.
+//
+function ListaArquivosRetornar(argCaminho: string; argArquivo: string; argSubPastas: Boolean): TStringList;
+var
+  locPesquisa: TSearchRec;
+  locRetorno : Integer;
+  locSubPasta: string;
+begin
+  // Inicializa o array de retorno vazio.
+  Result := TStringList.Create;
+  Result.Clear;
+
+  // Se não existir um '\' no caminho então insere.
+  if Copy(argCaminho, Length(argCaminho), 1) <> '\' then argCaminho := argCaminho + '\';
+
+  // Executa primeira pesquisa.
+  try
+    locRetorno := FindFirst(argCaminho + '*.*', faAnyFile, locPesquisa);
+  except
+    on locErro: Exception do
+    begin
+      raise Exception.Create('Impossível pesquisar informações sobre os arquivos: ' + locErro.Message);
+    end;
+  end;
+
+  // Percorre a lista de arquivos da primeira pesquisa.
+  while locRetorno = 0 do
+  begin
+    // O arquivo não é uma pasta.
+    if (locPesquisa.Attr and faDirectory) <> faDirectory then
+    begin
+      // Insere nome do arquivo no retorno.
+      Result.Add(argCaminho + locPesquisa.Name);
+    end
+    else
+    begin
+      // Se for mesmo uma pasta.
+      if (locPesquisa.Name <> '.') And (locPesquisa.Name <> '..') then
+        // Está definido para pesquisar dentro das subpastas.
+        if argSubPastas = True then
+        begin
+          // Nome correto da subpasta.
+          locSubPasta := argCaminho + locPesquisa.Name;
+
+          // Executa pesquisa recursiva na subpasta encontrada.
+          try
+            ListaArquivosRetornar(locSubPasta, argArquivo, argSubPastas);
+          except
+            on locErro: exception do
+            begin
+              System.SysUtils.FindClose(locPesquisa);
+              raise Exception.Create(locErro.Message);
+            end;
+          end;
+        end;
+    end;
+
+    // Próximo arquivo encontrado.
+    locRetorno := FindNext(locPesquisa);
+  end;
+
+  // Encerra pesquisa.
+  System.SysUtils.FindClose(locPesquisa);
 end;
 
 end.

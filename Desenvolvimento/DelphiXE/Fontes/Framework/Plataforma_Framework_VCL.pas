@@ -58,6 +58,8 @@ procedure VCLCursorTrocar(argEspera: Boolean = False);
 /// </remarks>
 procedure VCLSDIFormularioMaximizar(argFormulario: TForm);
 
+procedure VCLMinimizar;
+
 /// <summary>
 /// Função para exibir um formulário MDI.
 /// </summary>
@@ -167,12 +169,24 @@ end;
 // VCLSDIFormularioMaximizar.
 //
 procedure VCLSDIFormularioMaximizar(argFormulario: TForm);
+const
+  locCOMPENSACAO: Integer = 10;
 begin
-  argFormulario.WindowState := wsMaximized;
-  argFormulario.Top := 0;
-  argFormulario.Left := 0;
   argFormulario.BorderStyle := bsSingle;
+//  argFormulario.WindowState := wsMaximized;
+  argFormulario.Top         := Screen.WorkAreaTop    + locCOMPENSACAO;
+  argFormulario.Left        := Screen.WorkAreaLeft   + locCOMPENSACAO;
+  argFormulario.Height      := Screen.WorkAreaHeight - (locCOMPENSACAO * 2);
+  argFormulario.Width       := Screen.WorkAreaWidth  - (locCOMPENSACAO * 2);
   argFormulario.BorderIcons := [biSystemMenu];
+end;
+
+//
+// VCLMinimizar.
+//
+procedure VCLMinimizar;
+begin
+  Application.Minimize;
 end;
 
 //

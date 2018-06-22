@@ -52,7 +52,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       Caption = 'Arquivo log:'
     end
     object imgArquivoLogSelecionar: TImage
-      Left = 971
+      Left = 967
       Top = 27
       Width = 17
       Height = 17
@@ -92,6 +92,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00}
       Transparent = True
       OnClick = imgArquivoLogSelecionarClick
+      ExplicitLeft = 971
     end
     object lblInformacoes: TLabel
       Left = 8
@@ -249,5 +250,16 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     Caption = 'Detalhes'
     TabOrder = 5
     OnClick = btnDetalhesClick
+  end
+  object btnMinimizar: TBitBtn
+    Left = 856
+    Top = 466
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Anchors = [akRight, akBottom]
+    Caption = 'Minimizar'
+    TabOrder = 6
+    OnClick = btnMinimizarClick
   end
 end

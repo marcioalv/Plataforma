@@ -17,6 +17,7 @@ interface
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
+  Plataforma_ERP_Global,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -25,7 +26,11 @@ uses
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask;
+  Vcl.Dialogs,
+  Vcl.ExtCtrls,
+  Vcl.StdCtrls,
+  Vcl.Buttons,
+  Vcl.Mask;
 
 type
   TPlataformaERPVCLLogLocalArquivoSelecao = class(TForm)
@@ -35,27 +40,29 @@ type
     rbtHistorico: TRadioButton;
     lbxHistorico: TListBox;
     txtArquivo: TEdit;
-    imgArquivoSelecionar: TImage;
-    btnSelecionar: TBitBtn;
+    btnConfirmar: TBitBtn;
     dlgArquivo: TOpenDialog;
     lblDtLog: TLabel;
     btnDtLogLocalizar: TBitBtn;
     txtDtLog: TMaskEdit;
     lblArquivo: TLabel;
     btnArquivoSelecionar: TBitBtn;
+    btnMinimizar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnFecharClick(Sender: TObject);
-    procedure btnSelecionarClick(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
     procedure rbtArquivoClick(Sender: TObject);
     procedure rbtHistoricoClick(Sender: TObject);
     procedure lbxHistoricoDblClick(Sender: TObject);
     procedure lbxHistoricoKeyPress(Sender: TObject; var Key: Char);
+    procedure btnArquivoSelecionarClick(Sender: TObject);
+    procedure btnMinimizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar;
-    procedure FormularioSelecionar;
+    procedure FormularioConfirmar;
 
     procedure HistoricoLogPopular;
     procedure ArquivoSelecionar;
@@ -112,6 +119,10 @@ end;
 //
 // Eventos do componente txtArquivo.
 //
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnArquivoSelecionarClick(Sender: TObject);
+begin
+  ArquivoSelecionar;
+end;
 
 //
 // Evento de click no componente rbtHistorico.
@@ -126,7 +137,7 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.lbxHistoricoDblClick(Sender: TObject);
 begin
-  FormularioSelecionar;
+  FormularioConfirmar;
 end;
 
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.lbxHistoricoKeyPress(Sender: TObject; var Key: Char);
@@ -137,9 +148,9 @@ end;
 //
 // Evento de click no botao "Selecionar".
 //
-procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnConfirmarClick(Sender: TObject);
 begin
-  FormularioSelecionar;
+  FormularioConfirmar;
 end;
 
 //
@@ -148,6 +159,11 @@ end;
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnFecharClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnMinimizarClick(Sender: TObject);
+begin
+  VCLMinimizar;
 end;
 
 //
@@ -181,7 +197,7 @@ begin
 
     lbxHistorico.Enabled   := False;
     lbxHistorico.ItemIndex := VCL_NENHUM_INDICE;
-    
+
     txtArquivo.SetFocus;
   end
   else
@@ -202,9 +218,9 @@ begin
 end;
 
 //
-// Procedimento para selecionar o arquivo de log.
+// Procedimento para confirmar o arquivo de log selecionado.
 //
-procedure TPlataformaERPVCLLogLocalArquivoSelecao.FormularioSelecionar;
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.FormularioConfirmar;
 var
   locArquivo: string;
 begin
@@ -226,15 +242,44 @@ end;
 // Procedimento para carregar o listbox com os arquivos de log da aplicação.
 //
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.HistoricoLogPopular;
+var
+  locListaArquivos: TStringList;
+  locContador     : Integer;
+  locArquivo      : string;
+  locArquivoNome  : string;
+  locArquivoData  : string;
 begin
+  // Limpa o listbox.
   lbxHistorico.Items.BeginUpdate;
   lbxHistorico.Items.Clear;
   lbxHistorico.Items.EndUpdate;
 
+  // Carrega lista de arquivos de log.
+  try
+    locListaArquivos := ListaArquivosRetornar(gloLocalLog.FilePath, '*.log', True);
+  except
+    on locErro: Exception do
+    begin
+      VCLExcecaoExibir('Impossível pesquisar histórico de arquivos de log neste computador!', locErro.Message);
+      Exit;
+    end;
+  end;
+
+  // Nenhum arquivo encontrado.
+  if locListaArquivos.Count <= 0 then Exit;
+
+  // Percorre lista de arquivos para inserir no listbox.
   lbxHistorico.Items.BeginUpdate;
-  lbxHistorico.Items.Add('(18/06/2018) C:\Plataforma\Desenvolvimento\DelphiXE\ERP\Instalacao\Log\2018\Plataforma_ERP_2018_06_18.log');
-  lbxHistorico.Items.Add('(17/06/2018) C:\Plataforma\Desenvolvimento\DelphiXE\ERP\Instalacao\Log\2018\Plataforma_ERP_2018_06_17.log');
-  lbxHistorico.Items.Add('(16/06/2018) C:\Plataforma\Desenvolvimento\DelphiXE\ERP\Instalacao\Log\2018\Plataforma_ERP_2018_06_16.log');
+  for locContador := 0 to (locListaArquivos.Count - 1) do
+  begin
+    locArquivoNome := StringRemover(locListaArquivos[locContador], ExtractFilePath(locListaArquivos[locContador]));
+
+    locArquivoData := Copy(locArquivoNome, 1, 10);
+    locArquivoData := Copy(locArquivoData, 9, 2) + '/' + Copy(locArquivoData, 6, 2) + '/' + Copy(locArquivoData, 1, 4);
+
+
+    lbxHistorico.Items.Add('(' + locArquivoData + ') ' + locListaArquivos[locContador]);
+  end;
   lbxHistorico.Items.EndUpdate;
 end;
 
@@ -243,13 +288,20 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.ArquivoSelecionar;
 begin
+  VCLCursorTrocar(True);
+
   dlgArquivo.Title       := 'Selecionar arquivo de log';
   dlgArquivo.Filter      := 'Arquivos de log (*.log)|*.log|Todos os arquivos|*.*';
   dlgArquivo.FilterIndex := 0;
 
-  if not dlgArquivo.Execute then Exit;
+  if not dlgArquivo.Execute then
+  begin
+    VCLCursorTrocar;
+    Exit;
+  end;
 
   txtArquivo.Text := dlgArquivo.FileName;
+  VCLCursorTrocar;
 end;
 
 end.

@@ -61,6 +61,7 @@ type
     btnAtualizar: TBitBtn;
     btnFechar: TBitBtn;
     btnDetalhes: TBitBtn;
+    btnMinimizar: TBitBtn;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAtualizarClick(Sender: TObject);
@@ -75,6 +76,7 @@ type
     procedure btnFiltrarClick(Sender: TObject);
     procedure btnLocalizarClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure btnMinimizarClick(Sender: TObject);
   private
     function  ArquivoLogConsistir: Boolean;
     procedure InformacoesPopular;
@@ -97,22 +99,9 @@ implementation
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLLogLocalLista.FormActivate(Sender: TObject);
-begin
-  VCLSDIFormularioMaximizar(Self);
-end;
-
 procedure TPlataformaERPVCLLogLocalLista.FormCreate(Sender: TObject);
 begin
   Exit;
-end;
-
-//
-// Evento de pressionamento de teclas no formulário.
-//
-procedure TPlataformaERPVCLLogLocalLista.FormKeyPress(Sender: TObject; var Key: Char);
-begin
-  if Key = ESC then Close;
 end;
 
 //
@@ -129,6 +118,22 @@ begin
 
   // Arquivo de log padrão.
   txtArquivoLog.Text := '';
+end;
+
+//
+// Evento de ativação do formulário.
+//
+procedure TPlataformaERPVCLLogLocalLista.FormActivate(Sender: TObject);
+begin
+  VCLSDIFormularioMaximizar(Self);
+end;
+
+//
+// Evento de pressionamento de teclas no formulário.
+//
+procedure TPlataformaERPVCLLogLocalLista.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = ESC then Close;
 end;
 
 //
@@ -192,6 +197,14 @@ end;
 procedure TPlataformaERPVCLLogLocalLista.btnDetalhesClick(Sender: TObject);
 begin
   FormularioDetalhesExibir;
+end;
+
+//
+// Evento de click no botão "Minimizar".
+//
+procedure TPlataformaERPVCLLogLocalLista.btnMinimizarClick(Sender: TObject);
+begin
+  VCLMinimizar;
 end;
 
 //

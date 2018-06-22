@@ -89,7 +89,7 @@ end;
 procedure TPlataformaERPVCLMenuPrincipal.Inicializar;
 begin
   // Determina o path onde a aplicação está rodando.
-  gloAppPath := ExtractFilePath(Application.ExeName);
+  gloAppPath := PathExtrair(Application.ExeName);
 
   // Inicializa o log local da aplicação.
   PlataformaERPLogInicializar;
