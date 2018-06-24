@@ -75,7 +75,7 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 3
       OnClick = rbtHistoricoClick
     end
     object lbxHistorico: TListBox
@@ -91,7 +91,7 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       Font.Style = []
       ItemHeight = 14
       ParentFont = False
-      TabOrder = 2
+      TabOrder = 4
       OnDblClick = lbxHistoricoDblClick
       OnKeyPress = lbxHistoricoKeyPress
     end
@@ -106,7 +106,7 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      TabOrder = 3
+      TabOrder = 1
       Text = 'txtArquivo'
     end
     object btnDtLogLocalizar: TBitBtn
@@ -116,7 +116,8 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       Height = 25
       Cursor = crHandPoint
       Caption = 'Localizar'
-      TabOrder = 4
+      TabOrder = 6
+      OnClick = btnDtLogLocalizarClick
     end
     object txtDtLog: TMaskEdit
       Left = 558
@@ -128,6 +129,10 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       MaxLength = 10
       TabOrder = 5
       Text = '99/99/9999'
+      OnEnter = txtDtLogEnter
+      OnExit = txtDtLogExit
+      OnKeyDown = txtDtLogKeyDown
+      OnKeyPress = txtDtLogKeyPress
     end
     object btnArquivoSelecionar: TBitBtn
       Left = 640
@@ -136,7 +141,7 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       Height = 25
       Cursor = crHandPoint
       Caption = 'Selecionar'
-      TabOrder = 6
+      TabOrder = 2
       OnClick = btnArquivoSelecionarClick
     end
   end
@@ -147,7 +152,7 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
     Height = 33
     Cursor = crHandPoint
     Caption = 'Fechar'
-    TabOrder = 1
+    TabOrder = 3
     OnClick = btnFecharClick
   end
   object btnConfirmar: TBitBtn
@@ -157,7 +162,7 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
     Height = 33
     Cursor = crHandPoint
     Caption = 'Confirmar'
-    TabOrder = 2
+    TabOrder = 1
     OnClick = btnConfirmarClick
   end
   object btnMinimizar: TBitBtn
@@ -167,7 +172,7 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
     Height = 33
     Cursor = crHandPoint
     Caption = 'Minimizar'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = btnMinimizarClick
   end
   object dlgArquivo: TOpenDialog

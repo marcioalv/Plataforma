@@ -59,6 +59,11 @@ type
     procedure lbxHistoricoKeyPress(Sender: TObject; var Key: Char);
     procedure btnArquivoSelecionarClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
+    procedure txtDtLogEnter(Sender: TObject);
+    procedure txtDtLogExit(Sender: TObject);
+    procedure txtDtLogKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure txtDtLogKeyPress(Sender: TObject; var Key: Char);
+    procedure btnDtLogLocalizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar;
@@ -115,13 +120,38 @@ begin
   FormularioControlar;
 end;
 
-
 //
 // Eventos do componente txtArquivo.
 //
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnArquivoSelecionarClick(Sender: TObject);
 begin
   ArquivoSelecionar;
+end;
+
+
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.txtDtLogEnter(Sender: TObject);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.txtDtLogKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.txtDtLogKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
+end;
+
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.txtDtLogExit(Sender: TObject);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnDtLogLocalizarClick(Sender: TObject);
+begin
+  Exit;
 end;
 
 //

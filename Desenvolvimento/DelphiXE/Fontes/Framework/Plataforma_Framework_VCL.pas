@@ -29,6 +29,16 @@ uses
   Vcl.ExtCtrls;
 
 const
+  VCL_DIGITACAO_LIVRE           : Byte = 0;
+  VCL_DIGITACAO_ALFANUMERICA    : Byte = 1;
+  VCL_DIGITACAO_NUMERICA_INTEIRA: Byte = 2;
+  VCL_DIGITACAO_NUMERICA_DECIMAL: Byte = 3;
+  VCL_DIGITACAO_DINHEIRO        : Byte = 4;
+  VCL_DIGITACAO_DATA            : Byte = 5;
+  VCL_DIGITACAO_HORA            : Byte = 6;
+  VCL_DIGITACAO_CHAVE           : Byte = 7;
+  VCL_DIGITACAO_CODIGO          : Byte = 8;
+
   VCL_MOVIMENTO_SUBIR_TODOS     : Byte = 0;
   VCL_MOVIMENTO_SUBIR           : Byte = 1;
   VCL_MOVIMENTO_DESCER          : Byte = 2;
@@ -147,6 +157,10 @@ procedure VCLListViewLinhaMover(argListView: TListView; argMovimento: Byte; argI
 procedure VCLListViewItemRemover(argComponente: TListView; argIndiceItemRemover: Integer; argIndiceColunaSequencial: Integer);
 
 function VCLListViewIndiceItemRetornar(argComponente: TListView): Integer;
+
+procedure EnterHabilitar(argFormulario: TForm; var argTecla: Char);
+
+procedure VCLDigitacaoHabilitar(argFormulario: TForm; var argTecla: Char; argTipo: Byte);
 
 implementation
 
@@ -692,6 +706,221 @@ begin
   end;
 
   Result := locIndice;
+end;
+
+//
+// EnterHabilitar.
+//
+procedure EnterHabilitar(argFormulario: TForm; var argTecla: Char);
+begin
+  if argTecla = ENTER then
+  begin
+    argFormulario.Perform(WM_NEXTDLGCTL, 0, 0);
+    argTecla := #0;
+  end;
+end;
+
+//
+// VCLDigitacaoHabilitar.
+//
+procedure VCLDigitacaoHabilitar(argFormulario: TForm;
+                                var argTecla : Char;
+                                argTipo      : Byte);
+begin
+  //
+  // Saldo de campo com a tecla enter.
+  //
+  if argTecla = ENTER then
+  begin
+    EnterHabilitar(argFormulario, argTecla);
+    Exit;
+  end;
+
+  //
+  // Digitação livre.
+  //
+  if argTipo = VCL_DIGITACAO_LIVRE then Exit;
+
+  //
+  // Teclas de controle permitidas em qualquer situação.
+  //
+  if (argTecla = BACKSPACE) or
+     (argTecla = ESC)       or
+     (argTecla = CTRL)      or
+     (argTecla = CTRL_X)    or
+     (argTecla = CTRL_C)    or
+     (argTecla = CTRL_V) then Exit;
+
+  //
+  // Teclas permitidas para a digitação alfanumérica, numérica inteira, numérica decimal, dinheiro e código.
+  //
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+     (argTipo = VCL_DIGITACAO_NUMERICA_INTEIRA) or
+     (argTipo = VCL_DIGITACAO_NUMERICA_DECIMAL) or
+     (argTipo = VCL_DIGITACAO_DINHEIRO) or
+     (argTipo = VCL_DIGITACAO_CODIGO) then
+  begin
+    if (argTecla = '-') then Exit;
+  end;
+
+  //
+  // Teclas permitidas para a digitação alfanumérica, data e código.
+  //
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+     (argTipo = VCL_DIGITACAO_DATA) or
+     (argTipo = VCL_DIGITACAO_CODIGO) then
+  begin
+    if (argTecla = '/') then Exit;
+  end;
+
+  //
+  // Teclas permitidas para a digitação alfanumérica, hora e código.
+  //
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+     (argTipo = VCL_DIGITACAO_HORA) or
+     (argTipo = VCL_DIGITACAO_CODIGO) then
+  begin
+    if (argTecla = ':') then Exit;
+  end;
+
+  //
+  // Teclas permitidas para a digitação alfanumérica, numérica inteira, numérica decimal, dinheiro, data, hota, código e chave.
+  //
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+     (argTipo = VCL_DIGITACAO_NUMERICA_INTEIRA) or
+     (argTipo = VCL_DIGITACAO_NUMERICA_DECIMAL) or
+     (argTipo = VCL_DIGITACAO_DINHEIRO) or
+     (argTipo = VCL_DIGITACAO_DATA) or
+     (argTipo = VCL_DIGITACAO_HORA) or
+     (argTipo = VCL_DIGITACAO_CODIGO) or
+     (argTipo = VCL_DIGITACAO_CHAVE) then
+  begin
+    if (argTecla = '0') or
+       (argTecla = '1') or
+       (argTecla = '2') or
+       (argTecla = '3') or
+       (argTecla = '4') or
+       (argTecla = '5') or
+       (argTecla = '6') or
+       (argTecla = '7') or
+       (argTecla = '8') or
+       (argTecla = '9') then Exit;
+  end;
+
+  //
+  // Teclas permitidas para a digitação alfanumérica, código e chave.
+  //
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+     (argTipo = VCL_DIGITACAO_CODIGO) or
+     (argTipo = VCL_DIGITACAO_CHAVE) then
+  begin
+    if (argTecla = 'A') or
+       (argTecla = 'B') or
+       (argTecla = 'C') or
+       (argTecla = 'D') or
+       (argTecla = 'E') or
+       (argTecla = 'F') or
+       (argTecla = 'G') or
+       (argTecla = 'H') or
+       (argTecla = 'I') or
+       (argTecla = 'J') or
+       (argTecla = 'K') or
+       (argTecla = 'L') or
+       (argTecla = 'M') or
+       (argTecla = 'N') or
+       (argTecla = 'O') or
+       (argTecla = 'P') or
+       (argTecla = 'Q') or
+       (argTecla = 'R') or
+       (argTecla = 'S') or
+       (argTecla = 'T') or
+       (argTecla = 'U') or
+       (argTecla = 'V') or
+       (argTecla = 'W') or
+       (argTecla = 'X') or
+       (argTecla = 'Y') or
+       (argTecla = 'Z') then Exit;
+  end;
+
+  //
+  // Teclas permitidas somente para a digiação alfanumérica.
+  //
+  if argTipo = VCL_DIGITACAO_ALFANUMERICA then
+  begin
+    if (argTecla = ' ') or
+       (argTecla = '_') or
+       (argTecla = '.') or
+       (argTecla = ',') or
+       (argTecla = ';') or
+       (argTecla = '|') then Exit;
+
+    if (argTecla = '+') or
+       (argTecla = '*') or
+       (argTecla = '=') then Exit;
+
+    if (argTecla = '!') or
+       (argTecla = '?') or
+       (argTecla = '@') or
+       (argTecla = '#') or
+       (argTecla = '$') or
+       (argTecla = '&') then Exit;
+
+    if (argTecla = '[') or (argTecla = ']') or
+       (argTecla = '{') or (argTecla = '}') or
+       (argTecla = '<') or (argTecla = '>') or
+       (argTecla = '(') or (argTecla = ')') or
+       (argTecla = '\') or (argTecla = '/') then Exit;
+
+    if (argTecla = 'a') or
+       (argTecla = 'b') or
+       (argTecla = 'c') or
+       (argTecla = 'd') or
+       (argTecla = 'e') or
+       (argTecla = 'f') or
+       (argTecla = 'g') or
+       (argTecla = 'h') or
+       (argTecla = 'i') or
+       (argTecla = 'j') or
+       (argTecla = 'k') or
+       (argTecla = 'l') or
+       (argTecla = 'm') or
+       (argTecla = 'n') or
+       (argTecla = 'o') or
+       (argTecla = 'p') or
+       (argTecla = 'q') or
+       (argTecla = 'r') or
+       (argTecla = 's') or
+       (argTecla = 't') or
+       (argTecla = 'u') or
+       (argTecla = 'v') or
+       (argTecla = 'w') or
+       (argTecla = 'x') or
+       (argTecla = 'y') or
+       (argTecla = 'z') then Exit;
+
+    if (argTecla = 'à') or (argTecla = 'á') or (argTecla = 'ã') or (argTecla = 'â') or (argTecla = 'ä') then Exit;
+    if (argTecla = 'À') or (argTecla = 'Á') or (argTecla = 'Ã') or (argTecla = 'Â') or (argTecla = 'Ä') then Exit;
+
+    if (argTecla = 'ç') then Exit;
+    if (argTecla = 'Ç') then Exit;
+
+    if (argTecla = 'è') or (argTecla = 'é') or (argTecla = 'ê') or (argTecla = 'ë') then Exit;
+    if (argTecla = 'È') or (argTecla = 'É') or (argTecla = 'Ê') or (argTecla = 'Ë') then Exit;
+
+    if (argTecla = 'ì') or (argTecla = 'í') or (argTecla = 'î') or (argTecla = 'ï') then Exit;
+    if (argTecla = 'Ì') or (argTecla = 'Í') or (argTecla = 'Î') or (argTecla = 'Ï') then Exit;
+
+    if (argTecla = 'ò') or (argTecla = 'ó') or (argTecla = 'õ') or (argTecla = 'ô') or (argTecla = 'ö') then Exit;
+    if (argTecla = 'Ò') or (argTecla = 'Ó') or (argTecla = 'Õ') or (argTecla = 'Ô') or (argTecla = 'Ö') then Exit;
+
+    if (argTecla = 'ù') or (argTecla = 'ú') or (argTecla = 'û') or (argTecla = 'ü') then Exit;
+    if (argTecla = 'Ù') or (argTecla = 'Ú') or (argTecla = 'Û') or (argTecla = 'Ü') then Exit;
+  end;
+
+  //
+  // Nenhuma das teclas permitidas.
+  //
+  argTecla := #0;
 end;
 
 end.
