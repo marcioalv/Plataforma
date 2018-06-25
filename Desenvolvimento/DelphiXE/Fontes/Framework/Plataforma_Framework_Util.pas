@@ -209,6 +209,8 @@ function StringAcentosRemover(argValor: string): string;
 /// </remarks>
 function SomenteNumerosValidar(argTexto: string): Boolean;
 
+function SomenteNumerosRetornar(argTexto: string): string;
+
 /// <summary>
 /// Função para retornar um integer a partir de uma string.
 /// </summary>
@@ -364,6 +366,10 @@ function PathExtrair(argArquivo: string): string;
 /// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
 /// </remarks>
 function ListaArquivosRetornar(argCaminho: string; argArquivo: string; argSubPastas: Boolean): TStringList;
+
+function DataFormatar(argData : string) : string;
+
+function DataValidar(argData: string): Boolean;
 
 implementation
 
@@ -582,6 +588,36 @@ begin
     begin
       Result := False;
       Exit;
+    end;
+  end;
+end;
+
+//
+// SomenteNumerosRetornar.
+//
+function SomenteNumerosRetornar(argTexto: string): string;
+var
+  locContador: Integer;
+  locCaracter: string;
+begin
+  Result := '';
+
+  for locContador := 1 to Length(argTexto) do
+  begin
+    locCaracter := Copy(argTexto, locContador, 1);
+
+    if (locCaracter = '0') or
+       (locCaracter = '1') or
+       (locCaracter = '2') or
+       (locCaracter = '3') or
+       (locCaracter = '4') or
+       (locCaracter = '5') or
+       (locCaracter = '6') or
+       (locCaracter = '7') or
+       (locCaracter = '8') or
+       (locCaracter = '9') then
+    begin
+      Result := Result + locCaracter;
     end;
   end;
 end;
@@ -835,6 +871,61 @@ begin
 
   // Encerra pesquisa.
   System.SysUtils.FindClose(locPesquisa);
+end;
+
+//
+// DataFormatar.
+//
+function DataFormatar(argData : string): string;
+const
+  locSEPARADOR: string = '/';
+var
+  locData: string;
+begin
+  Result  := EmptyStr;
+
+  locData := SomenteNumerosRetornar(argData);
+
+  if Length(locData) = 6 then
+  begin
+    if Copy(locData, 5, 2) < '35' then
+    begin
+      locData := Copy(locData, 1, 4) + '20' + Copy(locData, 5, 2);
+    end
+    else
+    begin
+      locData := Copy(locData, 1, 4) + '19' + Copy(locData, 5, 2);
+    end;
+  end;
+ 
+  locData := StringPreencher(locData, 8, '0');
+
+  if locData = '00000000' then Exit;
+  
+  Result  := Copy(locData, 1, 2) + locSEPARADOR + Copy(locData, 3, 2) + locSEPARADOR + Copy(locData, 5, 4);
+end;
+
+//
+// DataValidar.
+//
+function DataValidar(argData: string): Boolean;
+begin
+  Result := False;
+
+  argData := DataFormatar(argData);
+
+  if (argData = '') then Exit;
+
+  // Valida data.
+  try
+    EncodeDate(StrToInt(Copy(argData, 7, 4)),
+               StrToInt(Copy(argData, 4, 2)),
+               StrToInt(Copy(argData, 1, 2)));
+  except
+    Exit;
+  end;
+
+  Result := True;
 end;
 
 end.

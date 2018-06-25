@@ -26,7 +26,8 @@ uses
   Vcl.ComCtrls,
   Vcl.Buttons,
   Vcl.Controls,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls,
+  Vcl.Mask;
 
 const
   VCL_DIGITACAO_LIVRE           : Byte = 0;
@@ -161,6 +162,16 @@ function VCLListViewIndiceItemRetornar(argComponente: TListView): Integer;
 procedure EnterHabilitar(argFormulario: TForm; var argTecla: Char);
 
 procedure VCLDigitacaoHabilitar(argFormulario: TForm; var argTecla: Char; argTipo: Byte);
+
+function VCLEditEntrar(argComponente: TEdit): Boolean;
+
+function VCLMaskEditEntrar(argComponente: TMaskEdit): Boolean;
+
+function VCLEditSair(argComponente: TEdit): Boolean;
+
+function VCLMaskEditSair(argComponente: TMaskEdit): Boolean;
+
+function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
 
 implementation
 
@@ -921,6 +932,89 @@ begin
   // Nenhuma das teclas permitidas.
   //
   argTecla := #0;
+end;
+
+//
+// VCLEditEntrar.
+//
+function VCLEditEntrar(argComponente: TEdit): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := RGB(230, 242, 255);
+  if argComponente.ReadOnly then Exit;
+  Result := True;
+end;
+
+//
+// VCLMaskEditEntrar.
+//
+function VCLMaskEditEntrar(argComponente: TMaskEdit): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := RGB(230, 242, 255);
+  if argComponente.ReadOnly then Exit;
+  Result := True;
+end;
+
+//
+// VCLEditSair.
+//
+function VCLEditSair(argComponente: TEdit): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := clWindow;
+  if argComponente.ReadOnly then Exit;
+  argComponente.Text := StringTrim(argComponente.Text);
+  Result := True;
+end;
+
+//
+// VCLMaskEditSair.
+//
+function VCLMaskEditSair(argComponente: TMaskEdit): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := clWindow;
+  if argComponente.ReadOnly then Exit;
+  argComponente.Text := StringTrim(argComponente.Text);
+  Result := True;
+end;
+
+//
+// VCLMaskEditDataValidar.
+//
+function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
+var
+  locData: String;
+begin
+  Result := False;
+
+  locData := DataFormatar(argComponente.Text);
+
+  if locData = '' then
+  begin
+    if (not argVazio) then
+    begin
+      VCLConsistenciaExibir('Uma data precisa ser informada!');
+      argComponente.SetFocus;
+    end;
+    Exit
+  end;
+
+  if not DataValidar(locData) then
+  begin
+    VCLConsistenciaExibir('A data informada não é válida!');
+    argComponente.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  argComponente.Text := locData;
+  Result := True;
 end;
 
 end.

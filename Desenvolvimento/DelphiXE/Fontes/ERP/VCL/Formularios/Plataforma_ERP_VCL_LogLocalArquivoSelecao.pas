@@ -71,6 +71,7 @@ type
 
     procedure HistoricoLogPopular;
     procedure ArquivoSelecionar;
+    procedure ArquivoLogDataLocalizar;
   public
     pubClicouSelecionar: Boolean;
     pubArquivo         : string;
@@ -131,7 +132,7 @@ end;
 
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.txtDtLogEnter(Sender: TObject);
 begin
-  Exit;
+  if not VCLMaskEditEntrar(txtDtLog) then Exit;
 end;
 
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.txtDtLogKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -146,12 +147,13 @@ end;
 
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.txtDtLogExit(Sender: TObject);
 begin
-  Exit;
+  if not VCLMaskEditSair(txtDtLog) then Exit;
+  if not VCLMaskEditDataValidar(txtDtLog) then Exit;
 end;
 
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnDtLogLocalizarClick(Sender: TObject);
 begin
-  Exit;
+  ArquivoLogDataLocalizar;
 end;
 
 //
@@ -260,6 +262,13 @@ begin
   end
   else
   begin
+    if lbxHistorico.ItemIndex = VCL_NENHUM_INDICE then
+    begin
+      VCLConsistenciaExibir('Nenhum arquivo de log selecionado do histórico!');
+      if lbxHistorico.Items.Count > 0 then lbxHistorico.SetFocus;
+      Exit;
+    end;
+    
     locArquivo := Trim(Copy(lbxHistorico.Items[lbxHistorico.ItemIndex], 14, 255));
   end;
 
@@ -332,6 +341,45 @@ begin
 
   txtArquivo.Text := dlgArquivo.FileName;
   VCLCursorTrocar;
+end;
+
+//
+// Procedimento para localizar um arquivo de log do histórico pela data.
+//
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.ArquivoLogDataLocalizar;
+var
+  locContador  : Integer;
+  locData      : string;
+  locEncontrou: Boolean;
+begin
+  if txtDtLog.Text = '  /  /    ' then
+  begin
+    VCLConsistenciaExibir('Uma data de log deve ser informada!');
+    txtDtLog.SetFocus;
+    Exit;
+  end;
+
+  locEncontrou := False;
+  for locContador := 0 to (lbxHistorico.Items.Count - 1) do
+  begin
+    locData := Copy(lbxHistorico.Items[locContador], 2, 10);
+    if locData = txtDtLog.Text then
+    begin
+      lbxHistorico.ItemIndex := locContador;
+      lbxHistorico.Selected[locContador];
+      locEncontrou := True;
+      Break;
+    end;
+  end;
+
+  if not locEncontrou then
+  begin
+    VCLConsistenciaExibir('Nenhum arquivo de log encontrado no histórico com a data informada: ' + txtDtLog.Text + '!');
+    txtDtLog.SetFocus;
+    Exit;
+  end;
+
+  lbxHistorico.SetFocus;  
 end;
 
 end.
