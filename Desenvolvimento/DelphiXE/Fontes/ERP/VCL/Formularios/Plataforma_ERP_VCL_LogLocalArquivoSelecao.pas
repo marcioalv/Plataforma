@@ -17,6 +17,7 @@ interface
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
+  Plataforma_Framework_Log,
   Plataforma_ERP_Global,
   Winapi.Windows,
   Winapi.Messages,
@@ -48,6 +49,7 @@ type
     lblArquivo: TLabel;
     btnArquivoSelecionar: TBitBtn;
     btnMinimizar: TBitBtn;
+    btnLimpar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -64,6 +66,7 @@ type
     procedure txtDtLogKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure txtDtLogKeyPress(Sender: TObject; var Key: Char);
     procedure btnDtLogLocalizarClick(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar;
@@ -71,10 +74,12 @@ type
 
     procedure HistoricoLogPopular;
     procedure ArquivoSelecionar;
-    procedure ArquivoLogDataLocalizar;
+    procedure ArquivoLogDataLocalizar(argArquivo: string; argDtLog: TDateTime);
   public
     pubClicouSelecionar: Boolean;
+    pubTipo            : Byte;
     pubArquivo         : string;
+    pubDtLog           : TDateTime;
   end;
 
 var
@@ -90,7 +95,9 @@ implementation
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.FormCreate(Sender: TObject);
 begin
   pubClicouSelecionar := False;
+  pubTipo             := 0;
   pubArquivo          := '';
+  pubDtLog            := 0;
 end;
 
 //
@@ -100,9 +107,26 @@ procedure TPlataformaERPVCLLogLocalArquivoSelecao.FormShow(Sender: TObject);
 begin
   FormularioLimpar;
   HistoricoLogPopular;
-  FormularioControlar;
 
-  txtArquivo.Text := 'C:\Plataforma\Desenvolvimento\DelphiXE\Fontes\ERP\Instalacao\Log\2018_06_06_Plataforma_ERP_VCL.log';
+  if pubTipo = LOG_SELECAO_ARQUIVO then
+  begin
+    rbtArquivo.Checked := True;
+    txtArquivo.Text    := pubArquivo;
+  end;
+
+  if pubTipo = LOG_SELECAO_HISTORICO then
+  begin
+    rbtHistorico.Checked := True;
+    txtDtLog.Text        := DateTimeStringConverter(pubDtLog, 'dd/mm/yyyy');
+
+    ArquivoLogDataLocalizar(pubArquivo, pubDtLog);
+  end;
+
+  pubTipo    := 0;
+  pubArquivo := '';
+  pubDtLog   := 0;
+    
+  FormularioControlar;
 end;
 
 //
@@ -152,8 +176,19 @@ begin
 end;
 
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnDtLogLocalizarClick(Sender: TObject);
+var
+  locDtLog: TDateTime;
 begin
-  ArquivoLogDataLocalizar;
+  locDtLog := StringDateTimeConverter(txtDtLog.Text);
+
+  if locDtLog <= 0 then
+  begin
+    VCLConsistenciaExibir('Uma data de log deve ser informada!');
+    txtDtLog.SetFocus;
+    Exit;
+  end;
+
+  ArquivoLogDataLocalizar('', locDtLog);
 end;
 
 //
@@ -178,6 +213,16 @@ begin
 end;
 
 //
+// Evento de click no botão "Limpar".
+//
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnLimparClick(Sender: TObject);
+begin
+  FormularioLimpar;
+  HistoricoLogPopular;
+  FormularioControlar;
+end;
+
+//
 // Evento de click no botao "Selecionar".
 //
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnConfirmarClick(Sender: TObject);
@@ -186,16 +231,19 @@ begin
 end;
 
 //
+// Evento de click no botão "Minimizar".
+//
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnMinimizarClick(Sender: TObject);
+begin
+  VCLMinimizar;
+end;
+
+//
 // Evento de click no botão "Fechar".
 //
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnFecharClick(Sender: TObject);
 begin
   Close;
-end;
-
-procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnMinimizarClick(Sender: TObject);
-begin
-  VCLMinimizar;
 end;
 
 //
@@ -258,6 +306,13 @@ var
 begin
   if rbtArquivo.Checked then
   begin
+    if Trim(txtArquivo.Text) = '' then
+    begin
+      VCLConsistenciaExibir('Algum arquivo de log deve ser selecionado!');
+      txtArquivo.SetFocus;
+      Exit;
+    end;
+    
     locArquivo := txtArquivo.Text;
   end
   else
@@ -273,7 +328,14 @@ begin
   end;
 
   pubClicouSelecionar := True;
-  pubArquivo          := locArquivo;
+
+  if rbtArquivo.Checked then
+    pubTipo := LOG_SELECAO_ARQUIVO
+  else
+    pubTipo := LOG_SELECAO_HISTORICO;
+
+  pubArquivo := locArquivo;
+  pubDtLog   := StringDateTimeConverter(txtDtLog.Text);
   Close;
 end;
 
@@ -346,35 +408,41 @@ end;
 //
 // Procedimento para localizar um arquivo de log do histórico pela data.
 //
-procedure TPlataformaERPVCLLogLocalArquivoSelecao.ArquivoLogDataLocalizar;
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.ArquivoLogDataLocalizar(argArquivo: string; argDtLog: TDateTime);
 var
-  locContador  : Integer;
-  locData      : string;
-  locEncontrou: Boolean;
+  locContador   : Integer;
+  locNomeArquivo: string;
+  locDtArquivo  : TDateTime;
+  locEncontrou  : Boolean;
 begin
-  if txtDtLog.Text = '  /  /    ' then
-  begin
-    VCLConsistenciaExibir('Uma data de log deve ser informada!');
-    txtDtLog.SetFocus;
-    Exit;
-  end;
-
   locEncontrou := False;
   for locContador := 0 to (lbxHistorico.Items.Count - 1) do
   begin
-    locData := Copy(lbxHistorico.Items[locContador], 2, 10);
-    if locData = txtDtLog.Text then
+    locNomeArquivo := Trim(Copy(lbxHistorico.Items[locContador], 14, 255));
+    locDtArquivo   := StringDateTimeConverter(Copy(lbxHistorico.Items[locContador], 2, 10));
+
+    if argArquivo <> '' then
+    begin
+      if argArquivo = locNomeArquivo then locEncontrou := True;
+    end;
+
+    if argDtLog > 0 then
+    begin
+      if argDtLog = locDtArquivo then locEncontrou := True;
+    end;
+    
+    if locEncontrou then
     begin
       lbxHistorico.ItemIndex := locContador;
       lbxHistorico.Selected[locContador];
-      locEncontrou := True;
       Break;
     end;
   end;
 
   if not locEncontrou then
   begin
-    VCLConsistenciaExibir('Nenhum arquivo de log encontrado no histórico com a data informada: ' + txtDtLog.Text + '!');
+    if argArquivo <> '' then VCLConsistenciaExibir('Nenhum arquivo de log encontrado no histórico com o nome informada: ' + argArquivo + '!');
+    if argDtLog > 0     then VCLConsistenciaExibir('Nenhum arquivo de log encontrado no histórico com a data informada: ' + DateTimeStringConverter(argDtLog, 'dd/mm/yyyy') + '!');
     txtDtLog.SetFocus;
     Exit;
   end;

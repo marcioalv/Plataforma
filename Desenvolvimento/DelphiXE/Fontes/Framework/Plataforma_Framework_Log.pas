@@ -17,6 +17,10 @@ interface
 uses
   System.SysUtils;
 
+const
+  LOG_SELECAO_ARQUIVO  : Byte = 1;
+  LOG_SELECAO_HISTORICO: Byte = 2;
+
 type
   TPlataformaFrameworkLog = class(TObject)
   private

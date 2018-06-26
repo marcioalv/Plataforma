@@ -78,6 +78,10 @@ type
     procedure FormActivate(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
   private
+    priSelecaoTipo   : Byte;
+    priSelecaoArquivo: string;
+    priSelecaoDtLog  : TDateTime;
+  
     function  ArquivoLogConsistir: Boolean;
     procedure InformacoesPopular;
     procedure FormularioLimpar;
@@ -101,7 +105,9 @@ implementation
 //
 procedure TPlataformaERPVCLLogLocalLista.FormCreate(Sender: TObject);
 begin
-  Exit;
+  priSelecaoTipo    := 0;
+  priSelecaoArquivo := '';
+  priSelecaoDtLog   := 0;
 end;
 
 //
@@ -367,24 +373,34 @@ procedure TPlataformaERPVCLLogLocalLista.FormularioArquivoSelecaoExibir;
 var
   locFormulario      : TPlataformaERPVCLLogLocalArquivoSelecao;
   locClicouSelecionar: Boolean;
+  locTipo            : Byte;
   locArquivo         : string;
+  locDtLog           : TDateTime;
 begin
   locArquivo := txtArquivoLog.Text;
 
   locFormulario            := TPlataformaERPVCLLogLocalArquivoSelecao.Create(Self);
-  locFormulario.pubArquivo := locArquivo;
+  locFormulario.pubTipo    := priSelecaoTipo;
+  locFormulario.pubArquivo := priSelecaoArquivo;
+  locFormulario.pubDtLog   := priSelecaoDtLog;
 
   locFormulario.ShowModal;
 
   locClicouSelecionar := locFormulario.pubClicouSelecionar;
+  locTipo             := locFormulario.pubTipo;
   locArquivo          := locFormulario.pubArquivo;
+  locDtLog            := locFormulario.pubDtLog;
   
   locFormulario.Release;
   FreeAndNil(locFormulario);
 
   if not locClicouSelecionar then Exit;
 
-  txtArquivoLog.Text := locArquivo;
+  priSelecaoTipo    := locTipo;
+  priSelecaoArquivo := locArquivo;
+  priSelecaoDtLog   := locDtLog;
+
+  txtArquivoLog.Text := priSelecaoArquivo;
 end;
 
 //

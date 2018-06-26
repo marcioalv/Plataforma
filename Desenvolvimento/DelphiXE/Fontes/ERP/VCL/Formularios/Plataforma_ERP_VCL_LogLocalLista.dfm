@@ -52,7 +52,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       Caption = 'Arquivo log:'
     end
     object imgArquivoLogSelecionar: TImage
-      Left = 967
+      Left = 959
       Top = 27
       Width = 17
       Height = 17
@@ -105,11 +105,11 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       AlignWithMargins = True
       Left = 8
       Top = 24
-      Width = 950
+      Width = 940
       Height = 22
       Margins.Left = 8
       Margins.Top = 24
-      Margins.Right = 38
+      Margins.Right = 48
       Margins.Bottom = 8
       TabStop = False
       Align = alTop
@@ -123,6 +123,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       ReadOnly = True
       TabOrder = 0
       Text = 'txtArquivoLog'
+      ExplicitWidth = 809
     end
     object lvwInformacoes: TListView
       AlignWithMargins = True
@@ -194,6 +195,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       OnCustomDrawSubItem = lvwInformacoesCustomDrawSubItem
       OnDblClick = lvwInformacoesDblClick
       OnKeyPress = lvwInformacoesKeyPress
+      ExplicitWidth = 921
     end
   end
   object btnFiltrar: TBitBtn

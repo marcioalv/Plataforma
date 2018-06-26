@@ -25,20 +25,27 @@ uses
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons;
+  Vcl.Dialogs,
+  Vcl.ExtCtrls,
+  Vcl.StdCtrls,
+  Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.Mask;                             
 
 type
   TPlataformaERPVCLLogLocalFiltro = class(TForm)
     btnFechar: TBitBtn;
     panFormulario: TPanel;
     lblPeriodo: TLabel;
-    txtDtPeriodoIni: TEdit;
     lblPeriodoAte: TLabel;
-    txtHrPeriodoIni: TEdit;
-    txtDtPeriodoFim: TEdit;
-    txtHrPeriodoFim: TEdit;
     lblMensagem: TLabel;
     txtMensagem: TEdit;
+    MaskEdit1: TMaskEdit;
+    MaskEdit2: TMaskEdit;
+    MaskEdit3: TMaskEdit;
+    MaskEdit4: TMaskEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -93,11 +100,11 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalFiltro.FormularioLimpar;
 begin
-  txtDtPeriodoIni.Text := '';
-  txtHrPeriodoIni.Text := '';
+  //txtDtPeriodoIni.Text := '';
+//  txtHrPeriodoIni.Text := '';
 
-  txtDtPeriodoFim.Text := '';
-  txtHrPeriodoFim.Text := '';
+//  txtDtPeriodoFim.Text := '';
+//  txtHrPeriodoFim.Text := '';
 
   txtMensagem.Text     := '';
 end;

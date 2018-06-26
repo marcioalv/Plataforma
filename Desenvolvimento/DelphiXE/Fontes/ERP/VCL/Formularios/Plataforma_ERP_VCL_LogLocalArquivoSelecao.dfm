@@ -175,6 +175,16 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
     TabOrder = 2
     OnClick = btnMinimizarClick
   end
+  object btnLimpar: TBitBtn
+    Left = 8
+    Top = 416
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Limpar'
+    TabOrder = 4
+    OnClick = btnLimparClick
+  end
   object dlgArquivo: TOpenDialog
     Left = 560
     Top = 232
