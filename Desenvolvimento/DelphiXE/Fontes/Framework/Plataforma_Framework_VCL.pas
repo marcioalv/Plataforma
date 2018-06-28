@@ -36,7 +36,7 @@ const
   VCL_DIGITACAO_NUMERICA_DECIMAL: Byte = 3;
   VCL_DIGITACAO_DINHEIRO        : Byte = 4;
   VCL_DIGITACAO_DATA            : Byte = 5;
-  VCL_DIGITACAO_HORA            : Byte = 6;
+  VCL_DIGITACAO_HORARIO         : Byte = 6;
   VCL_DIGITACAO_CHAVE           : Byte = 7;
   VCL_DIGITACAO_CODIGO          : Byte = 8;
 
@@ -69,6 +69,12 @@ procedure VCLCursorTrocar(argEspera: Boolean = False);
 /// </remarks>
 procedure VCLSDIFormularioMaximizar(argFormulario: TForm);
 
+/// <summary>
+/// Procedimento minimizar uma aplicação.
+/// </summary>
+/// <remarks>
+/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
+/// </remarks>
 procedure VCLMinimizar;
 
 /// <summary>
@@ -172,6 +178,10 @@ function VCLEditSair(argComponente: TEdit): Boolean;
 function VCLMaskEditSair(argComponente: TMaskEdit): Boolean;
 
 function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
+
+function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
+
+function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True) : Boolean;
 
 implementation
 
@@ -765,10 +775,10 @@ begin
   //
   // Teclas permitidas para a digitação alfanumérica, numérica inteira, numérica decimal, dinheiro e código.
   //
-  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA)     or
      (argTipo = VCL_DIGITACAO_NUMERICA_INTEIRA) or
      (argTipo = VCL_DIGITACAO_NUMERICA_DECIMAL) or
-     (argTipo = VCL_DIGITACAO_DINHEIRO) or
+     (argTipo = VCL_DIGITACAO_DINHEIRO)         or
      (argTipo = VCL_DIGITACAO_CODIGO) then
   begin
     if (argTecla = '-') then Exit;
@@ -778,17 +788,17 @@ begin
   // Teclas permitidas para a digitação alfanumérica, data e código.
   //
   if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
-     (argTipo = VCL_DIGITACAO_DATA) or
+     (argTipo = VCL_DIGITACAO_DATA)         or
      (argTipo = VCL_DIGITACAO_CODIGO) then
   begin
     if (argTecla = '/') then Exit;
   end;
 
   //
-  // Teclas permitidas para a digitação alfanumérica, hora e código.
+  // Teclas permitidas para a digitação alfanumérica, horário e código.
   //
   if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
-     (argTipo = VCL_DIGITACAO_HORA) or
+     (argTipo = VCL_DIGITACAO_HORARIO)      or
      (argTipo = VCL_DIGITACAO_CODIGO) then
   begin
     if (argTecla = ':') then Exit;
@@ -797,13 +807,13 @@ begin
   //
   // Teclas permitidas para a digitação alfanumérica, numérica inteira, numérica decimal, dinheiro, data, hota, código e chave.
   //
-  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA)     or
      (argTipo = VCL_DIGITACAO_NUMERICA_INTEIRA) or
      (argTipo = VCL_DIGITACAO_NUMERICA_DECIMAL) or
-     (argTipo = VCL_DIGITACAO_DINHEIRO) or
-     (argTipo = VCL_DIGITACAO_DATA) or
-     (argTipo = VCL_DIGITACAO_HORA) or
-     (argTipo = VCL_DIGITACAO_CODIGO) or
+     (argTipo = VCL_DIGITACAO_DINHEIRO)         or
+     (argTipo = VCL_DIGITACAO_DATA)             or
+     (argTipo = VCL_DIGITACAO_HORARIO)          or
+     (argTipo = VCL_DIGITACAO_CODIGO)           or
      (argTipo = VCL_DIGITACAO_CHAVE) then
   begin
     if (argTecla = '0') or
@@ -1014,6 +1024,61 @@ begin
   end;
 
   argComponente.Text := locData;
+  Result := True;
+end;
+
+//
+// VCLMaskEditHorarioValidar.
+//
+function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
+var
+  locHorario: String;
+begin
+  Result := False;
+
+  locHorario := HorarioFormatar(argComponente.Text);
+
+  if locHorario = '' then
+  begin
+    if (not argVazio) then
+    begin
+      VCLConsistenciaExibir('Um horário precisa ser informado!');
+      argComponente.SetFocus;
+    end;
+    Exit
+  end;
+
+  if not HorarioValidar(locHorario) then
+  begin
+    VCLConsistenciaExibir('O horário informado não é válido!');
+    argComponente.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  argComponente.Text := locHorario;
+  Result := True;
+end;
+
+//
+// VCLEditTextoValidar.
+//
+function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True) : Boolean;
+begin
+  Result := False;
+
+  argComponente.Text := StringTrim(argComponente.Text);
+  
+  if argComponente.Text = '' then
+  begin
+    if (not argVazio) then
+    begin
+      VCLConsistenciaExibir('Um texto precisa ser informado!');
+      argComponente.SetFocus;
+    end;
+    Exit
+  end;
+  
   Result := True;
 end;
 

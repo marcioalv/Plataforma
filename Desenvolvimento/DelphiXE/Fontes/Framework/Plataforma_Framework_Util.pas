@@ -367,9 +367,13 @@ function PathExtrair(argArquivo: string): string;
 /// </remarks>
 function ListaArquivosRetornar(argCaminho: string; argArquivo: string; argSubPastas: Boolean): TStringList;
 
-function DataFormatar(argData : string) : string;
+function DataFormatar(argData: string): string;
 
 function DataValidar(argData: string): Boolean;
+
+function HorarioFormatar(argHorario: string): string;
+
+function HorarioValidar(argHorario: string): Boolean;
 
 implementation
 
@@ -876,7 +880,7 @@ end;
 //
 // DataFormatar.
 //
-function DataFormatar(argData : string): string;
+function DataFormatar(argData: string): string;
 const
   locSEPARADOR: string = '/';
 var
@@ -924,6 +928,49 @@ begin
   except
     Exit;
   end;
+
+  Result := True;
+end;
+
+//
+// HorarioFormatar.
+//
+function HorarioFormatar(argHorario: string): string;
+const
+  locSEPARADOR: string = ':';
+var
+  locHorario: string;
+begin
+  Result  := EmptyStr;
+
+  locHorario := SomenteNumerosRetornar(argHorario);
+
+  locHorario := StringPreencher(locHorario, 4, '0');
+
+  if locHorario = '0000' then Exit;
+  
+  Result  := Copy(locHorario, 1, 2) + locSEPARADOR + Copy(locHorario, 3, 2);
+end;
+
+//
+// HorarioValidar.
+//
+function HorarioValidar(argHorario: string): Boolean;
+var
+  locHora  : Integer;
+  locMinuto: Integer;
+begin
+  Result := False;
+
+  argHorario := HorarioFormatar(argHorario);
+
+  if (argHorario = '') then Exit;
+
+  locHora   := StringIntegerConverter(Copy(argHorario, 1, 2));
+  locMinuto := StringIntegerConverter(Copy(argHorario, 4, 2));
+
+  if (locHora   < 0) or (locHora   > 23) then Exit;
+  if (locMinuto < 0) or (locMinuto > 59) then Exit;
 
   Result := True;
 end;

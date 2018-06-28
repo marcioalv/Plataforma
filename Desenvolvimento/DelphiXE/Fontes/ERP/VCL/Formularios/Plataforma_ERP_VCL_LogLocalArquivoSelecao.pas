@@ -31,7 +31,7 @@ uses
   Vcl.ExtCtrls,
   Vcl.StdCtrls,
   Vcl.Buttons,
-  Vcl.Mask;
+  Vcl.Mask, Vcl.Imaging.pngimage;
 
 type
   TPlataformaERPVCLLogLocalArquivoSelecao = class(TForm)
@@ -50,6 +50,7 @@ type
     btnArquivoSelecionar: TBitBtn;
     btnMinimizar: TBitBtn;
     btnLimpar: TBitBtn;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);

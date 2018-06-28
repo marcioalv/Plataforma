@@ -19,6 +19,7 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_ERP_VCL_LogLocalArquivoSelecao,
   Plataforma_ERP_VCL_LogLocalFiltro,
+  Plataforma_ERP_VCL_LogLocalLocalizar,
   Plataforma_ERP_VCL_LogLocalDetalhe,
   Winapi.Windows,
   Winapi.Messages,
@@ -34,7 +35,7 @@ uses
   Vcl.ComCtrls,
   System.ImageList,
   Vcl.ImgList,
-  Vcl.Buttons;
+  Vcl.Buttons, Vcl.Imaging.pngimage;
 
 const
   LVW_COLUNA_ICONE       : Integer = -1;
@@ -62,6 +63,7 @@ type
     btnFechar: TBitBtn;
     btnDetalhes: TBitBtn;
     btnMinimizar: TBitBtn;
+    Image1: TImage;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAtualizarClick(Sender: TObject);
@@ -78,9 +80,16 @@ type
     procedure FormActivate(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
   private
-    priSelecaoTipo   : Byte;
-    priSelecaoArquivo: string;
-    priSelecaoDtLog  : TDateTime;
+    priSelecaoTipo            : Byte;
+    priSelecaoArquivo         : string;
+    priSelecaoDtLog           : TDateTime;
+
+    priFiltroDtHrOcorrenciaIni: TDateTime;
+    priFiltroDtHrOcorrenciaFim: TDateTime;
+    priFiltroMensagem         : string;
+
+    priLocalizarDtHrOcorrencia: TDateTime;
+    priLocalizarMensagem      : string;
   
     function  ArquivoLogConsistir: Boolean;
     procedure InformacoesPopular;
@@ -105,9 +114,16 @@ implementation
 //
 procedure TPlataformaERPVCLLogLocalLista.FormCreate(Sender: TObject);
 begin
-  priSelecaoTipo    := 0;
-  priSelecaoArquivo := '';
-  priSelecaoDtLog   := 0;
+  priSelecaoTipo             := 0;
+  priSelecaoArquivo          := '';
+  priSelecaoDtLog            := 0;
+
+  priFiltroDtHrOcorrenciaIni := 0;
+  priFiltroDtHrOcorrenciaFim := 0;
+  priFiltroMensagem          := '';
+
+  priLocalizarDtHrOcorrencia := 0;
+  priLocalizarMensagem       := '';
 end;
 
 //
@@ -408,12 +424,32 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormularioFiltroExibir;
 var
-  locFormulario: TPlataformaERPVCLLogLocalFiltro;
+  locFormulario       : TPlataformaERPVCLLogLocalFiltro;
+  locClicouSelecionar : Boolean;
+  locDtHrOcorrenciaIni: TDateTime;
+  locDtHrOcorrenciaFim: TDateTime;
+  locMensagem         : string;
 begin
   locFormulario := TPlataformaERPVCLLogLocalFiltro.Create(Self);
+
+  locFormulario.pubDtHrOcorrenciaIni := priFiltroDtHrOcorrenciaIni;
+  locFormulario.pubDtHrOcorrenciaFim := priFiltroDtHrOcorrenciaFim;
+  locFormulario.pubMensagem          := priFiltroMensagem;
+  
   locFormulario.ShowModal;
+
+  locClicouSelecionar  := locFormulario.pubClicouConfirmar;
+  locDtHrOcorrenciaIni := locFormulario.pubDtHrOcorrenciaIni;
+  locDtHrOcorrenciaFim := locFormulario.pubDtHrOcorrenciaFim;
+  locMensagem          := locFormulario.pubMensagem;
+ 
+  
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  priFiltroDtHrOcorrenciaIni := locDtHrOcorrenciaIni;
+  priFiltroDtHrOcorrenciaFim := locDtHrOcorrenciaFim;
+  priFiltroMensagem     := locMensagem;  
 end;
 
 //
@@ -421,9 +457,12 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormularioLocalizarExibir;
 var
-  locFormulario: TPlataformaERPVCLLogLocalFiltro;
+  locFormulario     : TPlataformaERPVCLLogLocalLocalizar;
+  locClicouConfirmar: Boolean;
+  locDtHrOcorrencia : TDateTime;
+  locMensagem       : string;
 begin
-  locFormulario := TPlataformaERPVCLLogLocalFiltro.Create(Self);
+  locFormulario := TPlataformaERPVCLLogLocalLocalizar.Create(Self);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

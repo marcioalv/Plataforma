@@ -13,7 +13,10 @@ uses
   Plataforma_Framework_VCL in '..\..\..\Framework\Plataforma_Framework_VCL.pas',
   Plataforma_ERP_VCL_LogLocalDetalhe in '..\Formularios\Plataforma_ERP_VCL_LogLocalDetalhe.pas' {PlataformaERPVCLLogLocalDetalhe},
   Plataforma_ERP_VCL_LogLocalArquivoSelecao in '..\Formularios\Plataforma_ERP_VCL_LogLocalArquivoSelecao.pas' {PlataformaERPVCLLogLocalArquivoSelecao},
-  Plataforma_ERP_VCL_LogLocalFiltro in '..\Formularios\Plataforma_ERP_VCL_LogLocalFiltro.pas' {PlataformaERPVCLLogLocalFiltro};
+  Plataforma_ERP_VCL_LogLocalFiltro in '..\Formularios\Plataforma_ERP_VCL_LogLocalFiltro.pas' {PlataformaERPVCLLogLocalFiltro},
+  Vcl.Themes,
+  Vcl.Styles,
+  Plataforma_ERP_VCL_LogLocalLocalizar in '..\Formularios\Plataforma_ERP_VCL_LogLocalLocalizar.pas' {PlataformaERPVCLLogLocalLocalizar};
 
 {$R *.res}
 
@@ -21,5 +24,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
+  Application.CreateForm(TPlataformaERPVCLLogLocalLocalizar, PlataformaERPVCLLogLocalLocalizar);
   Application.Run;
 end.

@@ -3,7 +3,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'PlataformaERPVCLLogLocalFiltro'
+  Caption = 'Filtrar informa'#231#245'es do arquivo de log local'
   ClientHeight = 194
   ClientWidth = 497
   Color = clBtnFace
@@ -20,7 +20,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Image1: TImage
+  object imgFormulario: TImage
     Left = 8
     Top = 8
     Width = 32
@@ -89,7 +89,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
     Height = 33
     Cursor = crHandPoint
     Caption = 'Fechar'
-    TabOrder = 0
+    TabOrder = 2
     OnClick = btnFecharClick
   end
   object panFormulario: TPanel
@@ -103,16 +103,16 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
     Color = clWindow
     ParentBackground = False
     ShowCaption = False
-    TabOrder = 1
-    object lblPeriodo: TLabel
+    TabOrder = 0
+    object lblDtOcorrenciaIni: TLabel
       Left = 16
       Top = 16
       Width = 27
       Height = 13
       Caption = 'Data:'
     end
-    object lblPeriodoAte: TLabel
-      Left = 186
+    object lblOcorrenciaAte: TLabel
+      Left = 184
       Top = 36
       Width = 16
       Height = 13
@@ -125,21 +125,21 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
       Height = 13
       Caption = 'Mensagem:'
     end
-    object Label1: TLabel
+    object lblHrOcorrenciaIni: TLabel
       Left = 112
       Top = 16
       Width = 39
       Height = 13
       Caption = 'Hor'#225'rio:'
     end
-    object Label2: TLabel
+    object lblDtOcorrenciaFim: TLabel
       Left = 216
       Top = 16
       Width = 27
       Height = 13
       Caption = 'Data:'
     end
-    object Label3: TLabel
+    object lblHrOcorrenciaFim: TLabel
       Left = 312
       Top = 16
       Width = 39
@@ -157,10 +157,13 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      TabOrder = 0
+      TabOrder = 4
       Text = 'txtMensagem'
+      OnEnter = txtMensagemEnter
+      OnExit = txtMensagemExit
+      OnKeyPress = txtMensagemKeyPress
     end
-    object MaskEdit1: TMaskEdit
+    object txtDtOcorrenciaIni: TMaskEdit
       Left = 16
       Top = 32
       Width = 89
@@ -174,10 +177,14 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
       Font.Style = []
       MaxLength = 10
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 0
       Text = '  /  /    '
+      OnEnter = txtDtOcorrenciaIniEnter
+      OnExit = txtDtOcorrenciaIniExit
+      OnKeyDown = txtDtOcorrenciaIniKeyDown
+      OnKeyPress = txtDtOcorrenciaIniKeyPress
     end
-    object MaskEdit2: TMaskEdit
+    object txtDtOcorrenciaFim: TMaskEdit
       Left = 216
       Top = 32
       Width = 89
@@ -193,9 +200,34 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
       ParentFont = False
       TabOrder = 2
       Text = '  /  /    '
+      OnEnter = txtDtOcorrenciaFimEnter
+      OnExit = txtDtOcorrenciaFimExit
+      OnKeyDown = txtDtOcorrenciaFimKeyDown
+      OnKeyPress = txtDtOcorrenciaFimKeyPress
     end
-    object MaskEdit3: TMaskEdit
+    object txtHrOcorrenciaIni: TMaskEdit
       Left = 112
+      Top = 32
+      Width = 57
+      Height = 22
+      Alignment = taCenter
+      EditMask = '99:99'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      MaxLength = 5
+      ParentFont = False
+      TabOrder = 1
+      Text = '  :  '
+      OnEnter = txtHrOcorrenciaIniEnter
+      OnExit = txtHrOcorrenciaIniExit
+      OnKeyDown = txtHrOcorrenciaIniKeyDown
+      OnKeyPress = txtHrOcorrenciaIniKeyPress
+    end
+    object txtHrOcorrenciaFim: TMaskEdit
+      Left = 312
       Top = 32
       Width = 57
       Height = 22
@@ -210,23 +242,30 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
       ParentFont = False
       TabOrder = 3
       Text = '  :  '
+      OnEnter = txtHrOcorrenciaFimEnter
+      OnExit = txtHrOcorrenciaFimExit
+      OnKeyDown = txtHrOcorrenciaFimKeyDown
+      OnKeyPress = txtHrOcorrenciaFimKeyPress
     end
-    object MaskEdit4: TMaskEdit
-      Left = 312
-      Top = 32
-      Width = 57
-      Height = 22
-      Alignment = taCenter
-      EditMask = '99:99'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      MaxLength = 5
-      ParentFont = False
-      TabOrder = 4
-      Text = '  :  '
-    end
+  end
+  object btnLimpar: TBitBtn
+    Left = 48
+    Top = 152
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Limpar'
+    TabOrder = 3
+    OnClick = btnLimparClick
+  end
+  object btnConfirmar: TBitBtn
+    Left = 336
+    Top = 152
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Confirmar'
+    TabOrder = 1
+    OnClick = btnConfirmarClick
   end
 end
