@@ -104,15 +104,15 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalDetalhe.FormularioLimpar;
 begin
-  txtAplicativo.Text  := '';
-  txtHashCode.Text    := '';
-  txtHostName.Text    := '';
-  txtUserName.Text    := '';
-  txtUsuarioID.Text   := '';
-  txtUsuarioNome.Text := '';
-  txtCritico.Text     := '';
-  txtDataHora.Text    := '';
-  txtMensagem.Text    := '';
+  VCLEditLimpar(txtAplicativo);
+  VCLEditLimpar(txtHashCode);
+  VCLEditLimpar(txtHostName);
+  VCLEditLimpar(txtUserName);
+  VCLEditLimpar(txtUsuarioID);
+  VCLEditLimpar(txtUsuarioNome);
+  VCLEditLimpar(txtCritico);
+  VCLEditLimpar(txtDataHora);
+  VCLMemoLimpar(txtMensagem);
 end;
 
 //

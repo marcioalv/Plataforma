@@ -236,7 +236,7 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnMinimizarClick(Sender: TObject);
 begin
-  VCLMinimizar;
+  VCLSDIMinimizar;
 end;
 
 //
@@ -252,11 +252,11 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.FormularioLimpar;
 begin
-  rbtArquivo.Checked := True;
-  txtArquivo.Text    := '';
+  VCLRadioButtonLimpar(rbtArquivo);
+  VCLEditLimpar(txtArquivo);
 
-  rbtHistorico.Checked := False;
-  txtDtLog.Text        := '  /  /   ';
+  VCLRadioButtonLimpar(rbtHistorico);
+  VCLMaskEditLimpar(txtDtLog);
   lbxHistorico.Items.Clear;
 end;
 

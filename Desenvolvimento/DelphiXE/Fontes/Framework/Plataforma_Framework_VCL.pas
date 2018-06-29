@@ -47,102 +47,59 @@ const
 
   VCL_NENHUM_INDICE             : Integer = -1;
 
-/// <summary>
-/// Procedimento para trocar o cursor do formulário.
-/// </summary>
-/// <param name="argEspera">
-/// Se TRUE será exibido o cursor de espera, se FALSE o cursor normal.
-/// </param>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
+//
+// Controles do formulário.
+// 
 procedure VCLCursorTrocar(argEspera: Boolean = False);
 
-/// <summary>
-/// Procedimento para maximizar um formulário SDI.
-/// </summary>
-/// <param name="argFormulario">
-/// Formulário SDI que será centralizado.
-/// </param>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
-procedure VCLSDIFormularioMaximizar(argFormulario: TForm);
+procedure VCLSDIMaximizar(argFormulario: TForm);
 
-/// <summary>
-/// Procedimento minimizar uma aplicação.
-/// </summary>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
-procedure VCLMinimizar;
+procedure VCLSDIMinimizar;
 
-/// <summary>
-/// Função para exibir um formulário MDI.
-/// </summary>
-/// <param name="argNomeFormulario">
-/// Nome do formulário MDI filho que será exibido, sem a letra 'T' inicial de classe.
-/// </param>
-/// <returns>
-/// True se o formulário já estava aberto e só deveria ser re-exibido ou false se o formulário não existir.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
-function VCLMDIFormularioExibir(argNomeFormulario: string): Boolean;
-
-/// <summary>
-/// Procedimento para maximizar um formulário filho MDI.
-/// </summary>
-/// <param name="argFormulario">
-/// Formulário MDI filho que será maximizado.
-/// </param>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
-procedure VCLMDIFormularioMaximizar(argFormulario: TForm);
-
-/// <summary>
-/// Procedimento para exibir uma mensagem de consistência ao usuário da aplicação.
-/// </summary>
-/// <param name="argMensagem">
-/// Mensagem de consistência que será exibida.
-/// </param>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
+//
+// Mensagens.
+//
 procedure VCLConsistenciaExibir(argMensagem: string);
 
-/// <summary>
-/// Procedimento para exibir uma mensagem de exceção ao usuário da aplicação.
-/// </summary>
-/// <param name="argMensagem">
-/// Mensagem indicando qual erro ocorreu.
-/// </param>
-/// <remarks>
-/// <param name="argExcecao">
-/// Mensagem de exceção com o erro ocorrido.
-/// </param>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 procedure VCLExcecaoExibir(argMensagem: string; argExcecao: string);
 
-/// <summary>
-/// Procedimento para limpar um listview.
-/// </summary>
-/// <param name="argListView">
-/// Componente listview que será limpo.
-/// </param>
-/// <remarks>
-/// <param name="argExcecao">
-/// Mensagem de exceção com o erro ocorrido.
-/// </param>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
-procedure VCLListViewLimpar(argListView: TListView);
+//
+// Digitação.
+//
+procedure EnterHabilitar(argFormulario: TForm; var argTecla: Char);
 
+procedure VCLDigitacaoHabilitar(argFormulario: TForm; var argTecla: Char; argTipo: Byte);
+
+//
+// Limpar componentes.
+//
+procedure VCLListViewLimpar(argComponente: TListView);
+procedure VCLMaskEditLimpar(argComponente: TMaskEdit);
+procedure VCLEditLimpar(argComponente: TEdit);
+procedure VCLRadioButtonLimpar(argComponente: TRadioButton);
+procedure VCLMemoLimpar(argComponente: TMemo);
+
+//
+// Entrada/Saída componentes.
+//
+function VCLEditEntrar(argComponente: TEdit): Boolean;
+function VCLEditSair(argComponente: TEdit): Boolean;
+
+function VCLMaskEditEntrar(argComponente: TMaskEdit): Boolean;
+function VCLMaskEditSair(argComponente: TMaskEdit): Boolean;
+
+//
+// Validações.
+//
+function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
+
+function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
+
+function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True) : Boolean;
+
+//
+// Específicos para listview.
+//
 procedure VCLListViewItemPosicionar(argComponente: TListView; argIndice: Integer);
 
 procedure VCLListViewConteudoPosicionar(argComponente: TListView; argColuna: Integer; argConteudo: string);
@@ -165,25 +122,9 @@ procedure VCLListViewItemRemover(argComponente: TListView; argIndiceItemRemover:
 
 function VCLListViewIndiceItemRetornar(argComponente: TListView): Integer;
 
-procedure EnterHabilitar(argFormulario: TForm; var argTecla: Char);
-
-procedure VCLDigitacaoHabilitar(argFormulario: TForm; var argTecla: Char; argTipo: Byte);
-
-function VCLEditEntrar(argComponente: TEdit): Boolean;
-
-function VCLMaskEditEntrar(argComponente: TMaskEdit): Boolean;
-
-function VCLEditSair(argComponente: TEdit): Boolean;
-
-function VCLMaskEditSair(argComponente: TMaskEdit): Boolean;
-
-function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
-
-function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
-
-function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True) : Boolean;
-
+{*************************************************************************************************}
 implementation
+{*************************************************************************************************}
 
 //
 // VCLCursorTrocar.
@@ -203,12 +144,11 @@ end;
 //
 // VCLSDIFormularioMaximizar.
 //
-procedure VCLSDIFormularioMaximizar(argFormulario: TForm);
+procedure VCLSDIMaximizar(argFormulario: TForm);
 const
   locCOMPENSACAO: Integer = 10;
 begin
   argFormulario.BorderStyle := bsSingle;
-//  argFormulario.WindowState := wsMaximized;
   argFormulario.Top         := Screen.WorkAreaTop    + locCOMPENSACAO;
   argFormulario.Left        := Screen.WorkAreaLeft   + locCOMPENSACAO;
   argFormulario.Height      := Screen.WorkAreaHeight - (locCOMPENSACAO * 2);
@@ -217,41 +157,11 @@ begin
 end;
 
 //
-// VCLMinimizar.
+// VCLSDIMinimizar.
 //
-procedure VCLMinimizar;
+procedure VCLSDIMinimizar;
 begin
   Application.Minimize;
-end;
-
-//
-// VCLMDIFormularioExibir.
-//
-function VCLMDIFormularioExibir(argNomeFormulario: string): Boolean;
-var
-  locContador: Integer;
-begin
-  for locContador := 0 to (Application.MainForm.MDIChildCount - 1) do
-  begin
-    if Application.MainForm.MDIChildren[locContador].Name = argNomeFormulario then
-    begin
-      Application.MainForm.MDIChildren[locContador].Show;
-      Result := True;
-      Exit;
-    end;
-  end;
-  Result := False;
-end;
-
-//
-// VCLMDIFormularioMaximizar.
-//
-procedure VCLMDIFormularioMaximizar(argFormulario: TForm);
-begin
-  argFormulario.Top    := 0;
-  argFormulario.Left   := 0;
-  argFormulario.Width  := Application.MainForm.ClientWidth  - 4;
-  argFormulario.Height := Application.MainForm.ClientHeight - 4;
 end;
 
 //
@@ -289,11 +199,396 @@ end;
 //
 // VCLListViewLimpar.
 //
-procedure VCLListViewLimpar(argListView: TListView);
+procedure VCLListViewLimpar(argComponente: TListView);
 begin
-  argListView.Items.BeginUpdate;
-  argListView.Items.Clear;
-  argListView.Items.EndUpdate;
+  argComponente.Items.BeginUpdate;
+  argComponente.Items.Clear;
+  argComponente.Items.EndUpdate;
+end;
+
+//
+// VCLMaskEditLimpar.
+//
+procedure VCLMaskEditLimpar(argComponente: TMaskEdit);
+begin
+  argComponente.Text := '';
+end;
+
+//
+// VCLEditLimpar.
+//
+procedure VCLEditLimpar(argComponente: TEdit);
+begin
+  argComponente.Text := '';
+end;
+
+//
+// VCLRadioButtonLimpar.
+//
+procedure VCLRadioButtonLimpar(argComponente: TRadioButton);
+begin
+  argComponente.Checked := False;
+end;
+
+//
+// VCLMemoLimpar.
+//
+procedure VCLMemoLimpar(argComponente: TMemo);
+begin
+  argComponente.Lines.Clear;
+end;
+
+//
+// EnterHabilitar.
+//
+procedure EnterHabilitar(argFormulario: TForm; var argTecla: Char);
+begin
+  if argTecla = ENTER then
+  begin
+    argFormulario.Perform(WM_NEXTDLGCTL, 0, 0);
+    argTecla := #0;
+  end;
+end;
+
+//
+// VCLDigitacaoHabilitar.
+//
+procedure VCLDigitacaoHabilitar(argFormulario: TForm;
+                                var argTecla : Char;
+                                argTipo      : Byte);
+begin
+  //
+  // Saldo de campo com a tecla enter.
+  //
+  if argTecla = ENTER then
+  begin
+    EnterHabilitar(argFormulario, argTecla);
+    Exit;
+  end;
+
+  //
+  // Digitação livre.
+  //
+  if argTipo = VCL_DIGITACAO_LIVRE then Exit;
+
+  //
+  // Teclas de controle permitidas em qualquer situação.
+  //
+  if (argTecla = BACKSPACE) or
+     (argTecla = ESC)       or
+     (argTecla = CTRL)      or
+     (argTecla = CTRL_X)    or
+     (argTecla = CTRL_C)    or
+     (argTecla = CTRL_V) then Exit;
+
+  //
+  // Teclas permitidas para a digitação alfanumérica, numérica inteira, numérica decimal, dinheiro e código.
+  //
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA)     or
+     (argTipo = VCL_DIGITACAO_NUMERICA_INTEIRA) or
+     (argTipo = VCL_DIGITACAO_NUMERICA_DECIMAL) or
+     (argTipo = VCL_DIGITACAO_DINHEIRO)         or
+     (argTipo = VCL_DIGITACAO_CODIGO) then
+  begin
+    if (argTecla = '-') then Exit;
+  end;
+
+  //
+  // Teclas permitidas para a digitação alfanumérica, data e código.
+  //
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+     (argTipo = VCL_DIGITACAO_DATA)         or
+     (argTipo = VCL_DIGITACAO_CODIGO) then
+  begin
+    if (argTecla = '/') then Exit;
+  end;
+
+  //
+  // Teclas permitidas para a digitação alfanumérica, horário e código.
+  //
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+     (argTipo = VCL_DIGITACAO_HORARIO)      or
+     (argTipo = VCL_DIGITACAO_CODIGO) then
+  begin
+    if (argTecla = ':') then Exit;
+  end;
+
+  //
+  // Teclas permitidas para a digitação alfanumérica, numérica inteira, numérica decimal, dinheiro, data, hota, código e chave.
+  //
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA)     or
+     (argTipo = VCL_DIGITACAO_NUMERICA_INTEIRA) or
+     (argTipo = VCL_DIGITACAO_NUMERICA_DECIMAL) or
+     (argTipo = VCL_DIGITACAO_DINHEIRO)         or
+     (argTipo = VCL_DIGITACAO_DATA)             or
+     (argTipo = VCL_DIGITACAO_HORARIO)          or
+     (argTipo = VCL_DIGITACAO_CODIGO)           or
+     (argTipo = VCL_DIGITACAO_CHAVE) then
+  begin
+    if (argTecla = '0') or
+       (argTecla = '1') or
+       (argTecla = '2') or
+       (argTecla = '3') or
+       (argTecla = '4') or
+       (argTecla = '5') or
+       (argTecla = '6') or
+       (argTecla = '7') or
+       (argTecla = '8') or
+       (argTecla = '9') then Exit;
+  end;
+
+  //
+  // Teclas permitidas para a digitação alfanumérica, código e chave.
+  //
+  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+     (argTipo = VCL_DIGITACAO_CODIGO) or
+     (argTipo = VCL_DIGITACAO_CHAVE) then
+  begin
+    if (argTecla = 'A') or
+       (argTecla = 'B') or
+       (argTecla = 'C') or
+       (argTecla = 'D') or
+       (argTecla = 'E') or
+       (argTecla = 'F') or
+       (argTecla = 'G') or
+       (argTecla = 'H') or
+       (argTecla = 'I') or
+       (argTecla = 'J') or
+       (argTecla = 'K') or
+       (argTecla = 'L') or
+       (argTecla = 'M') or
+       (argTecla = 'N') or
+       (argTecla = 'O') or
+       (argTecla = 'P') or
+       (argTecla = 'Q') or
+       (argTecla = 'R') or
+       (argTecla = 'S') or
+       (argTecla = 'T') or
+       (argTecla = 'U') or
+       (argTecla = 'V') or
+       (argTecla = 'W') or
+       (argTecla = 'X') or
+       (argTecla = 'Y') or
+       (argTecla = 'Z') then Exit;
+  end;
+
+  //
+  // Teclas permitidas somente para a digiação alfanumérica.
+  //
+  if argTipo = VCL_DIGITACAO_ALFANUMERICA then
+  begin
+    if (argTecla = ' ') or
+       (argTecla = '_') or
+       (argTecla = '.') or
+       (argTecla = ',') or
+       (argTecla = ';') or
+       (argTecla = '|') then Exit;
+
+    if (argTecla = '+') or
+       (argTecla = '*') or
+       (argTecla = '=') then Exit;
+
+    if (argTecla = '!') or
+       (argTecla = '?') or
+       (argTecla = '@') or
+       (argTecla = '#') or
+       (argTecla = '$') or
+       (argTecla = '&') then Exit;
+
+    if (argTecla = '[') or (argTecla = ']') or
+       (argTecla = '{') or (argTecla = '}') or
+       (argTecla = '<') or (argTecla = '>') or
+       (argTecla = '(') or (argTecla = ')') or
+       (argTecla = '\') or (argTecla = '/') then Exit;
+
+    if (argTecla = 'a') or
+       (argTecla = 'b') or
+       (argTecla = 'c') or
+       (argTecla = 'd') or
+       (argTecla = 'e') or
+       (argTecla = 'f') or
+       (argTecla = 'g') or
+       (argTecla = 'h') or
+       (argTecla = 'i') or
+       (argTecla = 'j') or
+       (argTecla = 'k') or
+       (argTecla = 'l') or
+       (argTecla = 'm') or
+       (argTecla = 'n') or
+       (argTecla = 'o') or
+       (argTecla = 'p') or
+       (argTecla = 'q') or
+       (argTecla = 'r') or
+       (argTecla = 's') or
+       (argTecla = 't') or
+       (argTecla = 'u') or
+       (argTecla = 'v') or
+       (argTecla = 'w') or
+       (argTecla = 'x') or
+       (argTecla = 'y') or
+       (argTecla = 'z') then Exit;
+
+    if (argTecla = 'à') or (argTecla = 'á') or (argTecla = 'ã') or (argTecla = 'â') or (argTecla = 'ä') then Exit;
+    if (argTecla = 'À') or (argTecla = 'Á') or (argTecla = 'Ã') or (argTecla = 'Â') or (argTecla = 'Ä') then Exit;
+
+    if (argTecla = 'ç') then Exit;
+    if (argTecla = 'Ç') then Exit;
+
+    if (argTecla = 'è') or (argTecla = 'é') or (argTecla = 'ê') or (argTecla = 'ë') then Exit;
+    if (argTecla = 'È') or (argTecla = 'É') or (argTecla = 'Ê') or (argTecla = 'Ë') then Exit;
+
+    if (argTecla = 'ì') or (argTecla = 'í') or (argTecla = 'î') or (argTecla = 'ï') then Exit;
+    if (argTecla = 'Ì') or (argTecla = 'Í') or (argTecla = 'Î') or (argTecla = 'Ï') then Exit;
+
+    if (argTecla = 'ò') or (argTecla = 'ó') or (argTecla = 'õ') or (argTecla = 'ô') or (argTecla = 'ö') then Exit;
+    if (argTecla = 'Ò') or (argTecla = 'Ó') or (argTecla = 'Õ') or (argTecla = 'Ô') or (argTecla = 'Ö') then Exit;
+
+    if (argTecla = 'ù') or (argTecla = 'ú') or (argTecla = 'û') or (argTecla = 'ü') then Exit;
+    if (argTecla = 'Ù') or (argTecla = 'Ú') or (argTecla = 'Û') or (argTecla = 'Ü') then Exit;
+  end;
+
+  //
+  // Nenhuma das teclas permitidas.
+  //
+  argTecla := #0;
+end;
+
+//
+// VCLEditEntrar.
+//
+function VCLEditEntrar(argComponente: TEdit): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := RGB(230, 242, 255);
+  if argComponente.ReadOnly then Exit;
+  Result := True;
+end;
+
+//
+// VCLMaskEditEntrar.
+//
+function VCLMaskEditEntrar(argComponente: TMaskEdit): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := RGB(230, 242, 255);
+  if argComponente.ReadOnly then Exit;
+  Result := True;
+end;
+
+//
+// VCLEditSair.
+//
+function VCLEditSair(argComponente: TEdit): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := clWindow;
+  if argComponente.ReadOnly then Exit;
+  argComponente.Text := StringTrim(argComponente.Text);
+  Result := True;
+end;
+
+//
+// VCLMaskEditSair.
+//
+function VCLMaskEditSair(argComponente: TMaskEdit): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := clWindow;
+  if argComponente.ReadOnly then Exit;
+  argComponente.Text := StringTrim(argComponente.Text);
+  Result := True;
+end;
+
+//
+// VCLMaskEditDataValidar.
+//
+function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
+var
+  locData: String;
+begin
+  Result := False;
+
+  locData := DataFormatar(argComponente.Text);
+
+  if locData = '' then
+  begin
+    if (not argVazio) then
+    begin
+      VCLConsistenciaExibir('Uma data precisa ser informada!');
+      argComponente.SetFocus;
+    end;
+    Exit
+  end;
+
+  if not DataValidar(locData) then
+  begin
+    VCLConsistenciaExibir('A data informada não é válida!');
+    argComponente.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  argComponente.Text := locData;
+  Result := True;
+end;
+
+//
+// VCLMaskEditHorarioValidar.
+//
+function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
+var
+  locHorario: String;
+begin
+  Result := False;
+
+  locHorario := HorarioFormatar(argComponente.Text);
+
+  if locHorario = '' then
+  begin
+    if (not argVazio) then
+    begin
+      VCLConsistenciaExibir('Um horário precisa ser informado!');
+      argComponente.SetFocus;
+    end;
+    Exit
+  end;
+
+  if not HorarioValidar(locHorario) then
+  begin
+    VCLConsistenciaExibir('O horário informado não é válido!');
+    argComponente.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  argComponente.Text := locHorario;
+  Result := True;
+end;
+
+//
+// VCLEditTextoValidar.
+//
+function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True) : Boolean;
+begin
+  Result := False;
+
+  argComponente.Text := StringTrim(argComponente.Text);
+  
+  if argComponente.Text = '' then
+  begin
+    if (not argVazio) then
+    begin
+      VCLConsistenciaExibir('Um texto precisa ser informado!');
+      argComponente.SetFocus;
+    end;
+    Exit
+  end;
+  
+  Result := True;
 end;
 
 //
@@ -727,359 +1022,6 @@ begin
   end;
 
   Result := locIndice;
-end;
-
-//
-// EnterHabilitar.
-//
-procedure EnterHabilitar(argFormulario: TForm; var argTecla: Char);
-begin
-  if argTecla = ENTER then
-  begin
-    argFormulario.Perform(WM_NEXTDLGCTL, 0, 0);
-    argTecla := #0;
-  end;
-end;
-
-//
-// VCLDigitacaoHabilitar.
-//
-procedure VCLDigitacaoHabilitar(argFormulario: TForm;
-                                var argTecla : Char;
-                                argTipo      : Byte);
-begin
-  //
-  // Saldo de campo com a tecla enter.
-  //
-  if argTecla = ENTER then
-  begin
-    EnterHabilitar(argFormulario, argTecla);
-    Exit;
-  end;
-
-  //
-  // Digitação livre.
-  //
-  if argTipo = VCL_DIGITACAO_LIVRE then Exit;
-
-  //
-  // Teclas de controle permitidas em qualquer situação.
-  //
-  if (argTecla = BACKSPACE) or
-     (argTecla = ESC)       or
-     (argTecla = CTRL)      or
-     (argTecla = CTRL_X)    or
-     (argTecla = CTRL_C)    or
-     (argTecla = CTRL_V) then Exit;
-
-  //
-  // Teclas permitidas para a digitação alfanumérica, numérica inteira, numérica decimal, dinheiro e código.
-  //
-  if (argTipo = VCL_DIGITACAO_ALFANUMERICA)     or
-     (argTipo = VCL_DIGITACAO_NUMERICA_INTEIRA) or
-     (argTipo = VCL_DIGITACAO_NUMERICA_DECIMAL) or
-     (argTipo = VCL_DIGITACAO_DINHEIRO)         or
-     (argTipo = VCL_DIGITACAO_CODIGO) then
-  begin
-    if (argTecla = '-') then Exit;
-  end;
-
-  //
-  // Teclas permitidas para a digitação alfanumérica, data e código.
-  //
-  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
-     (argTipo = VCL_DIGITACAO_DATA)         or
-     (argTipo = VCL_DIGITACAO_CODIGO) then
-  begin
-    if (argTecla = '/') then Exit;
-  end;
-
-  //
-  // Teclas permitidas para a digitação alfanumérica, horário e código.
-  //
-  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
-     (argTipo = VCL_DIGITACAO_HORARIO)      or
-     (argTipo = VCL_DIGITACAO_CODIGO) then
-  begin
-    if (argTecla = ':') then Exit;
-  end;
-
-  //
-  // Teclas permitidas para a digitação alfanumérica, numérica inteira, numérica decimal, dinheiro, data, hota, código e chave.
-  //
-  if (argTipo = VCL_DIGITACAO_ALFANUMERICA)     or
-     (argTipo = VCL_DIGITACAO_NUMERICA_INTEIRA) or
-     (argTipo = VCL_DIGITACAO_NUMERICA_DECIMAL) or
-     (argTipo = VCL_DIGITACAO_DINHEIRO)         or
-     (argTipo = VCL_DIGITACAO_DATA)             or
-     (argTipo = VCL_DIGITACAO_HORARIO)          or
-     (argTipo = VCL_DIGITACAO_CODIGO)           or
-     (argTipo = VCL_DIGITACAO_CHAVE) then
-  begin
-    if (argTecla = '0') or
-       (argTecla = '1') or
-       (argTecla = '2') or
-       (argTecla = '3') or
-       (argTecla = '4') or
-       (argTecla = '5') or
-       (argTecla = '6') or
-       (argTecla = '7') or
-       (argTecla = '8') or
-       (argTecla = '9') then Exit;
-  end;
-
-  //
-  // Teclas permitidas para a digitação alfanumérica, código e chave.
-  //
-  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
-     (argTipo = VCL_DIGITACAO_CODIGO) or
-     (argTipo = VCL_DIGITACAO_CHAVE) then
-  begin
-    if (argTecla = 'A') or
-       (argTecla = 'B') or
-       (argTecla = 'C') or
-       (argTecla = 'D') or
-       (argTecla = 'E') or
-       (argTecla = 'F') or
-       (argTecla = 'G') or
-       (argTecla = 'H') or
-       (argTecla = 'I') or
-       (argTecla = 'J') or
-       (argTecla = 'K') or
-       (argTecla = 'L') or
-       (argTecla = 'M') or
-       (argTecla = 'N') or
-       (argTecla = 'O') or
-       (argTecla = 'P') or
-       (argTecla = 'Q') or
-       (argTecla = 'R') or
-       (argTecla = 'S') or
-       (argTecla = 'T') or
-       (argTecla = 'U') or
-       (argTecla = 'V') or
-       (argTecla = 'W') or
-       (argTecla = 'X') or
-       (argTecla = 'Y') or
-       (argTecla = 'Z') then Exit;
-  end;
-
-  //
-  // Teclas permitidas somente para a digiação alfanumérica.
-  //
-  if argTipo = VCL_DIGITACAO_ALFANUMERICA then
-  begin
-    if (argTecla = ' ') or
-       (argTecla = '_') or
-       (argTecla = '.') or
-       (argTecla = ',') or
-       (argTecla = ';') or
-       (argTecla = '|') then Exit;
-
-    if (argTecla = '+') or
-       (argTecla = '*') or
-       (argTecla = '=') then Exit;
-
-    if (argTecla = '!') or
-       (argTecla = '?') or
-       (argTecla = '@') or
-       (argTecla = '#') or
-       (argTecla = '$') or
-       (argTecla = '&') then Exit;
-
-    if (argTecla = '[') or (argTecla = ']') or
-       (argTecla = '{') or (argTecla = '}') or
-       (argTecla = '<') or (argTecla = '>') or
-       (argTecla = '(') or (argTecla = ')') or
-       (argTecla = '\') or (argTecla = '/') then Exit;
-
-    if (argTecla = 'a') or
-       (argTecla = 'b') or
-       (argTecla = 'c') or
-       (argTecla = 'd') or
-       (argTecla = 'e') or
-       (argTecla = 'f') or
-       (argTecla = 'g') or
-       (argTecla = 'h') or
-       (argTecla = 'i') or
-       (argTecla = 'j') or
-       (argTecla = 'k') or
-       (argTecla = 'l') or
-       (argTecla = 'm') or
-       (argTecla = 'n') or
-       (argTecla = 'o') or
-       (argTecla = 'p') or
-       (argTecla = 'q') or
-       (argTecla = 'r') or
-       (argTecla = 's') or
-       (argTecla = 't') or
-       (argTecla = 'u') or
-       (argTecla = 'v') or
-       (argTecla = 'w') or
-       (argTecla = 'x') or
-       (argTecla = 'y') or
-       (argTecla = 'z') then Exit;
-
-    if (argTecla = 'à') or (argTecla = 'á') or (argTecla = 'ã') or (argTecla = 'â') or (argTecla = 'ä') then Exit;
-    if (argTecla = 'À') or (argTecla = 'Á') or (argTecla = 'Ã') or (argTecla = 'Â') or (argTecla = 'Ä') then Exit;
-
-    if (argTecla = 'ç') then Exit;
-    if (argTecla = 'Ç') then Exit;
-
-    if (argTecla = 'è') or (argTecla = 'é') or (argTecla = 'ê') or (argTecla = 'ë') then Exit;
-    if (argTecla = 'È') or (argTecla = 'É') or (argTecla = 'Ê') or (argTecla = 'Ë') then Exit;
-
-    if (argTecla = 'ì') or (argTecla = 'í') or (argTecla = 'î') or (argTecla = 'ï') then Exit;
-    if (argTecla = 'Ì') or (argTecla = 'Í') or (argTecla = 'Î') or (argTecla = 'Ï') then Exit;
-
-    if (argTecla = 'ò') or (argTecla = 'ó') or (argTecla = 'õ') or (argTecla = 'ô') or (argTecla = 'ö') then Exit;
-    if (argTecla = 'Ò') or (argTecla = 'Ó') or (argTecla = 'Õ') or (argTecla = 'Ô') or (argTecla = 'Ö') then Exit;
-
-    if (argTecla = 'ù') or (argTecla = 'ú') or (argTecla = 'û') or (argTecla = 'ü') then Exit;
-    if (argTecla = 'Ù') or (argTecla = 'Ú') or (argTecla = 'Û') or (argTecla = 'Ü') then Exit;
-  end;
-
-  //
-  // Nenhuma das teclas permitidas.
-  //
-  argTecla := #0;
-end;
-
-//
-// VCLEditEntrar.
-//
-function VCLEditEntrar(argComponente: TEdit): Boolean;
-begin
-  Result := False;
-  if argComponente.Color = clBtnFace then Exit;
-  argComponente.Color := RGB(230, 242, 255);
-  if argComponente.ReadOnly then Exit;
-  Result := True;
-end;
-
-//
-// VCLMaskEditEntrar.
-//
-function VCLMaskEditEntrar(argComponente: TMaskEdit): Boolean;
-begin
-  Result := False;
-  if argComponente.Color = clBtnFace then Exit;
-  argComponente.Color := RGB(230, 242, 255);
-  if argComponente.ReadOnly then Exit;
-  Result := True;
-end;
-
-//
-// VCLEditSair.
-//
-function VCLEditSair(argComponente: TEdit): Boolean;
-begin
-  Result := False;
-  if argComponente.Color = clBtnFace then Exit;
-  argComponente.Color := clWindow;
-  if argComponente.ReadOnly then Exit;
-  argComponente.Text := StringTrim(argComponente.Text);
-  Result := True;
-end;
-
-//
-// VCLMaskEditSair.
-//
-function VCLMaskEditSair(argComponente: TMaskEdit): Boolean;
-begin
-  Result := False;
-  if argComponente.Color = clBtnFace then Exit;
-  argComponente.Color := clWindow;
-  if argComponente.ReadOnly then Exit;
-  argComponente.Text := StringTrim(argComponente.Text);
-  Result := True;
-end;
-
-//
-// VCLMaskEditDataValidar.
-//
-function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
-var
-  locData: String;
-begin
-  Result := False;
-
-  locData := DataFormatar(argComponente.Text);
-
-  if locData = '' then
-  begin
-    if (not argVazio) then
-    begin
-      VCLConsistenciaExibir('Uma data precisa ser informada!');
-      argComponente.SetFocus;
-    end;
-    Exit
-  end;
-
-  if not DataValidar(locData) then
-  begin
-    VCLConsistenciaExibir('A data informada não é válida!');
-    argComponente.SetFocus;
-    Result := False;
-    Exit;
-  end;
-
-  argComponente.Text := locData;
-  Result := True;
-end;
-
-//
-// VCLMaskEditHorarioValidar.
-//
-function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
-var
-  locHorario: String;
-begin
-  Result := False;
-
-  locHorario := HorarioFormatar(argComponente.Text);
-
-  if locHorario = '' then
-  begin
-    if (not argVazio) then
-    begin
-      VCLConsistenciaExibir('Um horário precisa ser informado!');
-      argComponente.SetFocus;
-    end;
-    Exit
-  end;
-
-  if not HorarioValidar(locHorario) then
-  begin
-    VCLConsistenciaExibir('O horário informado não é válido!');
-    argComponente.SetFocus;
-    Result := False;
-    Exit;
-  end;
-
-  argComponente.Text := locHorario;
-  Result := True;
-end;
-
-//
-// VCLEditTextoValidar.
-//
-function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True) : Boolean;
-begin
-  Result := False;
-
-  argComponente.Text := StringTrim(argComponente.Text);
-  
-  if argComponente.Text = '' then
-  begin
-    if (not argVazio) then
-    begin
-      VCLConsistenciaExibir('Um texto precisa ser informado!');
-      argComponente.SetFocus;
-    end;
-    Exit
-  end;
-  
-  Result := True;
 end;
 
 end.

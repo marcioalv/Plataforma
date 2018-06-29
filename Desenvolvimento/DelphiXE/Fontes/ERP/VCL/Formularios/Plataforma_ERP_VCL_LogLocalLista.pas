@@ -139,7 +139,7 @@ begin
   FormularioLimpar;
 
   // Arquivo de log padrão.
-  txtArquivoLog.Text := '';
+  VCLEditLimpar(txtArquivoLog);
 end;
 
 //
@@ -147,7 +147,7 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormActivate(Sender: TObject);
 begin
-  VCLSDIFormularioMaximizar(Self);
+  VCLSDIMaximizar(Self);
 end;
 
 //
@@ -226,7 +226,7 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.btnMinimizarClick(Sender: TObject);
 begin
-  VCLMinimizar;
+  VCLSDIMinimizar;
 end;
 
 //
@@ -377,7 +377,7 @@ end;
 procedure TPlataformaERPVCLLogLocalLista.FormularioLimpar;
 begin
   VCLCursorTrocar;
-  txtArquivoLog.Text := '';
+  VCLEditLimpar(txtArquivoLog);
   VCLListViewLimpar(lvwInformacoes);
   VCLCursorTrocar(False);
 end;
@@ -463,9 +463,23 @@ var
   locMensagem       : string;
 begin
   locFormulario := TPlataformaERPVCLLogLocalLocalizar.Create(Self);
+
+  locFormulario.pubDtHrOcorrencia := priLocalizarDtHrOcorrencia;
+  locFormulario.pubMensagem       := priLocalizarMensagem;
+  
   locFormulario.ShowModal;
+
+  locClicouConfirmar := locFormulario.pubClicouConfirmar;
+  locDtHrOcorrencia  := locFormulario.pubDtHrOcorrencia;
+  locMensagem        := locFormulario.pubMensagem;
+  
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  if not locClicouConfirmar then Exit;
+
+  priLocalizarDtHrOcorrencia := locDtHrOcorrencia;
+  priLocalizarMensagem       := locMensagem;
 end;
 
 //

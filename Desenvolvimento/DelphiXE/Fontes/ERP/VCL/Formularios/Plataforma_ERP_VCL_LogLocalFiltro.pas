@@ -280,13 +280,13 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalFiltro.FormularioLimpar;
 begin
-  txtDtOcorrenciaIni.Text := '';
-  txtHrOcorrenciaIni.Text := '';
+  VCLMaskEditLimpar(txtDtOcorrenciaIni);
+  VCLMaskEditLimpar(txtHrOcorrenciaIni);
 
-  txtDtOcorrenciaFim.Text := '';
-  txtHrOcorrenciaFim.Text := '';
+  VCLMaskEditLimpar(txtDtOcorrenciaFim);
+  VCLMaskEditLimpar(txtHrOcorrenciaFim);
 
-  txtMensagem.Text     := '';
+  VCLEditLimpar(txtMensagem);
 end;
 
 //
