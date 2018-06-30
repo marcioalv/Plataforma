@@ -913,6 +913,8 @@ end;
 // DataValidar.
 //
 function DataValidar(argData: string): Boolean;
+var
+  locData: TDateTime;
 begin
   Result := False;
 
@@ -922,13 +924,20 @@ begin
 
   // Valida data.
   try
-    EncodeDate(StrToInt(Copy(argData, 7, 4)),
-               StrToInt(Copy(argData, 4, 2)),
-               StrToInt(Copy(argData, 1, 2)));
+    locData := EncodeDate(StrToInt(Copy(argData, 7, 4)),
+                          StrToInt(Copy(argData, 4, 2)),
+                          StrToInt(Copy(argData, 1, 2)));
   except
     Exit;
   end;
 
+  // Menor data possível!
+  if locData < (Date - 40000) then Exit;
+
+  // Maior data possível!
+  if locData > (Date + 40000) then Exit;
+  
+  // Data OK!
   Result := True;
 end;
 

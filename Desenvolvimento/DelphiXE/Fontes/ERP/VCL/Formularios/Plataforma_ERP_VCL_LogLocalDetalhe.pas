@@ -51,9 +51,11 @@ type
     lblMensagem: TLabel;
     txtMensagem: TMemo;
     btnFechar: TBitBtn;
+    btnMinimizar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure btnMinimizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
   public
@@ -89,6 +91,14 @@ end;
 procedure TPlataformaERPVCLLogLocalDetalhe.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Evento de click no botão "Minimizar".
+//
+procedure TPlataformaERPVCLLogLocalDetalhe.btnMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
 end;
 
 //

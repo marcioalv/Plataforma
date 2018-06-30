@@ -4,7 +4,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
   Anchors = [akLeft, akTop, akRight, akBottom]
   Caption = 'Lista de mensagens de log local da aplica'#231#227'o'
   ClientHeight = 508
-  ClientWidth = 1016
+  ClientWidth = 1014
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   DesignSize = (
-    1016
+    1014
     508)
   PixelsPerInch = 96
   TextHeight = 13
@@ -92,7 +92,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     AlignWithMargins = True
     Left = 48
     Top = 8
-    Width = 960
+    Width = 958
     Height = 451
     Margins.Left = 48
     Margins.Top = 8
@@ -106,8 +106,9 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
+    ExplicitWidth = 877
     DesignSize = (
-      956
+      954
       447)
     object lblArquivoLog: TLabel
       Left = 8
@@ -117,7 +118,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       Caption = 'Arquivo log:'
     end
     object imgArquivoLogSelecionar: TImage
-      Left = 923
+      Left = 927
       Top = 27
       Width = 17
       Height = 17
@@ -157,7 +158,6 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00}
       Transparent = True
       OnClick = imgArquivoLogSelecionarClick
-      ExplicitLeft = 927
     end
     object lblInformacoes: TLabel
       Left = 8
@@ -170,11 +170,11 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       AlignWithMargins = True
       Left = 8
       Top = 24
-      Width = 902
+      Width = 912
       Height = 22
       Margins.Left = 8
       Margins.Top = 24
-      Margins.Right = 46
+      Margins.Right = 34
       Margins.Bottom = 8
       TabStop = False
       Align = alTop
@@ -188,12 +188,13 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       ReadOnly = True
       TabOrder = 0
       Text = 'txtArquivoLog'
+      ExplicitWidth = 831
     end
     object lvwInformacoes: TListView
       AlignWithMargins = True
       Left = 8
       Top = 72
-      Width = 940
+      Width = 938
       Height = 367
       Cursor = crHandPoint
       Margins.Left = 8
@@ -259,6 +260,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       OnCustomDrawSubItem = lvwInformacoesCustomDrawSubItem
       OnDblClick = lvwInformacoesDblClick
       OnKeyPress = lvwInformacoesKeyPress
+      ExplicitWidth = 857
     end
   end
   object btnFiltrar: TBitBtn
@@ -295,7 +297,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     OnClick = btnAtualizarClick
   end
   object btnFechar: TBitBtn
-    Left = 935
+    Left = 933
     Top = 466
     Width = 73
     Height = 33
@@ -304,6 +306,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     Caption = 'Fechar'
     TabOrder = 4
     OnClick = btnFecharClick
+    ExplicitLeft = 852
   end
   object btnDetalhes: TBitBtn
     Left = 288
@@ -317,7 +320,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     OnClick = btnDetalhesClick
   end
   object btnMinimizar: TBitBtn
-    Left = 856
+    Left = 854
     Top = 466
     Width = 73
     Height = 33
@@ -326,5 +329,6 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     Caption = 'Minimizar'
     TabOrder = 6
     OnClick = btnMinimizarClick
+    ExplicitLeft = 773
   end
 end

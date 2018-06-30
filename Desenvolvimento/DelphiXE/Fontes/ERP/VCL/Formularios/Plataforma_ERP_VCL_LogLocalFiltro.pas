@@ -50,6 +50,7 @@ type
     imgFormulario: TImage;
     btnLimpar: TBitBtn;
     btnConfirmar: TBitBtn;
+    btnMinimizar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -75,6 +76,7 @@ type
     procedure txtMensagemKeyPress(Sender: TObject; var Key: Char);
     procedure btnLimparClick(Sender: TObject);
     procedure btnConfirmarClick(Sender: TObject);
+    procedure btnMinimizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioConfirmar;
@@ -268,6 +270,14 @@ begin
 end;
 
 //
+// Evento de click no botão "Minimizar".
+//
+procedure TPlataformaERPVCLLogLocalFiltro.btnMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+//
 // Evento de click no botão "Fechar".
 //
 procedure TPlataformaERPVCLLogLocalFiltro.btnFecharClick(Sender: TObject);
@@ -293,11 +303,26 @@ end;
 // Formulário confirmar.
 //
 procedure TPlataformaERPVCLLogLocalFiltro.FormularioConfirmar;
+var
+  locDtHrOcorrenciaIni: TDateTime;
+  locDtHrOcorrenciaFim: TDateTime;
+  locMensagem         : string;
 begin
-  pubDtHrOcorrenciaIni  := StringDateTimeConverter(txtDtOcorrenciaIni.Text + ' ' + txtHrOcorrenciaIni.Text);
-  pubDtHrOcorrenciaFim  := StringDateTimeConverter(txtDtOcorrenciaFim.Text + ' ' + txtHrOcorrenciaFim.Text);
-  pubMensagem        := StringTrim(txtMensagem.Text);
-  pubClicouConfirmar := True;
+  locDtHrOcorrenciaIni := StringDateTimeConverter(txtDtOcorrenciaIni.Text + ' ' + txtHrOcorrenciaIni.Text + ':00.000');
+  locDtHrOcorrenciaFim := StringDateTimeConverter(txtDtOcorrenciaFim.Text + ' ' + txtHrOcorrenciaFim.Text + ':59.999');
+  locMensagem          := StringTrim(txtMensagem.Text);
+
+  if locDtHrOcorrenciaFim < locDtHrOcorrenciaIni then
+  begin
+    VCLConsistenciaExibir('A data de ocorrência final não pode ser anterior a data inicial!');
+    txtDtOcorrenciaIni.SetFocus;
+    Exit;
+  end;
+
+  pubDtHrOcorrenciaIni  := locDtHrOcorrenciaIni;
+  pubDtHrOcorrenciaFim  := locDtHrOcorrenciaFim;
+  pubMensagem           := locMensagem;
+  pubClicouConfirmar    := True;
   Close;
 end;
 

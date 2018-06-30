@@ -45,6 +45,7 @@ type
     txtHrOcorrencia: TMaskEdit;
     btnLimpar: TBitBtn;
     btnConfirmar: TBitBtn;
+    btnMinimizar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -63,6 +64,7 @@ type
     procedure btnLimparClick(Sender: TObject);
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
+    procedure btnMinimizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioConfirmar;
@@ -201,6 +203,14 @@ begin
 end;
 
 //
+// Minimizar.
+//
+procedure TPlataformaERPVCLLogLocalLocalizar.btnMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+//
 // Evento de click no botão "Fechar".
 //
 procedure TPlataformaERPVCLLogLocalLocalizar.btnFecharClick(Sender: TObject);
@@ -222,9 +232,15 @@ end;
 // Procedimento para confirmar as opções do formulário.
 //
 procedure TPlataformaERPVCLLogLocalLocalizar.FormularioConfirmar;
+var
+  locDtHrOcorrencia: TDateTime;
+  locMensagem      : string;
 begin
-  pubDtHrOcorrencia := StringDateTimeConverter(txtDtOcorrencia.Text + ' ' + txtHrOcorrencia.Text);
-  pubMensagem       := StringTrim(txtMensagem.Text);
+  locDtHrOcorrencia := StringDateTimeConverter(txtDtOcorrencia.Text + ' ' + txtHrOcorrencia.Text);
+  locMensagem       := StringTrim(txtMensagem.Text);
+
+  pubDtHrOcorrencia := locDtHrOcorrencia;
+  pubMensagem       := locMensagem;
 
   pubClicouConfirmar := True;
   Close;

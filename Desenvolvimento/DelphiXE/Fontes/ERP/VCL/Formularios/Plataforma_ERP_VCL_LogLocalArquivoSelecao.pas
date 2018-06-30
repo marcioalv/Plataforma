@@ -31,7 +31,13 @@ uses
   Vcl.ExtCtrls,
   Vcl.StdCtrls,
   Vcl.Buttons,
-  Vcl.Mask, Vcl.Imaging.pngimage;
+  Vcl.Mask,
+  Vcl.Imaging.pngimage,
+  Vcl.ComCtrls;
+
+const
+  LVW_COLUNA_DATA   : Integer = 0;
+  LVW_COLUNA_ARQUIVO: Integer = 1;  
 
 type
   TPlataformaERPVCLLogLocalArquivoSelecao = class(TForm)
@@ -39,7 +45,6 @@ type
     btnFechar: TBitBtn;
     rbtArquivo: TRadioButton;
     rbtHistorico: TRadioButton;
-    lbxHistorico: TListBox;
     txtArquivo: TEdit;
     btnConfirmar: TBitBtn;
     dlgArquivo: TOpenDialog;
@@ -51,6 +56,7 @@ type
     btnMinimizar: TBitBtn;
     btnLimpar: TBitBtn;
     Image1: TImage;
+    lvwHistorico: TListView;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -58,8 +64,6 @@ type
     procedure btnConfirmarClick(Sender: TObject);
     procedure rbtArquivoClick(Sender: TObject);
     procedure rbtHistoricoClick(Sender: TObject);
-    procedure lbxHistoricoDblClick(Sender: TObject);
-    procedure lbxHistoricoKeyPress(Sender: TObject; var Key: Char);
     procedure btnArquivoSelecionarClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
     procedure txtDtLogEnter(Sender: TObject);
@@ -68,6 +72,8 @@ type
     procedure txtDtLogKeyPress(Sender: TObject; var Key: Char);
     procedure btnDtLogLocalizarClick(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
+    procedure lvwHistoricoKeyPress(Sender: TObject; var Key: Char);
+    procedure lvwHistoricoDblClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar;
@@ -122,6 +128,8 @@ begin
 
     ArquivoLogDataLocalizar(pubArquivo, pubDtLog);
   end;
+
+  if (not rbtArquivo.Checked) and (not rbtHistorico.Checked) then rbtArquivo.Checked := True;
 
   pubTipo    := 0;
   pubArquivo := '';
@@ -201,16 +209,16 @@ begin
 end;
 
 //
-// Evento do componente lbxHistorico.
+// Evento do componente "Lista de arquivos".
 //
-procedure TPlataformaERPVCLLogLocalArquivoSelecao.lbxHistoricoDblClick(Sender: TObject);
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.lvwHistoricoKeyPress(Sender: TObject; var Key: Char);
 begin
-  FormularioConfirmar;
+  if Key = ENTER then lvwHistoricoDblClick(Sender);
 end;
 
-procedure TPlataformaERPVCLLogLocalArquivoSelecao.lbxHistoricoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLLogLocalArquivoSelecao.lvwHistoricoDblClick(Sender: TObject);
 begin
-  if Key = ENTER then lbxHistoricoDblClick(Sender);
+  FormularioConfirmar;
 end;
 
 //
@@ -257,7 +265,7 @@ begin
 
   VCLRadioButtonLimpar(rbtHistorico);
   VCLMaskEditLimpar(txtDtLog);
-  lbxHistorico.Items.Clear;
+  VCLListViewLimpar(lvwHistorico);
 end;
 
 //
@@ -276,8 +284,9 @@ begin
     txtDtLog.Enabled          := False;
     btnDtLogLocalizar.Enabled := False;
 
-    lbxHistorico.Enabled   := False;
-    lbxHistorico.ItemIndex := VCL_NENHUM_INDICE;
+    lvwHistorico.Enabled    := False;
+    lvwHistorico.Font.Color := clGray;
+    lvwHistorico.ItemIndex  := VCL_NENHUM_INDICE;
 
     txtArquivo.SetFocus;
   end
@@ -292,9 +301,9 @@ begin
     txtDtLog.Enabled          := True;
     btnDtLogLocalizar.Enabled := True;
 
-    lbxHistorico.Enabled         := True;
-    lbxHistorico.BorderStyle     := bsSingle;
-    lbxHistorico.SetFocus;
+    lvwHistorico.Enabled    := True;
+    lvwHistorico.Font.Color := clBlack;
+    lvwHistorico.SetFocus;
   end;
 end;
 
@@ -304,6 +313,7 @@ end;
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.FormularioConfirmar;
 var
   locArquivo: string;
+  locIndice : Integer;
 begin
   if rbtArquivo.Checked then
   begin
@@ -318,14 +328,10 @@ begin
   end
   else
   begin
-    if lbxHistorico.ItemIndex = VCL_NENHUM_INDICE then
-    begin
-      VCLConsistenciaExibir('Nenhum arquivo de log selecionado do histórico!');
-      if lbxHistorico.Items.Count > 0 then lbxHistorico.SetFocus;
-      Exit;
-    end;
-    
-    locArquivo := Trim(Copy(lbxHistorico.Items[lbxHistorico.ItemIndex], 14, 255));
+    locIndice := VCLListViewIndiceItemRetornar(lvwHistorico);
+    if locIndice = VCL_NENHUM_INDICE then Exit;
+
+    locArquivo := lvwHistorico.Items[locIndice].SubItems.Strings[LVW_COLUNA_ARQUIVO];
   end;
 
   pubClicouSelecionar := True;
@@ -350,11 +356,10 @@ var
   locArquivo      : string;
   locArquivoNome  : string;
   locArquivoData  : string;
+  locListItem     : TListItem;
 begin
   // Limpa o listbox.
-  lbxHistorico.Items.BeginUpdate;
-  lbxHistorico.Items.Clear;
-  lbxHistorico.Items.EndUpdate;
+  VCLListViewLimpar(lvwHistorico);
 
   // Carrega lista de arquivos de log.
   try
@@ -371,7 +376,7 @@ begin
   if locListaArquivos.Count <= 0 then Exit;
 
   // Percorre lista de arquivos para inserir no listbox.
-  lbxHistorico.Items.BeginUpdate;
+  lvwHistorico.Items.BeginUpdate;
   for locContador := 0 to (locListaArquivos.Count - 1) do
   begin
     locArquivoNome := StringRemover(locListaArquivos[locContador], ExtractFilePath(locListaArquivos[locContador]));
@@ -379,10 +384,11 @@ begin
     locArquivoData := Copy(locArquivoNome, 1, 10);
     locArquivoData := Copy(locArquivoData, 9, 2) + '/' + Copy(locArquivoData, 6, 2) + '/' + Copy(locArquivoData, 1, 4);
 
-
-    lbxHistorico.Items.Add('(' + locArquivoData + ') ' + locListaArquivos[locContador]);
+    locListItem := lvwHistorico.Items.Add;
+    locListItem.SubItems.Add(locArquivoData);
+    locListItem.SubItems.Add(locListaArquivos[locContador]);
   end;
-  lbxHistorico.Items.EndUpdate;
+  lvwHistorico.Items.EndUpdate;
 end;
 
 //
@@ -417,10 +423,10 @@ var
   locEncontrou  : Boolean;
 begin
   locEncontrou := False;
-  for locContador := 0 to (lbxHistorico.Items.Count - 1) do
+  for locContador := 0 to (lvwHistorico.Items.Count - 1) do
   begin
-    locNomeArquivo := Trim(Copy(lbxHistorico.Items[locContador], 14, 255));
-    locDtArquivo   := StringDateTimeConverter(Copy(lbxHistorico.Items[locContador], 2, 10));
+    locNomeArquivo := lvwHistorico.Items[locContador].SubItems.Strings[LVW_COLUNA_ARQUIVO];
+    locDtArquivo   := StringDateTimeConverter(lvwHistorico.Items[locContador].SubItems.Strings[LVW_COLUNA_DATA]);
 
     if argArquivo <> '' then
     begin
@@ -431,11 +437,10 @@ begin
     begin
       if argDtLog = locDtArquivo then locEncontrou := True;
     end;
-    
+                         
     if locEncontrou then
     begin
-      lbxHistorico.ItemIndex := locContador;
-      lbxHistorico.Selected[locContador];
+      VCLListViewItemPosicionar(lvwHistorico, locContador);
       Break;
     end;
   end;
@@ -448,7 +453,7 @@ begin
     Exit;
   end;
 
-  lbxHistorico.SetFocus;  
+  VCLListViewFocar(lvwHistorico);
 end;
 
 end.

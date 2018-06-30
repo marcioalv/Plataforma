@@ -17,6 +17,9 @@ object PlataformaERPVCLLogLocalDetalhe: TPlataformaERPVCLLogLocalDetalhe
   Position = poMainFormCenter
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
+  DesignSize = (
+    545
+    482)
   PixelsPerInch = 96
   TextHeight = 13
   object panFormulario: TPanel
@@ -258,5 +261,16 @@ object PlataformaERPVCLLogLocalDetalhe: TPlataformaERPVCLLogLocalDetalhe
     Caption = 'Fechar'
     TabOrder = 1
     OnClick = btnFecharClick
+  end
+  object btnMinimizar: TBitBtn
+    Left = 384
+    Top = 440
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Anchors = [akRight, akBottom]
+    Caption = 'Minimizar'
+    TabOrder = 2
+    OnClick = btnMinimizarClick
   end
 end

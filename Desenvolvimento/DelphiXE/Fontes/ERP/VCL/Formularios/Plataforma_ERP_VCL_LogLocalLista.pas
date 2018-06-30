@@ -93,6 +93,7 @@ type
   
     function  ArquivoLogConsistir: Boolean;
     procedure InformacoesPopular;
+    procedure InformacoesLocalizar;
     procedure FormularioLimpar;
     procedure FormularioArquivoSelecaoExibir;
     procedure FormularioFiltroExibir;
@@ -346,6 +347,23 @@ begin
     if locStringList.Count >= 7 then locCritico        := StringBooleanConverter(locStringList[6]);
     if locStringList.Count >= 8 then locDataHora       := StringDataHoraPersistidaConverter(locStringList[7]);
     if locStringList.Count >= 9 then locMensagem       := locStringList[8];
+
+    // Filtro por data.
+    if priFiltroDtHrOcorrenciaIni > 0 then
+    begin
+      if locDataHora < priFiltroDtHrOcorrenciaIni then Continue;
+    end;
+
+    if priFiltroDtHrOcorrenciaFim > 0 then
+    begin
+      if locDataHora > priFiltroDtHrOcorrenciaFim then Continue;
+    end;
+
+    // Filtro por mensagem.
+    if priFiltroMensagem <> '' then
+    begin
+      if not StringLocalizar(StringAcentosRemover(locMensagem), StringAcentosRemover(priFiltroMensagem)) then Continue;
+    end;
     
     // Insere dados no listview.
     if Trim(locMensagem) <> '' then
@@ -369,6 +387,22 @@ begin
 
   // Finaliza.
   VCLCursorTrocar;
+end;
+
+//
+// Procedimento para localizar informações na lista.
+//
+procedure TPlataformaERPVCLLogLocalLista.InformacoesLocalizar;
+var
+  locContador      : Integer;
+  locDtHrOcorrencia: TDateTime;
+  locMensagem      : string;
+begin
+  for locContador := 0 to (lvwInformacoes.Items.Count - 1) do
+  begin
+    locDtHrOcorrencia := StringDateTimeConverter(lvwInformacoes.Items[locContador].SubItems.Strings[LVW_COLUNA_DATA_HORA]);
+    locMensagem       := lvwInformacoes.Items[locContador].SubItems.Strings[LVW_COLUNA_MENSAGEM];
+  end;
 end;
 
 //
@@ -417,6 +451,8 @@ begin
   priSelecaoDtLog   := locDtLog;
 
   txtArquivoLog.Text := priSelecaoArquivo;
+
+  InformacoesPopular;
 end;
 
 //
@@ -443,13 +479,16 @@ begin
   locDtHrOcorrenciaFim := locFormulario.pubDtHrOcorrenciaFim;
   locMensagem          := locFormulario.pubMensagem;
  
-  
   locFormulario.Release;
   FreeAndNil(locFormulario);
 
+  if not locClicouSelecionar then Exit;
+
   priFiltroDtHrOcorrenciaIni := locDtHrOcorrenciaIni;
   priFiltroDtHrOcorrenciaFim := locDtHrOcorrenciaFim;
-  priFiltroMensagem     := locMensagem;  
+  priFiltroMensagem          := locMensagem;
+
+  InformacoesPopular;
 end;
 
 //
@@ -480,6 +519,8 @@ begin
 
   priLocalizarDtHrOcorrencia := locDtHrOcorrencia;
   priLocalizarMensagem       := locMensagem;
+
+  InformacoesLocalizar;
 end;
 
 //

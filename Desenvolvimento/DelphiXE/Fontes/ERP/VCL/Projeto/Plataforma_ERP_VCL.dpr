@@ -24,6 +24,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
-  Application.CreateForm(TPlataformaERPVCLLogLocalLocalizar, PlataformaERPVCLLogLocalLocalizar);
   Application.Run;
 end.

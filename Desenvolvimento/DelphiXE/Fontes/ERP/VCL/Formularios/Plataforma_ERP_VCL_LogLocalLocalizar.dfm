@@ -18,6 +18,9 @@ object PlataformaERPVCLLogLocalLocalizar: TPlataformaERPVCLLogLocalLocalizar
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
+  DesignSize = (
+    498
+    194)
   PixelsPerInch = 96
   TextHeight = 13
   object imgFormulario: TImage
@@ -82,7 +85,7 @@ object PlataformaERPVCLLogLocalLocalizar: TPlataformaERPVCLLogLocalLocalizar
     Height = 33
     Cursor = crHandPoint
     Caption = 'Fechar'
-    TabOrder = 2
+    TabOrder = 3
     OnClick = btnFecharClick
   end
   object panFormulario: TPanel
@@ -186,11 +189,11 @@ object PlataformaERPVCLLogLocalLocalizar: TPlataformaERPVCLLogLocalLocalizar
     Height = 33
     Cursor = crHandPoint
     Caption = 'Limpar'
-    TabOrder = 3
+    TabOrder = 4
     OnClick = btnLimparClick
   end
   object btnConfirmar: TBitBtn
-    Left = 336
+    Left = 256
     Top = 152
     Width = 73
     Height = 33
@@ -198,5 +201,16 @@ object PlataformaERPVCLLogLocalLocalizar: TPlataformaERPVCLLogLocalLocalizar
     Caption = 'Confirmar'
     TabOrder = 1
     OnClick = btnConfirmarClick
+  end
+  object btnMinimizar: TBitBtn
+    Left = 336
+    Top = 152
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Anchors = [akRight, akBottom]
+    Caption = 'Minimizar'
+    TabOrder = 2
+    OnClick = btnMinimizarClick
   end
 end

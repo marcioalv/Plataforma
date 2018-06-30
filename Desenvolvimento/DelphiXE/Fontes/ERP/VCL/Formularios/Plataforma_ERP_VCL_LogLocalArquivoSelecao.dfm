@@ -141,23 +141,6 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       TabOrder = 3
       OnClick = rbtHistoricoClick
     end
-    object lbxHistorico: TListBox
-      Left = 32
-      Top = 144
-      Width = 681
-      Height = 233
-      Cursor = crHandPoint
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ItemHeight = 14
-      ParentFont = False
-      TabOrder = 4
-      OnDblClick = lbxHistoricoDblClick
-      OnKeyPress = lbxHistoricoKeyPress
-    end
     object txtArquivo: TEdit
       Left = 32
       Top = 56
@@ -179,7 +162,7 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       Height = 25
       Cursor = crHandPoint
       Caption = 'Localizar'
-      TabOrder = 6
+      TabOrder = 5
       OnClick = btnDtLogLocalizarClick
     end
     object txtDtLog: TMaskEdit
@@ -190,7 +173,7 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       Alignment = taCenter
       EditMask = '99/99/9999'
       MaxLength = 10
-      TabOrder = 5
+      TabOrder = 4
       Text = '99/99/9999'
       OnEnter = txtDtLogEnter
       OnExit = txtDtLogExit
@@ -206,6 +189,32 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
       Caption = 'Selecionar'
       TabOrder = 2
       OnClick = btnArquivoSelecionarClick
+    end
+    object lvwHistorico: TListView
+      Left = 32
+      Top = 144
+      Width = 682
+      Height = 233
+      Cursor = crHandPoint
+      Columns = <
+        item
+          Width = 0
+        end
+        item
+          Alignment = taCenter
+          Caption = 'Data'
+          Width = 80
+        end
+        item
+          Caption = 'Arquivo'
+          Width = 550
+        end>
+      ReadOnly = True
+      RowSelect = True
+      TabOrder = 6
+      ViewStyle = vsReport
+      OnDblClick = lvwHistoricoDblClick
+      OnKeyPress = lvwHistoricoKeyPress
     end
   end
   object btnFechar: TBitBtn
