@@ -193,12 +193,18 @@ object PlataformaERPVCLLogLocalLocalizar: TPlataformaERPVCLLogLocalLocalizar
     OnClick = btnLimparClick
   end
   object btnConfirmar: TBitBtn
-    Left = 256
+    Left = 248
     Top = 152
-    Width = 73
+    Width = 81
     Height = 33
     Cursor = crHandPoint
     Caption = 'Confirmar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
     TabOrder = 1
     OnClick = btnConfirmarClick
   end

@@ -4,7 +4,7 @@ object PlataformaERPVCLLogLocalDetalhe: TPlataformaERPVCLLogLocalDetalhe
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Detalhes do log local da aplica'#231#227'o'
-  ClientHeight = 482
+  ClientHeight = 481
   ClientWidth = 545
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,9 +17,10 @@ object PlataformaERPVCLLogLocalDetalhe: TPlataformaERPVCLLogLocalDetalhe
   Position = poMainFormCenter
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
+  OnShortCut = FormShortCut
   DesignSize = (
     545
-    482)
+    481)
   PixelsPerInch = 96
   TextHeight = 13
   object panFormulario: TPanel
@@ -259,12 +260,18 @@ object PlataformaERPVCLLogLocalDetalhe: TPlataformaERPVCLLogLocalDetalhe
     Height = 33
     Cursor = crHandPoint
     Caption = 'Fechar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
     TabOrder = 1
     OnClick = btnFecharClick
   end
   object btnMinimizar: TBitBtn
     Left = 384
-    Top = 440
+    Top = 439
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -272,5 +279,28 @@ object PlataformaERPVCLLogLocalDetalhe: TPlataformaERPVCLLogLocalDetalhe
     Caption = 'Minimizar'
     TabOrder = 2
     OnClick = btnMinimizarClick
+    ExplicitTop = 440
+  end
+  object btnAnterior: TBitBtn
+    Left = 8
+    Top = 440
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Anchors = [akRight, akBottom]
+    Caption = 'Anterior'
+    TabOrder = 3
+    OnClick = btnAnteriorClick
+  end
+  object btnProximo: TBitBtn
+    Left = 88
+    Top = 440
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Anchors = [akRight, akBottom]
+    Caption = 'Pr'#243'ximo'
+    TabOrder = 4
+    OnClick = btnProximoClick
   end
 end

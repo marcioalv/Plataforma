@@ -228,6 +228,7 @@ procedure TPlataformaERPVCLLogLocalArquivoSelecao.btnLimparClick(Sender: TObject
 begin
   FormularioLimpar;
   HistoricoLogPopular;
+  rbtArquivo.Checked := True;
   FormularioControlar;
 end;
 
@@ -350,7 +351,7 @@ end;
 // Procedimento para carregar o listbox com os arquivos de log da aplicação.
 //
 procedure TPlataformaERPVCLLogLocalArquivoSelecao.HistoricoLogPopular;
-var
+var  
   locListaArquivos: TStringList;
   locContador     : Integer;
   locArquivo      : string;
@@ -377,7 +378,7 @@ begin
 
   // Percorre lista de arquivos para inserir no listbox.
   lvwHistorico.Items.BeginUpdate;
-  for locContador := 0 to (locListaArquivos.Count - 1) do
+  for locContador := (locListaArquivos.Count - 1) downto 0 do
   begin
     locArquivoNome := StringRemover(locListaArquivos[locContador], ExtractFilePath(locListaArquivos[locContador]));
 
@@ -389,6 +390,8 @@ begin
     locListItem.SubItems.Add(locListaArquivos[locContador]);
   end;
   lvwHistorico.Items.EndUpdate;
+
+  VCLListViewItemPosicionar(lvwHistorico, 0);
 end;
 
 //

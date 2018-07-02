@@ -78,6 +78,7 @@ procedure VCLMaskEditLimpar(argComponente: TMaskEdit);
 procedure VCLEditLimpar(argComponente: TEdit);
 procedure VCLRadioButtonLimpar(argComponente: TRadioButton);
 procedure VCLMemoLimpar(argComponente: TMemo);
+procedure VCLProgressBarLimpar(argComponente: TProgressBar);
 
 //
 // Entrada/Saída componentes.
@@ -96,6 +97,12 @@ function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = Tr
 function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
 
 function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True) : Boolean;
+
+//
+// Específicos para progressbar.
+//
+procedure VCLProgressBarInicializar(argComponente: TProgressBar; argTamanho: Integer);
+procedure VCLProgressBarIncrementar(argComponente: TProgressBar);
 
 //
 // Específicos para listview.
@@ -236,6 +243,17 @@ end;
 procedure VCLMemoLimpar(argComponente: TMemo);
 begin
   argComponente.Lines.Clear;
+end;
+
+//
+// VCLProgressBarLimpar.
+//
+procedure VCLProgressBarLimpar(argComponente: TProgressBar);
+begin
+  argComponente.Min      := 0;
+  argComponente.Max      := 0;
+  argComponente.Position := 0;
+  argComponente.Visible  := False;
 end;
 
 //
@@ -592,6 +610,24 @@ begin
 end;
 
 //
+// VCLProgressBarInicializar.
+//
+procedure VCLProgressBarInicializar(argComponente: TProgressBar; argTamanho: Integer);
+begin
+  VCLProgressBarLimpar(argComponente);
+  argComponente.Max     := argTamanho;
+  argComponente.Visible := True;
+end;
+
+//
+// VCLProgressBarIncrementar.
+//
+procedure VCLProgressBarIncrementar(argComponente: TProgressBar);
+begin
+  argComponente.Position := argComponente.Position + 1;
+end;
+
+//
 // VCLListViewItemPosicionar.
 //
 procedure VCLListViewItemPosicionar(argComponente: TListView; argIndice: Integer);
@@ -601,8 +637,10 @@ begin
   if argIndice < 0 then argIndice := 0;
   if argIndice > (argComponente.Items.Count - 1) then argIndice := (argComponente.Items.Count - 1);
 
-  argComponente.ItemFocused := argComponente.Items.Item[argIndice];
   argComponente.ItemIndex   := argIndice;
+  argComponente.Items[argIndice].Focused  := True;
+  argComponente.Items[argIndice].Selected := True;
+  argComponente.Items[argIndice].MakeVisible(False);
 end;
 
 //

@@ -17,6 +17,8 @@ interface
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
+  Plataforma_Framework_Log,
+  Plataforma_ERP_Global,
   Plataforma_ERP_VCL_LogLocalArquivoSelecao,
   Plataforma_ERP_VCL_LogLocalFiltro,
   Plataforma_ERP_VCL_LogLocalLocalizar,
@@ -35,7 +37,7 @@ uses
   Vcl.ComCtrls,
   System.ImageList,
   Vcl.ImgList,
-  Vcl.Buttons, Vcl.Imaging.pngimage;
+  Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.Menus;
 
 const
   LVW_COLUNA_ICONE       : Integer = -1;
@@ -54,7 +56,6 @@ type
     panFormulario: TPanel;
     lblArquivoLog: TLabel;
     txtArquivoLog: TEdit;
-    imgArquivoLogSelecionar: TImage;
     lblInformacoes: TLabel;
     lvwInformacoes: TListView;
     btnFiltrar: TBitBtn;
@@ -63,7 +64,9 @@ type
     btnFechar: TBitBtn;
     btnDetalhes: TBitBtn;
     btnMinimizar: TBitBtn;
-    Image1: TImage;
+    imgFormulario: TImage;
+    btnSelecionar: TBitBtn;
+    pbaProgresso: TProgressBar;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAtualizarClick(Sender: TObject);
@@ -74,11 +77,12 @@ type
     procedure lvwInformacoesKeyPress(Sender: TObject; var Key: Char);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnFecharClick(Sender: TObject);
-    procedure imgArquivoLogSelecionarClick(Sender: TObject);
     procedure btnFiltrarClick(Sender: TObject);
     procedure btnLocalizarClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
+    procedure btnSelecionarClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
   private
     priSelecaoTipo            : Byte;
     priSelecaoArquivo         : string;
@@ -140,7 +144,10 @@ begin
   FormularioLimpar;
 
   // Arquivo de log padrão.
-  VCLEditLimpar(txtArquivoLog);
+  txtArquivoLog.Text := Plataforma_ERP_Global.gloLocalLog.PathFile;
+  priSelecaoTipo     := LOG_SELECAO_HISTORICO;
+  priSelecaoArquivo  := txtArquivoLog.Text;
+  InformacoesPopular;
 end;
 
 //
@@ -160,9 +167,17 @@ begin
 end;
 
 //
+// Evento de redimensionamento do formulário.
+//
+procedure TPlataformaERPVCLLogLocalLista.FormResize(Sender: TObject);
+begin
+  pbaProgresso.Width := lvwInformacoes.Width - (lvwInformacoes.Margins.Left + lvwInformacoes.Margins.Right);
+end;
+
+//
 // Procedimento para exibir o formulário de seleção do arquivo de log local.
 //
-procedure TPlataformaERPVCLLogLocalLista.imgArquivoLogSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLLogLocalLista.btnSelecionarClick(Sender: TObject);
 begin
   FormularioArquivoSelecaoExibir;
 end;
@@ -258,9 +273,11 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.InformacoesPopular;
 var
-  locArquivoLog    : string;
+  locContador      : Integer;
+  locArquivoLog    : string;  
   locTextFile      : TextFile;
   locLinha         : string;
+  locLinhasArquivo : array of string;
   locStringList    : TStringList;
   locHostName      : string;
   locUserName      : string;
@@ -318,10 +335,33 @@ begin
   end;
 
   // Percorre cada uma das linhas do arquivo texto.
+  locLinhasArquivo := nil;
+  
   while not EOF(locTextFile) do
   begin
     // Lê uma linha do arquivo texto.
     Readln(locTextFile, locLinha);
+
+    // Insere no array.
+    SetLength(locLinhasArquivo, Length(locLinhasArquivo) + 1);
+    locLinhasArquivo[Length(locLinhasArquivo) - 1] := locLinha;
+  end;
+
+  // Fecha arquivo texto.
+  CloseFile(locTextFile);
+
+  // Carrega o listview.
+  VCLProgressBarInicializar(pbaProgresso, Length(locLinhasArquivo));
+
+  lvwInformacoes.Items.BeginUpdate;
+  
+  for locContador := (Length(locLinhasArquivo) - 1) downto 0 do
+  begin
+    // Incrementa progressbar.
+    VCLProgressBarIncrementar(pbaProgresso);
+  
+    // Lê uma linha do array.
+    locLinha := locLinhasArquivo[locContador];
 
     // Separa a linha em partes.
     locStringList := StringSeparar(locLinha, '|');
@@ -382,8 +422,11 @@ begin
     end;
   end;
 
-  // Fecha arquivo texto.
-  CloseFile(locTextFile);
+  lvwInformacoes.Items.EndUpdate;
+  VCLProgressBarLimpar(pbaProgresso);
+
+  // Posiciona na última linha.
+  VCLListViewItemPosicionar(lvwInformacoes, 0);
 
   // Finaliza.
   VCLCursorTrocar;
@@ -466,6 +509,8 @@ var
   locDtHrOcorrenciaFim: TDateTime;
   locMensagem         : string;
 begin
+  if not ArquivoLogConsistir then Exit;
+
   locFormulario := TPlataformaERPVCLLogLocalFiltro.Create(Self);
 
   locFormulario.pubDtHrOcorrenciaIni := priFiltroDtHrOcorrenciaIni;
@@ -501,6 +546,8 @@ var
   locDtHrOcorrencia : TDateTime;
   locMensagem       : string;
 begin
+  if not ArquivoLogConsistir then Exit;
+
   locFormulario := TPlataformaERPVCLLogLocalLocalizar.Create(Self);
 
   locFormulario.pubDtHrOcorrencia := priLocalizarDtHrOcorrencia;
@@ -528,18 +575,22 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormularioDetalhesExibir;
 var
-  locIndex      : Integer;
-  locAplicativo : string;
-  locHashCode   : string;
-  locHostName   : string;
-  locUserName   : string;
-  locUsuarioID  : Integer;
-  locUsuarioNome: string;
-  locCritico    : Boolean;
-  locDataHora   : TDateTime;
-  locMensagem   : string;
-  locFormulario : TPlataformaERPVCLLogLocalDetalhe;
+  locIndex         : Integer;
+  locAplicativo    : string;
+  locHashCode      : string;
+  locHostName      : string;
+  locUserName      : string;
+  locUsuarioID     : Integer;
+  locUsuarioNome   : string;
+  locCritico       : Boolean;
+  locDataHora      : TDateTime;
+  locMensagem      : string;
+  locFormulario    : TPlataformaERPVCLLogLocalDetalhe;
+  locClicouAnterior: Boolean;
+  locClicouProximo : Boolean;
 begin
+  if not ArquivoLogConsistir then Exit;
+
   locIndex := VCLListViewIndiceItemRetornar(lvwInformacoes);
   if locIndex = VCL_NENHUM_INDICE then Exit;
 
@@ -554,10 +605,37 @@ begin
   locMensagem    := lvwInformacoes.Items[locIndex].SubItems.Strings[LVW_COLUNA_MENSAGEM];
 
   locFormulario := TPlataformaERPVCLLogLocalDetalhe.Create(Self);
-  locFormulario.FormularioPopular(locAplicativo, locHashCode, locHostName, locUserName, locUsuarioID, locUsuarioNome, locCritico, locDataHora, locMensagem);
+  locFormulario.FormularioPopular(locIndex, locAplicativo, locHashCode, locHostName, locUserName, locUsuarioID, locUsuarioNome, locCritico, locDataHora, locMensagem);
   locFormulario.ShowModal;
+
+  locIndex          := locFormulario.pubSequencial;
+  locClicouAnterior := locFormulario.pubClicouAnterior;
+  locClicouProximo  := locFormulario.pubClicouProximo;
+  
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  if (not locClicouAnterior) and (not locClicouProximo) then Exit;
+
+  //
+  // Anterior e próximo parecem trocados pq eles funcionam de acorco com a data do log.
+  //
+
+  if locClicouProximo then
+  begin
+    Dec(locIndex);
+    if locIndex < 0 then Exit;
+    VCLListViewItemPosicionar(lvwInformacoes, locIndex);
+    FormularioDetalhesExibir;
+  end;
+
+  if locClicouAnterior then
+  begin
+    Inc(locIndex);
+    if locIndex > (lvwInformacoes.Items.Count - 1) then Exit;
+    VCLListViewItemPosicionar(lvwInformacoes, locIndex);
+    FormularioDetalhesExibir;
+  end;
 end;
 
 end.

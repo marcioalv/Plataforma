@@ -228,12 +228,18 @@ object PlataformaERPVCLLogLocalArquivoSelecao: TPlataformaERPVCLLogLocalArquivoS
     OnClick = btnFecharClick
   end
   object btnConfirmar: TBitBtn
-    Left = 544
+    Left = 536
     Top = 416
-    Width = 73
+    Width = 81
     Height = 33
     Cursor = crHandPoint
     Caption = 'Confirmar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
     TabOrder = 1
     OnClick = btnConfirmarClick
   end

@@ -52,14 +52,25 @@ type
     txtMensagem: TMemo;
     btnFechar: TBitBtn;
     btnMinimizar: TBitBtn;
+    btnAnterior: TBitBtn;
+    btnProximo: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnMinimizarClick(Sender: TObject);
+    procedure btnAnteriorClick(Sender: TObject);
+    procedure btnProximoClick(Sender: TObject);
+    procedure FormShortCut(var Msg: TWMKey; var Handled: Boolean);
   private
     procedure FormularioLimpar;
+    procedure FormularioAvancar(argAnterior: Boolean; argProximo: Boolean);
   public
-    procedure FormularioPopular(argAplicativo : string;
+    pubSequencial    : Integer;
+    pubClicouAnterior: Boolean;
+    pubClicouProximo : Boolean;
+    
+    procedure FormularioPopular(argSequencial : Integer;
+                                argAplicativo : string;
                                 argHashCode   : string;
                                 argHostName   : string;
                                 argUserName   : string;
@@ -82,6 +93,16 @@ implementation
 //
 procedure TPlataformaERPVCLLogLocalDetalhe.FormCreate(Sender: TObject);
 begin
+  pubSequencial     := 0;
+  pubClicouAnterior := False;
+  pubClicouProximo  := False;
+end;
+
+//
+// Evento de criação do formulário.
+//
+procedure TPlataformaERPVCLLogLocalDetalhe.FormShortCut(var Msg: TWMKey; var Handled: Boolean);
+begin
   FormularioLimpar;
 end;
 
@@ -91,6 +112,22 @@ end;
 procedure TPlataformaERPVCLLogLocalDetalhe.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Evento de click no botão "Anterior".
+//
+procedure TPlataformaERPVCLLogLocalDetalhe.btnAnteriorClick(Sender: TObject);
+begin
+  FormularioAvancar(True, False);
+end;
+
+//
+// Evento de click no botão "Próximo".
+//
+procedure TPlataformaERPVCLLogLocalDetalhe.btnProximoClick(Sender: TObject);
+begin
+  FormularioAvancar(False, True);
 end;
 
 //
@@ -126,9 +163,20 @@ begin
 end;
 
 //
+// Procedimento para retroceder ou avançar na lista de mensagens de log.
+//
+procedure TPlataformaERPVCLLogLocalDetalhe.FormularioAvancar(argAnterior: Boolean; argProximo: Boolean);
+begin
+  pubClicouAnterior := argAnterior;
+  pubClicouProximo  := argProximo;
+  Close;
+end;
+
+//
 // Procedimento para popular o formulário com informações transferidas de outro formulário.
 //
-procedure TPlataformaERPVCLLogLocalDetalhe.FormularioPopular(argAplicativo : string;
+procedure TPlataformaERPVCLLogLocalDetalhe.FormularioPopular(argSequencial : Integer;
+                                                             argAplicativo : string;
                                                              argHashCode   : string;
                                                              argHostName   : string;
                                                              argUserName   : string;
@@ -138,6 +186,7 @@ procedure TPlataformaERPVCLLogLocalDetalhe.FormularioPopular(argAplicativo : str
                                                              argDataHora   : TDateTime;
                                                              argMensagem   : string);
 begin
+  pubSequencial       := argSequencial;
   txtAplicativo.Text  := argAplicativo;
   txtHashCode.Text    := argHashCode;
   txtHostName.Text    := argHostName;
