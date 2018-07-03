@@ -107,36 +107,34 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    ExplicitHeight = 471
     DesignSize = (
       954
       487)
     object lblArquivoLog: TLabel
-      Left = 8
+      Left = 16
       Top = 8
       Width = 58
       Height = 13
+      AutoSize = False
       Caption = 'Arquivo log:'
     end
     object lblInformacoes: TLabel
-      Left = 8
+      Left = 16
       Top = 56
       Width = 64
       Height = 13
       Caption = 'Informa'#231#245'es:'
     end
     object txtArquivoLog: TEdit
-      AlignWithMargins = True
-      Left = 8
+      Left = 16
       Top = 24
-      Width = 852
+      Width = 841
       Height = 22
       Margins.Left = 8
       Margins.Top = 24
       Margins.Right = 94
       Margins.Bottom = 8
       TabStop = False
-      Align = alTop
       Color = clInactiveBorder
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -149,17 +147,15 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       Text = 'txtArquivoLog'
     end
     object lvwInformacoes: TListView
-      AlignWithMargins = True
-      Left = 8
+      Left = 16
       Top = 72
-      Width = 938
-      Height = 407
+      Width = 921
+      Height = 401
       Cursor = crHandPoint
       Margins.Left = 8
       Margins.Top = 18
       Margins.Right = 8
       Margins.Bottom = 8
-      Align = alClient
       Columns = <
         item
           Caption = 'Icone'
@@ -220,7 +216,7 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       OnKeyPress = lvwInformacoesKeyPress
     end
     object btnSelecionar: TBitBtn
-      Left = 868
+      Left = 864
       Top = 22
       Width = 75
       Height = 25
@@ -249,7 +245,6 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     Caption = 'Filtrar'
     TabOrder = 1
     OnClick = btnFiltrarClick
-    ExplicitTop = 486
   end
   object btnLocalizar: TBitBtn
     Left = 128
@@ -261,7 +256,6 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     Caption = 'Localizar'
     TabOrder = 2
     OnClick = btnLocalizarClick
-    ExplicitTop = 486
   end
   object btnAtualizar: TBitBtn
     Left = 208
@@ -273,7 +267,6 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     Caption = 'Atualizar'
     TabOrder = 3
     OnClick = btnAtualizarClick
-    ExplicitTop = 486
   end
   object btnFechar: TBitBtn
     Left = 933
@@ -291,7 +284,6 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     ParentFont = False
     TabOrder = 4
     OnClick = btnFecharClick
-    ExplicitTop = 486
   end
   object btnDetalhes: TBitBtn
     Left = 288
@@ -303,7 +295,6 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     Caption = 'Detalhes'
     TabOrder = 5
     OnClick = btnDetalhesClick
-    ExplicitTop = 486
   end
   object btnMinimizar: TBitBtn
     Left = 854
@@ -315,6 +306,5 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     Caption = 'Minimizar'
     TabOrder = 6
     OnClick = btnMinimizarClick
-    ExplicitTop = 486
   end
 end

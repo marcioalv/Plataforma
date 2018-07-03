@@ -98,6 +98,7 @@ type
     function  ArquivoLogConsistir: Boolean;
     procedure InformacoesPopular;
     procedure InformacoesLocalizar;
+    procedure FiltroLocalizarDefinir;
     procedure FormularioLimpar;
     procedure FormularioArquivoSelecaoExibir;
     procedure FormularioFiltroExibir;
@@ -136,10 +137,6 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormShow(Sender: TObject);
 begin
-
-  // Título do formulário.
-  Caption := 'Visualização do arquivo de log local';
-
   // Limpa componentes do formulário.
   FormularioLimpar;
 
@@ -147,6 +144,8 @@ begin
   txtArquivoLog.Text := Plataforma_ERP_Global.gloLocalLog.PathFile;
   priSelecaoTipo     := LOG_SELECAO_HISTORICO;
   priSelecaoArquivo  := txtArquivoLog.Text;
+
+  // Carregar lista.
   InformacoesPopular;
 end;
 
@@ -171,7 +170,12 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormResize(Sender: TObject);
 begin
-  pbaProgresso.Width := lvwInformacoes.Width - (lvwInformacoes.Margins.Left + lvwInformacoes.Margins.Right);
+  txtArquivoLog.Width := panFormulario.Width - (btnSelecionar.Width + (txtArquivoLog.Left * 3));
+
+  lvwInformacoes.Width  := panFormulario.Width  - (lvwInformacoes.Left * 2);
+  lvwInformacoes.Height := panFormulario.Height - (lvwInformacoes.Top + lvwInformacoes.Left);
+
+  pbaProgresso.Width   := lvwInformacoes.Width - (lvwInformacoes.Margins.Left + lvwInformacoes.Margins.Right);
 end;
 
 //
@@ -428,6 +432,9 @@ begin
   // Posiciona na última linha.
   VCLListViewItemPosicionar(lvwInformacoes, 0);
 
+  // Determina as datas para filtro e localização.
+  FiltroLocalizarDefinir;
+
   // Finaliza.
   VCLCursorTrocar;
 end;
@@ -440,12 +447,81 @@ var
   locContador      : Integer;
   locDtHrOcorrencia: TDateTime;
   locMensagem      : string;
+  locAchou         : Boolean;
 begin
-  for locContador := 0 to (lvwInformacoes.Items.Count - 1) do
+  VCLCursorTrocar(True);
+  VCLProgressBarInicializar(pbaProgresso, lvwInformacoes.Items.Count);
+
+  locAchou := False;
+  for locContador := (lvwInformacoes.Items.Count - 1) downto 0 do
   begin
+    VCLProgressBarIncrementar(pbaProgresso);
+  
     locDtHrOcorrencia := StringDateTimeConverter(lvwInformacoes.Items[locContador].SubItems.Strings[LVW_COLUNA_DATA_HORA]);
-    locMensagem       := lvwInformacoes.Items[locContador].SubItems.Strings[LVW_COLUNA_MENSAGEM];
+    locMensagem       := StringAcentosRemover(lvwInformacoes.Items[locContador].SubItems.Strings[LVW_COLUNA_MENSAGEM]);
+
+    if priLocalizarDtHrOcorrencia <> 0 then
+    begin
+      if locDtHrOcorrencia >= priLocalizarDtHrOcorrencia then
+      begin
+        locAchou := True;
+        VCLListViewItemPosicionar(lvwInformacoes, locContador);
+        Break;
+      end;
+    end;
+
+    if priLocalizarMensagem <> '' then
+    begin
+      if StringLocalizar(locMensagem, StringAcentosRemover(priLocalizarMensagem)) then
+      begin
+        locAchou := True;
+        VCLListViewItemPosicionar(lvwInformacoes, locContador);
+        Break;
+      end;
+    end;
   end;
+
+  VCLProgressBarLimpar(pbaProgresso);
+  VCLCursorTrocar;
+
+  if not locAchou then
+  begin
+    VCLConsistenciaExibir('Nenhuma informação localizada!');
+  end;
+end;
+
+//
+// Define a data inicial e final para os filtros e o localizar.
+//
+procedure TPlataformaERPVCLLogLocalLista.FiltroLocalizarDefinir;
+var
+  locContador   : Integer;
+  locDtHrInicial: TDateTime;
+  locDtHrFinal  : TDateTime;
+  locDtHrLog    : TDateTime;
+begin
+  locDtHrInicial := 0;
+  locDtHrFinal   := 0;
+
+  for locContador := (lvwInformacoes.Items.Count - 1) downto 0 do
+  begin
+    locDtHrLog := StringDateTimeConverter(lvwInformacoes.Items[locContador].SubItems.Strings[LVW_COLUNA_DATA_HORA]);
+
+    if (locDtHrInicial = 0) or (locDtHrLog < locDtHrInicial) then
+    begin
+      locDtHrInicial := locDtHrLog;
+    end;
+
+    if (locDtHrFinal = 0) or (locDtHrLog > locDtHrFinal) then
+    begin
+      locDtHrFinal := locDtHrLog;
+    end;
+  end;
+
+  priFiltroDtHrOcorrenciaIni := locDtHrInicial;
+  priFiltroDtHrOcorrenciaFim := locDtHrFinal;
+
+  priLocalizarDtHrOcorrencia := locDtHrInicial;
 end;
 
 //
