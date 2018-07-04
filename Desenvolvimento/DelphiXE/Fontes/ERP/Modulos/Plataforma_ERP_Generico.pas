@@ -18,11 +18,11 @@ uses
   Plataforma_Framework_Util,
   Plataforma_ERP_Global;
 
-procedure PlataformaERPLogar(argCritico: Boolean; argMensagem: string);
+procedure PlataformaERPLogar(argCritico: Boolean; argMensagem: string; argExcecao: string = '');
 
 implementation
 
-procedure PlataformaERPLogar(argCritico: Boolean; argMensagem: string);
+procedure PlataformaERPLogar(argCritico: Boolean; argMensagem: string; argExcecao: string = '');
 var
   locHostName   : string;
   locUserName   : string;
@@ -34,11 +34,11 @@ begin
   locHostName    := HostNameRecuperar;
   locUserName    := UserNameRecuperar;
   locAppName     := 'Plataforma_ERP_VCL';
-  locAppHashCode := '123LSDNF54L2N3JBDAS34KJ5H';
-  locAppUserID   := '846';
-  locAppUserName := 'Marcio Alves';
+  locAppHashCode := gloAppHashCode;
+  locAppUserID   := IntegerStringConverter(gloUsuarioID);
+  locAppUserName := gloUsuarioNome;
 
-  gloLocalLog.Write(locHostName, locUserName, locAppName, locAppHashCode, locAppUserID, locAppUserName, argCritico, argMensagem);
+  gloLocalLog.Write(locHostName, locUserName, locAppName, locAppHashCode, locAppUserID, locAppUserName, argCritico, argMensagem, argExcecao);
 end;
 
 end.

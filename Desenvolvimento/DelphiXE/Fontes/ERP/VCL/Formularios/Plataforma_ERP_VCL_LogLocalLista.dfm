@@ -107,9 +107,6 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    DesignSize = (
-      954
-      487)
     object lblArquivoLog: TLabel
       Left = 16
       Top = 8
@@ -221,7 +218,6 @@ object PlataformaERPVCLLogLocalLista: TPlataformaERPVCLLogLocalLista
       Width = 75
       Height = 25
       Cursor = crHandPoint
-      Anchors = [akTop, akRight]
       Caption = 'Selecionar'
       TabOrder = 2
       OnClick = btnSelecionarClick

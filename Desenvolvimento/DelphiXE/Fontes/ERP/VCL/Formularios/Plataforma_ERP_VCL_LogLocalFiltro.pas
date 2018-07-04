@@ -51,6 +51,8 @@ type
     btnLimpar: TBitBtn;
     btnConfirmar: TBitBtn;
     btnMinimizar: TBitBtn;
+    lblHashCode: TLabel;
+    txtHashCode: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -77,6 +79,9 @@ type
     procedure btnLimparClick(Sender: TObject);
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
+    procedure txtHashCodeEnter(Sender: TObject);
+    procedure txtHashCodeExit(Sender: TObject);
+    procedure txtHashCodeKeyPress(Sender: TObject; var Key: Char);
   private
     procedure FormularioLimpar;
     procedure FormularioConfirmar;
@@ -85,6 +90,7 @@ type
     pubDtHrOcorrenciaIni: TDateTime;
     pubDtHrOcorrenciaFim: TDateTime;
     pubMensagem         : string;
+    pubHashCode         : string;
   end;
 
 var
@@ -103,6 +109,7 @@ begin
   pubDtHrOcorrenciaIni := 0;
   pubDtHrOcorrenciaFim := 0;
   pubMensagem          := '';
+  pubHashCode          := '';
 end;
 
 //
@@ -125,6 +132,7 @@ begin
   end;
 
   txtMensagem.Text := pubMensagem;
+  txtHashCode.Text := pubHashCode;
 
   txtDtOcorrenciaIni.SetFocus;
 end;
@@ -234,6 +242,25 @@ begin
 end;
 
 //
+// HashCode.
+//
+procedure TPlataformaERPVCLLogLocalFiltro.txtHashCodeEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(txtHashCode) then Exit;
+end;
+
+procedure TPlataformaERPVCLLogLocalFiltro.txtHashCodeKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_NUMERICA_INTEIRA);
+end;
+
+procedure TPlataformaERPVCLLogLocalFiltro.txtHashCodeExit(Sender: TObject);
+begin
+  if not VCLEditSair(txtHashCode) then Exit;
+  if not VCLEditTextoValidar(txtHashCode) then Exit;
+end;
+
+//
 // Eventos do componente "Mensagem".
 //
 procedure TPlataformaERPVCLLogLocalFiltro.txtMensagemEnter(Sender: TObject);
@@ -297,6 +324,7 @@ begin
   VCLMaskEditLimpar(txtHrOcorrenciaFim);
 
   VCLEditLimpar(txtMensagem);
+  VCLEditLimpar(txtHashCode);
 end;
 
 //
@@ -307,11 +335,13 @@ var
   locDtHrOcorrenciaIni: TDateTime;
   locDtHrOcorrenciaFim: TDateTime;
   locMensagem         : string;
+  locHashCode         : string;
 begin
   locDtHrOcorrenciaIni := StringDateTimeConverter(txtDtOcorrenciaIni.Text + ' ' + txtHrOcorrenciaIni.Text + ':00.000');
   locDtHrOcorrenciaFim := StringDateTimeConverter(txtDtOcorrenciaFim.Text + ' ' + txtHrOcorrenciaFim.Text + ':59.999');
   locMensagem          := StringTrim(txtMensagem.Text);
-
+  locHashCode          := StringTrim(txtHashCode.Text);
+  
   if locDtHrOcorrenciaFim < locDtHrOcorrenciaIni then
   begin
     VCLConsistenciaExibir('A data de ocorrência final não pode ser anterior a data inicial!');
@@ -322,6 +352,7 @@ begin
   pubDtHrOcorrenciaIni  := locDtHrOcorrenciaIni;
   pubDtHrOcorrenciaFim  := locDtHrOcorrenciaFim;
   pubMensagem           := locMensagem;
+  pubHashCode           := locHashCode;
   pubClicouConfirmar    := True;
   Close;
 end;

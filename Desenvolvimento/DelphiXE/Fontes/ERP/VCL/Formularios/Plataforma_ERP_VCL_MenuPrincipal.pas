@@ -18,6 +18,7 @@ uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
+  Plataforma_ERP_Generico,
   Plataforma_ERP_Inicializacao,
   Plataforma_ERP_VCL_LogLocalLista,
   Winapi.Windows,
@@ -91,8 +92,14 @@ begin
   // Determina o path onde a aplicação está rodando.
   gloAppPath := PathExtrair(Application.ExeName);
 
+  // Gera o hashcode de execução da aplicação.
+  PlataformaERPHashCodInicializar;
+ 
   // Inicializa o log local da aplicação.
   PlataformaERPLogInicializar;
+
+  // Autentica usuário.
+  PlataformaERPUsuarioInicializar;
 end;
 
 //

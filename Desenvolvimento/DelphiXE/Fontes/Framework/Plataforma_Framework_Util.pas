@@ -51,320 +51,48 @@ const
   FLAG_SIM   : string = 'S';
   FLAG_NAO   : string = 'N';
 
-/// <summary>
-/// Função para retornar o nome do computador ou dispositivo.
-/// </summary>
-/// <returns>
-/// Nome do computador ou dispositivo.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function HostNameRecuperar: string;
 
-/// <summary>
-/// Função para retornar o nome do usuário que está logado no computador.
-/// </summary>
-/// <returns>
-/// Nome do usuário logado no computador.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function UserNameRecuperar: string;
 
-/// <summary>
-/// Função para remover espaços desnecessários em uma string.
-/// </summary>
-/// <param name="argValor">
-/// Valor string que terá os espaços desnecessários removidos.
-/// </param>
-/// <returns>
-/// String sem espaços desnecessários.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
+function DriveSerialNumberRecuperar(argDriveLetra: string): Integer;
+
 function StringTrim(argValor: string): string;
 
-/// <summary>
-/// Função para localizar uma substring dentro de um valor.
-/// </summary>
-/// <param name="argValor">
-/// String original.
-/// </param>
-/// <param name="argSubString">
-/// Substring que tentará ser localizado dentro do valor.
-/// </param>
-/// <returns>
-/// True se a substring for localizado ou false se não for.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringLocalizar(argValor: string; argSubString: string): Boolean;
 
-/// <summary>
-/// Função para substituir uma string velha por uma string nova.
-/// </summary>
-/// <param name="argValor">
-/// String original.
-/// </param>
-/// <param name="argVelho">
-/// Substring velha que será localizada.
-/// </param>
-/// <param name="argNovo">
-/// Substring nova que será substituída.
-/// </param>
-/// <returns>
-/// Nova string com os valores substituídos.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringSubstituir(argValor: string; argVelho: string; argNovo : string): string;
 
-/// <summary>
-/// Função para remover uma substring de uma string.
-/// </summary>
-/// <param name="argValor">
-/// String original.
-/// </param>
-/// <param name="argRemover">
-/// Substring que será removida.
-/// </param>
-/// <returns>
-/// Nova string sem a substring desejada.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringRemover(argValor: string; argRemover: string): string;
 
-/// <summary>
-/// Função para preencher uma string com uma determinada quantidade de caracteres a esquerda ou direita.
-/// </summary>
-/// <param name="argValor">
-/// String original.
-/// </param>
-/// <param name="argTamanho">
-/// Tamanho final desejado para o valor.
-/// </param>
-/// <param name="argCaracter">
-/// Caracter que será utilizado para o preenchimento.
-/// </param>
-/// <param name="argEsquerda">
-/// Se true o preenchimento ocorrerá ao lado esquerdo do valor se false ao lado direito.
-/// </param>
-/// <returns>
-/// Nova string preenchida.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringPreencher(argValor: string; argTamanho: Integer; argCaracter: string; argEsquerda: Boolean = True): string;
 
-/// <summary>
-/// Função para separar uma string em partes.
-/// </summary>
-/// <param name="argValor">
-/// String original.
-/// </param>
-/// <param name="argSeparador">
-/// Caracter que indica onde deve ocorrer a separação.
-/// </param>
-/// <returns>
-/// Uma lista de strings com cada parte desejada.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringSeparar(argValor: string; argSeparador: string): TStringList;
 
-/// <summary>
-/// Função para remover os acentos de uma string.
-/// </summary>
-/// <param name="argValor">
-/// String original.
-/// </param>
-/// <returns>
-/// Uma string sem caracteres de acentuação.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringAcentosRemover(argValor: string): string;
 
-/// <summary>
-/// Função para validar se em uma string existem somente números.
-/// </summary>
-/// <param name="argValor">
-/// Valor que será validado.
-/// </param>
-/// <returns>
-/// True se existirem somente números ou false se existirem outros caracteres além de dígitos.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function SomenteNumerosValidar(argTexto: string): Boolean;
 
 function SomenteNumerosRetornar(argTexto: string): string;
 
-/// <summary>
-/// Função para retornar um integer a partir de uma string.
-/// </summary>
-/// <param name="argValor">
-/// Valor string que será convertido para um integer.
-/// </param>
-/// <returns>
-/// Integer convertido.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringIntegerConverter(argValor: string): Integer;
 
-/// <summary>
-/// Função para retornar uma string a partir de um integer.
-/// </summary>
-/// <param name="argValor">
-/// Valor integer que será convertido para uma string.
-/// </param>
-/// <param name="argZeroVazio">
-/// Aplica-se somente se o valor passado em argValor for zero:
-/// se false então retorna '0' se true retorna vazio ''.
-/// </param>
-/// <returns>
-/// String convertida.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function IntegerStringConverter(argValor: Integer; argZeroVazio: Boolean = False): string;
 
-/// <summary>
-/// Função para retornar um boolean a partir de uma string.
-/// </summary>
-/// <param name="argValor">
-/// Valor string que será convertido para um boolean.
-/// </param>
-/// <returns>
-/// Boolean convertido.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringBooleanConverter(argValor: string): Boolean;
 
-/// <summary>
-/// Função para retornar uma string a partir de um boolean.
-/// </summary>
-/// <param name="argValor">
-/// Valor boolean que será convertido para uma string.
-/// </param>
-/// <param name="argFlag">
-/// Se true retorna 'S' ou 'N' senão 'Sim' ou 'Não'.
-/// </param>
-/// <returns>
-/// String convertida.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function BooleanStringConverter(argValor: Boolean; argFlag: Boolean = True): string;
 
-/// <summary>
-/// Função para retornar um datetime a partir de uma string.
-/// </summary>
-/// <param name="argValor">
-/// Valor string que será convertido para um datetime.
-/// </param>
-/// <returns>
-/// Datetime convertido.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringDateTimeConverter(argValor: string): TDateTime;
 
-/// <summary>
-/// Função para retornar uma string a partir de um datetime.
-/// </summary>
-/// <param name="argValor">
-/// Valor datetime que será convertido para uma string.
-/// </param>
-/// <param name="argFormato">
-/// Formato do datetime convertido no padrão dd mm yy hh nn zzz.
-/// </param>
-/// <returns>
-/// Datetime convertido.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function DateTimeStringConverter(argValor: TDateTime; argFormato: string): string;
 
-/// <summary>
-/// Função para retornar um datetime a partir de uma string no formato yyyy-mm-dd hh:nn:ss.zzz.
-/// </summary>
-/// <param name="argValor">
-/// Valor string que será convertido para um datetime.
-/// </param>
-/// <returns>
-/// Datetime convertido.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringDataHoraPersistidaConverter(argDataHora: string): TDateTime;
 
-/// <summary>
-/// Função para retornar um currency a partir de uma string.
-/// </summary>
-/// <param name="argValor">
-/// Valor string que será convertido para um currency.
-/// </param>
-/// <returns>
-/// String convertido.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function StringCurrencyConverter(argValor: string): Currency;
 
-/// <summary>
-/// Função para extrair o nome do path do arquivo.
-/// </summary>
-/// <param name="argArquivo">
-/// Arquivo completo.
-/// </param>
-/// <returns>
-/// Somente o path de onde o arquivo se encontra.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function PathExtrair(argArquivo: string): string;
 
-/// <summary>
-/// Função para retornar uma lista de arquivos conforme um padrão informado.
-/// </summary>
-/// <param name="argCaminho">
-/// Caminho inicial onde a pesquisa será realizada.
-/// </param>
-/// <param name="argArquivo">
-/// Nome do arquivo que está sendo procurado incluindo caracteres máscara.
-/// </param>
-/// <param name="argSubPastas">
-/// Incluir pesquisa em subpastas.
-/// </param>
-/// <returns>
-/// Uma lista de strings com o nome de cada arquivo encontrado.
-/// </returns>
-/// <remarks>
-/// Criado em 31/Maio/2018 por Marcio Alves (marcioalv@yahoo.com.br)
-/// </remarks>
 function ListaArquivosRetornar(argCaminho: string; argArquivo: string; argSubPastas: Boolean): TStringList;
 
 function DataFormatar(argData: string): string;
@@ -402,6 +130,19 @@ begin
   GetUserName(pChar(Result), locNetUserNameLength);
   SetLength(Result, StrLen(pChar(Result)));
 end;
+
+//
+// HDSeriaNumberRecuperar.
+//
+function DriveSerialNumberRecuperar(argDriveLetra: string): Integer;
+var 
+  locNotUsed           : DWord;
+  locVolumeFlags       : DWord;
+  locVolumeSerialNumber: DWord;
+begin 
+  GetVolumeInformation(PChar(argDriveLetra + ':\'), nil, MAX_PATH, @locVolumeSerialNumber, locNotUsed, locVolumeFlags, nil, 0);
+  Result := Abs(locVolumeSerialNumber);
+end; 
 
 //
 // StringTrim.

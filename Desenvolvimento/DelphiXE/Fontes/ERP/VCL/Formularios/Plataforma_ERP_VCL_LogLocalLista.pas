@@ -19,6 +19,7 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_Framework_Log,
   Plataforma_ERP_Global,
+  Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_LogLocalArquivoSelecao,
   Plataforma_ERP_VCL_LogLocalFiltro,
   Plataforma_ERP_VCL_LogLocalLocalizar,
@@ -91,6 +92,7 @@ type
     priFiltroDtHrOcorrenciaIni: TDateTime;
     priFiltroDtHrOcorrenciaFim: TDateTime;
     priFiltroMensagem         : string;
+    priFiltroHashCode         : string;
 
     priLocalizarDtHrOcorrencia: TDateTime;
     priLocalizarMensagem      : string;
@@ -98,7 +100,6 @@ type
     function  ArquivoLogConsistir: Boolean;
     procedure InformacoesPopular;
     procedure InformacoesLocalizar;
-    procedure FiltroLocalizarDefinir;
     procedure FormularioLimpar;
     procedure FormularioArquivoSelecaoExibir;
     procedure FormularioFiltroExibir;
@@ -120,6 +121,7 @@ implementation
 //
 procedure TPlataformaERPVCLLogLocalLista.FormCreate(Sender: TObject);
 begin
+  // Inicializa variáveis privadas.
   priSelecaoTipo             := 0;
   priSelecaoArquivo          := '';
   priSelecaoDtLog            := 0;
@@ -127,6 +129,7 @@ begin
   priFiltroDtHrOcorrenciaIni := 0;
   priFiltroDtHrOcorrenciaFim := 0;
   priFiltroMensagem          := '';
+  priFiltroHashCode          := '';
 
   priLocalizarDtHrOcorrencia := 0;
   priLocalizarMensagem       := '';
@@ -154,6 +157,7 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormActivate(Sender: TObject);
 begin
+  // Maximizar formulário.
   VCLSDIMaximizar(Self);
 end;
 
@@ -162,6 +166,7 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormKeyPress(Sender: TObject; var Key: Char);
 begin
+  // Usuário clicou ESC.
   if Key = ESC then Close;
 end;
 
@@ -170,7 +175,10 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormResize(Sender: TObject);
 begin
-  txtArquivoLog.Width := panFormulario.Width - (btnSelecionar.Width + (txtArquivoLog.Left * 3));
+  txtArquivoLog.Width := panFormulario.Width - (btnSelecionar.Width + (txtArquivoLog.Left * 2) + 8);
+
+  btnSelecionar.Top   := txtArquivoLog.Top - 1;
+  btnSelecionar.Left  := panFormulario.Width - (btnSelecionar.Width + txtArquivoLog.Left);
 
   lvwInformacoes.Width  := panFormulario.Width  - (lvwInformacoes.Left * 2);
   lvwInformacoes.Height := panFormulario.Height - (lvwInformacoes.Top + lvwInformacoes.Left);
@@ -230,7 +238,7 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.btnAtualizarClick(Sender: TObject);
 begin
-  InformacoesPopular;
+  InformacoesPopular;  
 end;
 
 //
@@ -277,6 +285,7 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.InformacoesPopular;
 var
+  locMsgLog        : string;
   locContador      : Integer;
   locArquivoLog    : string;  
   locTextFile      : TextFile;
@@ -310,7 +319,8 @@ begin
   if not FileExists(locArquivoLog) then
   begin
     VCLCursorTrocar;
-    VCLConsistenciaExibir('O arquivo de log informando não foi localizado ou não pôde ser acessado em [' + locArquivoLog + ']');
+    locMsgLog := 'O arquivo de log informando não foi localizado ou não pôde ser acessado em [' + locArquivoLog + ']';
+    VCLConsistenciaExibir(locMsgLog);
     Exit;
   end;
 
@@ -321,7 +331,9 @@ begin
     on locErro: Exception do
     begin
       VCLCursorTrocar;
-      VCLExcecaoExibir('Impossível acessar o arquivo de log: [' + locArquivoLog + ']', locErro.Message);
+      locMsgLog := 'Impossível acessar o arquivo de log: [' + locArquivoLog + ']';
+      PlataformaERPLogar(True, locMsgLog, locErro.Message);
+      VCLExcecaoExibir(locMsgLog, locErro.Message);
       Exit;
     end;
   end;
@@ -333,7 +345,9 @@ begin
     on locErro: Exception do
     begin
       VCLCursorTrocar;
-      VCLExcecaoExibir('Impossível abrir o arquivo de log para leitura: [' + locArquivoLog + ']', locErro.Message);
+      locMsgLog := 'Impossível abrir o arquivo de log para leitura: [' + locArquivoLog + ']';
+      PlataformaERPLogar(True, locMsgLog, locErro.Message);
+      VCLExcecaoExibir(locMsgLog, locErro.Message);
       Exit;
     end;
   end;
@@ -408,6 +422,12 @@ begin
     begin
       if not StringLocalizar(StringAcentosRemover(locMensagem), StringAcentosRemover(priFiltroMensagem)) then Continue;
     end;
+
+    // Filtro pelo hashcode.
+    if priFiltroHashCode <> '' then
+    begin
+      if not StringLocalizar(locAppHashCode, priFiltroHashCode) then Continue;
+    end;
     
     // Insere dados no listview.
     if Trim(locMensagem) <> '' then
@@ -431,9 +451,6 @@ begin
 
   // Posiciona na última linha.
   VCLListViewItemPosicionar(lvwInformacoes, 0);
-
-  // Determina as datas para filtro e localização.
-  FiltroLocalizarDefinir;
 
   // Finaliza.
   VCLCursorTrocar;
@@ -483,45 +500,11 @@ begin
 
   VCLProgressBarLimpar(pbaProgresso);
   VCLCursorTrocar;
-
+  
   if not locAchou then
   begin
-    VCLConsistenciaExibir('Nenhuma informação localizada!');
+    VCLConsistenciaExibir('Informação não localizada!');
   end;
-end;
-
-//
-// Define a data inicial e final para os filtros e o localizar.
-//
-procedure TPlataformaERPVCLLogLocalLista.FiltroLocalizarDefinir;
-var
-  locContador   : Integer;
-  locDtHrInicial: TDateTime;
-  locDtHrFinal  : TDateTime;
-  locDtHrLog    : TDateTime;
-begin
-  locDtHrInicial := 0;
-  locDtHrFinal   := 0;
-
-  for locContador := (lvwInformacoes.Items.Count - 1) downto 0 do
-  begin
-    locDtHrLog := StringDateTimeConverter(lvwInformacoes.Items[locContador].SubItems.Strings[LVW_COLUNA_DATA_HORA]);
-
-    if (locDtHrInicial = 0) or (locDtHrLog < locDtHrInicial) then
-    begin
-      locDtHrInicial := locDtHrLog;
-    end;
-
-    if (locDtHrFinal = 0) or (locDtHrLog > locDtHrFinal) then
-    begin
-      locDtHrFinal := locDtHrLog;
-    end;
-  end;
-
-  priFiltroDtHrOcorrenciaIni := locDtHrInicial;
-  priFiltroDtHrOcorrenciaFim := locDtHrFinal;
-
-  priLocalizarDtHrOcorrencia := locDtHrInicial;
 end;
 
 //
@@ -529,9 +512,14 @@ end;
 //
 procedure TPlataformaERPVCLLogLocalLista.FormularioLimpar;
 begin
+  // Troca cursor espera.
   VCLCursorTrocar;
+
+  // Limpando componentes.
   VCLEditLimpar(txtArquivoLog);
   VCLListViewLimpar(lvwInformacoes);
+
+  // Troca cursor normal.
   VCLCursorTrocar(False);
 end;
 
@@ -584,6 +572,7 @@ var
   locDtHrOcorrenciaIni: TDateTime;
   locDtHrOcorrenciaFim: TDateTime;
   locMensagem         : string;
+  locHashCode         : string;
 begin
   if not ArquivoLogConsistir then Exit;
 
@@ -592,6 +581,7 @@ begin
   locFormulario.pubDtHrOcorrenciaIni := priFiltroDtHrOcorrenciaIni;
   locFormulario.pubDtHrOcorrenciaFim := priFiltroDtHrOcorrenciaFim;
   locFormulario.pubMensagem          := priFiltroMensagem;
+  locFormulario.pubHashCode          := priFiltroHashCode;
   
   locFormulario.ShowModal;
 
@@ -599,6 +589,7 @@ begin
   locDtHrOcorrenciaIni := locFormulario.pubDtHrOcorrenciaIni;
   locDtHrOcorrenciaFim := locFormulario.pubDtHrOcorrenciaFim;
   locMensagem          := locFormulario.pubMensagem;
+  locHashCode          := locFormulario.pubHashCode;
  
   locFormulario.Release;
   FreeAndNil(locFormulario);
@@ -608,6 +599,7 @@ begin
   priFiltroDtHrOcorrenciaIni := locDtHrOcorrenciaIni;
   priFiltroDtHrOcorrenciaFim := locDtHrOcorrenciaFim;
   priFiltroMensagem          := locMensagem;
+  priFiltroHashCode          := locHashCode;
 
   InformacoesPopular;
 end;

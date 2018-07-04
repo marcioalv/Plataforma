@@ -28,7 +28,7 @@ uses
   Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.Buttons,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, Vcl.Imaging.pngimage;
 
 type
   TPlataformaERPVCLLogLocalDetalhe = class(TForm)
@@ -54,13 +54,14 @@ type
     btnMinimizar: TBitBtn;
     btnAnterior: TBitBtn;
     btnProximo: TBitBtn;
+    imgFormulario: TImage;
     procedure FormCreate(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnAnteriorClick(Sender: TObject);
     procedure btnProximoClick(Sender: TObject);
-    procedure FormShortCut(var Msg: TWMKey; var Handled: Boolean);
+    procedure FormShow(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioAvancar(argAnterior: Boolean; argProximo: Boolean);
@@ -96,14 +97,16 @@ begin
   pubSequencial     := 0;
   pubClicouAnterior := False;
   pubClicouProximo  := False;
+
+  FormularioLimpar;  
 end;
 
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLLogLocalDetalhe.FormShortCut(var Msg: TWMKey; var Handled: Boolean);
+procedure TPlataformaERPVCLLogLocalDetalhe.FormShow(Sender: TObject);
 begin
-  FormularioLimpar;
+  Exit;
 end;
 
 //

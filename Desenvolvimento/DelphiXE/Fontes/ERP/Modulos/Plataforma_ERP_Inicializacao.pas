@@ -15,22 +15,62 @@ unit Plataforma_ERP_Inicializacao;
 interface
 
 uses
+  Plataforma_Framework_Util,
   Plataforma_Framework_Log,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
-  System.SysUtils;
+  System.SysUtils,
+  Winapi.Windows;
 
+procedure PlataformaERPHashCodInicializar;
 procedure PlataformaERPLogInicializar;
+function PlataformaERPUsuarioInicializar: Boolean;
 
 implementation
 
+//
+// Procedimento para inicializar o hashcode da aplicação.
+//
+procedure PlataformaERPHashCodInicializar;
+var
+  locMomento  : string;
+  locDrive    : string;
+  locProcessID: string;
+begin
+  locMomento   := FormatDateTime('yyyymmddhhnnsszzz', Now);
+  locDrive     := IntegerStringConverter(DriveSerialNumberRecuperar(Copy(gloAppPath, 1, 1)));
+  locProcessID := IntegerStringConverter(GetCurrentProcessID);
+
+  gloAppHashCode := locMomento + locDrive + locProcessID;
+end;
+
+//
+// Procedimento para iniciar o mecanismo de log da aplicação.
+//
 procedure PlataformaERPLogInicializar;
 begin
   gloLocalLog          := TPlataformaFrameworkLog.Create;
   gloLocalLog.FilePath := gloAppPath + '\Log';
   gloLocalLog.FileNameDaily('Plataforma_ERP_VCL');
 
-  PlataformaERPLogar(True, 'Módulo de log inicializado com sucesso!');
+  PlataformaERPLogar(False, 'Módulo de log inicializado com sucesso!');
 end;
+
+//
+// Função para inicializar o usuário da aplicação.
+//
+function PlataformaERPUsuarioInicializar: Boolean;
+begin
+  // Inicializa usuário.
+  gloUsuarioID    := 0;
+  gloUsuarioLogon := '';
+  gloUsuarioNome  := '';
+
+  // Usuário autenticado.
+  gloUsuarioID    := 8345;
+  gloUsuarioLogon := 'marcio.alves';
+  gloUsuarioNome  := 'Marcio Alves';
+  Result          := True;
+  end;
 
 end.

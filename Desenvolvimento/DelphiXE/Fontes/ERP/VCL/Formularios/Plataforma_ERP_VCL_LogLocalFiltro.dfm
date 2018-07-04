@@ -4,7 +4,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Filtrar informa'#231#245'es do arquivo de log local'
-  ClientHeight = 194
+  ClientHeight = 241
   ClientWidth = 497
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
   OnShow = FormShow
   DesignSize = (
     497
-    194)
+    241)
   PixelsPerInch = 96
   TextHeight = 13
   object imgFormulario: TImage
@@ -87,7 +87,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
   end
   object btnFechar: TBitBtn
     Left = 416
-    Top = 152
+    Top = 200
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -99,7 +99,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
     Left = 48
     Top = 8
     Width = 441
-    Height = 137
+    Height = 185
     BevelKind = bkTile
     BevelOuter = bvNone
     Caption = 'panFormulario'
@@ -148,6 +148,13 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
       Width = 39
       Height = 13
       Caption = 'Hor'#225'rio:'
+    end
+    object lblHashCode: TLabel
+      Left = 16
+      Top = 120
+      Width = 53
+      Height = 13
+      Caption = 'HashCode:'
     end
     object txtMensagem: TEdit
       Left = 16
@@ -250,10 +257,27 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
       OnKeyDown = txtHrOcorrenciaFimKeyDown
       OnKeyPress = txtHrOcorrenciaFimKeyPress
     end
+    object txtHashCode: TEdit
+      Left = 16
+      Top = 136
+      Width = 401
+      Height = 22
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 5
+      Text = 'txtHashCode'
+      OnEnter = txtHashCodeEnter
+      OnExit = txtHashCodeExit
+      OnKeyPress = txtHashCodeKeyPress
+    end
   end
   object btnLimpar: TBitBtn
     Left = 48
-    Top = 152
+    Top = 200
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -263,7 +287,7 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
   end
   object btnConfirmar: TBitBtn
     Left = 248
-    Top = 152
+    Top = 200
     Width = 81
     Height = 33
     Cursor = crHandPoint
@@ -279,11 +303,11 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
   end
   object btnMinimizar: TBitBtn
     Left = 336
-    Top = 152
+    Top = 200
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Anchors = [akRight, akBottom]
+    Anchors = [akTop, akRight]
     Caption = 'Minimizar'
     TabOrder = 2
     OnClick = btnMinimizarClick

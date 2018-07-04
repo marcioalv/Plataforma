@@ -59,6 +59,8 @@ procedure VCLSDIMinimizar;
 //
 // Mensagens.
 //
+procedure VCLInformacaoExibir(argMensagem: string);
+
 procedure VCLConsistenciaExibir(argMensagem: string);
 
 procedure VCLExcecaoExibir(argMensagem: string; argExcecao: string);
@@ -169,6 +171,14 @@ end;
 procedure VCLSDIMinimizar;
 begin
   Application.Minimize;
+end;
+
+//
+// VCLInformacaoExibir.
+//
+procedure VCLInformacaoExibir(argMensagem: string);
+begin
+  Application.MessageBox(PChar(argMensagem), 'Informação', MB_OK + MB_ICONINFORMATION);
 end;
 
 //
