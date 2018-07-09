@@ -57,6 +57,8 @@ function UserNameRecuperar: string;
 
 function DriveSerialNumberRecuperar(argDriveLetra: string): Integer;
 
+function StringConcatenar(argMensagem1: string; argMensagem2: string): string;
+
 function StringTrim(argValor: string): string;
 
 function StringLocalizar(argValor: string; argSubString: string): Boolean;
@@ -142,7 +144,15 @@ var
 begin 
   GetVolumeInformation(PChar(argDriveLetra + ':\'), nil, MAX_PATH, @locVolumeSerialNumber, locNotUsed, locVolumeFlags, nil, 0);
   Result := Abs(locVolumeSerialNumber);
-end; 
+end;
+
+//
+// StringConcatenar.
+//
+function StringConcatenar(argMensagem1: string; argMensagem2: string): string;
+begin
+  Result := argMensagem1 + ' - ' + argMensagem2;
+end;
 
 //
 // StringTrim.

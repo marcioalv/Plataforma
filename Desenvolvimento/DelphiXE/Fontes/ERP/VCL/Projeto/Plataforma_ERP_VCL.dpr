@@ -16,7 +16,10 @@ uses
   Plataforma_ERP_VCL_LogLocalFiltro in '..\Formularios\Plataforma_ERP_VCL_LogLocalFiltro.pas' {PlataformaERPVCLLogLocalFiltro},
   Vcl.Themes,
   Vcl.Styles,
-  Plataforma_ERP_VCL_LogLocalLocalizar in '..\Formularios\Plataforma_ERP_VCL_LogLocalLocalizar.pas' {PlataformaERPVCLLogLocalLocalizar};
+  Plataforma_ERP_VCL_LogLocalLocalizar in '..\Formularios\Plataforma_ERP_VCL_LogLocalLocalizar.pas' {PlataformaERPVCLLogLocalLocalizar},
+  Plataforma_ERP_VCL_TiposUsuariosLista in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosLista.pas' {PlataformaERPVCLTiposUsuariosLista},
+  Plataforma_ERP_VCL_TiposUsuariosCadastro in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosCadastro.pas' {PlataformaERPVCLTiposUsuariosCadastro},
+  Plataforma_ERP_TipoUsuario in '..\..\Modulos\Plataforma_ERP_TipoUsuario.pas';
 
 {$R *.res}
 

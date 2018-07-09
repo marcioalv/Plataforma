@@ -25,10 +25,17 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     object mniAplicacao: TMenuItem
       Caption = '&Aplica'#231#227'o'
       object mniLogUsoAplicacao: TMenuItem
-        Caption = 'Log de uso da aplica'#231#227'o'
+        Caption = 'Log de uso'
         object mniLogUsoLocal: TMenuItem
           Caption = 'Log detalhado local do computador'
           OnClick = mniLogUsoLocalClick
+        end
+      end
+      object Controledeacesso1: TMenuItem
+        Caption = 'Controle de acesso'
+        object mniTiposUsuarios: TMenuItem
+          Caption = 'Tipos de usu'#225'rios'
+          OnClick = mniTiposUsuariosClick
         end
       end
     end

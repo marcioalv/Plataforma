@@ -152,9 +152,9 @@ object PlataformaERPVCLLogLocalFiltro: TPlataformaERPVCLLogLocalFiltro
     object lblHashCode: TLabel
       Left = 16
       Top = 120
-      Width = 53
+      Width = 107
       Height = 13
-      Caption = 'HashCode:'
+      Caption = 'HashCode (num'#233'rico):'
     end
     object txtMensagem: TEdit
       Left = 16

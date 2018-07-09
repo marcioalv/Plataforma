@@ -54,8 +54,7 @@ type
                     argAppUserID  : string;
                     argAppUserName: string;
                     argCritical   : Boolean;
-                    argMessage    : string;
-                    argException  : string = '');
+                    argMessage    : string);
   end;
 
 implementation
@@ -188,11 +187,9 @@ procedure TPlataformaFrameworkLog.Write(argHostName   : string;
                                         argAppUserID  : string;
                                         argAppUserName: string;
                                         argCritical   : Boolean;
-                                        argMessage    : string;
-                                        argException  : string = '');
+                                        argMessage    : string);
 var
   locCritical: string;
-  locMessage : string;
   locLine    : string;
   locTextFile: TextFile;
 begin
@@ -200,9 +197,6 @@ begin
     locCritical := 'T'
   else
     locCritical := 'F';
-
-  locMessage := argMessage;
-  if argException <> '' then locMessage := locMessage + ' -> ' + argException;
 
   locLine := argHostName                                    + '|' +
              argUserName                                    + '|' +
@@ -212,7 +206,7 @@ begin
              argAppUserName                                 + '|' +
              locCritical                                    + '|' +
              FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now) + '|' +
-             locMessage;
+             argMessage;
 
   PathDefine;
   FileDefine(locTextFile);

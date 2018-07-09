@@ -18,14 +18,16 @@ uses
   Plataforma_Framework_Log;
 
 var
-  gloAppHashCode : string;
-  gloAppPath     : string;
+  gloAppHashCode  : string;
+  gloAppPath      : string;
 
-  gloLocalLog    : TPlataformaFrameworkLog;
+  gloLocalLog     : TPlataformaFrameworkLog;
 
-  gloUsuarioID   : Integer;
-  gloUsuarioLogon: string;
-  gloUsuarioNome : string;
+  gloTimeOutNormal: Integer;
+
+  gloUsuarioID    : Integer;
+  gloUsuarioLogon : string;
+  gloUsuarioNome  : string;
 
 implementation
 

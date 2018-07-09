@@ -21,6 +21,7 @@ uses
   Plataforma_ERP_Generico,
   Plataforma_ERP_Inicializacao,
   Plataforma_ERP_VCL_LogLocalLista,
+  Plataforma_ERP_VCL_TiposUsuariosLista,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -38,9 +39,12 @@ type
     mniAplicacao: TMenuItem;
     mniLogUsoAplicacao: TMenuItem;
     mniLogUsoLocal: TMenuItem;
+    Controledeacesso1: TMenuItem;
+    mniTiposUsuarios: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
+    procedure mniTiposUsuariosClick(Sender: TObject);
   private
     procedure Inicializar;
     procedure FormularioTituloDeterminar;
@@ -85,6 +89,19 @@ begin
 end;
 
 //
+// Evento de click na opção "Tipos de usuários".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniTiposUsuariosClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLTiposUsuariosLista;
+begin
+  locFormulario := TPlataformaERPVCLTiposUsuariosLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
 // Procedimento para inicializar a aplicação de ERP.
 //
 procedure TPlataformaERPVCLMenuPrincipal.Inicializar;
@@ -97,6 +114,9 @@ begin
  
   // Inicializa o log local da aplicação.
   PlataformaERPLogInicializar;
+
+  // Define os timeouts.
+  gloTimeOutNormal := 60;
 
   // Autentica usuário.
   PlataformaERPUsuarioInicializar;

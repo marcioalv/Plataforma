@@ -79,6 +79,7 @@ procedure VCLListViewLimpar(argComponente: TListView);
 procedure VCLMaskEditLimpar(argComponente: TMaskEdit);
 procedure VCLEditLimpar(argComponente: TEdit);
 procedure VCLRadioButtonLimpar(argComponente: TRadioButton);
+procedure VCLCheckBoxLimpar(argComponente: TCheckBox);
 procedure VCLMemoLimpar(argComponente: TMemo);
 procedure VCLProgressBarLimpar(argComponente: TProgressBar);
 
@@ -243,6 +244,14 @@ end;
 // VCLRadioButtonLimpar.
 //
 procedure VCLRadioButtonLimpar(argComponente: TRadioButton);
+begin
+  argComponente.Checked := False;
+end;
+
+//
+// VCLCheckBoxLimpar.
+//
+procedure VCLCheckBoxLimpar(argComponente: TCheckBox);
 begin
   argComponente.Checked := False;
 end;
@@ -554,7 +563,8 @@ begin
 
   if not DataValidar(locData) then
   begin
-    VCLConsistenciaExibir('A data informada não é válida!');
+    VCLConsistenciaExibir('A data [' + argComponente.Text + '] informada não é válida!');
+    argComponente.Text := '';
     argComponente.SetFocus;
     Result := False;
     Exit;
@@ -587,7 +597,8 @@ begin
 
   if not HorarioValidar(locHorario) then
   begin
-    VCLConsistenciaExibir('O horário informado não é válido!');
+    VCLConsistenciaExibir('O horário [' + argComponente.Text + '] informado não é válido!');
+    argComponente.Text := '';
     argComponente.SetFocus;
     Result := False;
     Exit;
