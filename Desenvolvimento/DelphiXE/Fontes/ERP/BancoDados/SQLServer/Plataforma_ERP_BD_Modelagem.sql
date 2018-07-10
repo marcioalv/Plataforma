@@ -7,11 +7,12 @@ GO
 --
 -- Apaga tabelas.
 --
-IF OBJECT_ID('tipo_usuario_log') IS NOT NULL DROP TABLE [tipo_usuario_log]
-IF OBJECT_ID('tipo_usuario')     IS NOT NULL DROP TABLE [tipo_usuario]
-IF OBJECT_ID('licenca')          IS NOT NULL DROP TABLE [licenca]
-IF OBJECT_ID('base')             IS NOT NULL DROP TABLE [base]
-IF OBJECT_ID('registro_acao')    IS NOT NULL DROP TABLE [registro_acao]
+IF OBJECT_ID('tipo_usuario_log')  IS NOT NULL DROP TABLE [tipo_usuario_log]
+IF OBJECT_ID('tipo_usuario')      IS NOT NULL DROP TABLE [tipo_usuario]
+IF OBJECT_ID('numerador_licenca') IS NOT NULL DROP TABLE [numerador_licenca]
+IF OBJECT_ID('licenca')           IS NOT NULL DROP TABLE [licenca]
+IF OBJECT_ID('base')              IS NOT NULL DROP TABLE [base]
+IF OBJECT_ID('registro_acao')     IS NOT NULL DROP TABLE [registro_acao]
 GO
 
 --
@@ -78,6 +79,36 @@ CREATE TABLE [dbo].[licenca] (
 GO
 
 --
+-- Numerador por licença.
+--
+CREATE TABLE [dbo].[numerador_licenca] (
+  [base_id]             SMALLINT                                 NOT NULL,
+  [licenca_id]          INT                                      NOT NULL,
+  [codigo]              VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [atual_id]            INT                                      NOT NULL,
+  [bloqueado]           CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]               CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]     DATETIME                                 NOT NULL,
+  [ins_server_dt_hr]    DATETIME                                 NOT NULL,
+  [ins_usuario_base_id] SMALLINT                                 NOT NULL,
+  [ins_usuario_id]      INT                                      NOT NULL,
+  [upd_local_dt_hr]     DATETIME                                 NULL,
+  [upd_server_dt_hr]    DATETIME                                 NULL,
+  [upd_usuario_base_id] SMALLINT                                 NOT NULL,
+  [upd_usuario_id]      INT                                      NOT NULL,
+  [upd_contador]        INT                                      NOT NULL,
+ 
+  CONSTRAINT [numerador_licenca_pk] PRIMARY KEY CLUSTERED ([base_id], [licenca_id], [codigo]),
+
+  CONSTRAINT [numerador_licenca_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [numerador_licenca_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
+
+  CONSTRAINT [numerador_licenca_fk_base]    FOREIGN KEY ([base_id])    REFERENCES [base]    ([base_id]),
+  CONSTRAINT [numerador_licenca_fk_licenca] FOREIGN KEY ([licenca_id]) REFERENCES [licenca] ([licenca_id])
+)
+GO
+
+--
 -- Tipos de usuário.
 --
 CREATE TABLE [dbo].[tipo_usuario] (
@@ -92,7 +123,7 @@ CREATE TABLE [dbo].[tipo_usuario] (
   [ins_server_dt_hr] DATETIME                                  NOT NULL,
   [upd_local_dt_hr]  DATETIME                                  NULL,
   [upd_server_dt_hr] DATETIME                                  NULL,
-  [upd_seq]          INT                                       NOT NULL,
+  [upd_contador]     INT                                       NOT NULL,
  
   CONSTRAINT [tipo_usuario_pk]        PRIMARY KEY CLUSTERED ([base_id], [licenca_id], [tipo_usuario_id]),
   CONSTRAINT [tipo_usuario_ix_codigo] UNIQUE                ([base_id], [licenca_id], [codigo]),
@@ -156,4 +187,6 @@ INSERT INTO [tipo_usuario_log] VALUES (1, 1, 1, 1, GETDATE(), GETDATE(), 1, 'ws0
 --
 -- Chave estrangeira do tipo de usuário para o usuário.
 --
---> ALTER TABLE [tipo_usuario_log] ADD CONSTRAINT [tipo_usuario_log_fk_usuario] FOREIGN KEY ([usuario_base_id], [licenca_id], [usuario_id]) REFERENCES [usuario] ([base_id], [licenca_id], ,[usuario_id])
+--> ALTER TABLE [tipo_usuario_log]  ADD CONSTRAINT [tipo_usuario_log_fk_usuario]  FOREIGN KEY ([usuario_base_id], [licenca_id], [usuario_id]) REFERENCES [usuario] ([base_id], [licenca_id], ,[usuario_id])
+--> ALTER TABLE [numerador_licenca] ADD CONSTRAINT [numerador_licenca_fk_ins_usuario] FOREIGN KEY ([ins_usuario_base_id], [licenca_id], [ins_usuario_id]) REFERENCES [usuario] ([base_id], [licenca_id], ,[usuario_id])
+--> ALTER TABLE [numerador_licenca] ADD CONSTRAINT [numerador_licenca_fk_upd_usuario] FOREIGN KEY ([upd_usuario_base_id], [licenca_id], [upd_usuario_id]) REFERENCES [usuario] ([base_id], [licenca_id], ,[usuario_id])

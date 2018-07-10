@@ -1,4 +1,4 @@
-//
+//                                                                   
 // Arquivo..: Plataforma_ERP_TipoUsuario.pas
 // Projeto..: ERP
 // Fonte....: Unit de procedimentos e funções.
@@ -21,6 +21,14 @@ uses
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico;
 
+function PlataformaERPTipoUsuarioADOPersistir(argBaseID       : Integer;
+                                              argLicencaID    : Integer;
+                                              argTipoUsuarioID: Integer;
+                                              argCodigo       : string;
+                                              argTitulo       : string;
+                                              argBloqueado    : Boolean;
+                                              argAtivo        : Boolean): Integer;
+  
 function PlataformaERPTipoUsuarioADOCodigoConsistir(argADOConnection: TADOConnection;
                                                     argBaseID       : Integer;
                                                     argLicencaID    : Integer;
@@ -35,9 +43,9 @@ function PlataformaERPTipoUsuarioADOInsert(argADOConnection: TADOConnection;
                                            argAtivo        : Boolean): Integer;
 
 procedure PlataformaERPTipoUsuarioADOUpdate(argADOConnection: TADOConnection;
-                                            argTipoUsuarioID: Integer;
                                             argBaseID       : Integer;
                                             argLicencaID    : Integer;
+                                            argTipoUsuarioID: Integer;
                                             argCodigo       : string;
                                             argTitulo       : string;
                                             argBloqueado    : Boolean;
@@ -47,6 +55,75 @@ implementation
 
 const
   UNIT_NOME: string = 'Plataforma_ERP_TipoUsuario.pas';
+
+//
+// PlataformaERPTipoUsuarioADOPersistir.
+//
+function PlataformaERPTipoUsuarioADOPersistir(argBaseID       : Integer;
+                                              argLicencaID    : Integer;
+                                              argTipoUsuarioID: Integer;
+                                              argCodigo       : string;
+                                              argTitulo       : string;
+                                              argBloqueado    : Boolean;
+                                              argAtivo        : Boolean): Integer;
+const
+  FUNCAO_NOME: string = 'PlataformaERPTipoUsuarioADOCodigoConsistir';
+var
+  locADOConnection: TADOConnection;
+  locMsgErro      : string;
+  locADOQuery     : TADOQuery;
+begin
+  // Instância objeto de conexão.
+  locADOConnection                   := TADOConnection.Create(nil);
+  locADOConnection.ConnectionTimeout := 1;
+  locADOConnection.ConnectionString  := '';
+
+  try
+    locADOConnection.Open;
+  except
+    on locExcecao: Exception do
+    begin
+    end;
+  end;
+
+  // Insere ou atualiza registro.
+  if argTipoUsuarioID = 0 then
+  begin
+    try
+      Result := PlataformaERPTipoUsuarioADOInsert(locADOConnection,
+                                                  argBaseID,
+                                                  argLicencaID,
+                                                  argCodigo,
+                                                  argTitulo,
+                                                  argBloqueado,
+                                                  argAtivo); 
+    except
+      on locExcecao: Exception do
+      begin
+        
+      end;
+    end;
+  end
+  else
+  begin
+    try
+      PlataformaERPTipoUsuarioADOUpdate(locADOConnection,
+                                        argBaseID,
+                                        argLicencaID,
+                                        argCodigo,
+                                        argTitulo,
+                                        argBloqueado,
+                                        argAtivo); 
+    except
+      on locExcecao: Exception do
+      begin
+      end;
+    end;
+  
+    // Retorna o próximo ID fo tipo do usuário.
+    Result := argTipoUsuarioID;
+  end;
+end;
 
 //
 // PlataformaERPTipoUsuarioADOCodigoConsistir.
@@ -71,7 +148,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível consistir o código do tipo de usuário!';
-      PlataformaERPLogar(True, locMsgErro, UNIT_NOME, FUNCAO_NOME);
+      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -84,20 +161,19 @@ begin
   // Monta SQL para consistir se o código informado é único.
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                          ');
-  locADOQuery.SQL.Add('  1                                   ');
-  locADOQuery.SQL.Add('FROM                                  ');
-  locADOQuery.SQL.Add('  [tipo_usuario]                      ');
-  locADOQuery.SQL.Add('WHERE                                 ');
-  locADOQuery.SQL.Add('  :base_id         = :base_id    AND  ');
-  locADOQuery.SQL.Add('  :licenca_id      = :licenca_id AND  ');
-  locADOQuery.SQL.Add('  :tipo_usuario_id = :tipo_usuario_id ');
+  locADOQuery.SQL.Add('SELECT TOP 1                    ');
+  locADOQuery.SQL.Add('  1                             ');
+  locADOQuery.SQL.Add('FROM                            ');
+  locADOQuery.SQL.Add('  [tipo_usuario]                ');
+  locADOQuery.SQL.Add('WHERE                           ');
+  locADOQuery.SQL.Add('  :base_id    = :base_id    AND ');
+  locADOQuery.SQL.Add('  :licenca_id = :licenca_id AND ');
+  locADOQuery.SQL.Add('  :codigo     = :codigo         ');
 
   // Passa parâmetros.
-  locADOQuery.Parameters.ParamByName('base_id').Value         := argBaseID;
-  locADOQuery.Parameters.ParamByName('licenca_id').Value      := argLicencaID;
-  locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value := locTipoUsuarioID;
-  locADOQuery.Parameters.ParamByName('codigo').Value          := argCodigo;
+  locADOQuery.Parameters.ParamByName('base_id').Value    := argBaseID;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value := argLicencaID;
+  locADOQuery.Parameters.ParamByName('codigo').Value     := argCodigo;
 
   // Executa query.
   try
@@ -141,9 +217,6 @@ var
   locADOQuery     : TADOQuery;
   locTipoUsuarioID: Integer;
 begin
-  // Valor de retorno padrão.
-  Result := 0;
-
   // Consiste o objeto de conexão ADO.
   try
     PlataformaERPConexaoADOConsistir(argADOConnection);
@@ -151,7 +224,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível inserir registro de tipo de usuário na base de dados da aplicação!';
-      PlataformaERPLogar(True, locMsgErro, UNIT_NOME, FUNCAO_NOME);
+      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -160,14 +233,16 @@ begin
   try
     if not PlataformaERPTipoUsuarioADOCodigoConsistir(argADOConnection, argBaseID, argLicencaID, argCodigo) then
     begin
-      locMsgErro := 'O código do tipo de usuário informado já existe em algum outro cadastro!';
-      PlataformaERPLogar(False, 
-      raise Exception.Create(locMsgErro,);
+      locMsgErro := 'O código do tipo de usuário [' + argCodigo + '] informado já existe em algum outro cadastro!';
+      PlataformaERPLogar(False, locMsgErro, UNIT_NOME, FUNCAO_NOME);
+      raise Exception.Create(locMsgErro);
     end;
   except
     on locExcecao: Exception do
     begin
-      
+      locMsgErro := 'Ocorreu algum erro ao tentar determinar se o código do tipo do usuário já existe para um outro cadastro!';
+      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end; 
   
@@ -177,7 +252,16 @@ begin
   locADOQuery.CommandTimeout := gloTimeOutNormal;
 
   // Próximo ID do tipo do usuário.
-  locTipoUsuarioID := 0;
+  try
+    locTipoUsuarioID := PlataformaERPConexaoADONumeradorLicenca(argADOConnection, argBaseID, argLicencaID, NUMERADOR_TIPO_USUARIO_ID);
+  except
+    on locExcecao: Exception do
+    begin
+      locMsgErro := 'Impossível determinar o próximo numerador para o tipo do usuário!';
+      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
+    end;
+  end;
 
   // Monta SQL para inserir dados na tabela.
   locADOQuery.Close;
@@ -194,7 +278,7 @@ begin
   locADOQuery.SQL.Add('  [ins_server_dt_hr],       ');
   locADOQuery.SQL.Add('  [upd_local_dt_hr],        ');
   locADOQuery.SQL.Add('  [upd_server_dt_hr],       ');
-  locADOQuery.SQL.Add('  [upd_seq]                 ');  
+  locADOQuery.SQL.Add('  [upd_contador]            ');  
   locADOQuery.SQL.Add(')                           ');
   locADOQuery.SQL.Add('VALUES (                    ');
   locADOQuery.SQL.Add('  :base_id,                 '); // base_id.
@@ -204,11 +288,11 @@ begin
   locADOQuery.SQL.Add('  :titulo,                  '); // titulo.
   locADOQuery.SQL.Add('  :bloqueado,               '); // bloqueado.
   locADOQuery.SQL.Add('  :ativo                    '); // ativo.
-  locADOQuery.SQL.Add('  :local_dt_hr,             '); // ins_local_dt_hr.
+  locADOQuery.SQL.Add('  :ins_local_dt_hr,         '); // ins_local_dt_hr.
   locADOQuery.SQL.Add('  GETDATE(),                '); // ins_server_dt_hr.
   locADOQuery.SQL.Add('  NULL,                     '); // upd_local_dt_hr.
   locADOQuery.SQL.Add('  NULL,                     '); // upd_server_dt_hr.
-  locADOQuery.SQL.Add('  NULL                      '); // upd_seq.
+  locADOQuery.SQL.Add('  0                         '); // upd_contador.
   locADOQuery.SQL.Add(')                           ');
 
   // Passa parâmetros.
@@ -219,7 +303,7 @@ begin
   locADOQuery.Parameters.ParamByName('titulo').Value          := argTitulo;
   locADOQuery.Parameters.ParamByName('bloqueado').Value       := argBloqueado;
   locADOQuery.Parameters.ParamByName('ativo').Value           := argAtivo;
-  locADOQuery.Parameters.ParamByName('local_dt_hr').Value     := Now;
+  locADOQuery.Parameters.ParamByName('ins_local_dt_hr').Value := Now;
 
   // Executa query.
   try
@@ -230,7 +314,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [tipo_usuario]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message);
+      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -247,9 +331,9 @@ end;
 // PlataformaERPTipoUsuarioADOUpdate.
 //
 procedure PlataformaERPTipoUsuarioADOUpdate(argADOConnection: TADOConnection;
-                                            argTipoUsuarioID: Integer;
                                             argBaseID       : Integer;
                                             argLicencaID    : Integer;
+                                            argTipoUsuarioID: Integer;
                                             argCodigo       : string;
                                             argTitulo       : string;
                                             argBloqueado    : Boolean;
@@ -267,7 +351,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível atualizar registro de tipo de usuário na base de dados da aplicação!';
-      PlataformaERPLogar(True, locMsgErro, UNIT_NOME, PROCEDIMENTO_NOME);
+      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -315,7 +399,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para atualizar o registro na tabela [tipo_usuario]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message);
+      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
