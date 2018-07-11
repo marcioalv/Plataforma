@@ -19,7 +19,8 @@ uses
   Plataforma_ERP_VCL_LogLocalLocalizar in '..\Formularios\Plataforma_ERP_VCL_LogLocalLocalizar.pas' {PlataformaERPVCLLogLocalLocalizar},
   Plataforma_ERP_VCL_TiposUsuariosLista in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosLista.pas' {PlataformaERPVCLTiposUsuariosLista},
   Plataforma_ERP_VCL_TiposUsuariosCadastro in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosCadastro.pas' {PlataformaERPVCLTiposUsuariosCadastro},
-  Plataforma_ERP_TipoUsuario in '..\..\Modulos\Plataforma_ERP_TipoUsuario.pas';
+  Plataforma_ERP_TipoUsuario in '..\..\Modulos\Plataforma_ERP_TipoUsuario.pas',
+  Plataforma_ERP_RegistroAcao in '..\..\Modulos\Plataforma_ERP_RegistroAcao.pas';
 
 {$R *.res}
 

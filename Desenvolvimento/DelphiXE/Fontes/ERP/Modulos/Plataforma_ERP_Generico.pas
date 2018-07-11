@@ -34,7 +34,9 @@ procedure PlataformaERPConexaoADOConsistir(argADOConnection: TADOConnection);
 function PlataformaERPConexaoADONumeradorLicenca(argADOConnection: TADOConnection;
                                                  argBaseID       : Integer;
                                                  argLicencaID    : Integer;
-                                                 argCodigo       : string): Integer;
+                                                 argCodigo       : string;
+                                                 argUsuarioBaseID: Integer;
+                                                 argUsuarioID    : Integer): Integer;
 
 implementation
 
@@ -105,16 +107,15 @@ end;
 function PlataformaERPConexaoADONumeradorLicenca(argADOConnection: TADOConnection;
                                                  argBaseID       : Integer;
                                                  argLicencaID    : Integer;
-                                                 argCodigo       : string): Integer;
+                                                 argCodigo       : string;
+                                                 argUsuarioBaseID: Integer;
+                                                 argUsuarioID    : Integer): Integer;
 const
   FUNCAO_NOME: string = 'PlataformaERPConexaoADONumeradorLicenca';
 var
   locMsgErro : string;
   locADOQuery: TADOQuery;
 begin
-  // Valor de retorno padrão.
-  Result := 0;
-
   // Consiste o objeto de conexão ADO.
   try
     PlataformaERPConexaoADOConsistir(argADOConnection);
@@ -211,8 +212,8 @@ begin
     locADOQuery.Parameters.ParamByName('bloqueado').Value           := 'N';
     locADOQuery.Parameters.ParamByName('ativo').Value               := 'S';
     locADOQuery.Parameters.ParamByName('ins_local_dt_hr').Value     := Now;
-    locADOQuery.Parameters.ParamByName('ins_usuario_base_id').Value := 0;
-    locADOQuery.Parameters.ParamByName('ins_usuario_id').Value      := 0;
+    locADOQuery.Parameters.ParamByName('ins_usuario_base_id').Value := argUsuarioBaseID;
+    locADOQuery.Parameters.ParamByName('ins_usuario_id').Value      := argUsuarioID;
     locADOQuery.Parameters.ParamByName('upd_contador').Value        := 0;
 
     try
@@ -242,7 +243,7 @@ begin
     locADOQuery.SQL.Add('UPDATE                                          ');
     locADOQuery.SQL.Add('  [numerador_licenca]                           ');
     locADOQuery.SQL.Add('SET                                             ');
-    locADOQuery.SQL.Add('  [atual_id],                                   ');
+    locADOQuery.SQL.Add('  [atual_id]            = :atual_id,            ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]     = :upd_local_dt_hr,     ');
     locADOQuery.SQL.Add('  [upd_server_dt_hr]    = GETDATE(),            ');
     locADOQuery.SQL.Add('  [upd_usuario_base_id] = :upd_usuario_base_id, ');
@@ -256,12 +257,10 @@ begin
     locADOQuery.Parameters.ParamByName('base_id').Value             := argBaseID;
     locADOQuery.Parameters.ParamByName('licenca_id').Value          := argLicencaID;
     locADOQuery.Parameters.ParamByName('codigo').Value              := argCodigo;
-    locADOQuery.Parameters.ParamByName('atual_id').Value            := 1;
-    locADOQuery.Parameters.ParamByName('bloqueado').Value           := 'N';
-    locADOQuery.Parameters.ParamByName('ativo').Value               := 'S';
+    locADOQuery.Parameters.ParamByName('atual_id').Value            := Result;
     locADOQuery.Parameters.ParamByName('upd_local_dt_hr').Value     := Now;
-    locADOQuery.Parameters.ParamByName('upd_usuario_base_id').Value := 0;
-    locADOQuery.Parameters.ParamByName('upd_usuario_id').Value      := 0;
+    locADOQuery.Parameters.ParamByName('upd_usuario_base_id').Value := argUsuarioBaseID;
+    locADOQuery.Parameters.ParamByName('upd_usuario_id').Value      := argUsuarioID;
 
     try
       locADOQuery.ExecSQL;

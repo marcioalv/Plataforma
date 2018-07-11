@@ -21,6 +21,10 @@ GO
 CREATE TABLE [dbo].[registro_acao] (
   [registro_acao_id] TINYINT                                  NOT NULL,
   [titulo]           VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [Criacao]          CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [Consulta]         CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [Alteracao]        CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [Exclusao]         CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]        CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]            CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ins_local_dt_hr]  DATETIME                                 NOT NULL,
@@ -30,7 +34,11 @@ CREATE TABLE [dbo].[registro_acao] (
   [seq_upd]          INT                                      NOT NULL,
   
   CONSTRAINT [registro_acao_pk] PRIMARY KEY CLUSTERED ([registro_acao_id]),
-  
+
+  CONSTRAINT [registro_acao_ck_criacao]   CHECK ([criacao]   IN ('S', 'N')),
+  CONSTRAINT [registro_acao_ck_consulta]  CHECK ([consulta]  IN ('S', 'N')),
+  CONSTRAINT [registro_acao_ck_alteracao] CHECK ([alteracao] IN ('S', 'N')),
+  CONSTRAINT [registro_acao_ck_exclusao]  CHECK ([exclusao]  IN ('S', 'N')),  
   CONSTRAINT [registro_acao_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
   CONSTRAINT [registro_acao_ck_ativo]     CHECK ([ativo]     IN ('S', 'N'))
 )
@@ -94,8 +102,8 @@ CREATE TABLE [dbo].[numerador_licenca] (
   [ins_usuario_id]      INT                                      NOT NULL,
   [upd_local_dt_hr]     DATETIME                                 NULL,
   [upd_server_dt_hr]    DATETIME                                 NULL,
-  [upd_usuario_base_id] SMALLINT                                 NOT NULL,
-  [upd_usuario_id]      INT                                      NOT NULL,
+  [upd_usuario_base_id] SMALLINT                                 NULL,
+  [upd_usuario_id]      INT                                      NULL,
   [upd_contador]        INT                                      NOT NULL,
  
   CONSTRAINT [numerador_licenca_pk] PRIMARY KEY CLUSTERED ([base_id], [licenca_id], [codigo]),
@@ -163,10 +171,10 @@ GO
 --
 -- Ações com registros.
 --
-INSERT INTO [registro_acao] VALUES (1, 'Inserção',  'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [registro_acao] VALUES (2, 'Consulta',  'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [registro_acao] VALUES (3, 'Alteração', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [registro_acao] VALUES (4, 'Exclusão',  'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [registro_acao] VALUES (1, 'Criação',   'S', 'N', 'N', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [registro_acao] VALUES (2, 'Consulta',  'N', 'S', 'N', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [registro_acao] VALUES (3, 'Alteração', 'N', 'N', 'S', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [registro_acao] VALUES (4, 'Exclusão',  'N', 'N', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 
 --
 -- Base padrão.

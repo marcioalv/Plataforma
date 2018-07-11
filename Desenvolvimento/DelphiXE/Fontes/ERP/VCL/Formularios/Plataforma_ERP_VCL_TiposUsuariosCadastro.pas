@@ -42,8 +42,8 @@ type
     edtCodigo: TEdit;
     lblTitulo: TLabel;
     edtTitulo: TEdit;
-    lblID: TLabel;
-    edtID: TEdit;
+    lblTipoUsuarioID: TLabel;
+    edtTipoUsuarioID: TEdit;
     chkBloqueado: TCheckBox;
     chkAtivo: TCheckBox;
     lblInsDtHt: TLabel;
@@ -52,17 +52,19 @@ type
     lblUpdDtHr: TLabel;
     edtUpdDtHr: TEdit;
     edtUpdUsuarioNome: TEdit;
-    lblUpdSeq: TLabel;
-    edtUpdSeq: TEdit;
+    lblUpdContador: TLabel;
+    edtUpdContador: TEdit;
     btnLog: TButton;
+    btnGravar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
-    procedure chkAtivoClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
+    procedure FormularioGravar;
   public
     { Public declarations }
   end;
@@ -76,9 +78,14 @@ implementation
 
 uses
   Plataforma_Framework_Util,
-  Plataforma_Framework_VCL;
+  Plataforma_Framework_VCL,
+  Plataforma_ERP_Global,
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_TipoUsuario;
 
 const
+  UNIT_NOME    : string = 'Plataforma_ERP_VCL_TipoUsuariosCadastro.pas';
+
   TAB_CADASTRO : Byte = 0;
   TAB_AUDITORIA: Byte = 1;
 
@@ -108,16 +115,19 @@ begin
 end;
 
 //
+// Evento de click no botão "Gravar".
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.btnGravarClick(Sender: TObject);
+begin
+  FormularioGravar;
+end;
+
+//
 // Evento de click no botão "Minimizar".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
-end;
-
-procedure TPlataformaERPVCLTiposUsuariosCadastro.chkAtivoClick(Sender: TObject);
-begin
-
 end;
 
 //
@@ -137,7 +147,7 @@ begin
   pagFormulario.ActivePageIndex := TAB_CADASTRO;
 
   // Limpa componentes da aba "Cadastro".
-  VCLEditLimpar(edtID);
+  VCLEditLimpar(edtTipoUsuarioID);
   VCLEditLimpar(edtCodigo);
   VCLEditLimpar(edtTitulo);
   VCLCheckBoxLimpar(chkBloqueado);
@@ -148,7 +158,78 @@ begin
   VCLEditLimpar(edtInsUsuarioNome);
   VCLEditLimpar(edtUpdDtHr);
   VCLEditLimpar(edtUpdUsuarioNome);
-  VCLEditLimpar(EdtUpdSeq);
+  VCLEditLimpar(EdtUpdContador);
+end;
+
+//
+// Procedimento para gravar os dados do formulário.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioGravar;
+const
+  PROCEDIMENTO_NOME: string = 'FormularioGravar';
+var
+  locBaseID       : Integer;
+  locLicencaID    : Integer;
+  locTipoUsuarioID: Integer;
+  locCodigo       : string;
+  locTitulo       : string;
+  locBloqueado    : Boolean;
+  locAtivo        : Boolean;
+  locUsuarioBaseID: Integer;
+  locUsuarioID    : Integer;
+  locHostName     : string;
+  locUserName     : string;
+  locUpdContador  : Integer;
+begin
+  // Carrega variáveis com os valores dos componentes.
+  locBaseID        := gloBaseID;
+  locLicencaID     := gloLicencaID;
+  locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
+  locCodigo        := StringTrim(edtCodigo.Text);
+  locTitulo        := StringTrim(edtTitulo.Text);
+  locBloqueado     := chkBloqueado.Checked;
+  locAtivo         := chkAtivo.Checked;
+  locUsuarioBaseID := gloUsuarioBaseID;
+  locUsuarioID     := gloUsuarioID;
+  locHostName      := HostNameRecuperar;
+  locUserName      := UserNameRecuperar;
+  locUpdContador   := StringIntegerConverter(edtUpdContador.Text);
+
+  // Consistir informações.
+
+  // Troca cursor.
+  VCLCursorTrocar(True);
+
+  // Persiste dados.
+  try
+    locTipoUsuarioID := PlataformaERPTipoUsuarioADOPersistir(locBaseID,
+                                                             locLicencaID,
+                                                             locTipoUsuarioID,
+                                                             locCodigo,
+                                                             locTitulo,
+                                                             locBloqueado,
+                                                             locAtivo,
+                                                             locUsuarioBaseID,
+                                                             locUsuarioID,
+                                                             locHostName,
+                                                             locUserName,
+                                                             locUpdContador);
+  except
+    on locExcecao: Exception do
+    begin
+      PlataformaERPLogar(True, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
+      VCLCursorTrocar;
+      VCLErroExibir(locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  // Atualiza o ID do tipo do usuário que foi gravado.
+  edtTipoUsuarioID.Text := IntegerStringConverter(locTipoUsuarioID);
+
+  // Finaliza.
+  VCLCursorTrocar;
+  VCLInformacaoExibir('Tipo de usuário gravado com sucesso!');
 end;
 
 end.

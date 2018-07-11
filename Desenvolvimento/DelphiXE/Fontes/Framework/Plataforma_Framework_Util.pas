@@ -57,7 +57,7 @@ function UserNameRecuperar: string;
 
 function DriveSerialNumberRecuperar(argDriveLetra: string): Integer;
 
-function StringConcatenar(argMensagem1: string; argMensagem2: string): string;
+function StringConcatenar(argMensagem1: string; argMensagem2: string; argMensagem3: string = ''): string;
 
 function StringTrim(argValor: string): string;
 
@@ -149,9 +149,11 @@ end;
 //
 // StringConcatenar.
 //
-function StringConcatenar(argMensagem1: string; argMensagem2: string): string;
+function StringConcatenar(argMensagem1: string; argMensagem2: string; argMensagem3: string = ''): string;
 begin
   Result := argMensagem1 + ' - ' + argMensagem2;
+
+  if argMensagem3 <> '' then Result := Result + ' - ' + argMensagem3;
 end;
 
 //

@@ -115,8 +115,18 @@ begin
   // Inicializa o log local da aplicação.
   PlataformaERPLogInicializar;
 
+  // Define os parâmetros de conexão ao banco de dados.
+  gloConexaoADOString := 'Provider=SQLOLEDB.1;Persist Security Info=True;Trusted_Connection=True;Data Source=LocalHost\SQLExpress;User ID=sa;Password=abc123;Initial Catalog=PlataformaERP;Connection Timeout=10;';
+  gloConexaoTimeOut   := 10;
+
   // Define os timeouts.
   gloTimeOutNormal := 60;
+
+  // Define a base.
+  gloBaseID := 1;
+
+  // Define a licença.
+  gloLicencaID := 1;
 
   // Autentica usuário.
   PlataformaERPUsuarioInicializar;

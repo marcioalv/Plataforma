@@ -354,7 +354,6 @@ procedure TPlataformaERPVCLLogLocalArquivoSelecao.HistoricoLogPopular;
 var  
   locListaArquivos: TStringList;
   locContador     : Integer;
-  locArquivo      : string;
   locArquivoNome  : string;
   locArquivoData  : string;
   locListItem     : TListItem;

@@ -140,7 +140,6 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Caption = 'Fechar'
     TabOrder = 0
     OnClick = btnFecharClick
-    ExplicitTop = 352
   end
   object btnMinimizar: TBitBtn
     Left = 376
@@ -152,7 +151,6 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Caption = 'Minimizar'
     TabOrder = 1
     OnClick = btnMinimizarClick
-    ExplicitTop = 352
   end
   object pagFormulario: TPageControl
     AlignWithMargins = True
@@ -168,10 +166,12 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     ActivePage = tabAuditoria
     Align = alClient
     TabOrder = 2
-    ExplicitHeight = 338
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitHeight = 310
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 56
@@ -186,7 +186,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Height = 13
         Caption = 'T'#237'tulo:'
       end
-      object lblID: TLabel
+      object lblTipoUsuarioID: TLabel
         Left = 16
         Top = 8
         Width = 15
@@ -222,7 +222,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         TabOrder = 1
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
       end
-      object edtID: TEdit
+      object edtTipoUsuarioID: TEdit
         Left = 16
         Top = 24
         Width = 41
@@ -257,13 +257,15 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Cursor = crHandPoint
         Caption = 'Ativo'
         TabOrder = 4
-        OnClick = chkAtivoClick
       end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitHeight = 310
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 16
@@ -278,12 +280,12 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Height = 13
         Caption = #218'ltima altera'#231#227'o:'
       end
-      object lblUpdSeq: TLabel
+      object lblUpdContador: TLabel
         Left = 16
         Top = 176
-        Width = 113
+        Width = 55
         Height = 13
-        Caption = 'Quantidade altera'#231#245'es:'
+        Caption = 'Altera'#231#245'es:'
       end
       object edtInsDtHr: TEdit
         Left = 16
@@ -355,10 +357,10 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         TabOrder = 3
         Text = 'Aaaaaaaaaa Bbbbbbbbbb Cccccccccc Dddddddddd Eeeeeeeeee'
       end
-      object edtUpdSeq: TEdit
+      object edtUpdContador: TEdit
         Left = 16
         Top = 192
-        Width = 121
+        Width = 57
         Height = 22
         TabStop = False
         Alignment = taRightJustify
@@ -383,5 +385,16 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         TabOrder = 5
       end
     end
+  end
+  object btnGravar: TBitBtn
+    Left = 296
+    Top = 280
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Anchors = [akRight, akBottom]
+    Caption = 'Gravar'
+    TabOrder = 3
+    OnClick = btnGravarClick
   end
 end

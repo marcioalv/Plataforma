@@ -63,6 +63,8 @@ procedure VCLInformacaoExibir(argMensagem: string);
 
 procedure VCLConsistenciaExibir(argMensagem: string);
 
+procedure VCLErroExibir(argMensagem: string);
+
 procedure VCLExcecaoExibir(argMensagem: string; argExcecao: string);
 
 //
@@ -188,6 +190,14 @@ end;
 procedure VCLConsistenciaExibir(argMensagem: string);
 begin
   Application.MessageBox(PChar(argMensagem), 'Consistência', MB_OK + MB_ICONWARNING);
+end;
+
+//
+// VCLErroExibir.
+//
+procedure VCLErroExibir(argMensagem: string);
+begin
+  Application.MessageBox(PChar(argMensagem), 'Erro', MB_OK + MB_ICONERROR);
 end;
 
 //

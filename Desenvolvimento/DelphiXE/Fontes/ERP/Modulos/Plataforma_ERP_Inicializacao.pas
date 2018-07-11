@@ -62,15 +62,17 @@ end;
 function PlataformaERPUsuarioInicializar: Boolean;
 begin
   // Inicializa usuário.
-  gloUsuarioID    := 0;
-  gloUsuarioLogon := '';
-  gloUsuarioNome  := '';
+  gloUsuarioBaseID := 0;
+  gloUsuarioID     := 0;
+  gloUsuarioLogon  := '';
+  gloUsuarioNome   := '';
 
   // Usuário autenticado.
-  gloUsuarioID    := 8345;
-  gloUsuarioLogon := 'marcio.alves';
-  gloUsuarioNome  := 'Marcio Alves';
-  Result          := True;
+  gloUsuarioBaseID := 1;
+  gloUsuarioID     := 8345;
+  gloUsuarioLogon  := 'marcio.alves';
+  gloUsuarioNome   := 'Marcio Alves';
+  Result           := True;
   end;
 
 end.
