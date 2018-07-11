@@ -94,6 +94,12 @@ function VCLEditSair(argComponente: TEdit): Boolean;
 function VCLMaskEditEntrar(argComponente: TMaskEdit): Boolean;
 function VCLMaskEditSair(argComponente: TMaskEdit): Boolean;
 
+function VCLMemoEntrar(argComponente: TMemo): Boolean;
+function VCLMemoSair(argComponente: TMemo): Boolean;
+
+function VCLCheckBoxEntrar(argComponente: TCheckBox): Boolean;
+function VCLCheckBoxSair(argComponente: TCheckBox): Boolean;
+
 //
 // Validações.
 //
@@ -513,18 +519,6 @@ begin
 end;
 
 //
-// VCLMaskEditEntrar.
-//
-function VCLMaskEditEntrar(argComponente: TMaskEdit): Boolean;
-begin
-  Result := False;
-  if argComponente.Color = clBtnFace then Exit;
-  argComponente.Color := RGB(230, 242, 255);
-  if argComponente.ReadOnly then Exit;
-  Result := True;
-end;
-
-//
 // VCLEditSair.
 //
 function VCLEditSair(argComponente: TEdit): Boolean;
@@ -538,6 +532,18 @@ begin
 end;
 
 //
+// VCLMaskEditEntrar.
+//
+function VCLMaskEditEntrar(argComponente: TMaskEdit): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := RGB(230, 242, 255);
+  if argComponente.ReadOnly then Exit;
+  Result := True;
+end;
+
+//
 // VCLMaskEditSair.
 //
 function VCLMaskEditSair(argComponente: TMaskEdit): Boolean;
@@ -547,6 +553,55 @@ begin
   argComponente.Color := clWindow;
   if argComponente.ReadOnly then Exit;
   argComponente.Text := StringTrim(argComponente.Text);
+  Result := True;
+end;
+
+//
+// VCLMemoEntrar.
+//
+function VCLMemoEntrar(argComponente: TMemo): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := RGB(230, 242, 255);
+  if argComponente.ReadOnly then Exit;
+  Result := True;
+end;
+
+//
+// VCLMemoSair.
+//
+function VCLMemoSair(argComponente: TMemo): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := clWindow;
+  if argComponente.ReadOnly then Exit;
+  argComponente.Text := StringTrim(argComponente.Text);
+  Result := True;
+end;
+
+//
+// VCLCheckBoxEntrar.
+//
+function VCLCheckBoxEntrar(argComponente: TCheckBox): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := RGB(230, 242, 255);
+  if not argComponente.Enabled then Exit;
+  Result := True;
+end;
+
+//
+// VCLCheckBoxSair.
+//
+function VCLCheckBoxSair(argComponente: TCheckBox): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := clWindow;
+  if not argComponente.Enabled then Exit;
   Result := True;
 end;
 

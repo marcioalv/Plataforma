@@ -48,7 +48,8 @@ GO
 -- Bases de dados.
 --
 CREATE TABLE [dbo].[base] (
-  [base_id]          SMALLINT NOT NULL,
+  [base_id]          SMALLINT                                  NOT NULL,
+  [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [titulo]           VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
@@ -59,6 +60,7 @@ CREATE TABLE [dbo].[base] (
   [seq_upd]          INT                                       NOT NULL,
 
   CONSTRAINT [base_pk] PRIMARY KEY CLUSTERED ([base_id]),
+  CONSTRAINT [base_ix_codigo] UNIQUE         ([codigo]),
 
   CONSTRAINT [base_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
   CONSTRAINT [base_ck_ativo]     CHECK ([ativo]     IN ('S', 'N'))
@@ -70,6 +72,7 @@ GO
 --
 CREATE TABLE [dbo].[licenca] (
   [licenca_id]       INT                                       NOT NULL,
+  [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [titulo]           VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
@@ -79,7 +82,8 @@ CREATE TABLE [dbo].[licenca] (
   [upd_server_dt_hr] DATETIME                                  NULL,
   [seq_upd]          INT                                       NOT NULL,
 
-  CONSTRAINT [licenca_pk] PRIMARY KEY CLUSTERED ([licenca_id]),
+  CONSTRAINT [licenca_pk]        PRIMARY KEY CLUSTERED ([licenca_id]),
+  CONSTRAINT [licenca_ix_codigo] UNIQUE                ([codigo]),
 
   CONSTRAINT [licenca_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
   CONSTRAINT [licenca_ck_ativo]     CHECK ([ativo]     IN ('S', 'N'))
@@ -179,12 +183,12 @@ INSERT INTO [registro_acao] VALUES (4, 'Exclusão',  'N', 'N', 'N', 'S', 'N', 'S'
 --
 -- Base padrão.
 --
-INSERT INTO [base] VALUES (1, 'Base central', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [base] VALUES (1, '01', 'Base central', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 
 --
 -- Licençã padrão.
 --
-INSERT INTO [licenca] VALUES (1, 'Licença central', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [licenca] VALUES (1, 'ABC.123.DEF.456', 'Licença central', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 
 --
 -- Tipos de usuário padrões.

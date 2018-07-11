@@ -22,6 +22,17 @@ uses
   Plataforma_ERP_Generico,
   Plataforma_ERP_RegistroAcao;
 
+function PlataformaERPTipoUsuarioADOPopular(argBaseID          : Integer;
+                                            argLicencaID       : Integer;
+                                            argTipoUsuarioID   : Integer;
+                                            var outCodigo      : string;
+                                            var outTitulo      : string;
+                                            var outBloqueado   : Boolean;
+                                            var outAtivo       : Boolean;
+                                            var outInsLocalDtHr: TDateTime;
+                                            var outUpdLocalDtHr: TDateTime;
+                                            var outUpdContador : Integer): Boolean;
+
 function PlataformaERPTipoUsuarioADOPersistir(argBaseID       : Integer;
                                               argLicencaID    : Integer;
                                               argTipoUsuarioID: Integer;
@@ -87,6 +98,120 @@ implementation
 
 const
   UNIT_NOME: string = 'Plataforma_ERP_TipoUsuario.pas';
+
+//
+// PlataformaERPTipoUsuarioADOPopular.
+//
+function PlataformaERPTipoUsuarioADOPopular(argBaseID          : Integer;
+                                            argLicencaID       : Integer;
+                                            argTipoUsuarioID   : Integer;
+                                            var outCodigo      : string;
+                                            var outTitulo      : string;
+                                            var outBloqueado   : Boolean;
+                                            var outAtivo       : Boolean;
+                                            var outInsLocalDtHr: TDateTime;
+                                            var outUpdLocalDtHr: TDateTime;
+                                            var outUpdContador : Integer): Boolean;                                            
+const
+  FUNCAO_NOME: string = 'PlataformaERPTipoUsuarioADOPopular';
+var
+  locMsgErro      : string;
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+begin
+  // Retorno padrão indica que o registro não foi encontrado.
+  Result := False;
+
+  // Instância objeto de conexão.
+  locADOConnection                   := TADOConnection.Create(nil);
+  locADOConnection.ConnectionTimeout := gloConexaoTimeOut;
+  locADOConnection.ConnectionString  := gloConexaoADOString;
+
+  try
+    locADOConnection.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locMsgErro := StringConcatenar('Impossível se conectar ao servidor de banco de dados da aplicação!', 'Tente novamente!');
+      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
+    end;
+  end;
+
+  // Instancia e configura o objeto de query ADO com o banco de dados.
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  // Monta SQL para consistir se o código informado é único.
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                                      ');
+  locADOQuery.SQL.Add('  [base].[base_id],                                         ');
+  locADOQuery.SQL.Add('  [base].[codigo] AS [base_codigo],                         ');
+  locADOQuery.SQL.Add('  [base].[titulo] AS [base_titulo],                         ');
+
+  locADOQuery.SQL.Add('  [licenca].[licenca_id],                                   ');
+  locADOQuery.SQL.Add('  [licenca].[codigo] AS [licenca_codigo],                   ');
+  locADOQuery.SQL.Add('  [licenca].[titulo] AS [licenca_titulo],                   ');
+  
+  locADOQuery.SQL.Add('  [tipo_usuario].[codigo],                                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[titulo],                                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado],                               ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[ativo],                                   ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[ins_local_dt_hr],                         ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[upd_local_dt_hr],                         ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[upd_contador]                             ');  
+  locADOQuery.SQL.Add('FROM                                                        ');
+  locADOQuery.SQL.Add('  [tipo_usuario]                                            ');
+  locADOQuery.SQL.Add('  INNER JOIN [base]                                         ');
+  locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario].[base_id]          ');
+  locADOQuery.SQL.Add('  INNER JOIN [licenca]                                      ');
+  locADOQuery.SQL.Add('    ON [licenca].[licenca_id] = [tipo_usuario].[licenca_id] ');
+  locADOQuery.SQL.Add('WHERE                                                       ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[base_id]         = :base_id    AND        ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id]      = :licenca_id AND        ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id] = :tipo_usuario_id       ');
+
+  // Passa parâmetros.
+  locADOQuery.Parameters.ParamByName('base_id').Value         := argBaseID;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value      := argLicencaID;
+  locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value := argTipoUsuarioID;
+
+  // Executa query.
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [tipo_usuario]!';
+      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
+    end;
+  end;
+
+  // Registro encontrado.
+  if locADOQuery.RecordCount >= 0 then
+  begin
+    // Carrega variáveis com campos.
+    outCodigo       := locADOQuery.FieldByName('codigo').AsString;
+    outTitulo       := locADOQuery.FieldByName('titulo').AsString;
+    outBloqueado    := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
+    outAtivo        := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
+    outInsLocalDtHr := locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime;
+    outUpdLocalDtHr := locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime;
+    outUpdContador  := locADOQuery.FieldByName('upd_contador').AsInteger;
+
+    // Indica que o registro foi encontrado.
+    Result := True;    
+  end;
+
+  // Finaliza objetos.
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+end;
 
 //
 // PlataformaERPTipoUsuarioADOPersistir.

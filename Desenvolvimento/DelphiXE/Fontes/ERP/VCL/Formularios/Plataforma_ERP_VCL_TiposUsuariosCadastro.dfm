@@ -4,7 +4,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Cadastro de tipo de usu'#225'rio'
-  ClientHeight = 322
+  ClientHeight = 313
   ClientWidth = 537
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   OnShow = FormShow
   DesignSize = (
     537
-    322)
+    313)
   PixelsPerInch = 96
   TextHeight = 13
   object imgFormulario: TImage
@@ -132,24 +132,24 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnFechar: TBitBtn
     Left = 456
-    Top = 280
+    Top = 272
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Anchors = [akRight, akBottom]
     Caption = 'Fechar'
-    TabOrder = 0
+    TabOrder = 3
     OnClick = btnFecharClick
   end
   object btnMinimizar: TBitBtn
     Left = 376
-    Top = 280
+    Top = 272
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Anchors = [akRight, akBottom]
     Caption = 'Minimizar'
-    TabOrder = 1
+    TabOrder = 2
     OnClick = btnMinimizarClick
   end
   object pagFormulario: TPageControl
@@ -157,7 +157,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Left = 48
     Top = 8
     Width = 481
-    Height = 266
+    Height = 257
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
@@ -165,53 +165,38 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Margins.Bottom = 48
     ActivePage = tabAuditoria
     Align = alClient
-    TabOrder = 2
+    TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
       ExplicitLeft = 0
       ExplicitTop = 0
       ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitHeight = 238
       object lblCodigo: TLabel
         Left = 16
-        Top = 56
+        Top = 64
         Width = 37
         Height = 13
         Caption = 'C'#243'digo:'
       end
       object lblTitulo: TLabel
         Left = 16
-        Top = 104
+        Top = 112
         Width = 30
         Height = 13
         Caption = 'T'#237'tulo:'
       end
       object lblTipoUsuarioID: TLabel
         Left = 16
-        Top = 8
+        Top = 16
         Width = 15
         Height = 13
         Caption = 'ID:'
       end
       object edtCodigo: TEdit
         Left = 16
-        Top = 72
+        Top = 80
         Width = 57
-        Height = 22
-        Alignment = taRightJustify
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 0
-        Text = '999.999'
-      end
-      object edtTitulo: TEdit
-        Left = 16
-        Top = 120
-        Width = 441
         Height = 22
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -220,11 +205,33 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
         TabOrder = 1
+        Text = '999.999'
+        OnEnter = edtCodigoEnter
+        OnExit = edtCodigoExit
+        OnKeyDown = edtCodigoKeyDown
+        OnKeyPress = edtCodigoKeyPress
+      end
+      object edtTitulo: TEdit
+        Left = 16
+        Top = 128
+        Width = 441
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 2
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
+        OnEnter = edtTituloEnter
+        OnExit = edtTituloExit
+        OnKeyDown = edtTituloKeyDown
+        OnKeyPress = edtTituloKeyPress
       end
       object edtTipoUsuarioID: TEdit
         Left = 16
-        Top = 24
+        Top = 32
         Width = 41
         Height = 22
         TabStop = False
@@ -237,35 +244,37 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 2
+        TabOrder = 0
         Text = '9.999'
       end
       object chkBloqueado: TCheckBox
         Left = 16
-        Top = 176
+        Top = 168
         Width = 73
         Height = 17
         Cursor = crHandPoint
         Caption = 'Bloqueado'
         TabOrder = 3
+        OnEnter = chkBloqueadoEnter
+        OnExit = chkBloqueadoExit
+        OnKeyPress = chkBloqueadoKeyPress
       end
       object chkAtivo: TCheckBox
         Left = 16
-        Top = 200
+        Top = 192
         Width = 49
         Height = 17
         Cursor = crHandPoint
         Caption = 'Ativo'
         TabOrder = 4
+        OnEnter = chkAtivoEnter
+        OnExit = chkAtivoExit
+        OnKeyPress = chkAtivoKeyPress
       end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 16
@@ -275,19 +284,19 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object lblUpdDtHr: TLabel
         Left = 16
-        Top = 96
+        Top = 64
         Width = 81
         Height = 13
         Caption = #218'ltima altera'#231#227'o:'
       end
       object lblUpdContador: TLabel
         Left = 16
-        Top = 176
+        Top = 112
         Width = 55
         Height = 13
         Caption = 'Altera'#231#245'es:'
       end
-      object edtInsDtHr: TEdit
+      object edtInsLocalDtHr: TEdit
         Left = 16
         Top = 32
         Width = 169
@@ -305,26 +314,9 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         TabOrder = 0
         Text = '99/99/9999 99:99:99.999'
       end
-      object edtInsUsuarioNome: TEdit
+      object edtUpdLocalDtHr: TEdit
         Left = 16
-        Top = 56
-        Width = 441
-        Height = 22
-        TabStop = False
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 1
-        Text = 'Aaaaaaaaaa Bbbbbbbbbb Cccccccccc Dddddddddd Eeeeeeeeee'
-      end
-      object edtUpdDtHr: TEdit
-        Left = 16
-        Top = 112
+        Top = 80
         Width = 169
         Height = 22
         TabStop = False
@@ -337,29 +329,12 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 2
+        TabOrder = 1
         Text = '99/99/9999 99:99:99.999'
-      end
-      object edtUpdUsuarioNome: TEdit
-        Left = 16
-        Top = 136
-        Width = 441
-        Height = 22
-        TabStop = False
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 3
-        Text = 'Aaaaaaaaaa Bbbbbbbbbb Cccccccccc Dddddddddd Eeeeeeeeee'
       end
       object edtUpdContador: TEdit
         Left = 16
-        Top = 192
+        Top = 128
         Width = 57
         Height = 22
         TabStop = False
@@ -372,29 +347,30 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 4
+        TabOrder = 2
         Text = '999.999'
       end
       object btnLog: TButton
-        Left = 336
-        Top = 184
+        Left = 16
+        Top = 168
         Width = 121
         Height = 33
         Cursor = crHandPoint
         Caption = 'Log altera'#231#245'es'
-        TabOrder = 5
+        TabOrder = 3
+        OnClick = btnLogClick
       end
     end
   end
   object btnGravar: TBitBtn
     Left = 296
-    Top = 280
+    Top = 272
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Anchors = [akRight, akBottom]
     Caption = 'Gravar'
-    TabOrder = 3
+    TabOrder = 1
     OnClick = btnGravarClick
   end
 end

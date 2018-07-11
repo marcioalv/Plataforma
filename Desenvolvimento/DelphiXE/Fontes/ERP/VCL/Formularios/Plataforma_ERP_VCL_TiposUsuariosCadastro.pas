@@ -47,11 +47,9 @@ type
     chkBloqueado: TCheckBox;
     chkAtivo: TCheckBox;
     lblInsDtHt: TLabel;
-    edtInsDtHr: TEdit;
-    edtInsUsuarioNome: TEdit;
+    edtInsLocalDtHr: TEdit;
     lblUpdDtHr: TLabel;
-    edtUpdDtHr: TEdit;
-    edtUpdUsuarioNome: TEdit;
+    edtUpdLocalDtHr: TEdit;
     lblUpdContador: TLabel;
     edtUpdContador: TEdit;
     btnLog: TButton;
@@ -62,8 +60,30 @@ type
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
+    procedure edtCodigoEnter(Sender: TObject);
+    procedure edtCodigoExit(Sender: TObject);
+    procedure edtCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtCodigoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtTituloEnter(Sender: TObject);
+    procedure edtTituloExit(Sender: TObject);
+    procedure edtTituloKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtTituloKeyPress(Sender: TObject; var Key: Char);
+    procedure chkBloqueadoEnter(Sender: TObject);
+    procedure chkBloqueadoExit(Sender: TObject);
+    procedure chkBloqueadoKeyPress(Sender: TObject; var Key: Char);
+    procedure chkAtivoEnter(Sender: TObject);
+    procedure chkAtivoExit(Sender: TObject);
+    procedure chkAtivoKeyPress(Sender: TObject; var Key: Char);
+    procedure btnLogClick(Sender: TObject);
   private
     procedure FormularioLimpar;
+
+    procedure FormularioLogExibir;
+
+    procedure FormularioPopular(argBaseID       : Integer;
+                                argLicencaID    : Integer;
+                                argTipoUsuarioID: Integer);
+
     procedure FormularioGravar;
   public
     { Public declarations }
@@ -81,6 +101,7 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_Generico,
   Plataforma_ERP_TipoUsuario;
 
 const
@@ -112,6 +133,96 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Eventos do componente "Código".
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtCodigoEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtCodigo) then Exit;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtCodigoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtCodigoExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtCodigo) then Exit;
+end;
+
+//
+// Eventos do componente "Título".
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtTituloEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtTitulo) then Exit;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtTituloKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtTituloKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtTituloExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtTitulo) then Exit;
+end;
+
+//
+// Eventos do componente "Bloqueado".
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.chkBloqueadoEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkBloqueado) then Exit;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.chkBloqueadoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.chkBloqueadoExit(Sender: TObject);
+begin
+  if not VCLCheckBoxSair(chkBloqueado) then Exit;
+end;
+
+//
+// Ativo.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.chkAtivoEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkAtivo) then Exit;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.chkAtivoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.chkAtivoExit(Sender: TObject);
+begin
+  if not VCLCheckBoxSair(chkAtivo) then Exit;
+end;
+
+//
+// Evento de click no botão "Log alterações".
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.btnLogClick(Sender: TObject);
+begin
+  FormularioLogExibir;
 end;
 
 //
@@ -154,11 +265,73 @@ begin
   VCLCheckBoxLimpar(chkAtivo);
 
   // Limpa componentes da aba "Auditoria".
-  VCLEditLimpar(edtInsDtHr);
-  VCLEditLimpar(edtInsUsuarioNome);
-  VCLEditLimpar(edtUpdDtHr);
-  VCLEditLimpar(edtUpdUsuarioNome);
+  VCLEditLimpar(edtInsLocalDtHr);
+  VCLEditLimpar(edtUpdLocalDtHr);
   VCLEditLimpar(EdtUpdContador);
+end;
+
+//
+// FormularioLogExibir.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioLogExibir;
+begin
+  PlataformaERPVCLLogRegistroExibir;
+end;
+
+//
+// FormularioPopular.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioPopular(argBaseID       : Integer;
+                                                                   argLicencaID    : Integer;
+                                                                   argTipoUsuarioID: Integer);
+const
+  PROCEDIMENTO_NOME: string = 'FormularioPopular';
+var
+  locCodigo      : string;
+  locTitulo      : string;
+  locBloqueado   : Boolean;
+  locAtivo       : Boolean;
+  locInsLocalDtHr: TDateTime;
+  locUpdLocalDtHr: TDateTime;
+  locUpdContador : Integer;
+begin
+  // Troca cursor.
+  VCLCursorTrocar(True);
+
+  // Popula dados.
+  try
+    PlataformaERPTipoUsuarioADOPopular(argBaseID,
+                                       argLicencaID,
+                                       argTipoUsuarioID,
+                                       locCodigo,
+                                       locTitulo,
+                                       locBloqueado,
+                                       locAtivo,
+                                       locInsLocalDtHr,
+                                       locUpdLocalDtHr,
+                                       locUpdContador);
+  except
+    on locExcecao: Exception do
+    begin
+      PlataformaERPLogar(True, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
+      VCLCursorTrocar;
+      VCLErroExibir(locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  // Carrega componentes.
+  edtCodigo.Text       := locCodigo;
+  edtTitulo.Text       := locTitulo;
+  chkBloqueado.Checked := locBloqueado;
+  chkAtivo.Checked     := locAtivo;
+
+  edtInsLocalDtHr.Text := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
+  edtUpdLocalDtHr.Text := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
+  edtUpdContador.Text  := IntegerStringConverter(locUpdContador);
+
+  // Finaliza.
+  VCLCursorTrocar;
 end;
 
 //
