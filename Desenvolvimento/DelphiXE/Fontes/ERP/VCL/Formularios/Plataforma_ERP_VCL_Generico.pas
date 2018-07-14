@@ -15,19 +15,18 @@ unit Plataforma_ERP_VCL_Generico;
 interface
 
 uses
+  Plataforma_ERP_LogRegistro,
+  Plataforma_ERP_VCL_LogRegistroLista,
   System.SysUtils;
 
-procedure PlataformaERPVCLLogRegistroExibir;
+procedure Plataforma_ERP_VCL_LogRegistroExibir(argLogRegistroLista: TPlataforma_ERP_LogRegistroLista);
 
 implementation
-
-uses
-  Plataforma_ERP_VCL_LogRegistroLista;
 
 //
 // PlataformaERPLogRegistroExibir.
 //
-procedure PlataformaERPVCLLogRegistroExibir;
+procedure Plataforma_ERP_VCL_LogRegistroExibir(argLogRegistroLista: TPlataforma_ERP_LogRegistroLista);
 var
   locFormulario: TPlataformaERPVCLLogRegistroLista;
 begin

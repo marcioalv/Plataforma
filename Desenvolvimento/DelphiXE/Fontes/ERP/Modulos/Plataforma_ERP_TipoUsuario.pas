@@ -133,7 +133,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := StringConcatenar('Impossível se conectar ao servidor de banco de dados da aplicação!', 'Tente novamente!');
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -187,7 +187,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [tipo_usuario]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -245,7 +245,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := StringConcatenar('Impossível se conectar ao servidor de banco de dados da aplicação!', 'Tente novamente!');
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -259,14 +259,14 @@ begin
                                                       argCodigo) then
     begin
       locMsgErro := 'O código do tipo de usuário [' + argCodigo + '] informado já existe em algum outro cadastro!';
-      PlataformaERPLogar(False, locMsgErro, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(False, locMsgErro, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(locMsgErro);
     end;
   except
     on locExcecao: Exception do
     begin
       locMsgErro := 'Ocorreu algum erro ao tentar determinar se o código do tipo do usuário já existe para um outro cadastro!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -280,14 +280,14 @@ begin
                                                            argUpdContador) then
     begin
       locMsgErro := StringConcatenar('Esse registro sofreu alguma outra alteração entre a sua consulta e essa gravação!', 'Impossível continuar!', 'Tente novamente!');
-      PlataformaERPLogar(False, locMsgErro, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(False, locMsgErro, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(locMsgErro);
     end;
   except
     on locExcecao: Exception do
     begin
       locMsgErro := 'Ocorreu algum erro ao tentar determinar se o registro do tipo de usuário sofreu outras alterações anteriores!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -311,7 +311,7 @@ begin
       on locExcecao: Exception do
       begin
         locMsgErro := 'Impossível inserir dados sobre o tipo do usuário!';
-        PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+        Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
         raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
       end;
     end;
@@ -335,7 +335,7 @@ begin
       on locExcecao: Exception do
       begin
         locMsgErro := 'Impossível atualizar dados sobre o tipo do usuário!';
-        PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+        Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
         raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
       end;
     end;
@@ -369,7 +369,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível consistir o código do tipo de usuário!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -407,7 +407,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para consultar se um código existe na tabela [tipo_usuario]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -447,7 +447,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível consistir o código o contador de atualizações!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -483,7 +483,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para consultar se o contador de atualizações confere na tabela [tipo_usuario]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -531,7 +531,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível inserir registro de tipo de usuário na base de dados da aplicação!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -548,7 +548,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível determinar o próximo numerador para o tipo do usuário!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -604,7 +604,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [tipo_usuario]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -629,7 +629,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Impossível inserir o log de inserção do registro!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -672,7 +672,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível atualizar registro de tipo de usuário na base de dados da aplicação!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -719,7 +719,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para atualizar o registro na tabela [tipo_usuario]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -744,7 +744,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Impossível inserir o log de inserção do registro!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -781,7 +781,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível inserir registro de log do tipo de usuário na base de dados da aplicação!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -815,7 +815,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para determinar o próximo sequencial para o registro na tabela [tipo_usuario_log]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -879,7 +879,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [tipo_usuario_log]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;

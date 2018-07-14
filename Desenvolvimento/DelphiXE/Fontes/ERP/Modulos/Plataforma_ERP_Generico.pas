@@ -15,22 +15,30 @@ unit Plataforma_ERP_Generico;
 interface
 
 uses
-  System.SysUtils,
   Data.Win.ADODB,
+  System.SysUtils,
   Plataforma_Framework_Util,
   Plataforma_ERP_Global;
 
 const
   NUMERADOR_TIPO_USUARIO_ID: string = 'tipo_usuario_id';
 
-procedure PlataformaERPLogar(argCritico  : Boolean;
-                             argMensagem1: string;
-                             argMensagem2: string = '';
-                             argMensagem3: string = '';
-                             argMensagem4: string = '');
+// PlataformaERPLogar.
+procedure Plataforma_ERP_Logar(argCritico  : Boolean;
+                               argMensagem1: string;
+                               argMensagem2: string = '';
+                               argMensagem3: string = '';
+                               argMensagem4: string = '';
+                               argMensagem5: string = '';
+                               argMensagem6: string = '');
 
+// PlataformaERPADOConnectionInicializar.
+procedure Plataforma_ERP_ADO_ConexaoAbrir(argADOConnection: TADOConnection);
+
+// PlataformaERPConexaoADOConsistir.
 procedure PlataformaERPConexaoADOConsistir(argADOConnection: TADOConnection);
 
+// PlataformaERPConexaoADONumeradorLicenca.
 function PlataformaERPConexaoADONumeradorLicenca(argADOConnection: TADOConnection;
                                                  argBaseID       : Integer;
                                                  argLicencaID    : Integer;
@@ -41,16 +49,18 @@ function PlataformaERPConexaoADONumeradorLicenca(argADOConnection: TADOConnectio
 implementation
 
 const
-  UNIT_NOME: string = 'Plataforma_ERP_Generico.pas';
+  FONTE_NOME: string = 'Plataforma_ERP_Generico.pas';
 
 //
 // PlataformaERPLogar.
 //
-procedure PlataformaERPLogar(argCritico  : Boolean;
-                             argMensagem1: string;
-                             argMensagem2: string = '';
-                             argMensagem3: string = '';
-                             argMensagem4: string = '');
+procedure Plataforma_ERP_Logar(argCritico  : Boolean;
+                               argMensagem1: string;
+                               argMensagem2: string = '';
+                               argMensagem3: string = '';
+                               argMensagem4: string = '';
+                               argMensagem5: string = '';
+                               argMensagem6: string = '');
 var
   locHostName   : string;
   locUserName   : string;
@@ -68,11 +78,41 @@ begin
   locAppUserName := gloUsuarioNome;
 
   locMensagem := argMensagem1;
-  if argMensagem2 <> '' then locMensagem := locMensagem + ' -> ' + argMensagem2;
-  if argMensagem3 <> '' then locMensagem := locMensagem + ' -> ' + argMensagem3;
-  if argMensagem4 <> '' then locMensagem := locMensagem + ' -> ' + argMensagem4;
+  if argMensagem2 <> '' then locMensagem := locMensagem + CONCATENADOR + argMensagem2;
+  if argMensagem3 <> '' then locMensagem := locMensagem + CONCATENADOR + argMensagem3;
+  if argMensagem4 <> '' then locMensagem := locMensagem + CONCATENADOR + argMensagem4;
+  if argMensagem5 <> '' then locMensagem := locMensagem + CONCATENADOR + argMensagem5;
+  if argMensagem6 <> '' then locMensagem := locMensagem + CONCATENADOR + argMensagem6;
 
   gloLocalLog.Write(locHostName, locUserName, locAppName, locAppHashCode, locAppUserID, locAppUserName, argCritico, locMensagem);
+end;
+
+//
+// PlataformaERPADOConnectionInicializar.
+//
+procedure Plataforma_ERP_ADO_ConexaoAbrir(argADOConnection: TADOConnection);
+const
+  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_ADO_ConexaoAbrir';
+var
+  locLogMsg: string;
+begin
+  // String de conexão ADO.
+  argADOConnection.ConnectionString  := gloConexaoADOString;
+
+  // Time-out de conexão.
+  argADOConnection.ConnectionTimeout := gloConexaoTimeOut;
+
+  try
+    // Abre conexão com o banco de dados da aplicação.
+    argADOConnection.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locLogMsg := StringConcatenar('Ocorreu um problema ao estabelecer uma conexão com o banco de dados da aplicação!', 'Tente novamente!');
+      Plataforma_ERP_Logar(True, locLogMsg, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      raise Exception.Create(StringConcatenar(locLogMsg, locExcecao.Message));
+    end;
+  end;
 end;
 
 //
@@ -88,7 +128,7 @@ begin
   if argADOConnection = nil then
   begin
     locMsgErro := 'O objeto de conexão ADO com o banco de dados não foi instanciado!';
-    PlataformaERPLogar(True, locMsgErro, UNIT_NOME, PROCEDIMENTO_NOME);
+    Plataforma_ERP_Logar(True, locMsgErro, FONTE_NOME, PROCEDIMENTO_NOME);
     raise Exception.Create(locMsgErro);
   end;
 
@@ -96,7 +136,7 @@ begin
   if not argADOConnection.Connected then
   begin
     locMsgErro := 'A conexão ADO com o banco de dados não foi estabelecida!';
-    PlataformaERPLogar(True, locMsgErro, UNIT_NOME, PROCEDIMENTO_NOME);
+    Plataforma_ERP_Logar(True, locMsgErro, FONTE_NOME, PROCEDIMENTO_NOME);
     raise Exception.Create(locMsgErro);
   end;
 end;
@@ -123,7 +163,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível determinar o próximo ID para o numerador [' + argCodigo + ']!';
-      PlataformaERPLogar(True, locMsgErro, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, FONTE_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -159,7 +199,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para consultar o ID atual na tabela [numerador_licenca]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, FONTE_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -224,7 +264,7 @@ begin
         locADOQuery.Close;
         FreeAndNil(locADOQuery);
         locMsgErro := 'Ocorreu algum erro ao inserir um registro na tabela [numerador_licenca]!';
-        PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+        Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, FONTE_NOME, FUNCAO_NOME);
         raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
       end;
     end;
@@ -270,7 +310,7 @@ begin
         locADOQuery.Close;
         FreeAndNil(locADOQuery);
         locMsgErro := 'Ocorreu algum erro ao atualizar um registro na tabela [numerador_licenca]!';
-        PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+        Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, FONTE_NOME, FUNCAO_NOME);
         raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
       end;
     end;    

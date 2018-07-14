@@ -61,11 +61,21 @@ procedure VCLSDIMinimizar;
 //
 procedure VCLInformacaoExibir(argMensagem: string);
 
-procedure VCLConsistenciaExibir(argMensagem: string);
+procedure VCLConsistenciaExibir(argMensagem1: string;
+                                argMensagem2: string = '';
+                                argMensagem3: string = '';
+                                argMensagem4: string = '';
+                                argMensagem5: string = '');
 
-procedure VCLErroExibir(argMensagem: string);
+procedure VCLErroExibir(argMensagem1: string;
+                        argMensagem2: string = '';
+                        argMensagem3: string = '';
+                        argMensagem4: string = '';
+                        argMensagem5: string = '');
 
-procedure VCLExcecaoExibir(argMensagem: string; argExcecao: string);
+function VCLQuestionamentoExibir(argMensagem1: string;
+                                 argMensagem2: string = '';
+                                 argNaoDefault: Boolean = True): Boolean;
 
 //
 // Digitação.
@@ -187,47 +197,140 @@ end;
 //
 procedure VCLInformacaoExibir(argMensagem: string);
 begin
+  VCLCursorTrocar;
   Application.MessageBox(PChar(argMensagem), 'Informação', MB_OK + MB_ICONINFORMATION);
 end;
 
 //
 // VCLConsistenciaExibir.
 //
-procedure VCLConsistenciaExibir(argMensagem: string);
+procedure VCLConsistenciaExibir(argMensagem1: string;
+                                argMensagem2: string = '';
+                                argMensagem3: string = '';
+                                argMensagem4: string = '';
+                                argMensagem5: string = '');
+var
+  locMensagem: string;
 begin
-  Application.MessageBox(PChar(argMensagem), 'Consistência', MB_OK + MB_ICONWARNING);
+  locMensagem := argMensagem1;
+
+  if argMensagem2 <> '' then
+  begin
+    if locMensagem <> '' then locMensagem := locMensagem + #13 + #13;
+    locMensagem := locMensagem + argMensagem2;
+  end;
+
+  if argMensagem3 <> '' then
+  begin
+    if locMensagem <> '' then locMensagem := locMensagem + #13 + #13;
+    locMensagem := locMensagem + argMensagem3;
+  end;
+
+  if argMensagem4 <> '' then
+  begin
+    if locMensagem <> '' then locMensagem := locMensagem + #13 + #13;
+    locMensagem := locMensagem + argMensagem4;
+  end;
+  
+  if argMensagem5 <> '' then
+  begin
+    if locMensagem <> '' then locMensagem := locMensagem + #13 + #13;
+    locMensagem := locMensagem + argMensagem5;
+  end;
+
+  locMensagem := StringConcatenadorEnter(locMensagem);
+
+  VCLCursorTrocar;
+  Application.MessageBox(PChar(locMensagem), 'Consistência', MB_OK + MB_ICONWARNING);
 end;
 
 //
 // VCLErroExibir.
 //
-procedure VCLErroExibir(argMensagem: string);
-begin
-  Application.MessageBox(PChar(argMensagem), 'Erro', MB_OK + MB_ICONERROR);
-end;
-
-//
-// VCLExcecaoExibir.
-//
-procedure VCLExcecaoExibir(argMensagem: string; argExcecao: string);
+procedure VCLErroExibir(argMensagem1: string;
+                        argMensagem2: string = '';
+                        argMensagem3: string = '';
+                        argMensagem4: string = '';
+                        argMensagem5: string = '');
 var
   locMensagem: string;
 begin
-  locMensagem := '';
+  locMensagem := argMensagem1;
 
-  if argMensagem <> '' then
+  if argMensagem2 <> '' then
   begin
     if locMensagem <> '' then locMensagem := locMensagem + #13 + #13;
-    locMensagem := locMensagem + argMensagem;
+    locMensagem := locMensagem + argMensagem2;
   end;
 
-  if argExcecao <> '' then
+  if argMensagem3 <> '' then
   begin
     if locMensagem <> '' then locMensagem := locMensagem + #13 + #13;
-    locMensagem := locMensagem + argExcecao;
+    locMensagem := locMensagem + argMensagem3;
+  end;
+
+  if argMensagem4 <> '' then
+  begin
+    if locMensagem <> '' then locMensagem := locMensagem + #13 + #13;
+    locMensagem := locMensagem + argMensagem4;
   end;
   
-  Application.MessageBox(PChar(locMensagem), 'Exceção', MB_OK + MB_ICONERROR);
+  if argMensagem5 <> '' then
+  begin
+    if locMensagem <> '' then locMensagem := locMensagem + #13 + #13;
+    locMensagem := locMensagem + argMensagem5;
+  end;
+
+  locMensagem := StringConcatenadorEnter(locMensagem);
+
+  VCLCursorTrocar;
+  Application.MessageBox(PChar(locMensagem), 'Erro', MB_OK + MB_ICONERROR);
+end;
+
+//
+// VCLQuestionamentoExibir.
+//
+function VCLQuestionamentoExibir(argMensagem1: string; argMensagem2: string = ''; argNaoDefault: Boolean = True): Boolean;
+var
+  locMensagem: string;
+  locBotao   : LongInt;
+begin
+  //
+  // Mensagem.
+  //
+  locMensagem := argMensagem1;
+
+  if argMensagem2 <> '' then
+  begin
+    locMensagem := locMensagem + #13 + #13 + argMensagem2;
+  end;
+
+  //
+  // Determina o botão padrão.
+  //
+  if not argNaoDefault then
+  begin
+    locBotao := MB_DEFBUTTON1
+  end
+  else
+  begin
+    locBotao := MB_DEFBUTTON2;
+  end;
+
+  //
+  // Exibe mensagem de questionamento.
+  //
+  VCLCursorTrocar;
+  if (Application.MessageBox(Pchar(locMensagem),
+                             PChar('Questionamento'),
+                             MB_YESNO + MB_ICONQUESTION + locBotao) = IDNO) then
+  begin
+    Result := False;
+  end
+  else
+  begin
+    Result := True;
+  end;
 end;
 
 //

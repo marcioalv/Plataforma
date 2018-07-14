@@ -367,7 +367,7 @@ begin
   except
     on locErro: Exception do
     begin
-      VCLExcecaoExibir('Impossível pesquisar histórico de arquivos de log neste computador!', locErro.Message);
+      VCLErroExibir('Impossível pesquisar histórico de arquivos de log neste computador!', locErro.Message);
       Exit;
     end;
   end;

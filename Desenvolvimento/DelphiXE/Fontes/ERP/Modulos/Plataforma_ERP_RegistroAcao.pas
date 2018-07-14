@@ -22,8 +22,21 @@ uses
   Plataforma_ERP_Generico;
 
 const
-  UNIT_NOME: string = 'Plataforma_ERP_RegistroAcao.pas';
+  UNIT_NOME: string = 'Plataforma_ERP_RegistroAcao.pas'; 
 
+// TPlataforma_ERP_RegistroAcao.
+type
+  TPlataforma_ERP_RegistroAcao = record
+    RegistroAcaoID: Integer;
+    Titulo        : string;
+    Bloqueado     : Boolean;
+    Ativo         : Boolean;
+  end;
+
+// Plataforma_ERP_RegistroAcaoLimpar.
+procedure Plataforma_ERP_RegistroAcaoLimpar(argRegistroAcao: TPlataforma_ERP_RegistroAcao);  
+
+// PlataformaERPRegistroAcaoCodigoDeterminar.
 function PlataformaERPRegistroAcaoCodigoDeterminar(argADOConnection: TADOConnection;
                                                    argCriacao      : Boolean;
                                                    argConsulta     : Boolean;
@@ -31,6 +44,20 @@ function PlataformaERPRegistroAcaoCodigoDeterminar(argADOConnection: TADOConnect
                                                    argExclusao     : Boolean): Integer;
 
 implementation
+
+//
+// Plataforma_ERP_RegistroAcaoLimpar.
+//
+procedure Plataforma_ERP_RegistroAcaoLimpar(argRegistroAcao: TPlataforma_ERP_RegistroAcao);
+begin
+  with argRegistroAcao do
+  begin
+    RegistroAcaoID := 0;
+    Titulo         := '';
+    Bloqueado      := False;
+    Ativo          := False;
+  end;
+end;
 
 //
 // PlataformaERPRegistroAcaoCodigoDeterminar.
@@ -56,7 +83,7 @@ begin
     on locExcecao: Exception do
     begin
       locMsgErro := 'Impossível consistir o código do tipo de usuário!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;
@@ -96,7 +123,7 @@ begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para consultar o ID da ação no registro na tabela [registro_acao]!';
-      PlataformaERPLogar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
       raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
     end;
   end;

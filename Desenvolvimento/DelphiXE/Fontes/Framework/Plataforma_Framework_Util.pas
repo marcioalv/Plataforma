@@ -21,35 +21,37 @@ uses
   Winapi.Windows;
 
 const
-  ENTER      : Char = #13;
-  ESC        : Char = #27;
-  TAB        : Char = #9;
-  BACKSPACE  : Char = #8;
-  CTRL       : Char = #17;
-  CTRL_C     : Char = #3;
-  CTRL_V     : Char = #22;
-  CTRL_X     : Char = #24;
+  ENTER       : Char = #13;
+  ESC         : Char = #27;
+  TAB         : Char = #9;
+  BACKSPACE   : Char = #8;
+  CTRL        : Char = #17;
+  CTRL_C      : Char = #3;
+  CTRL_V      : Char = #22;
+  CTRL_X      : Char = #24;
 
-  SETA_ABAIXO: Integer = 40;
+  SETA_ABAIXO : Integer = 40;
 
-  F1         : Integer = 112;
-  F2         : Integer = 113;
-  F3         : Integer = 114;
-  F4         : Integer = 115;
-  F5         : Integer = 116;
-  F6         : Integer = 117;
-  F7         : Integer = 118;
-  F8         : Integer = 119;
-  F9         : Integer = 120;
-  F10        : Integer = 121;
-  F11        : Integer = 122;
-  F12        : Integer = 123;
+  F1          : Integer = 112;
+  F2          : Integer = 113;
+  F3          : Integer = 114;
+  F4          : Integer = 115;
+  F5          : Integer = 116;
+  F6          : Integer = 117;
+  F7          : Integer = 118;
+  F8          : Integer = 119;
+  F9          : Integer = 120;
+  F10         : Integer = 121;
+  F11         : Integer = 122;
+  F12         : Integer = 123;
 
-  ESQUERDA   : Byte = 0;
-  DIREITA    : Byte = 1;
+  ESQUERDA    : Byte = 0;
+  DIREITA     : Byte = 1;
 
-  FLAG_SIM   : string = 'S';
-  FLAG_NAO   : string = 'N';
+  FLAG_SIM    : string = 'S';
+  FLAG_NAO    : string = 'N';
+
+  CONCATENADOR: string = ' => ';
 
 function HostNameRecuperar: string;
 
@@ -58,6 +60,8 @@ function UserNameRecuperar: string;
 function DriveSerialNumberRecuperar(argDriveLetra: string): Integer;
 
 function StringConcatenar(argMensagem1: string; argMensagem2: string; argMensagem3: string = ''): string;
+
+function StringConcatenadorEnter(argValor: string): string;
 
 function StringTrim(argValor: string): string;
 
@@ -151,9 +155,30 @@ end;
 //
 function StringConcatenar(argMensagem1: string; argMensagem2: string; argMensagem3: string = ''): string;
 begin
-  Result := argMensagem1 + ' - ' + argMensagem2;
+  Result := argMensagem1 + CONCATENADOR + argMensagem2;
+  if argMensagem3 <> '' then Result := Result + CONCATENADOR + argMensagem3;
+end;
 
-  if argMensagem3 <> '' then Result := Result + ' - ' + argMensagem3;
+//
+// StringConcatenadorEnter.
+//
+function StringConcatenadorEnter(argValor: string): string;
+const
+  SEPARADOR: string = '¨';
+var
+  locStringList: TStringList;
+  locContador  : Integer;
+begin
+  argValor := StringSubstituir(argValor, CONCATENADOR, SEPARADOR);
+
+  locStringList := StringSeparar(argValor, SEPARADOR);
+
+  Result := '';
+  for locContador := 0 to (locStringList.Count - 1) do
+  begin
+    if Result <> '' then Result := Result + #13 + #13;
+    Result := Result + locStringList[locContador];
+  end;  
 end;
 
 //

@@ -23,7 +23,8 @@ uses
   Plataforma_ERP_RegistroAcao in '..\..\Modulos\Plataforma_ERP_RegistroAcao.pas',
   Plataforma_ERP_VCL_LogRegistroExibir in '..\Formularios\Plataforma_ERP_VCL_LogRegistroExibir.pas' {PlataformaERPVCLLogRegistroExibir},
   Plataforma_ERP_VCL_LogRegistroLista in '..\Formularios\Plataforma_ERP_VCL_LogRegistroLista.pas' {PlataformaERPVCLLogRegistroLista},
-  Plataforma_ERP_VCL_Generico in '..\Formularios\Plataforma_ERP_VCL_Generico.pas';
+  Plataforma_ERP_VCL_Generico in '..\Formularios\Plataforma_ERP_VCL_Generico.pas',
+  Plataforma_ERP_LogRegistro in '..\..\Modulos\Plataforma_ERP_LogRegistro.pas';
 
 {$R *.res}
 

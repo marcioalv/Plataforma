@@ -332,8 +332,8 @@ begin
     begin
       VCLCursorTrocar;
       locMsgLog := 'Impossível acessar o arquivo de log: [' + locArquivoLog + ']';
-      PlataformaERPLogar(True, locMsgLog, locErro.Message);
-      VCLExcecaoExibir(locMsgLog, locErro.Message);
+      Plataforma_ERP_Logar(True, locMsgLog, locErro.Message);
+      VCLErroExibir(locMsgLog, locErro.Message);
       Exit;
     end;
   end;
@@ -346,8 +346,8 @@ begin
     begin
       VCLCursorTrocar;
       locMsgLog := 'Impossível abrir o arquivo de log para leitura: [' + locArquivoLog + ']';
-      PlataformaERPLogar(True, locMsgLog, locErro.Message);
-      VCLExcecaoExibir(locMsgLog, locErro.Message);
+      Plataforma_ERP_Logar(True, locMsgLog, locErro.Message);
+      VCLErroExibir(locMsgLog, locErro.Message);
       Exit;
     end;
   end;

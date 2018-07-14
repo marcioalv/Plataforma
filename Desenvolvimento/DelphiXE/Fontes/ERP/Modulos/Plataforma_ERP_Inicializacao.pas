@@ -53,7 +53,7 @@ begin
   gloLocalLog.FilePath := gloAppPath + '\Log';
   gloLocalLog.FileNameDaily('Plataforma_ERP_VCL');
 
-  PlataformaERPLogar(False, 'Módulo de log inicializado com sucesso!');
+  Plataforma_ERP_Logar(False, 'Módulo de log inicializado com sucesso!');
 end;
 
 //
