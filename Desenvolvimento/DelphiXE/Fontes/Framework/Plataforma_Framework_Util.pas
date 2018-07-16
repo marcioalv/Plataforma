@@ -51,6 +51,8 @@ const
   FLAG_SIM    : string = 'S';
   FLAG_NAO    : string = 'N';
 
+  STR_NOVO    : string = 'Novo';
+
   CONCATENADOR: string = ' => ';
 
 function HostNameRecuperar: string;
@@ -80,6 +82,8 @@ function StringAcentosRemover(argValor: string): string;
 function SomenteNumerosValidar(argTexto: string): Boolean;
 
 function SomenteNumerosRetornar(argTexto: string): string;
+
+function FlagSimNaoStringConverter(argTexto: string): string;
 
 function StringIntegerConverter(argValor: string): Integer;
 
@@ -402,6 +406,17 @@ begin
       Result := Result + locCaracter;
     end;
   end;
+end;
+
+//
+// FlagSimNaoStringConverter.
+//
+function FlagSimNaoStringConverter(argTexto: string): string;
+begin
+  if UpperCase(Copy(argTexto, 1, 1)) = 'S' then
+    Result := 'Sim'
+  else
+    Result := 'Não';
 end;
 
 //

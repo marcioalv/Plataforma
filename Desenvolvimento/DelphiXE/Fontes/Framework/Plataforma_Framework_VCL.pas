@@ -96,6 +96,15 @@ procedure VCLMemoLimpar(argComponente: TMemo);
 procedure VCLProgressBarLimpar(argComponente: TProgressBar);
 
 //
+// Controlar componentes.
+//
+procedure VCLMaskEditControlar(argComponente: TMaskEdit; argLigar: Boolean);
+procedure VCLEditControlar(argComponente: TEdit; argLigar: Boolean);
+procedure VCLRadioButtonControlar(argComponente: TRadioButton; argLigar: Boolean);
+procedure VCLCheckBoxControlar(argComponente: TCheckBox; argLigar: Boolean);
+procedure VCLMemoControlar(argComponente: TMemo; argLigar: Boolean);
+
+//
 // Entrada/Saída componentes.
 //
 function VCLEditEntrar(argComponente: TEdit): Boolean;
@@ -610,6 +619,51 @@ begin
 end;
 
 //
+// VCLMaskEditControlar.
+//
+procedure VCLMaskEditControlar(argComponente: TMaskEdit; argLigar: Boolean);
+begin
+  argComponente.ReadOnly := (not argLigar);
+  argComponente.TabStop  := argLigar;
+end;
+
+//
+// VCLEditControlar.
+//
+procedure VCLEditControlar(argComponente: TEdit; argLigar: Boolean);
+begin
+  argComponente.ReadOnly := (not argLigar);
+  argComponente.TabStop  := argLigar;
+end;
+
+//
+// VCLRadioButtonControlar.
+//
+procedure VCLRadioButtonControlar(argComponente: TRadioButton; argLigar: Boolean);
+begin
+  argComponente.Enabled := argLigar;
+  argComponente.TabStop := argLigar;
+end;
+
+//
+// VCLCheckBoxControlar.
+//
+procedure VCLCheckBoxControlar(argComponente: TCheckBox; argLigar: Boolean);
+begin
+  argComponente.Enabled := argLigar;
+  argComponente.TabStop := argLigar;
+end;
+
+//
+// VCLMemoControlar.
+//
+procedure VCLMemoControlar(argComponente: TMemo; argLigar: Boolean);
+begin
+  argComponente.ReadOnly := (not argLigar);
+  argComponente.TabStop  := argLigar;
+end;
+
+//
 // VCLEditEntrar.
 //
 function VCLEditEntrar(argComponente: TEdit): Boolean;
@@ -806,6 +860,7 @@ begin
   VCLProgressBarLimpar(argComponente);
   argComponente.Max     := argTamanho;
   argComponente.Visible := True;
+  argComponente.Refresh;
 end;
 
 //

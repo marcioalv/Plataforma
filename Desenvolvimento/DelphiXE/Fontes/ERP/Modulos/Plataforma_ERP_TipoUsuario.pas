@@ -19,8 +19,7 @@ uses
   System.SysUtils,
   Plataforma_Framework_Util,
   Plataforma_ERP_Global,
-  Plataforma_ERP_Generico,
-  Plataforma_ERP_RegistroAcao;
+  Plataforma_ERP_Generico;
 
 function PlataformaERPTipoUsuarioADOPopular(argBaseID          : Integer;
                                             argLicencaID       : Integer;
@@ -362,18 +361,6 @@ begin
   // Valor de retorno padrão.
   Result := False;
 
-  // Consiste o objeto de conexão ADO.
-  try
-    PlataformaERPConexaoADOConsistir(argADOConnection);
-  except
-    on locExcecao: Exception do
-    begin
-      locMsgErro := 'Impossível consistir o código do tipo de usuário!';
-      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
-      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
-    end;
-  end;
-  
   // Instancia e configura o objeto de query ADO com o banco de dados.
   locADOQuery                := TADOQuery.Create(nil);
   locADOQuery.Connection     := argADOConnection;
@@ -440,18 +427,6 @@ begin
   // Valor de retorno padrão.
   Result := True;
 
-  // Consiste o objeto de conexão ADO.
-  try
-    PlataformaERPConexaoADOConsistir(argADOConnection);
-  except
-    on locExcecao: Exception do
-    begin
-      locMsgErro := 'Impossível consistir o código o contador de atualizações!';
-      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
-      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
-    end;
-  end;
-  
   // Instancia e configura o objeto de query ADO com o banco de dados.
   locADOQuery                := TADOQuery.Create(nil);
   locADOQuery.Connection     := argADOConnection;
@@ -524,18 +499,6 @@ var
   locTipoUsuarioID : Integer;
   locRegistroAcaoID: Integer;
 begin
-  // Consiste o objeto de conexão ADO.
-  try
-    PlataformaERPConexaoADOConsistir(argADOConnection);
-  except
-    on locExcecao: Exception do
-    begin
-      locMsgErro := 'Impossível inserir registro de tipo de usuário na base de dados da aplicação!';
-      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
-      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
-    end;
-  end;
-  
   // Instancia e configura o objeto de query ADO com o banco de dados.
   locADOQuery                := TADOQuery.Create(nil);
   locADOQuery.Connection     := argADOConnection;
@@ -543,7 +506,7 @@ begin
 
   // Próximo ID do tipo do usuário.
   try
-    locTipoUsuarioID := PlataformaERPConexaoADONumeradorLicenca(argADOConnection, argBaseID, argLicencaID, NUMERADOR_TIPO_USUARIO_ID, argUsuarioBaseID, argUsuarioID);
+    locTipoUsuarioID := Plataforma_ERP_ADO_NumeradorLicencaDeterminar(argADOConnection, argBaseID, argLicencaID, NUMERADOR_TIPO_USUARIO_ID, argUsuarioBaseID, argUsuarioID);
   except
     on locExcecao: Exception do
     begin
@@ -611,7 +574,7 @@ begin
 
   // Log de inserção do registro.
   try
-    locRegistroAcaoID := PlataformaERPRegistroAcaoCodigoDeterminar(argADOConnection, True, False, False, False);
+    locRegistroAcaoID := Plataforma_ERP_RegistroAcaoIDDeterminar(argADOConnection, True, False, False, False);
   
     PlataformaERPTipoUsuarioLogADOInsert(argADOConnection,
                                          argBaseID,
@@ -665,18 +628,6 @@ var
   locTipoUsuarioID : Integer;
   locRegistroAcaoID: Integer;
 begin
-  // Consiste o objeto de conexão ADO.
-  try
-    PlataformaERPConexaoADOConsistir(argADOConnection);
-  except
-    on locExcecao: Exception do
-    begin
-      locMsgErro := 'Impossível atualizar registro de tipo de usuário na base de dados da aplicação!';
-      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, PROCEDIMENTO_NOME);
-      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
-    end;
-  end;
-
   // Instancia e configura o objeto de query ADO com o banco de dados.
   locADOQuery                := TADOQuery.Create(nil);
   locADOQuery.Connection     := argADOConnection;
@@ -726,7 +677,7 @@ begin
 
   // Log de inserção do registro.
   try
-    locRegistroAcaoID := PlataformaERPRegistroAcaoCodigoDeterminar(argADOConnection, False, False, True, False);
+    locRegistroAcaoID := Plataforma_ERP_RegistroAcaoIDDeterminar(argADOConnection, False, False, True, False);
 
     PlataformaERPTipoUsuarioLogADOInsert(argADOConnection,
                                          argBaseID,
@@ -774,18 +725,6 @@ var
   locADOQuery  : TADOQuery;
   locSequencial: Integer;
 begin
-  // Consiste o objeto de conexão ADO.
-  try
-    PlataformaERPConexaoADOConsistir(argADOConnection);
-  except
-    on locExcecao: Exception do
-    begin
-      locMsgErro := 'Impossível inserir registro de log do tipo de usuário na base de dados da aplicação!';
-      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, UNIT_NOME, FUNCAO_NOME);
-      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
-    end;
-  end;
-
   // Instancia e configura o objeto de query ADO com o banco de dados.
   locADOQuery                := TADOQuery.Create(nil);
   locADOQuery.Connection     := argADOConnection;

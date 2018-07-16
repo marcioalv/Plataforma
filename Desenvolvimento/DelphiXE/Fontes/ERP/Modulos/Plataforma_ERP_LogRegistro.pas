@@ -14,15 +14,11 @@ unit Plataforma_ERP_LogRegistro;
 
 interface
 
-uses
-  Plataforma_ERP_RegistroAcao;
-
 // TPlataforma_ERP_LogRegistro.
 type
   TPlataforma_ERP_LogRegistro = record
     LogLocalDtHr      : TDateTime;
     LogServerDtHr     : TDateTime;
-    RegistroAcao      : TPlataforma_ERP_RegistroAcao;
     HostName          : string;
     UserName          : string;
     UsuarioBaseID     : Integer;
@@ -48,7 +44,6 @@ begin
   begin
     LogLocalDtHr       := 0;
     LogServerDtHr      := 0;
-    Plataforma_ERP_RegistroAcaoLimpar(RegistroAcao);
     HostName           := '';
     UserName           := '';
     UsuarioBaseID      := 0;

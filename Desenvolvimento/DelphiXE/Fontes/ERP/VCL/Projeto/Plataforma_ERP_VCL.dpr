@@ -20,11 +20,11 @@ uses
   Plataforma_ERP_VCL_TiposUsuariosLista in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosLista.pas' {PlataformaERPVCLTiposUsuariosLista},
   Plataforma_ERP_VCL_TiposUsuariosCadastro in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosCadastro.pas' {PlataformaERPVCLTiposUsuariosCadastro},
   Plataforma_ERP_TipoUsuario in '..\..\Modulos\Plataforma_ERP_TipoUsuario.pas',
-  Plataforma_ERP_RegistroAcao in '..\..\Modulos\Plataforma_ERP_RegistroAcao.pas',
   Plataforma_ERP_VCL_LogRegistroExibir in '..\Formularios\Plataforma_ERP_VCL_LogRegistroExibir.pas' {PlataformaERPVCLLogRegistroExibir},
   Plataforma_ERP_VCL_LogRegistroLista in '..\Formularios\Plataforma_ERP_VCL_LogRegistroLista.pas' {PlataformaERPVCLLogRegistroLista},
   Plataforma_ERP_VCL_Generico in '..\Formularios\Plataforma_ERP_VCL_Generico.pas',
-  Plataforma_ERP_LogRegistro in '..\..\Modulos\Plataforma_ERP_LogRegistro.pas';
+  Plataforma_ERP_LogRegistro in '..\..\Modulos\Plataforma_ERP_LogRegistro.pas',
+  Plataforma_ERP_VCL_TiposUsuariosFiltro in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosFiltro.pas' {PlataformaERPVCLTiposUsuariosFiltro};
 
 {$R *.res}
 
@@ -32,6 +32,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
-  Application.CreateForm(TPlataformaERPVCLLogRegistroLista, PlataformaERPVCLLogRegistroLista);
   Application.Run;
 end.

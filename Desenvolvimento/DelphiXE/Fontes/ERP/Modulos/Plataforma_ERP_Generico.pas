@@ -21,9 +21,21 @@ uses
   Plataforma_ERP_Global;
 
 const
+  ERRO_MENSAGEM_TENTE_NOVAMENTE       : string = 'Por favor tente novamente agora!';
+  
+  ERRO_MENSAGEM_BD_CONEXAO_ABRIR      : string = 'Ocorreu algum problema ao tentar estabelecer uma conexão com o banco de dados da aplicação!';
+  ERRO_MENSAGEM_BD_TRANSACAO_INICIAR  : string = 'Ocorreu algum problema ao tentar iniciar uma transação com o banco de dados da aplicação!';
+  ERRO_MENSAGEM_BD_TRANSACAO_CONFIRMAR: string = 'Ocorreu algum problema ao tentar confirmar a transação com o banco de dados da aplicação!';
+
+  MENSAGEM_REGISTRO_ACAO_CRIADO       : string = 'Registro criado com sucesso!';
+  MENSAGEM_REGISTRO_ACAO_ALTERADO     : string = 'Registro atualizado com sucesso!';
+
+const
   NUMERADOR_TIPO_USUARIO_ID: string = 'tipo_usuario_id';
 
+//
 // PlataformaERPLogar.
+//
 procedure Plataforma_ERP_Logar(argCritico  : Boolean;
                                argMensagem1: string;
                                argMensagem2: string = '';
@@ -32,19 +44,29 @@ procedure Plataforma_ERP_Logar(argCritico  : Boolean;
                                argMensagem5: string = '';
                                argMensagem6: string = '');
 
-// PlataformaERPADOConnectionInicializar.
+//
+// Plataforma_ERP_ADO_ConexaoAbrir.
+//
 procedure Plataforma_ERP_ADO_ConexaoAbrir(argADOConnection: TADOConnection);
 
-// PlataformaERPConexaoADOConsistir.
-procedure PlataformaERPConexaoADOConsistir(argADOConnection: TADOConnection);
+//
+// Plataforma_ERP_ADO_NumeradorLicencaDeterminar.
+//
+function Plataforma_ERP_ADO_NumeradorLicencaDeterminar(argADOConnection: TADOConnection;
+                                                       argBaseID       : Integer;
+                                                       argLicencaID    : Integer;
+                                                       argCodigo       : string;
+                                                       argUsuarioBaseID: Integer;
+                                                       argUsuarioID    : Integer): Integer;
 
-// PlataformaERPConexaoADONumeradorLicenca.
-function PlataformaERPConexaoADONumeradorLicenca(argADOConnection: TADOConnection;
-                                                 argBaseID       : Integer;
-                                                 argLicencaID    : Integer;
-                                                 argCodigo       : string;
-                                                 argUsuarioBaseID: Integer;
-                                                 argUsuarioID    : Integer): Integer;
+//
+// Plataforma_ERP_RegistroAcaoIDDeterminar.
+//
+function Plataforma_ERP_RegistroAcaoIDDeterminar(argADOConnection: TADOConnection;
+                                                 argCriacao      : Boolean;
+                                                 argConsulta     : Boolean;
+                                                 argAlteracao    : Boolean;
+                                                 argExclusao     : Boolean): Integer;
 
 implementation
 
@@ -88,7 +110,7 @@ begin
 end;
 
 //
-// PlataformaERPADOConnectionInicializar.
+// Plataforma_ERP_ADO_ConexaoAbrir.
 //
 procedure Plataforma_ERP_ADO_ConexaoAbrir(argADOConnection: TADOConnection);
 const
@@ -108,7 +130,7 @@ begin
   except
     on locExcecao: Exception do
     begin
-      locLogMsg := StringConcatenar('Ocorreu um problema ao estabelecer uma conexão com o banco de dados da aplicação!', 'Tente novamente!');
+      locLogMsg := StringConcatenar(ERRO_MENSAGEM_BD_CONEXAO_ABRIR, ERRO_MENSAGEM_TENTE_NOVAMENTE);
       Plataforma_ERP_Logar(True, locLogMsg, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       raise Exception.Create(StringConcatenar(locLogMsg, locExcecao.Message));
     end;
@@ -116,57 +138,20 @@ begin
 end;
 
 //
-// PlataformaERPADOConexaoConsistir.
+// Plataforma_ERP_ADO_NumeradorLicencaDeterminar.
 //
-procedure PlataformaERPConexaoADOConsistir(argADOConnection: TADOConnection);
+function Plataforma_ERP_ADO_NumeradorLicencaDeterminar(argADOConnection: TADOConnection;
+                                                       argBaseID       : Integer;
+                                                       argLicencaID    : Integer;
+                                                       argCodigo       : string;
+                                                       argUsuarioBaseID: Integer;
+                                                       argUsuarioID    : Integer): Integer;
 const
-  PROCEDIMENTO_NOME: string = 'PlataformaERPConexaoADOConsistir';
-var
-  locMsgErro: string;
-begin
-  // O objeto de conexão ADO está instanciado?
-  if argADOConnection = nil then
-  begin
-    locMsgErro := 'O objeto de conexão ADO com o banco de dados não foi instanciado!';
-    Plataforma_ERP_Logar(True, locMsgErro, FONTE_NOME, PROCEDIMENTO_NOME);
-    raise Exception.Create(locMsgErro);
-  end;
-
-  // A conexão ADO está estabelecida?
-  if not argADOConnection.Connected then
-  begin
-    locMsgErro := 'A conexão ADO com o banco de dados não foi estabelecida!';
-    Plataforma_ERP_Logar(True, locMsgErro, FONTE_NOME, PROCEDIMENTO_NOME);
-    raise Exception.Create(locMsgErro);
-  end;
-end;
-
-//
-// PlataformaERPConexaoADONumeradorLicenca.
-//
-function PlataformaERPConexaoADONumeradorLicenca(argADOConnection: TADOConnection;
-                                                 argBaseID       : Integer;
-                                                 argLicencaID    : Integer;
-                                                 argCodigo       : string;
-                                                 argUsuarioBaseID: Integer;
-                                                 argUsuarioID    : Integer): Integer;
-const
-  FUNCAO_NOME: string = 'PlataformaERPConexaoADONumeradorLicenca';
+  FUNCAO_NOME: string = 'Plataforma_ERP_ADO_NumeradorLicencaDeterminar';
 var
   locMsgErro : string;
   locADOQuery: TADOQuery;
 begin
-  // Consiste o objeto de conexão ADO.
-  try
-    PlataformaERPConexaoADOConsistir(argADOConnection);
-  except
-    on locExcecao: Exception do
-    begin
-      locMsgErro := 'Impossível determinar o próximo ID para o numerador [' + argCodigo + ']!';
-      Plataforma_ERP_Logar(True, locMsgErro, FONTE_NOME, FUNCAO_NOME);
-      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
-    end;
-  end;
   
   // Instancia e configura o objeto de query ADO com o banco de dados.
   locADOQuery                := TADOQuery.Create(nil);
@@ -315,6 +300,74 @@ begin
       end;
     end;    
   end;  
+
+  // Finaliza objetos.
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+end;
+
+//
+// Plataforma_ERP_RegistroAcaoIDDeterminar.
+//
+function Plataforma_ERP_RegistroAcaoIDDeterminar(argADOConnection: TADOConnection;
+                                                 argCriacao      : Boolean;
+                                                 argConsulta     : Boolean;
+                                                 argAlteracao    : Boolean;
+                                                 argExclusao     : Boolean): Integer;
+const
+  FUNCAO_NOME: string = 'Plataforma_ERP_RegistroAcaoIDDeterminar';
+var
+  locMsgErro : string;
+  locADOQuery: TADOQuery;
+begin
+  // Valor de retorno padrão.
+  Result := 0;
+  
+  // Instancia e configura o objeto de query ADO com o banco de dados.
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := argADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  // Monta SQL para consistir se o código informado é único.
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT TOP 1                         ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id] ');
+  locADOQuery.SQL.Add('FROM                                 ');
+  locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)      ');
+  locADOQuery.SQL.Add('WHERE                                ');
+
+  if argCriacao then
+    locADOQuery.SQL.Add(' [registro_acao].[criacao]   = ''S'' ');
+
+  if argConsulta then
+    locADOQuery.SQL.Add(' [registro_acao].[consulta]  = ''S'' ');
+
+  if argAlteracao then
+    locADOQuery.SQL.Add(' [registro_acao].[alteracao] = ''S'' ');
+
+  if argExclusao then
+    locADOQuery.SQL.Add(' [registro_acao].[exclusao]  = ''S'' ');
+
+  // Executa query.
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para consultar o ID da ação no registro na tabela [registro_acao]!';
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, FONTE_NOME, FUNCAO_NOME);
+      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
+    end;
+  end;
+
+  // Retorna código.
+  if locADOQuery.RecordCount > 0 then
+  begin
+    Result := locADOQuery.FieldByName('registro_acao_id').AsInteger;
+  end;
 
   // Finaliza objetos.
   locADOQuery.Close;

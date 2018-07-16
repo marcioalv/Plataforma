@@ -148,14 +148,12 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    ExplicitWidth = 569
-    ExplicitHeight = 337
     object lvwLista: TListView
       AlignWithMargins = True
       Left = 8
-      Top = 8
+      Top = 33
       Width = 629
-      Height = 341
+      Height = 316
       Cursor = crHandPoint
       Margins.Left = 8
       Margins.Top = 8
@@ -164,6 +162,19 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Align = alClient
       Columns = <
         item
+          Width = 0
+        end
+        item
+          Caption = 'Base ID'
+          Width = 0
+        end
+        item
+          Caption = 'Base'
+          Width = 100
+        end
+        item
+          Caption = 'Licenca ID'
+          Width = 0
         end
         item
           Alignment = taRightJustify
@@ -196,11 +207,29 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
-      ExplicitWidth = 549
+      ExplicitTop = 8
+      ExplicitHeight = 341
+    end
+    object pbaProgresso: TProgressBar
+      AlignWithMargins = True
+      Left = 8
+      Top = 8
+      Width = 629
+      Height = 17
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 0
+      Align = alTop
+      TabOrder = 1
+      Visible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 645
     end
   end
   object btnAtualizar: TBitBtn
-    Left = 48
+    Left = 128
     Top = 376
     Width = 73
     Height = 33
@@ -242,5 +271,27 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     Caption = 'Selecionar'
     TabOrder = 4
     OnClick = btnSelecionarClick
+  end
+  object btnNovo: TBitBtn
+    Left = 208
+    Top = 376
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Anchors = [akLeft, akBottom]
+    Caption = 'Novo'
+    TabOrder = 5
+    OnClick = btnNovoClick
+  end
+  object btnFiltrar: TBitBtn
+    Left = 48
+    Top = 376
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Anchors = [akLeft, akBottom]
+    Caption = 'Filtrar'
+    TabOrder = 6
+    OnClick = btnFiltrarClick
   end
 end

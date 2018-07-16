@@ -4,7 +4,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Cadastro de tipo de usu'#225'rio'
-  ClientHeight = 313
+  ClientHeight = 265
   ClientWidth = 537
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,9 +18,6 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  DesignSize = (
-    537
-    313)
   PixelsPerInch = 96
   TextHeight = 13
   object imgFormulario: TImage
@@ -130,72 +127,37 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       F587DF07404F1E79B289D0C45240747E0B75FA55197E137F270062EBCE23DFD4
       C452C013EAFEEE16FE17D3C1011F4A9CD9B60000000049454E44AE426082}
   end
-  object btnFechar: TBitBtn
-    Left = 456
-    Top = 272
-    Width = 73
-    Height = 33
-    Cursor = crHandPoint
-    Anchors = [akRight, akBottom]
-    Caption = 'Fechar'
-    TabOrder = 3
-    OnClick = btnFecharClick
-  end
-  object btnMinimizar: TBitBtn
-    Left = 376
-    Top = 272
-    Width = 73
-    Height = 33
-    Cursor = crHandPoint
-    Anchors = [akRight, akBottom]
-    Caption = 'Minimizar'
-    TabOrder = 2
-    OnClick = btnMinimizarClick
-  end
   object pagFormulario: TPageControl
-    AlignWithMargins = True
     Left = 48
     Top = 8
     Width = 481
-    Height = 257
+    Height = 209
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabAuditoria
-    Align = alClient
+    ActivePage = tabCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 238
       object lblCodigo: TLabel
         Left = 16
-        Top = 64
+        Top = 16
         Width = 37
         Height = 13
         Caption = 'C'#243'digo:'
       end
       object lblTitulo: TLabel
         Left = 16
-        Top = 112
+        Top = 64
         Width = 30
         Height = 13
         Caption = 'T'#237'tulo:'
       end
-      object lblTipoUsuarioID: TLabel
-        Left = 16
-        Top = 16
-        Width = 15
-        Height = 13
-        Caption = 'ID:'
-      end
       object edtCodigo: TEdit
         Left = 16
-        Top = 80
+        Top = 32
         Width = 57
         Height = 22
         Font.Charset = DEFAULT_CHARSET
@@ -204,7 +166,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 0
         Text = '999.999'
         OnEnter = edtCodigoEnter
         OnExit = edtCodigoExit
@@ -213,8 +175,8 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object edtTitulo: TEdit
         Left = 16
-        Top = 128
-        Width = 441
+        Top = 80
+        Width = 433
         Height = 22
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -222,51 +184,33 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 1
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
         OnEnter = edtTituloEnter
         OnExit = edtTituloExit
         OnKeyDown = edtTituloKeyDown
         OnKeyPress = edtTituloKeyPress
       end
-      object edtTipoUsuarioID: TEdit
-        Left = 16
-        Top = 32
-        Width = 41
-        Height = 22
-        TabStop = False
-        Alignment = taRightJustify
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 0
-        Text = '9.999'
-      end
       object chkBloqueado: TCheckBox
         Left = 16
-        Top = 168
+        Top = 120
         Width = 73
         Height = 17
         Cursor = crHandPoint
         Caption = 'Bloqueado'
-        TabOrder = 3
+        TabOrder = 2
         OnEnter = chkBloqueadoEnter
         OnExit = chkBloqueadoExit
         OnKeyPress = chkBloqueadoKeyPress
       end
       object chkAtivo: TCheckBox
         Left = 16
-        Top = 192
+        Top = 144
         Width = 49
         Height = 17
         Cursor = crHandPoint
         Caption = 'Ativo'
-        TabOrder = 4
+        TabOrder = 3
         OnEnter = chkAtivoEnter
         OnExit = chkAtivoExit
         OnKeyPress = chkAtivoKeyPress
@@ -278,7 +222,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       ExplicitLeft = 0
       ExplicitTop = 0
       ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitHeight = 229
       object lblInsDtHt: TLabel
         Left = 16
         Top = 16
@@ -299,6 +243,13 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Width = 55
         Height = 13
         Caption = 'Altera'#231#245'es:'
+      end
+      object lblTipoUsuarioID: TLabel
+        Left = 408
+        Top = 16
+        Width = 15
+        Height = 13
+        Caption = 'ID:'
       end
       object edtInsLocalDtHr: TEdit
         Left = 16
@@ -355,8 +306,8 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Text = '999.999'
       end
       object btnLog: TButton
-        Left = 16
-        Top = 168
+        Left = 328
+        Top = 128
         Width = 121
         Height = 33
         Cursor = crHandPoint
@@ -364,17 +315,104 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         TabOrder = 3
         OnClick = btnLogClick
       end
+      object edtTipoUsuarioID: TEdit
+        Left = 408
+        Top = 32
+        Width = 41
+        Height = 22
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 4
+        Text = '9.999'
+      end
     end
   end
-  object btnGravar: TBitBtn
-    Left = 296
-    Top = 272
+  object btnExcluir: TBitBtn
+    Left = 216
+    Top = 224
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Anchors = [akRight, akBottom]
-    Caption = 'Gravar'
+    Caption = 'Excluir'
     TabOrder = 1
+    OnClick = btnExcluirClick
+  end
+  object btnLocalizar: TBitBtn
+    Left = 48
+    Top = 224
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Localizar'
+    TabOrder = 2
+    OnClick = btnLocalizarClick
+  end
+  object btnGravar: TBitBtn
+    Left = 296
+    Top = 224
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Gravar'
+    TabOrder = 3
     OnClick = btnGravarClick
+  end
+  object btnMinimizar: TBitBtn
+    Left = 376
+    Top = 224
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Minimizar'
+    TabOrder = 4
+    OnClick = btnMinimizarClick
+  end
+  object btnFechar: TBitBtn
+    Left = 456
+    Top = 224
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Fechar'
+    TabOrder = 5
+    OnClick = btnFecharClick
+  end
+  object btnCancelar: TBitBtn
+    Left = 456
+    Top = 224
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Cancelar'
+    TabOrder = 6
+    OnClick = btnCancelarClick
+  end
+  object btnEditar: TBitBtn
+    Left = 296
+    Top = 224
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Editar'
+    TabOrder = 7
+    OnClick = btnEditarClick
+  end
+  object btnNovo: TBitBtn
+    Left = 128
+    Top = 224
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Novo'
+    TabOrder = 8
+    OnClick = btnNovoClick
   end
 end
