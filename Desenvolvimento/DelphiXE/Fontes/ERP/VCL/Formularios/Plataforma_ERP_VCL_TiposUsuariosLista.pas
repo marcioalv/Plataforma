@@ -43,6 +43,8 @@ type
     btnNovo: TBitBtn;
     pbaProgresso: TProgressBar;
     btnFiltrar: TBitBtn;
+    Label1: TLabel;
+    Label2: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);

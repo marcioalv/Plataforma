@@ -148,17 +148,42 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
+    DesignSize = (
+      645
+      357)
+    object Label1: TLabel
+      Left = 10
+      Top = 336
+      Width = 142
+      Height = 13
+      Anchors = [akLeft, akBottom]
+      Caption = 'Foram localizados 9 registros!'
+    end
+    object Label2: TLabel
+      Left = 556
+      Top = 336
+      Width = 80
+      Height = 13
+      Anchors = [akRight, akBottom]
+      Caption = 'Filtros aplicados!'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
     object lvwLista: TListView
       AlignWithMargins = True
       Left = 8
       Top = 33
       Width = 629
-      Height = 316
+      Height = 292
       Cursor = crHandPoint
       Margins.Left = 8
       Margins.Top = 8
       Margins.Right = 8
-      Margins.Bottom = 8
+      Margins.Bottom = 32
       Align = alClient
       Columns = <
         item
@@ -199,16 +224,21 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
           Caption = 'Ativo'
           Width = 40
         end>
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
       ReadOnly = True
       RowSelect = True
+      ParentFont = False
       TabOrder = 0
       ViewStyle = vsReport
       OnCustomDrawItem = lvwListaCustomDrawItem
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
-      ExplicitTop = 8
-      ExplicitHeight = 341
+      ExplicitHeight = 316
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True
@@ -223,18 +253,15 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Align = alTop
       TabOrder = 1
       Visible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 645
     end
   end
   object btnAtualizar: TBitBtn
-    Left = 128
+    Left = 304
     Top = 376
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Anchors = [akLeft, akBottom]
+    Anchors = [akRight, akBottom]
     Caption = 'Atualizar'
     TabOrder = 1
     OnClick = btnAtualizarClick
@@ -273,23 +300,23 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     OnClick = btnSelecionarClick
   end
   object btnNovo: TBitBtn
-    Left = 208
+    Left = 384
     Top = 376
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Anchors = [akLeft, akBottom]
+    Anchors = [akRight, akBottom]
     Caption = 'Novo'
     TabOrder = 5
     OnClick = btnNovoClick
   end
   object btnFiltrar: TBitBtn
-    Left = 48
+    Left = 224
     Top = 376
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Anchors = [akLeft, akBottom]
+    Anchors = [akRight, akBottom]
     Caption = 'Filtrar'
     TabOrder = 6
     OnClick = btnFiltrarClick

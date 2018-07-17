@@ -346,7 +346,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     OnClick = btnExcluirClick
   end
   object btnLocalizar: TBitBtn
-    Left = 48
+    Left = 56
     Top = 224
     Width = 73
     Height = 33
@@ -406,7 +406,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     OnClick = btnEditarClick
   end
   object btnNovo: TBitBtn
-    Left = 128
+    Left = 136
     Top = 224
     Width = 73
     Height = 33

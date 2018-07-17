@@ -90,6 +90,7 @@ procedure VCLDigitacaoHabilitar(argFormulario: TForm; var argTecla: Char; argTip
 procedure VCLListViewLimpar(argComponente: TListView);
 procedure VCLMaskEditLimpar(argComponente: TMaskEdit);
 procedure VCLEditLimpar(argComponente: TEdit);
+procedure VCLComboBoxLimpar(argComponente: TComboBox);
 procedure VCLRadioButtonLimpar(argComponente: TRadioButton);
 procedure VCLCheckBoxLimpar(argComponente: TCheckBox);
 procedure VCLMemoLimpar(argComponente: TMemo);
@@ -116,8 +117,16 @@ function VCLMaskEditSair(argComponente: TMaskEdit): Boolean;
 function VCLMemoEntrar(argComponente: TMemo): Boolean;
 function VCLMemoSair(argComponente: TMemo): Boolean;
 
+function VCLComboBoxEntrar(argComponente: TComboBox): Boolean;
+function VCLComboBoxSair(argComponente: TComboBox): Boolean;
+
 function VCLCheckBoxEntrar(argComponente: TCheckBox): Boolean;
 function VCLCheckBoxSair(argComponente: TCheckBox): Boolean;
+
+//
+// Cargas específicas.
+//
+procedure VCLComboBoxSimNaoPopular(argComponente: TComboBox; argCompleto: Boolean);
 
 //
 // Validações.
@@ -366,6 +375,15 @@ end;
 procedure VCLEditLimpar(argComponente: TEdit);
 begin
   argComponente.Text := '';
+end;
+
+//
+// VCLComboBoxLimpar.
+//
+procedure VCLComboBoxLimpar(argComponente: TComboBox);
+begin
+  argComponente.Text      := '';
+  argComponente.ItemIndex := VCL_NENHUM_INDICE;
 end;
 
 //
@@ -739,6 +757,31 @@ begin
 end;
 
 //
+// VCLComboBoxEntrar.
+//
+function VCLComboBoxEntrar(argComponente: TComboBox): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := RGB(230, 242, 255);
+  if not argComponente.Enabled then Exit;
+  Result := True;
+end;
+
+//
+// VCLComboBoxSair.
+//
+function VCLComboBoxSair(argComponente: TComboBox): Boolean;
+begin
+  Result := False;
+  if argComponente.Color = clBtnFace then Exit;
+  argComponente.Color := clWindow;
+  if not argComponente.Enabled then Exit;
+  argComponente.Text := StringTrim(argComponente.Text);
+  Result := True;
+end;
+
+//
 // VCLCheckBoxEntrar.
 //
 function VCLCheckBoxEntrar(argComponente: TCheckBox): Boolean;
@@ -760,6 +803,19 @@ begin
   argComponente.Color := clWindow;
   if not argComponente.Enabled then Exit;
   Result := True;
+end;
+
+//
+// VCLComboBoxSimNaoPopular.
+//
+procedure VCLComboBoxSimNaoPopular(argComponente: TComboBox; argCompleto: Boolean);
+begin
+  argComponente.Items.BeginUpdate;
+  argComponente.Items.Clear;
+  argComponente.Items.Add('Não');
+  argComponente.Items.Add('Sim');
+  argComponente.Items.Add('Ambos');
+  argComponente.Items.EndUpdate;
 end;
 
 //

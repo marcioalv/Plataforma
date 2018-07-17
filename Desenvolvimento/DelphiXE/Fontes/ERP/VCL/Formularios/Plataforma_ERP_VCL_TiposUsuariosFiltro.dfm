@@ -1,10 +1,11 @@
 object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Filtros de tipos de usu'#225'rio'
   ClientHeight = 281
-  ClientWidth = 354
+  ClientWidth = 386
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,6 +14,10 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  Position = poOwnerFormCenter
+  OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object imgFormulario: TImage
@@ -78,27 +83,29 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       430000000049454E44AE426082}
   end
   object btnFiltrar: TBitBtn
-    Left = 192
+    Left = 64
     Top = 240
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Caption = 'Filtrar'
-    TabOrder = 0
+    TabOrder = 1
+    OnClick = btnFiltrarClick
   end
   object btnFechar: TBitBtn
-    Left = 272
+    Left = 304
     Top = 240
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Caption = 'Fechar'
-    TabOrder = 1
+    TabOrder = 2
+    OnClick = btnFecharClick
   end
   object panFormulario: TPanel
     Left = 48
     Top = 8
-    Width = 297
+    Width = 329
     Height = 225
     Margins.Left = 48
     Margins.Top = 8
@@ -110,7 +117,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
     Color = clWindow
     ParentBackground = False
     ShowCaption = False
-    TabOrder = 2
+    TabOrder = 0
     object lblCodigo: TLabel
       Left = 16
       Top = 64
@@ -118,80 +125,52 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Height = 13
       Caption = 'C'#243'digo:'
     end
-    object Label1: TLabel
-      Left = 136
+    object lblCodigoAte: TLabel
+      Left = 152
       Top = 85
       Width = 16
       Height = 13
       Caption = 'at'#233
     end
-    object Label2: TLabel
+    object lblTitulo: TLabel
       Left = 16
       Top = 112
       Width = 30
       Height = 13
       Caption = 'T'#237'tulo:'
     end
-    object Label3: TLabel
+    object lblTipoUsuarioID: TLabel
       Left = 16
       Top = 16
       Width = 15
       Height = 13
       Caption = 'ID:'
     end
-    object Label4: TLabel
-      Left = 64
+    object lblTipoUsuarioIDAte: TLabel
+      Left = 72
       Top = 37
       Width = 16
       Height = 13
       Caption = 'at'#233
     end
-    object Label5: TLabel
+    object lblBloqueado: TLabel
       Left = 16
       Top = 160
       Width = 54
       Height = 13
       Caption = 'Bloqueado:'
     end
-    object Label6: TLabel
-      Left = 160
+    object lblAtivo: TLabel
+      Left = 176
       Top = 160
       Width = 29
       Height = 13
       Caption = 'Ativo:'
     end
-    object edtCodigo: TEdit
+    object edtCodigoInicial: TEdit
       Left = 16
       Top = 80
-      Width = 114
-      Height = 22
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 0
-      Text = '999.999'
-    end
-    object Edit1: TEdit
-      Left = 160
-      Top = 80
-      Width = 114
-      Height = 22
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 1
-      Text = '999.999'
-    end
-    object edtTitulo: TEdit
-      Left = 16
-      Top = 128
-      Width = 257
+      Width = 129
       Height = 22
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -200,14 +179,16 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Font.Style = []
       ParentFont = False
       TabOrder = 2
-      Text = 'Xxxxxxxxxx Wwwwwwwwww'
+      Text = '999.999'
+      OnEnter = edtCodigoInicialEnter
+      OnExit = edtCodigoInicialExit
+      OnKeyPress = edtCodigoInicialKeyPress
     end
-    object Edit2: TEdit
-      Left = 16
-      Top = 32
-      Width = 41
+    object edtCodigoFinal: TEdit
+      Left = 176
+      Top = 80
+      Width = 129
       Height = 22
-      Alignment = taRightJustify
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -215,12 +196,32 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Font.Style = []
       ParentFont = False
       TabOrder = 3
-      Text = '99'
+      Text = '999.999'
+      OnEnter = edtCodigoFinalEnter
+      OnExit = edtCodigoFinalExit
+      OnKeyPress = edtCodigoFinalKeyPress
     end
-    object Edit3: TEdit
-      Left = 88
+    object edtTitulo: TEdit
+      Left = 16
+      Top = 128
+      Width = 289
+      Height = 22
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 4
+      Text = 'Xxxxxxxxxx Wwwwwwwwww'
+      OnEnter = edtTituloEnter
+      OnExit = edtTituloExit
+      OnKeyPress = edtTituloKeyPress
+    end
+    object edtTipoUsuarioIDInicial: TEdit
+      Left = 16
       Top = 32
-      Width = 41
+      Width = 49
       Height = 22
       Alignment = taRightJustify
       Font.Charset = DEFAULT_CHARSET
@@ -229,13 +230,34 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      TabOrder = 4
+      TabOrder = 0
       Text = '99'
+      OnEnter = edtTipoUsuarioIDInicialEnter
+      OnExit = edtTipoUsuarioIDInicialExit
+      OnKeyPress = edtTipoUsuarioIDInicialKeyPress
     end
-    object ComboBox1: TComboBox
+    object edtTipoUsuarioIDFinal: TEdit
+      Left = 96
+      Top = 32
+      Width = 49
+      Height = 22
+      Alignment = taRightJustify
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      Text = '99'
+      OnEnter = edtTipoUsuarioIDFinalEnter
+      OnExit = edtTipoUsuarioIDFinalExit
+      OnKeyPress = edtTipoUsuarioIDFinalKeyPress
+    end
+    object cbxBloqueado: TComboBox
       Left = 16
       Top = 176
-      Width = 113
+      Width = 129
       Height = 22
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -245,11 +267,14 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       ParentFont = False
       TabOrder = 5
       Text = 'Wwwww'
+      OnEnter = cbxBloqueadoEnter
+      OnExit = cbxBloqueadoExit
+      OnKeyPress = cbxBloqueadoKeyPress
     end
-    object ComboBox2: TComboBox
-      Left = 160
+    object cbxAtivo: TComboBox
+      Left = 176
       Top = 176
-      Width = 113
+      Width = 129
       Height = 22
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -259,6 +284,28 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       ParentFont = False
       TabOrder = 6
       Text = 'Wwwww'
+      OnEnter = cbxAtivoEnter
+      OnExit = cbxAtivoExit
+      OnKeyPress = cbxAtivoKeyPress
     end
+  end
+  object btnLimpar: TBitBtn
+    Left = 144
+    Top = 240
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Limpar'
+    TabOrder = 3
+    OnClick = btnLimparClick
+  end
+  object btnMinimizar: TBitBtn
+    Left = 224
+    Top = 240
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Minimizar'
+    TabOrder = 4
   end
 end

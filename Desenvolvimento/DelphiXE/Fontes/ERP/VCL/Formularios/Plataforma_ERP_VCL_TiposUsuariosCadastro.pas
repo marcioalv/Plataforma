@@ -127,7 +127,7 @@ uses
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_Generico,
-  Plataforma_ERP_TipoUsuario;
+  Plataforma_ERP_VCL_TiposUsuariosLocalizar;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_TipoUsuariosCadastro.pas';
@@ -177,6 +177,7 @@ begin
   if (pubBaseID > 0) and (pubLicencaID > 0) and (pubTipoUsuarioID > 0) then
   begin
     FormularioPopular(pubBaseID, pubLicencaID, pubTipoUsuarioID);
+    FormularioControlar(False);
   end;
 end;
 
@@ -373,7 +374,7 @@ begin
   //
   // Determina se existem dados populados no formulário.
   //
-  locDadosPopulados := (edtTipoUsuarioID.Text <> '');
+  locDadosPopulados := (StringIntegerConverter(edtTipoUsuarioID.Text) > 0);
 
   //
   // Controla os componentes do formulário.
@@ -387,6 +388,7 @@ begin
   // Controla os botões do formulário.
   //
   btnLocalizar.Visible := (not argEditar);
+  btnNovo.Visible      := (not argEditar) and (not locDadosPopulados);
   btnExcluir.Visible   := (not argEditar) and (locDadosPopulados);
   btnEditar.Visible    := (not argEditar) and (locDadosPopulados);
   btnGravar.Visible    := argEditar;
@@ -408,10 +410,16 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioLocalizar;
 var
+  locFormulario   : TPlataformaERPVCLTiposUsuariosLocalizar;
   locBaseID       : Integer;
   locLicencaID    : Integer;
   locTipoUsuarioID: Integer;
 begin
+  locFormulario   := TPlataformaERPVCLTiposUsuariosLocalizar.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
   locBaseID        := 1;
   locLicencaID     := 1;
   locTipoUsuarioID := 1;
@@ -553,7 +561,7 @@ begin
   //
   if locADOQuery.RecordCount >= 0 then
   begin
-    edtTipoUsuarioID.Text := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger);
+    edtTipoUsuarioID.Text := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger, True);
     edtCodigo.Text        := locADOQuery.FieldByName('codigo').AsString;
     edtTitulo.Text        := locADOQuery.FieldByName('titulo').AsString;
     chkBloqueado.Checked  := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
