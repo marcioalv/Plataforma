@@ -165,6 +165,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Height = -12
         Font.Name = 'Tahoma'
         Font.Style = []
+        MaxLength = 25
         ParentFont = False
         TabOrder = 0
         Text = '999.999'
@@ -183,6 +184,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Height = -12
         Font.Name = 'Tahoma'
         Font.Style = []
+        MaxLength = 100
         ParentFont = False
         TabOrder = 1
         Text = 'Xxxxxxxxxx Wwwwwwwwww'

@@ -69,8 +69,16 @@ type
   private
     procedure FormularioInicializar;
     procedure FormularioLimpar;
+    procedure FormularioFiltrar;
   public
-    { Public declarations }
+    pubClicouFechar        : Boolean;
+    pubTipoUsuarioIDInicial: Integer;
+    pubTipoUsuarioIDFinal  : Integer;
+    pubCodigoInicial       : string;
+    pubCodigoFinal         : string;
+    pubTitulo              : string;
+    pubBloqueado           : string;
+    pubAtivo               : string;
   end;
 
 var
@@ -92,7 +100,26 @@ const
 //
 procedure TPlataformaERPVCLTiposUsuariosFiltro.FormCreate(Sender: TObject);
 begin
+  //
+  // Inicializa variáveis públicas.
+  //
+  pubClicouFechar         := True;
+  pubTipoUsuarioIDInicial := 0;
+  pubTipoUsuarioIDFinal   := 0;
+  pubCodigoInicial        := '';
+  pubCodigoFinal          := '';
+  pubTitulo               := '';
+  pubBloqueado            := '';
+  pubAtivo                := '';
+
+  //
+  // Inicializa componentes do formulário.
+  //
   FormularioInicializar;
+
+  //
+  // Limpa componentes do formulário.
+  //
   FormularioLimpar;
 end;
 
@@ -101,7 +128,13 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosFiltro.FormShow(Sender: TObject);
 begin
-  Exit;
+  edtTipoUsuarioIDInicial.Text := IntegerStringConverter(pubTipoUsuarioIDInicial, True);
+  edtTipoUsuarioIDFinal.Text   := IntegerStringConverter(pubTipoUsuarioIDFinal, True);
+  edtCodigoInicial.Text        := pubCodigoInicial;
+  edtCodigoFinal.Text          := pubCodigoFinal;
+  edtTitulo.Text               := pubTitulo;
+  VCLComboBoxPopular(cbxBloqueado, pubBloqueado);
+  VCLComboBoxPopular(cbxAtivo,     pubAtivo);
 end;
 
 //
@@ -218,6 +251,7 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosFiltro.cbxBloqueadoExit(Sender: TObject);
 begin
   if not VCLComboBoxSair(cbxBloqueado) then Exit;
+  if not VCLComboBoxValidar(cbxBloqueado) then Exit;
 end;
 
 //
@@ -236,6 +270,7 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosFiltro.cbxAtivoExit(Sender: TObject);
 begin
   if not VCLComboBoxSair(cbxAtivo) then Exit;
+  if not VCLComboBoxValidar(cbxAtivo) then Exit;
 end;
 
 //
@@ -252,7 +287,7 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosFiltro.btnFiltrarClick(Sender: TObject);
 begin
-  Close;
+  FormularioFiltrar;
 end;
 
 //
@@ -284,6 +319,22 @@ begin
   VCLEditLimpar    (edtTitulo);
   VCLComboBoxLimpar(cbxBloqueado);
   VCLComboBoxLimpar(cbxAtivo);
+end;
+
+//
+// Procedimento para filtrar os dados da lista.
+//
+procedure TPlataformaERPVCLTiposUsuariosFiltro.FormularioFiltrar;
+begin
+  pubClicouFechar         := False;
+  pubTipoUsuarioIDInicial := StringIntegerConverter(edtTipoUsuarioIDInicial.Text);
+  pubTipoUsuarioIDFinal   := StringIntegerConverter(edtTipoUsuarioIDFinal.Text);
+  pubCodigoInicial        := StringTrim(edtCodigoInicial.Text);
+  pubCodigoFinal          := StringTrim(edtCodigoFinal.Text);
+  pubTitulo               := StringTrim(edtTitulo.Text);
+  pubBloqueado            := Copy(cbxBloqueado.Text, 1, 1);
+  pubAtivo                := Copy(cbxAtivo.Text, 1, 1);
+  Close;
 end;
 
 end.

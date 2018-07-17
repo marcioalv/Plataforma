@@ -177,6 +177,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Font.Height = -12
       Font.Name = 'Tahoma'
       Font.Style = []
+      MaxLength = 25
       ParentFont = False
       TabOrder = 2
       Text = '999.999'
@@ -194,6 +195,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Font.Height = -12
       Font.Name = 'Tahoma'
       Font.Style = []
+      MaxLength = 25
       ParentFont = False
       TabOrder = 3
       Text = '999.999'
@@ -211,6 +213,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Font.Height = -12
       Font.Name = 'Tahoma'
       Font.Style = []
+      MaxLength = 50
       ParentFont = False
       TabOrder = 4
       Text = 'Xxxxxxxxxx Wwwwwwwwww'
@@ -229,6 +232,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Font.Height = -12
       Font.Name = 'Tahoma'
       Font.Style = []
+      MaxLength = 4
       ParentFont = False
       TabOrder = 0
       Text = '99'
@@ -247,6 +251,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Font.Height = -12
       Font.Name = 'Tahoma'
       Font.Style = []
+      MaxLength = 4
       ParentFont = False
       TabOrder = 1
       Text = '99'
@@ -264,6 +269,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Font.Height = -12
       Font.Name = 'Tahoma'
       Font.Style = []
+      MaxLength = 15
       ParentFont = False
       TabOrder = 5
       Text = 'Wwwww'
@@ -281,6 +287,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       Font.Height = -12
       Font.Name = 'Tahoma'
       Font.Style = []
+      MaxLength = 15
       ParentFont = False
       TabOrder = 6
       Text = 'Wwwww'

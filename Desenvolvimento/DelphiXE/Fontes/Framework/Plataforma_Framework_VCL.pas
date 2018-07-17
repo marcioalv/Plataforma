@@ -47,6 +47,8 @@ const
 
   VCL_NENHUM_INDICE             : Integer = -1;
 
+  VCL_MENSAGEM_ATUALIZAR        : string = 'Clique no botão "atualizar" para carregar a lista com os dados cadastrados!';
+
 //
 // Controles do formulário.
 // 
@@ -127,10 +129,14 @@ function VCLCheckBoxSair(argComponente: TCheckBox): Boolean;
 // Cargas específicas.
 //
 procedure VCLComboBoxSimNaoPopular(argComponente: TComboBox; argCompleto: Boolean);
+function  VCLComboBoxSimNaoFlagDeterminar(argComponente: TComboBox): string;
+procedure VCLComboBoxPopular(argComponente: TComboBox; argValor: string);
 
 //
 // Validações.
 //
+function VCLComboBoxValidar(argComponente: TComboBox): Boolean;
+
 function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
 
 function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
@@ -167,6 +173,9 @@ procedure VCLListViewLinhaMover(argListView: TListView; argMovimento: Byte; argI
 procedure VCLListViewItemRemover(argComponente: TListView; argIndiceItemRemover: Integer; argIndiceColunaSequencial: Integer);
 
 function VCLListViewIndiceItemRetornar(argComponente: TListView): Integer;
+
+procedure VCLListViewQtdeLinhasMensagem(argLabel: TLabel; argListView: TListView; argFiltrosAplicados: Boolean = False);
+
 
 {*************************************************************************************************}
 implementation
@@ -558,7 +567,8 @@ begin
   //
   // Teclas permitidas somente para a digiação alfanumérica.
   //
-  if argTipo = VCL_DIGITACAO_ALFANUMERICA then
+  if (argTipo = VCL_DIGITACAO_CODIGO) or
+     (argTipo = VCL_DIGITACAO_ALFANUMERICA) then
   begin
     if (argTecla = ' ') or
        (argTecla = '_') or
@@ -816,6 +826,86 @@ begin
   argComponente.Items.Add('Sim');
   argComponente.Items.Add('Ambos');
   argComponente.Items.EndUpdate;
+end;
+
+//
+// VCLComboBoxSimNaoFlagDeterminar.
+//
+function VCLComboBoxSimNaoFlagDeterminar(argComponente: TComboBox): string;
+var
+  locFlag: string;
+begin
+  locFlag := Copy(UpperCase(argComponente.Text), 1, 1);
+
+  Result := '';
+  if locFlag = FLAG_SIM   then Result := FLAG_SIM;
+  if locFlag = FLAG_NAO   then Result := FLAG_NAO;
+  if locFlag = FLAG_AMBOS then Result := FLAG_AMBOS;
+end;
+
+//
+// VCLComboBoxPopular.
+//
+procedure VCLComboBoxPopular(argComponente: TComboBox; argValor: string);
+var
+  locContador: integer;
+begin
+  if argValor = '' then
+  begin
+    VCLComboBoxLimpar(argComponente);
+    Exit;
+  end;
+
+  for locContador := 0 to (argComponente.Items.Count - 1) do
+  begin
+    if UpperCase(argValor) = UpperCase(Copy(argComponente.Items[locContador], 1, Length(argValor))) then
+    begin
+      argComponente.Text      := argComponente.Items[locContador];
+      argComponente.ItemIndex := locContador;
+      Exit;
+    end;
+  end;
+end;
+
+//
+// VCLComboBoxValidar.
+//
+function VCLComboBoxValidar(argComponente: TComboBox): Boolean;
+var
+  locTexto    : string;
+  locContador : Integer;
+  locEncontrou: Boolean;
+begin
+  locTexto := StringTrim(argComponente.Text);
+
+  if locTexto = '' then
+  begin
+    VCLComboBoxLimpar(argComponente);
+    Result := True;
+    Exit;
+  end;
+
+  locEncontrou := False;
+  for locContador := 0 to (argComponente.Items.Count - 1) do
+  begin
+    if UpperCase(locTexto) = UpperCase(Copy(argComponente.Items[locContador], 1, Length(locTexto))) then
+    begin
+      argComponente.Text      := argComponente.Items[locContador];
+      argComponente.ItemIndex := locContador;
+      locEncontrou            := True;
+    end;
+  end;
+
+  if not locEncontrou then
+  begin
+    VCLConsistenciaExibir('O valor "' + locTexto + '" informado não existe na lista de seleção disponível!');
+    VCLComboBoxLimpar(argComponente);
+    argComponente.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  Result := True;  
 end;
 
 //
@@ -1360,6 +1450,51 @@ begin
   end;
 
   Result := locIndice;
+end;
+
+//
+// VCLListViewQtdeLinhasMensagem
+//
+procedure VCLListViewQtdeLinhasMensagem(argLabel: TLabel; argListView: TListView; argFiltrosAplicados: Boolean = False);
+begin
+  argLabel.Font.Color := clBlack;
+
+  if argListView.Items.Count <= 0 then
+  begin
+    argLabel.Font.Color := clRed;
+    if not argFiltrosAplicados then
+    begin
+      argLabel.Caption := 'Nenhum registro encontrado!';
+    end
+    else
+    begin
+      argLabel.Caption := 'Nenhum registro encontrado com os filtros informados!';
+    end;
+  end;
+
+  if argListView.Items.Count = 1 then
+  begin
+    if not argFiltrosAplicados then
+    begin
+      argLabel.Caption := 'Um único registro encontrado!';
+    end
+    else
+    begin
+      argLabel.Caption := 'Um único registro encontrado com os filtros informados!';
+    end;
+  end;
+
+  if argListView.Items.Count > 1 then
+  begin
+    if not argFiltrosAplicados then
+    begin
+      argLabel.Caption := 'Foram encontrados ' + IntegerStringConverter(argListView.Items.Count) + ' registros!';
+    end
+    else
+    begin
+      argLabel.Caption := 'Foram encontrados ' + IntegerStringConverter(argListView.Items.Count) + ' registros com os filtros informados!';
+    end;
+  end;  
 end;
 
 end.

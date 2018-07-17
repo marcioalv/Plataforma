@@ -151,7 +151,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     DesignSize = (
       645
       357)
-    object Label1: TLabel
+    object lblListaQtde: TLabel
       Left = 10
       Top = 336
       Width = 142
@@ -159,8 +159,8 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Anchors = [akLeft, akBottom]
       Caption = 'Foram localizados 9 registros!'
     end
-    object Label2: TLabel
-      Left = 556
+    object lblListaFiltros: TLabel
+      Left = 552
       Top = 336
       Width = 80
       Height = 13
@@ -172,6 +172,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      Visible = False
     end
     object lvwLista: TListView
       AlignWithMargins = True
@@ -238,7 +239,6 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
-      ExplicitHeight = 316
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True

@@ -43,8 +43,8 @@ type
     btnNovo: TBitBtn;
     pbaProgresso: TProgressBar;
     btnFiltrar: TBitBtn;
-    Label1: TLabel;
-    Label2: TLabel;
+    lblListaQtde: TLabel;
+    lblListaFiltros: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -60,10 +60,16 @@ type
     procedure btnNovoClick(Sender: TObject);
     procedure btnFiltrarClick(Sender: TObject);
   private
-    procedure FormularioFiltrar;
-
-    procedure FormularioAtualizar;
+    priFiltroTipoUsuarioIDInicial: Integer;
+    priFiltroTipoUsuarioIDFinal  : Integer;
+    priFiltroCodigoInicial       : string;
+    priFiltroCodigoFinal         : string;
+    priFiltroTitulo              : string;
+    priFiltroBloqueado           : string;
+    priFiltroAtivo               : string;
   
+    procedure FormularioFiltrar;
+    procedure FormularioAtualizar;  
     procedure FormularioCadastroExibir(argNovo: Boolean);
   public
     { Public declarations }
@@ -101,7 +107,21 @@ const
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormCreate(Sender: TObject);
 begin
-  Exit;
+  //
+  // Inicializa variáveis privadas.
+  //
+  priFiltroTipoUsuarioIDInicial := 0;
+  priFiltroTipoUsuarioIDFinal   := 0;
+  priFiltroCodigoInicial        := '';
+  priFiltroCodigoFinal          := '';
+  priFiltroTitulo               := '';
+  priFiltroBloqueado            := '';
+  priFiltroAtivo                := '';
+
+  //
+  // Mensagem para o label de quantidade de registros.
+  //
+  lblListaQtde.Caption := VCL_MENSAGEM_ATUALIZAR;
 end;
 
 //
@@ -205,12 +225,52 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormularioFiltrar;
 var
-  locFormulario: TPlataformaERPVCLTiposUsuariosFiltro;
+  locFormulario          : TPlataformaERPVCLTiposUsuariosFiltro;
+  locClicouFechar        : Boolean;
+  locTipoUsuarioIDInicial: Integer;
+  locTipoUsuarioIDFinal  : Integer;
+  locCodigoInicial       : string;
+  locCodigoFinal         : string;
+  locTitulo              : string;
+  locBloqueado           : string;
+  locAtivo               : string;
 begin
   locFormulario := TPlataformaERPVCLTiposUsuariosFiltro.Create(Self);
+
+  locFormulario.pubTipoUsuarioIDInicial := priFiltroTipoUsuarioIDInicial;
+  locFormulario.pubTipoUsuarioIDFinal   := priFiltroTipoUsuarioIDFinal;
+  locFormulario.pubCodigoInicial        := priFiltroCodigoInicial;
+  locFormulario.pubCodigoFinal          := priFiltroCodigoFinal;
+  locFormulario.pubTitulo               := priFiltroTitulo;
+  locFormulario.pubBloqueado            := priFiltroBloqueado;
+  locFormulario.pubAtivo                := priFiltroAtivo;
+  
   locFormulario.ShowModal;
+
+  locClicouFechar         := locFormulario.pubClicouFechar;
+  locTipoUsuarioIDInicial := locFormulario.pubTipoUsuarioIDInicial;
+  locTipoUsuarioIDFinal   := locFormulario.pubTipoUsuarioIDFinal;
+  locCodigoInicial        := locFormulario.pubCodigoInicial;
+  locCodigoFinal          := locFormulario.pubCodigoFinal;
+  locTitulo               := locFormulario.pubTitulo;
+  locBloqueado            := locFormulario.pubBloqueado;
+  locAtivo                := locFormulario.pubAtivo;
+  
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    priFiltroTipoUsuarioIDInicial := locTipoUsuarioIDInicial;
+    priFiltroTipoUsuarioIDFinal   := locTipoUsuarioIDFinal;
+    priFiltroCodigoInicial        := locCodigoInicial;
+    priFiltroCodigoFinal          := locCodigoFinal;
+    priFiltroTitulo               := locTitulo;
+    priFiltroBloqueado            := locBloqueado;
+    priFiltroAtivo                := locAtivo;
+
+    FormularioAtualizar;
+  end;
 end;
 
 //
@@ -226,6 +286,7 @@ var
   locLogMensagem   : string;
   locLicencaID     : Integer;
   locListItem      : TListItem;
+  locFiltros       : Boolean;
 begin
   //
   // ID da licença.
@@ -289,6 +350,64 @@ begin
   locADOQuery.SQL.Add('    ON [licenca].[licenca_id] = [tipo_usuario].[licenca_id] ');
   locADOQuery.SQL.Add('WHERE                                                       ');
   locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id] = :licenca_id                 ');
+
+  //
+  // Filtros.
+  //
+  locFiltros := False;
+
+  if priFiltroTipoUsuarioIDInicial > 0 then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[tipo_usuario_id] >= :tipo_usuario_id_inicial ');
+    locADOQuery.Parameters.ParamByName('tipo_usuario_id_inicial').Value := priFiltroTipoUsuarioIDInicial;
+  end;
+
+  if priFiltroTipoUsuarioIDFinal > 0 then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[tipo_usuario_id] <= :tipo_usuario_id_final ');
+    locADOQuery.Parameters.ParamByName('tipo_usuario_id_final').Value := priFiltroTipoUsuarioIDFinal;
+  end;
+
+  if priFiltroCodigoInicial <> '' then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[codigo] >= :codigo_inicial ');
+    locADOQuery.Parameters.ParamByName('codigo_inicial').Value := priFiltroCodigoInicial;
+  end;
+
+  if priFiltroCodigoFinal <> '' then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[codigo] <= :codigo_final ');
+    locADOQuery.Parameters.ParamByName('codigo_final').Value := priFiltroCodigoFinal;
+  end;
+
+  if priFiltroTitulo <> '' then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[titulo] LIKE :titulo ');
+    locADOQuery.Parameters.ParamByName('titulo').Value := StringLikeGerar(priFiltroTitulo);
+  end;
+  
+  if (priFiltroBloqueado <> '') AND (priFiltroBloqueado <> FLAG_AMBOS) then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[bloqueado] = :bloqueado ');
+    locADOQuery.Parameters.ParamByName('bloqueado').Value := priFiltroBloqueado;
+  end;
+
+  if (priFiltroAtivo <> '') AND (priFiltroAtivo <> FLAG_AMBOS) then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[ativo] = :ativo ');
+    locADOQuery.Parameters.ParamByName('ativo').Value := priFiltroAtivo;
+  end;  
+
+  //
+  // Order by.
+  //  
   locADOQuery.SQL.Add('ORDER BY                                                    ');
   locADOQuery.SQL.Add('  [tipo_usuario].[codigo] ASC                               ');
 
@@ -343,6 +462,12 @@ begin
     end;
     lvwLista.Items.EndUpdate;
   end;
+
+  //
+  // Label de quantidade de linhas no listview.
+  //
+  VCLListViewQtdeLinhasMensagem(lblListaQtde, lvwLista, locFiltros);
+  lblListaFiltros.Visible := locFiltros;
 
   //
   // Finaliza.

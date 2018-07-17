@@ -50,6 +50,7 @@ const
 
   FLAG_SIM    : string = 'S';
   FLAG_NAO    : string = 'N';
+  FLAG_AMBOS  : string = 'A';
 
   STR_NOVO    : string = 'Novo';
 
@@ -78,6 +79,8 @@ function StringPreencher(argValor: string; argTamanho: Integer; argCaracter: str
 function StringSeparar(argValor: string; argSeparador: string): TStringList;
 
 function StringAcentosRemover(argValor: string): string;
+
+function StringLikeGerar(argValor: string): string;
 
 function SomenteNumerosValidar(argTexto: string): Boolean;
 
@@ -345,6 +348,14 @@ begin
   end;
 
   Result := argValor;
+end;
+
+//
+// StringLikeGerar.
+//
+function StringLikeGerar(argValor: string): string;
+begin
+  Result := '%' + StringSubstituir(StringTrim(argValor), ' ', '%') + '%'
 end;
 
 //
