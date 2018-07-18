@@ -27,31 +27,34 @@ uses
   Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
-  Vcl.StdCtrls;
+  Vcl.StdCtrls, Vcl.ComCtrls;
 
 type
   TPlataformaERPVCLLogRegistroExibir = class(TForm)
     imgFormulario: TImage;
-    panFormulario: TPanel;
     btnFechar: TButton;
+    pagFormulario: TPageControl;
+    tabRegistro: TTabSheet;
+    tabDados: TTabSheet;
     lblSequencial: TLabel;
-    edtSequencial: TEdit;
     lblLogLocalDtHr: TLabel;
-    edtLogLocalDtHr: TEdit;
     lblLogServerDtHr: TLabel;
-    edtLogServerDtHr: TEdit;
     lblRegistroAcaoTitulo: TLabel;
-    edtRegistroAcaoTitulo: TEdit;
     lblHostName: TLabel;
-    edtHostName: TEdit;
     lblUserName: TLabel;
-    edtUserName: TEdit;
     lblUsuarioNome: TLabel;
-    edtUsuarioNome: TEdit;
     lblMensagem: TLabel;
-    memMensagem: TMemo;
     lblBase: TLabel;
+    edtSequencial: TEdit;
+    edtLogLocalDtHr: TEdit;
+    edtLogServerDtHr: TEdit;
+    edtRegistroAcaoTitulo: TEdit;
+    edtHostName: TEdit;
+    edtUserName: TEdit;
+    edtUsuarioNome: TEdit;
+    memMensagem: TMemo;
     edtBaseTitulo: TEdit;
+    memDados: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -78,7 +81,7 @@ uses
 //
 procedure TPlataformaERPVCLLogRegistroExibir.FormCreate(Sender: TObject);
 begin
-  Exit;
+  pagFormulario.ActivePageIndex := 0;
 end;
 
 //
@@ -103,6 +106,7 @@ begin
   edtUserName.Text           := pubLogRegistro.UserName;
   edtUsuarioNome.Text        := pubLogRegistro.UsuarioNome;
   memMensagem.Text           := pubLogRegistro.Mensagem;
+  memDados.Text              := StringLogDadosDescreverEnter(pubLogRegistro.Dados);
 end;
 
 //
@@ -135,6 +139,7 @@ begin
   VCLEditLimpar(edtUserName);
   VCLEditLimpar(edtUsuarioNome);
   VCLMemoLimpar(memMensagem);
+  VCLMemoLimpar(memDados);
 end;
 
 end.

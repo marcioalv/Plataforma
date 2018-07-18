@@ -66,6 +66,8 @@ function StringConcatenar(argMensagem1: string; argMensagem2: string; argMensage
 
 function StringConcatenadorEnter(argValor: string): string;
 
+function StringLogDadosDescreverEnter(argValor: string): string;
+
 function StringTrim(argValor: string): string;
 
 function StringLocalizar(argValor: string; argSubString: string): Boolean;
@@ -115,6 +117,9 @@ function DataValidar(argData: string): Boolean;
 function HorarioFormatar(argHorario: string): string;
 
 function HorarioValidar(argHorario: string): Boolean;
+
+procedure LogDadosStringDescrever (argCampo: string; argValor: string;  var outRetorno: string);
+procedure LogDadosBooleanDescrever(argCampo: string; argValor: Boolean; var outRetorno: string);
 
 implementation
 
@@ -184,6 +189,28 @@ begin
   for locContador := 0 to (locStringList.Count - 1) do
   begin
     if Result <> '' then Result := Result + #13 + #13;
+    Result := Result + locStringList[locContador];
+  end;  
+end;
+
+//
+// StringLogDadosDescreverEnter.
+//
+function StringLogDadosDescreverEnter(argValor: string): string;
+const
+  SEPARADOR: string = '¨';
+var
+  locStringList: TStringList;
+  locContador  : Integer;
+begin
+  argValor := StringSubstituir(argValor, ']; ', SEPARADOR);
+
+  locStringList := StringSeparar(argValor, SEPARADOR);
+
+  Result := '';
+  for locContador := 0 to (locStringList.Count - 1) do
+  begin
+    if Result <> '' then Result := Result + ']' + #13 + #10;
     Result := Result + locStringList[locContador];
   end;  
 end;
@@ -786,6 +813,20 @@ begin
   if (locMinuto < 0) or (locMinuto > 59) then Exit;
 
   Result := True;
+end;
+
+//
+// Procedimento LogDescrever!
+//
+procedure LogDadosStringDescrever(argCampo: string; argValor: string; var outRetorno: string);
+begin
+  if outRetorno <> '' then outRetorno := outRetorno + '; ';
+  outRetorno := outRetorno + argCampo + ': [' + argValor + ']';
+end;
+
+procedure LogDadosBooleanDescrever(argCampo: string; argValor: Boolean; var outRetorno: string);
+begin
+  LogDadosStringDescrever(argCampo, BooleanStringConverter(argValor), outRetorno);
 end;
 
 end.

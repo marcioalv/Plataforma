@@ -5,8 +5,8 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Log de registro'
-  ClientHeight = 513
-  ClientWidth = 521
+  ClientHeight = 537
+  ClientWidth = 529
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,8 +20,8 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   DesignSize = (
-    521
-    513)
+    529
+    537)
   PixelsPerInch = 96
   TextHeight = 13
   object imgFormulario: TImage
@@ -89,251 +89,265 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
       084D317485E2BF94FCF6073BAAA3EB1A5AF9BF80CFBF7C0693FF07E7FAE093ED
       4378FD67F40F83E688FD4057FB3B0000000049454E44AE426082}
   end
-  object panFormulario: TPanel
-    AlignWithMargins = True
-    Left = 48
-    Top = 8
-    Width = 465
-    Height = 457
-    Margins.Left = 48
-    Margins.Top = 8
-    Margins.Right = 8
-    Margins.Bottom = 48
-    Align = alClient
-    BevelKind = bkTile
-    BevelOuter = bvNone
-    Caption = 'panFormulario'
-    Color = clWindow
-    ParentBackground = False
-    ShowCaption = False
-    TabOrder = 0
-    ExplicitHeight = 405
-    object lblSequencial: TLabel
-      Left = 16
-      Top = 16
-      Width = 55
-      Height = 13
-      Caption = 'Sequencial:'
-    end
-    object lblLogLocalDtHr: TLabel
-      Left = 88
-      Top = 16
-      Width = 85
-      Height = 13
-      Caption = 'Data e hora local:'
-    end
-    object lblLogServerDtHr: TLabel
-      Left = 272
-      Top = 16
-      Width = 103
-      Height = 13
-      Caption = 'Data e hora servidor:'
-    end
-    object lblRegistroAcaoTitulo: TLabel
-      Left = 16
-      Top = 112
-      Width = 28
-      Height = 13
-      Caption = 'A'#231#227'o:'
-    end
-    object lblHostName: TLabel
-      Left = 16
-      Top = 160
-      Width = 53
-      Height = 13
-      Caption = 'HostName:'
-    end
-    object lblUserName: TLabel
-      Left = 16
-      Top = 208
-      Width = 53
-      Height = 13
-      Caption = 'UserName:'
-    end
-    object lblUsuarioNome: TLabel
-      Left = 16
-      Top = 256
-      Width = 40
-      Height = 13
-      Caption = 'Usu'#225'rio:'
-    end
-    object lblMensagem: TLabel
-      Left = 16
-      Top = 304
-      Width = 55
-      Height = 13
-      Caption = 'Mensagem:'
-    end
-    object lblBase: TLabel
-      Left = 16
-      Top = 64
-      Width = 27
-      Height = 13
-      Caption = 'Base:'
-    end
-    object edtSequencial: TEdit
-      Left = 16
-      Top = 32
-      Width = 57
-      Height = 22
-      TabStop = False
-      Alignment = taRightJustify
-      Color = clInactiveBorder
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      ReadOnly = True
-      TabOrder = 0
-      Text = '999.999'
-    end
-    object edtLogLocalDtHr: TEdit
-      Left = 88
-      Top = 32
-      Width = 169
-      Height = 22
-      TabStop = False
-      Alignment = taCenter
-      Color = clInactiveBorder
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      ReadOnly = True
-      TabOrder = 1
-      Text = '99/99/9999 99:99:99.999'
-    end
-    object edtLogServerDtHr: TEdit
-      Left = 272
-      Top = 32
-      Width = 169
-      Height = 22
-      TabStop = False
-      Alignment = taCenter
-      Color = clInactiveBorder
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      ReadOnly = True
-      TabOrder = 2
-      Text = '99/99/9999 99:99:99.999'
-    end
-    object edtRegistroAcaoTitulo: TEdit
-      Left = 16
-      Top = 128
-      Width = 425
-      Height = 22
-      TabStop = False
-      Color = clInactiveBorder
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      ReadOnly = True
-      TabOrder = 3
-      Text = '999.999'
-    end
-    object edtHostName: TEdit
-      Left = 16
-      Top = 176
-      Width = 425
-      Height = 22
-      TabStop = False
-      Color = clInactiveBorder
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      ReadOnly = True
-      TabOrder = 4
-      Text = '999.999'
-    end
-    object edtUserName: TEdit
-      Left = 16
-      Top = 224
-      Width = 425
-      Height = 22
-      TabStop = False
-      Color = clInactiveBorder
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      ReadOnly = True
-      TabOrder = 5
-      Text = '999.999'
-    end
-    object edtUsuarioNome: TEdit
-      Left = 16
-      Top = 272
-      Width = 425
-      Height = 22
-      TabStop = False
-      Color = clInactiveBorder
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      ReadOnly = True
-      TabOrder = 6
-      Text = '999.999'
-    end
-    object memMensagem: TMemo
-      Left = 16
-      Top = 320
-      Width = 425
-      Height = 113
-      TabStop = False
-      Color = clInactiveBorder
-      Lines.Strings = (
-        'memMensagem')
-      ReadOnly = True
-      ScrollBars = ssVertical
-      TabOrder = 7
-    end
-    object edtBaseTitulo: TEdit
-      Left = 16
-      Top = 80
-      Width = 425
-      Height = 22
-      TabStop = False
-      Color = clInactiveBorder
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      ReadOnly = True
-      TabOrder = 8
-      Text = '999.999'
-    end
-  end
   object btnFechar: TButton
-    Left = 440
-    Top = 472
+    Left = 448
+    Top = 496
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Anchors = [akRight, akBottom]
     Caption = 'Fechar'
-    TabOrder = 1
+    TabOrder = 0
     OnClick = btnFecharClick
-    ExplicitTop = 420
+    ExplicitLeft = 440
+    ExplicitTop = 472
+  end
+  object pagFormulario: TPageControl
+    Left = 48
+    Top = 8
+    Width = 473
+    Height = 481
+    Cursor = crHandPoint
+    ActivePage = tabRegistro
+    TabOrder = 1
+    object tabRegistro: TTabSheet
+      Caption = 'Registro'
+      ExplicitWidth = 281
+      ExplicitHeight = 165
+      object lblSequencial: TLabel
+        Left = 16
+        Top = 16
+        Width = 55
+        Height = 13
+        Caption = 'Sequencial:'
+      end
+      object lblLogLocalDtHr: TLabel
+        Left = 88
+        Top = 16
+        Width = 85
+        Height = 13
+        Caption = 'Data e hora local:'
+      end
+      object lblLogServerDtHr: TLabel
+        Left = 272
+        Top = 16
+        Width = 103
+        Height = 13
+        Caption = 'Data e hora servidor:'
+      end
+      object lblRegistroAcaoTitulo: TLabel
+        Left = 16
+        Top = 112
+        Width = 28
+        Height = 13
+        Caption = 'A'#231#227'o:'
+      end
+      object lblHostName: TLabel
+        Left = 16
+        Top = 160
+        Width = 53
+        Height = 13
+        Caption = 'HostName:'
+      end
+      object lblUserName: TLabel
+        Left = 16
+        Top = 208
+        Width = 53
+        Height = 13
+        Caption = 'UserName:'
+      end
+      object lblUsuarioNome: TLabel
+        Left = 16
+        Top = 256
+        Width = 40
+        Height = 13
+        Caption = 'Usu'#225'rio:'
+      end
+      object lblMensagem: TLabel
+        Left = 16
+        Top = 304
+        Width = 55
+        Height = 13
+        Caption = 'Mensagem:'
+      end
+      object lblBase: TLabel
+        Left = 16
+        Top = 64
+        Width = 27
+        Height = 13
+        Caption = 'Base:'
+      end
+      object edtSequencial: TEdit
+        Left = 16
+        Top = 32
+        Width = 57
+        Height = 22
+        TabStop = False
+        Alignment = taRightJustify
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 0
+        Text = '999.999'
+      end
+      object edtLogLocalDtHr: TEdit
+        Left = 88
+        Top = 32
+        Width = 169
+        Height = 22
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 1
+        Text = '99/99/9999 99:99:99.999'
+      end
+      object edtLogServerDtHr: TEdit
+        Left = 272
+        Top = 32
+        Width = 169
+        Height = 22
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 2
+        Text = '99/99/9999 99:99:99.999'
+      end
+      object edtRegistroAcaoTitulo: TEdit
+        Left = 16
+        Top = 128
+        Width = 425
+        Height = 22
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 3
+        Text = '999.999'
+      end
+      object edtHostName: TEdit
+        Left = 16
+        Top = 176
+        Width = 425
+        Height = 22
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 4
+        Text = '999.999'
+      end
+      object edtUserName: TEdit
+        Left = 16
+        Top = 224
+        Width = 425
+        Height = 22
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 5
+        Text = '999.999'
+      end
+      object edtUsuarioNome: TEdit
+        Left = 16
+        Top = 272
+        Width = 425
+        Height = 22
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 6
+        Text = '999.999'
+      end
+      object memMensagem: TMemo
+        Left = 16
+        Top = 320
+        Width = 425
+        Height = 113
+        TabStop = False
+        Color = clInactiveBorder
+        Lines.Strings = (
+          'memMensagem')
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 7
+      end
+      object edtBaseTitulo: TEdit
+        Left = 16
+        Top = 80
+        Width = 425
+        Height = 22
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 8
+        Text = '999.999'
+      end
+    end
+    object tabDados: TTabSheet
+      Caption = 'Dados'
+      ImageIndex = 1
+      ExplicitWidth = 281
+      ExplicitHeight = 165
+      object memDados: TMemo
+        Left = 16
+        Top = 16
+        Width = 425
+        Height = 417
+        TabStop = False
+        Color = clInactiveBorder
+        Lines.Strings = (
+          'memDados')
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+    end
   end
 end

@@ -52,6 +52,7 @@ type
     UsuarioID         : Integer;
     UsuarioNome       : string;
     Mensagem          : string;
+    Dados             : string;
   end;
 
 //
@@ -131,6 +132,7 @@ begin
     UsuarioID          := 0;
     UsuarioNome        := '';
     Mensagem           := '';
+    Dados              := '';
   end;
 end;
 

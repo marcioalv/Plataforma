@@ -498,7 +498,8 @@ begin
   locADOQuery.SQL.Add('  [usuario].[base_id]                      AS [usuario_base_id],                  ');
   locADOQuery.SQL.Add('  [usuario].[usuario_id]                   AS [usuario_id],                       ');
   locADOQuery.SQL.Add('  [usuario].[nome]                         AS [usuario_nome],                     ');  
-  locADOQuery.SQL.Add('  [tipo_usuario_log].[mensagem]            AS [mensagem]                          ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[mensagem]            AS [mensagem],                         ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[dados]               AS [dados]                             ');
   locADOQuery.SQL.Add('FROM                                                                              ');  
   locADOQuery.SQL.Add('  [tipo_usuario_log] WITH (NOLOCK)                                                ');
   locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                                 ');
@@ -556,6 +557,7 @@ begin
       // Insere registro no array.
       //
       SetLength(locLogRegistroLista, Length(locLogRegistroLista) + 1);
+      Plataforma_ERP_LogRegistroLimpar(locLogRegistroLista[Length(locLogRegistroLista) - 1]);      
       locLogRegistroLista[Length(locLogRegistroLista) - 1].LicencaID          := locADOQuery.FieldByName('licenca_id').AsInteger;      
       locLogRegistroLista[Length(locLogRegistroLista) - 1].Sequencial         := locADOQuery.FieldByName('tipo_usuario_log_sq').AsInteger;
       locLogRegistroLista[Length(locLogRegistroLista) - 1].LogBaseID          := locADOQuery.FieldByName('log_base_id').AsInteger;
@@ -570,6 +572,7 @@ begin
       locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioID          := locADOQuery.FieldByName('usuario_id').AsInteger;
       locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioNome        := locADOQuery.FieldByName('usuario_nome').AsString;
       locLogRegistroLista[Length(locLogRegistroLista) - 1].Mensagem           := locADOQuery.FieldByName('mensagem').AsString;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].Dados              := locADOQuery.FieldByName('dados').AsString;
 
       //
       // Próximo registro.
@@ -805,29 +808,30 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioGravar';
   ERRO_MENSAGEM    : string = 'Impossível gravar dados do tipo de usuário!';
 var
-  locADOConnection    : TADOConnection;
-  locADOQuery         : TADOQuery;
-  locLogMensagem      : string;
+  locADOConnection         : TADOConnection;
+  locADOQuery              : TADOQuery;
+  locLogMensagem           : string;
 
-  locInsert           : Boolean;
-  locRegistroAcaoID   : Integer;
-  locTipoUsuarioLogSq : Integer;
-  locTipoUsuarioLogMsg: string;
+  locInsert                : Boolean;
+  locRegistroAcaoID        : Integer;
+  locTipoUsuarioLogSq      : Integer;
+  locTipoUsuarioLogMsg     : string;
+  locTipoUsuarioLogLogDados: string;
 
-  locBaseID           : Integer;
-  locLicencaID        : Integer;
-  locTipoUsuarioID    : Integer;
-  locCodigo           : string;
-  locTitulo           : string;
-  locBloqueado        : Boolean;
-  locAtivo            : Boolean;
-  locInsLocalDtHr     : TDateTime;
-  locUpdLocalDtHr     : TDateTime;
-  locUsuarioBaseID    : Integer;
-  locUsuarioID        : Integer;
-  locUpdContador      : Integer;
-  locHostName         : string;
-  locUserName         : string;
+  locBaseID                : Integer;
+  locLicencaID             : Integer;
+  locTipoUsuarioID         : Integer;
+  locCodigo                : string;
+  locTitulo                : string;
+  locBloqueado             : Boolean;
+  locAtivo                 : Boolean;
+  locInsLocalDtHr          : TDateTime;
+  locUpdLocalDtHr          : TDateTime;
+  locUsuarioBaseID         : Integer;
+  locUsuarioID             : Integer;
+  locUpdContador           : Integer;
+  locHostName              : string;
+  locUserName              : string;
 begin
   //
   // Determina se será um insert ou update.
@@ -856,6 +860,15 @@ begin
   //
   // Consiste as informações.
   //
+
+  //
+  // Log dados.
+  //
+  locTipoUsuarioLogLogDados := '';
+  LogDadosStringDescrever ('Código',    locCodigo,    locTipoUsuarioLogLogDados);
+  LogDadosStringDescrever ('Título',    locTitulo,    locTipoUsuarioLogLogDados);
+  LogDadosBooleanDescrever('Bloqueado', locBloqueado, locTipoUsuarioLogLogDados);
+  LogDadosBooleanDescrever('Ativo',     locAtivo,     locTipoUsuarioLogLogDados);
 
   //
   // Confirma gravação com o usuário.
@@ -1241,7 +1254,8 @@ begin
   locADOQuery.SQL.Add('  [user_name],                  ');
   locADOQuery.SQL.Add('  [usuario_base_id],            ');
   locADOQuery.SQL.Add('  [usuario_id],                 ');
-  locADOQuery.SQL.Add('  [mensagem]                    ');  
+  locADOQuery.SQL.Add('  [mensagem],                   ');  
+  locADOQuery.SQL.Add('  [dados]                       ');
   locADOQuery.SQL.Add(')                               ');
   locADOQuery.SQL.Add('VALUES (                        ');
   locADOQuery.SQL.Add('  :base_id,                     '); // base_id.
@@ -1256,7 +1270,8 @@ begin
   locADOQuery.SQL.Add('  :user_name,                   '); // user_name.
   locADOQuery.SQL.Add('  :usuario_base_id,             '); // usuario_base_id.
   locADOQuery.SQL.Add('  :usuario_id,                  '); // usuario_id.
-  locADOQuery.SQL.Add('  :mensagem                     '); // mensagem.
+  locADOQuery.SQL.Add('  :mensagem,                    '); // mensagem.
+  locADOQuery.SQL.Add('  :dados                        '); // dados.
   locADOQuery.SQL.Add(')                               ');
 
   locADOQuery.Parameters.ParamByName('base_id').Value             := locBaseID;
@@ -1271,6 +1286,7 @@ begin
   locADOQuery.Parameters.ParamByName('usuario_base_id').Value     := locUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('usuario_id').Value          := locUsuarioID;
   locADOQuery.Parameters.ParamByName('mensagem').Value            := locTipoUsuarioLogMsg;
+  locADOQuery.Parameters.ParamByName('dados').Value               := locTipoUsuarioLogLogDados;
 
   try
     locADOQuery.ExecSQL;

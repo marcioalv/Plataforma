@@ -166,6 +166,7 @@ CREATE TABLE [dbo].[tipo_usuario_log] (
   [usuario_base_id]     SMALLINT                                  NOT NULL,
   [usuario_id]          INT                                       NOT NULL,
   [mensagem]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [dados]               VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
  
   CONSTRAINT [tipo_usuario_log_pk] PRIMARY KEY CLUSTERED ([base_id], [licenca_id], [tipo_usuario_id], [tipo_usuario_log_sq]),
 
@@ -227,7 +228,7 @@ INSERT INTO [licenca] VALUES (1, 'ABC.123.DEF.456', 'Licença central', 'N', 'S',
 -- Tipos de usuário padrões.
 --
 INSERT INTO [tipo_usuario]     VALUES (1, 1, 1, '01', 'Administrador da aplicação', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [tipo_usuario_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, 'ws049', 'chokito', 1, 1, 'Registro criado!')
+INSERT INTO [tipo_usuario_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, 'ws049', 'chokito', 1, 1, 'Registro criado na instalação!', '')
 
 --
 -- Usuário.
