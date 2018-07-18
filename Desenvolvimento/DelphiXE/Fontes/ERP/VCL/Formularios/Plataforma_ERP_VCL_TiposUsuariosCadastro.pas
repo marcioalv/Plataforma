@@ -401,6 +401,7 @@ begin
   //
   // Controla os botões do formulário.
   //
+  btnLog.Visible       := (not argEditar) and (locDadosPopulados);
   btnLocalizar.Visible := (not argEditar);
   btnNovo.Visible      := (not argEditar);
   btnExcluir.Visible   := (not argEditar) and (locDadosPopulados);
@@ -413,6 +414,7 @@ begin
   //
   // Permissões de acesso por usuário.
   //
+  btnLog.Visible       := (btnLog.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_LOG'));
   btnLocalizar.Visible := (btnLocalizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_LOCALIZAR'));
   btnNovo.Visible      := (btnNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_NOVO'));
   btnExcluir.Visible   := (btnExcluir.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_EXCLUIR'));
@@ -423,38 +425,175 @@ end;
 // FormularioLogExibir.
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioLogExibir;
+const
+  PROCEDIMENTO_NOME: string = 'FormularioLogExibir';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados sobre os logs do registro!';
 var
-  locLogRegistroLista: TPlataforma_ERP_LogRegistroLista;
+  locADOConnection   : TADOConnection;
+  locADOQuery        : TADOQuery;
+  locLogMensagem     : string;
+  locBaseID          : Integer;
+  locLicencaID       : Integer;
+  locTipoUsuarioID   : Integer;
+  locLogRegistroLista: TPlataforma_ERP_LogRegistroLista;  
 begin
+  //
+  // Carrega chave do registro.
+  //
+  locBaseID        := StringIntegerConverter(edtBaseID.Text);
+  locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
+  locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
+
+  //
+  // Inicializa array de registros de log.
+  //  
   locLogRegistroLista := nil;
 
-  SetLength(locLogRegistroLista, Length(locLogRegistroLista) + 1);
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].Sequencial         := 1;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].LogLocalDtHr       := Now;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].LogServerDtHr      := Now;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoID     := 1;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoTitulo := 'Criação';
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].HostName           := 'ws049';
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].UserName           := 'chokito';
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioBaseID      := 1;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioID          := 1;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioNome        := 'Marcio Alves';
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].Mensagem           := 'Qualquer coisa';  
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
 
-  SetLength(locLogRegistroLista, Length(locLogRegistroLista) + 1);
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].Sequencial         := 2;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].LogLocalDtHr       := Now;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].LogServerDtHr      := Now;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoID     := 1;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoTitulo := 'Alteração';
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].HostName           := 'ws049';
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].UserName           := 'chokito';
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioBaseID      := 1;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioID          := 1;
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioNome        := 'Marcio Alves';
-  locLogRegistroLista[Length(locLogRegistroLista) - 1].Mensagem           := 'Qualquer coisa alterada';
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(Self);
 
-  Plataforma_ERP_VCL_LogRegistroExibir(locLogRegistroLista);
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do tipo de usuário.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                                                            ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[licenca_id]          AS [licenca_id],                       ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[tipo_usuario_log_sq] AS [tipo_usuario_log_sq],              ');  
+  locADOQuery.SQL.Add('  [base].[base_id]                         AS [log_base_id],                      ');
+  locADOQuery.SQL.Add('  [base].[titulo]                          AS [log_base_titulo],                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[log_local_dt_hr]     AS [log_local_dt_hr],                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[log_server_dt_hr]    AS [log_server_dt_hr],                 ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id]       AS [registro_acao_id],                 ');
+  locADOQuery.SQL.Add('  [registro_acao].[titulo]                 AS [registro_acao_titulo],             ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[host_name]           AS [host_name],                        ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[user_name]           AS [user_name],                        ');
+  locADOQuery.SQL.Add('  [usuario].[base_id]                      AS [usuario_base_id],                  ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_id]                   AS [usuario_id],                       ');
+  locADOQuery.SQL.Add('  [usuario].[nome]                         AS [usuario_nome],                     ');  
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[mensagem]            AS [mensagem]                          ');
+  locADOQuery.SQL.Add('FROM                                                                              ');  
+  locADOQuery.SQL.Add('  [tipo_usuario_log] WITH (NOLOCK)                                                ');
+  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                                 ');
+  locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario_log].[log_base_id]                        ');
+  locADOQuery.SQL.Add('  INNER JOIN [registro_acao] WITH (NOLOCK)                                        ');
+  locADOQuery.SQL.Add('    ON [registro_acao].[registro_acao_id] = [tipo_usuario_log].[registro_acao_id] ');
+  locADOQuery.SQL.Add('  INNER JOIN [usuario] WITH (NOLOCK)                                              ');
+  locADOQuery.SQL.Add('    ON [usuario].[base_id]    = [tipo_usuario_log].[base_id]    AND               ');
+  locADOQuery.SQL.Add('       [usuario].[licenca_id] = [tipo_usuario_log].[licenca_id] AND               ');
+  locADOQuery.SQL.Add('       [usuario].[usuario_id] = [tipo_usuario_log].[usuario_id]                   ');
+  locADOQuery.SQL.Add('WHERE                                                                             ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[base_id]         = :base_id    AND                          ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[licenca_id]      = :licenca_id AND                          ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[tipo_usuario_id] = :tipo_usuario_id                         ');
+  locADOQuery.SQL.Add('ORDER BY                                                                          ');
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[tipo_usuario_log_sq] ASC                                    ');
+
+  locADOQuery.Parameters.ParamByName('base_id').Value         := locBaseID;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
+  locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value := locTipoUsuarioID;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar registros da tabela [tipo_usuario_log]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  locADOQuery.Last;
+  locADOQuery.First;
+
+  //
+  // Registro encontrado então carrega componentes.
+  //
+  if locADOQuery.RecordCount >= 0 then
+  begin
+    //
+    // Percorre lista de registros.
+    //
+    while not locADOQuery.Eof do
+    begin
+      //
+      // Insere registro no array.
+      //
+      SetLength(locLogRegistroLista, Length(locLogRegistroLista) + 1);
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].LicencaID          := locADOQuery.FieldByName('licenca_id').AsInteger;      
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].Sequencial         := locADOQuery.FieldByName('tipo_usuario_log_sq').AsInteger;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].LogBaseID          := locADOQuery.FieldByName('log_base_id').AsInteger;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].LogBaseTitulo      := locADOQuery.FieldByName('log_base_titulo').AsString;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].LogLocalDtHr       := locADOQuery.FieldByName('log_local_dt_hr').AsDateTime;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].LogServerDtHr      := locADOQuery.FieldByName('log_server_dt_hr').AsDateTime;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoID     := locADOQuery.FieldByName('registro_acao_id').AsInteger;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoTitulo := locADOQuery.FieldByName('registro_acao_titulo').AsString;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].HostName           := locADOQuery.FieldByName('host_name').AsString;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].UserName           := locADOQuery.FieldByName('user_name').AsString;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioBaseID      := locADOQuery.FieldByName('usuario_base_id').AsInteger;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioID          := locADOQuery.FieldByName('usuario_id').AsInteger;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioNome        := locADOQuery.FieldByName('usuario_nome').AsString;
+      locLogRegistroLista[Length(locLogRegistroLista) - 1].Mensagem           := locADOQuery.FieldByName('mensagem').AsString;
+
+      //
+      // Próximo registro.
+      //
+      locADOQuery.Next;
+    end;
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;  
+
+  //
+  // Exibe formulário.
+  //
+  if locLogRegistroLista <> nil then
+  begin
+    Plataforma_ERP_VCL_LogRegistroExibir(locLogRegistroLista);
+  end;
 end;
 
 //
@@ -1094,6 +1233,7 @@ begin
   locADOQuery.SQL.Add('  [licenca_id],                 ');
   locADOQuery.SQL.Add('  [tipo_usuario_id],            ');
   locADOQuery.SQL.Add('  [tipo_usuario_log_sq],        ');
+  locADOQuery.SQL.Add('  [log_base_id],                ');
   locADOQuery.SQL.Add('  [log_local_dt_hr],            ');
   locADOQuery.SQL.Add('  [log_server_dt_hr],           ');
   locADOQuery.SQL.Add('  [registro_acao_id],           ');
@@ -1108,6 +1248,7 @@ begin
   locADOQuery.SQL.Add('  :licenca_id,                  '); // licenca_id.
   locADOQuery.SQL.Add('  :tipo_usuario_id,             '); // tipo_usuario_id.
   locADOQuery.SQL.Add('  :tipo_usuario_log_sq,         '); // tipo_usuario_log_sq.
+  locADOQuery.SQL.Add('  :log_base_id,                 '); // log_base_id.
   locADOQuery.SQL.Add('  :log_local_dt_hr,             '); // log_local_dt_hr.
   locADOQuery.SQL.Add('  GETDATE(),                    '); // log_server_dt_hr.
   locADOQuery.SQL.Add('  :registro_acao_id,            '); // registro_acao_id.
@@ -1122,6 +1263,7 @@ begin
   locADOQuery.Parameters.ParamByName('licenca_id').Value          := locLicencaID;
   locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value     := locTipoUsuarioID;
   locADOQuery.Parameters.ParamByName('tipo_usuario_log_sq').Value := locTipoUsuarioLogSq;
+  locADOQuery.Parameters.ParamByName('log_base_id').Value         := gloBaseID;
   locADOQuery.Parameters.ParamByName('log_local_dt_hr').Value     := Now;
   locADOQuery.Parameters.ParamByName('registro_acao_id').Value    := locRegistroAcaoID;
   locADOQuery.Parameters.ParamByName('host_name').Value           := locHostName;

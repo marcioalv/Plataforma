@@ -70,9 +70,9 @@ begin
 
   // Usuário autenticado.
   gloUsuarioBaseID := 1;
-  gloUsuarioID     := 8345;
-  gloUsuarioLogon  := 'marcio.alves';
-  gloUsuarioNome   := 'Marcio Alves';
+  gloUsuarioID     := 1;
+  gloUsuarioLogon  := 'administrador';
+  gloUsuarioNome   := 'Administrador do Sistema';
 
   // Lista de rotinas.
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
@@ -92,6 +92,9 @@ begin
 
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
   gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO_LOG';
 
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
   gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO_LOCALIZAR';

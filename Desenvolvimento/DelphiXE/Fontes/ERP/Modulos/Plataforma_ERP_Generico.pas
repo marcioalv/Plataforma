@@ -38,7 +38,10 @@ const
 //
 type
   TPlataforma_ERP_LogRegistro = record
+    LicencaID         : Integer;
     Sequencial        : Integer;
+    LogBaseID         : Integer;
+    LogBaseTitulo     : string;
     LogLocalDtHr      : TDateTime;
     LogServerDtHr     : TDateTime;
     RegistroAcaoID    : Integer;
@@ -114,7 +117,10 @@ procedure Plataforma_ERP_LogRegistroLimpar(argLogRegistro: TPlataforma_ERP_LogRe
 begin
   with argLogRegistro do
   begin
+    LicencaID          := 0;
     Sequencial         := 0;
+    LogBaseID          := 0;
+    LogBaseTitulo      := '';
     LogLocalDtHr       := 0;
     LogServerDtHr      := 0;
     RegistroAcaoID     := 0;

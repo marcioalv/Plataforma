@@ -50,6 +50,8 @@ type
     edtUsuarioNome: TEdit;
     lblMensagem: TLabel;
     memMensagem: TMemo;
+    lblBase: TLabel;
+    edtBaseTitulo: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -95,6 +97,7 @@ begin
   edtSequencial.Text         := IntegerStringConverter(pubLogRegistro.Sequencial, True);
   edtLogLocalDtHr.Text       := DateTimeStringConverter(pubLogRegistro.LogLocalDtHr,  'dd/mm/yyyy hh:nn:ss.zzz');
   edtLogServerDtHr.Text      := DateTimeStringConverter(pubLogRegistro.LogServerDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
+  edtBaseTitulo.Text         := pubLogRegistro.LogBaseTitulo;
   edtRegistroAcaoTitulo.Text := pubLogRegistro.RegistroAcaoTitulo;
   edtHostName.Text           := pubLogRegistro.HostName;
   edtUserName.Text           := pubLogRegistro.UserName;
@@ -126,6 +129,7 @@ begin
   VCLEditLimpar(edtSequencial);
   VCLEditLimpar(edtLogLocalDtHr);
   VCLEditLimpar(edtLogServerDtHr);
+  VCLEditLimpar(edtBaseTitulo);
   VCLEditLimpar(edtRegistroAcaoTitulo);
   VCLEditLimpar(edtHostName);
   VCLEditLimpar(edtUserName);

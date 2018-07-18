@@ -5,7 +5,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Log de registro'
-  ClientHeight = 461
+  ClientHeight = 513
   ClientWidth = 521
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,7 +21,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
   OnShow = FormShow
   DesignSize = (
     521
-    461)
+    513)
   PixelsPerInch = 96
   TextHeight = 13
   object imgFormulario: TImage
@@ -94,7 +94,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     Left = 48
     Top = 8
     Width = 465
-    Height = 405
+    Height = 457
     Margins.Left = 48
     Margins.Top = 8
     Margins.Right = 8
@@ -107,6 +107,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
+    ExplicitHeight = 405
     object lblSequencial: TLabel
       Left = 16
       Top = 16
@@ -130,38 +131,45 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     end
     object lblRegistroAcaoTitulo: TLabel
       Left = 16
-      Top = 64
+      Top = 112
       Width = 28
       Height = 13
       Caption = 'A'#231#227'o:'
     end
     object lblHostName: TLabel
       Left = 16
-      Top = 112
+      Top = 160
       Width = 53
       Height = 13
       Caption = 'HostName:'
     end
     object lblUserName: TLabel
       Left = 16
-      Top = 160
+      Top = 208
       Width = 53
       Height = 13
       Caption = 'UserName:'
     end
     object lblUsuarioNome: TLabel
       Left = 16
-      Top = 208
+      Top = 256
       Width = 40
       Height = 13
       Caption = 'Usu'#225'rio:'
     end
     object lblMensagem: TLabel
       Left = 16
-      Top = 256
+      Top = 304
       Width = 55
       Height = 13
       Caption = 'Mensagem:'
+    end
+    object lblBase: TLabel
+      Left = 16
+      Top = 64
+      Width = 27
+      Height = 13
+      Caption = 'Base:'
     end
     object edtSequencial: TEdit
       Left = 16
@@ -219,7 +227,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     end
     object edtRegistroAcaoTitulo: TEdit
       Left = 16
-      Top = 80
+      Top = 128
       Width = 425
       Height = 22
       TabStop = False
@@ -236,7 +244,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     end
     object edtHostName: TEdit
       Left = 16
-      Top = 128
+      Top = 176
       Width = 425
       Height = 22
       TabStop = False
@@ -253,7 +261,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     end
     object edtUserName: TEdit
       Left = 16
-      Top = 176
+      Top = 224
       Width = 425
       Height = 22
       TabStop = False
@@ -270,7 +278,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     end
     object edtUsuarioNome: TEdit
       Left = 16
-      Top = 224
+      Top = 272
       Width = 425
       Height = 22
       TabStop = False
@@ -287,7 +295,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     end
     object memMensagem: TMemo
       Left = 16
-      Top = 272
+      Top = 320
       Width = 425
       Height = 113
       TabStop = False
@@ -298,10 +306,27 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
       ScrollBars = ssVertical
       TabOrder = 7
     end
+    object edtBaseTitulo: TEdit
+      Left = 16
+      Top = 80
+      Width = 425
+      Height = 22
+      TabStop = False
+      Color = clInactiveBorder
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 8
+      Text = '999.999'
+    end
   end
   object btnFechar: TButton
     Left = 440
-    Top = 420
+    Top = 472
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -309,5 +334,6 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     Caption = 'Fechar'
     TabOrder = 1
     OnClick = btnFecharClick
+    ExplicitTop = 420
   end
 end
