@@ -123,10 +123,14 @@ begin
   gloTimeOutNormal := 60;
 
   // Define a base.
-  gloBaseID := 1;
+  gloBaseID     := 1;
+  gloBaseCodigo := '01';
+  gloBaseTitulo := 'Base central';
 
   // Define a licença.
-  gloLicencaID := 1;
+  gloLicencaID     := 1;
+  gloLicencaCodigo := 'ABC.123.DEF.456';
+  gloLicencaTitulo := 'Licença central';
 
   // Autentica usuário.
   PlataformaERPUsuarioInicializar;

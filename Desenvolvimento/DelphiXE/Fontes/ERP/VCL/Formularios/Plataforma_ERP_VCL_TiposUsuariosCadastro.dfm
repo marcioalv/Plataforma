@@ -4,7 +4,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Cadastro de tipo de usu'#225'rio'
-  ClientHeight = 265
+  ClientHeight = 305
   ClientWidth = 537
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -131,13 +131,13 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Left = 48
     Top = 8
     Width = 481
-    Height = 209
+    Height = 249
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabCadastro
+    ActivePage = tabAuditoria
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
@@ -195,7 +195,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object chkBloqueado: TCheckBox
         Left = 16
-        Top = 120
+        Top = 136
         Width = 73
         Height = 17
         Cursor = crHandPoint
@@ -207,7 +207,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object chkAtivo: TCheckBox
         Left = 16
-        Top = 144
+        Top = 160
         Width = 49
         Height = 17
         Cursor = crHandPoint
@@ -221,41 +221,51 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 229
       object lblInsDtHt: TLabel
         Left = 16
-        Top = 16
+        Top = 112
         Width = 40
         Height = 13
         Caption = 'Cria'#231#227'o:'
       end
       object lblUpdDtHr: TLabel
-        Left = 16
-        Top = 64
+        Left = 200
+        Top = 112
         Width = 81
         Height = 13
         Caption = #218'ltima altera'#231#227'o:'
       end
       object lblUpdContador: TLabel
-        Left = 16
+        Left = 384
         Top = 112
         Width = 55
         Height = 13
         Caption = 'Altera'#231#245'es:'
       end
       object lblTipoUsuarioID: TLabel
-        Left = 408
-        Top = 16
+        Left = 384
+        Top = 64
         Width = 15
         Height = 13
         Caption = 'ID:'
       end
+      object lblBase: TLabel
+        Left = 16
+        Top = 64
+        Width = 27
+        Height = 13
+        Caption = 'Base:'
+      end
+      object lblLicenca: TLabel
+        Left = 16
+        Top = 16
+        Width = 39
+        Height = 13
+        Caption = 'Licen'#231'a:'
+      end
       object edtInsLocalDtHr: TEdit
         Left = 16
-        Top = 32
+        Top = 128
         Width = 169
         Height = 22
         TabStop = False
@@ -268,12 +278,12 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 0
+        TabOrder = 5
         Text = '99/99/9999 99:99:99.999'
       end
       object edtUpdLocalDtHr: TEdit
-        Left = 16
-        Top = 80
+        Left = 200
+        Top = 128
         Width = 169
         Height = 22
         TabStop = False
@@ -286,16 +296,16 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 1
+        TabOrder = 6
         Text = '99/99/9999 99:99:99.999'
       end
       object edtUpdContador: TEdit
-        Left = 16
+        Left = 384
         Top = 128
-        Width = 57
+        Width = 65
         Height = 22
         TabStop = False
-        Alignment = taRightJustify
+        Alignment = taCenter
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -304,23 +314,23 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 2
+        TabOrder = 7
         Text = '999.999'
       end
       object btnLog: TButton
-        Left = 328
-        Top = 128
-        Width = 121
+        Left = 16
+        Top = 168
+        Width = 113
         Height = 33
         Cursor = crHandPoint
         Caption = 'Log altera'#231#245'es'
-        TabOrder = 3
+        TabOrder = 8
         OnClick = btnLogClick
       end
       object edtTipoUsuarioID: TEdit
-        Left = 408
-        Top = 32
-        Width = 41
+        Left = 384
+        Top = 80
+        Width = 65
         Height = 22
         TabStop = False
         Alignment = taCenter
@@ -335,11 +345,83 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         TabOrder = 4
         Text = '9.999'
       end
+      object edtBaseTitulo: TEdit
+        Left = 16
+        Top = 80
+        Width = 353
+        Height = 22
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 2
+        Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
+      end
+      object edtBaseID: TEdit
+        Left = 280
+        Top = 80
+        Width = 65
+        Height = 22
+        TabStop = False
+        Alignment = taRightJustify
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 3
+        Text = '999.999'
+        Visible = False
+      end
+      object edtLicencaTitulo: TEdit
+        Left = 16
+        Top = 32
+        Width = 433
+        Height = 22
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 0
+        Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
+      end
+      object edtLicencaID: TEdit
+        Left = 360
+        Top = 32
+        Width = 65
+        Height = 22
+        TabStop = False
+        Alignment = taRightJustify
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 1
+        Text = '999.999'
+        Visible = False
+      end
     end
   end
   object btnExcluir: TBitBtn
     Left = 216
-    Top = 224
+    Top = 264
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -348,9 +430,9 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     OnClick = btnExcluirClick
   end
   object btnLocalizar: TBitBtn
-    Left = 56
-    Top = 224
-    Width = 73
+    Left = 48
+    Top = 264
+    Width = 81
     Height = 33
     Cursor = crHandPoint
     Caption = 'Localizar'
@@ -359,7 +441,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnGravar: TBitBtn
     Left = 296
-    Top = 224
+    Top = 264
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -369,7 +451,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnMinimizar: TBitBtn
     Left = 376
-    Top = 224
+    Top = 264
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -379,7 +461,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnFechar: TBitBtn
     Left = 456
-    Top = 224
+    Top = 264
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -389,7 +471,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnCancelar: TBitBtn
     Left = 456
-    Top = 224
+    Top = 264
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -399,7 +481,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnEditar: TBitBtn
     Left = 296
-    Top = 224
+    Top = 264
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -409,7 +491,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnNovo: TBitBtn
     Left = 136
-    Top = 224
+    Top = 264
     Width = 73
     Height = 33
     Cursor = crHandPoint

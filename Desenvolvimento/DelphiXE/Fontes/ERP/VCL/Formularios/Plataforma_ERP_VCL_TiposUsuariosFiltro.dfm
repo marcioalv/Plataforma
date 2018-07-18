@@ -82,15 +82,21 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       09FF39AF2F5C00ACB17058C822C964323799184E80FFDCFE062C9C3C5DE6D5D7
       430000000049454E44AE426082}
   end
-  object btnFiltrar: TBitBtn
-    Left = 64
+  object btnConfirmar: TBitBtn
+    Left = 48
     Top = 240
-    Width = 73
+    Width = 89
     Height = 33
     Cursor = crHandPoint
-    Caption = 'Filtrar'
+    Caption = 'Confirmar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 1
-    OnClick = btnFiltrarClick
+    OnClick = btnConfirmarClick
   end
   object btnFechar: TBitBtn
     Left = 304

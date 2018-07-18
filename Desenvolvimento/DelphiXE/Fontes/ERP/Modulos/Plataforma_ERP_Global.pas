@@ -26,8 +26,12 @@ var
   gloTimeOutNormal   : Integer;
 
   gloBaseID          : Integer;
+  gloBaseCodigo      : string;
+  gloBaseTitulo      : string;
 
   gloLicencaID       : Integer;
+  gloLicencaCodigo   : string;
+  gloLicencaTitulo   : string;
 
   gloUsuarioBaseID   : Integer;
   gloUsuarioID       : Integer;

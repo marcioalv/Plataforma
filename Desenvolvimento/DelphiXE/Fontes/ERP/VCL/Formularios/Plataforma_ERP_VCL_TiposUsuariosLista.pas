@@ -69,7 +69,7 @@ type
     priFiltroAtivo               : string;
   
     procedure FormularioFiltrar;
-    procedure FormularioAtualizar;  
+    procedure FormularioAtualizar(argIndice: Integer);  
     procedure FormularioCadastroExibir(argNovo: Boolean);
   public
     { Public declarations }
@@ -185,7 +185,7 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.btnAtualizarClick(Sender: TObject);
 begin
-  FormularioAtualizar;
+  FormularioAtualizar(VCL_NENHUM_INDICE);
 end;
 
 //
@@ -269,14 +269,14 @@ begin
     priFiltroBloqueado            := locBloqueado;
     priFiltroAtivo                := locAtivo;
 
-    FormularioAtualizar;
+    FormularioAtualizar(VCL_NENHUM_INDICE);
   end;
 end;
 
 //
 // Procedimento para atualizar a lista do formulário.
 //
-procedure TPlataformaERPVCLTiposUsuariosLista.FormularioAtualizar;
+procedure TPlataformaERPVCLTiposUsuariosLista.FormularioAtualizar(argIndice: Integer);
 const
   PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
   ERRO_MENSAGEM    : string = 'Impossível atualizar lista de tipos de usuário!';
@@ -478,6 +478,19 @@ begin
   FreeAndNil(locADOConnection);
   VCLProgressBarLimpar(pbaProgresso);
   VCLCursorTrocar;
+
+  //
+  // Foco no item correto da lista.
+  //
+  if argIndice = VCL_NENHUM_INDICE then
+  begin
+    VCLListViewFocar(lvwLista);
+  end
+  else
+  begin
+    VCLListViewItemPosicionar(lvwLista, argIndice);
+    lvwLista.SetFocus;
+  end;
 end;
 
 //
@@ -485,17 +498,19 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormularioCadastroExibir(argNovo: Boolean);
 var
-  locFormulario   : TPlataformaERPVCLTiposUsuariosCadastro;
-  locIndice       : Integer;
-  locBaseID       : Integer;
-  locLicencaID    : Integer;
-  locTIpoUsuarioID: Integer;
+  locFormulario      : TPlataformaERPVCLTiposUsuariosCadastro;
+  locDadosAtualizados: Boolean;
+  locIndice          : Integer;
+  locBaseID          : Integer;
+  locLicencaID       : Integer;
+  locTipoUsuarioID   : Integer;
 begin
   if argNovo then
   begin
+    locIndice        := VCL_NENHUM_INDICE;
     locBaseID        := 0;
     locLicencaID     := 0;
-    locTIpoUsuarioID := 0;
+    locTipoUsuarioID := 0;
   end
   else
   begin  
@@ -504,7 +519,7 @@ begin
 
     locBaseID        := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_BASE_ID]);
     locLicencaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
-    locTIpoUsuarioID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_ID]);
+    locTipoUsuarioID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_ID]);
   end;
 
   locFormulario := TPlataformaERPVCLTiposUsuariosCadastro.Create(Self);
@@ -514,8 +529,16 @@ begin
   locFormulario.pubTipoUsuarioID := locTipoUsuarioID;
   
   locFormulario.ShowModal;
+
+  locDadosAtualizados := locFormulario.pubDadosAtualizados;
+
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  if locDadosAtualizados then
+  begin
+    FormularioAtualizar(locIndice);
+  end;
 end;
 
 end.

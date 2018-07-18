@@ -20,7 +20,7 @@ uses
 type
   TPlataformaERPVCLTiposUsuariosFiltro = class(TForm)
     imgFormulario: TImage;
-    btnFiltrar: TBitBtn;
+    btnConfirmar: TBitBtn;
     btnFechar: TBitBtn;
     panFormulario: TPanel;
     lblCodigo: TLabel;
@@ -63,13 +63,13 @@ type
     procedure cbxAtivoEnter(Sender: TObject);
     procedure cbxAtivoExit(Sender: TObject);
     procedure cbxAtivoKeyPress(Sender: TObject; var Key: Char);
-    procedure btnFiltrarClick(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioLimpar;
-    procedure FormularioFiltrar;
+    procedure FormularioConfirmar;
   public
     pubClicouFechar        : Boolean;
     pubTipoUsuarioIDInicial: Integer;
@@ -283,11 +283,11 @@ begin
 end;
 
 //
-// Evento de click no botão "Filtrar".
+// Evento de click no botão "Confirmar".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.btnFiltrarClick(Sender: TObject);
+procedure TPlataformaERPVCLTiposUsuariosFiltro.btnConfirmarClick(Sender: TObject);
 begin
-  FormularioFiltrar;
+  FormularioConfirmar;
 end;
 
 //
@@ -322,9 +322,9 @@ begin
 end;
 
 //
-// Procedimento para filtrar os dados da lista.
+// Procedimento para confirmar os dados do filtro.
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.FormularioFiltrar;
+procedure TPlataformaERPVCLTiposUsuariosFiltro.FormularioConfirmar;
 begin
   pubClicouFechar         := False;
   pubTipoUsuarioIDInicial := StringIntegerConverter(edtTipoUsuarioIDInicial.Text);

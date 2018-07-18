@@ -60,6 +60,12 @@ type
     btnNovo: TBitBtn;
     lblTipoUsuarioID: TLabel;
     edtTipoUsuarioID: TEdit;
+    lblBase: TLabel;
+    edtBaseTitulo: TEdit;
+    edtBaseID: TEdit;
+    lblLicenca: TLabel;
+    edtLicencaTitulo: TEdit;
+    edtLicencaID: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -109,9 +115,10 @@ type
 
    procedure FormularioExcluir;
   public
-    pubBaseID       : Integer;
-    pubLicencaID    : Integer;
-    pubTipoUsuarioID: Integer;
+    pubDadosAtualizados: Boolean;
+    pubBaseID          : Integer;
+    pubLicencaID       : Integer;
+    pubTipoUsuarioID   : Integer;
   end;
 
 var
@@ -143,9 +150,10 @@ begin
   //
   // Inicializa variáveis públicas.
   //
-  pubBaseID        := 0;
-  pubLicencaID     := 0;
-  pubTipoUsuarioID := 0;
+  pubDadosAtualizados := False;
+  pubBaseID           := 0;
+  pubLicencaID        := 0;
+  pubTipoUsuarioID    := 0;
   
   //
   // Limpa os componentes do formulário.
@@ -169,6 +177,7 @@ begin
   if (pubBaseID = 0) and (pubLicencaID = 0) and (pubTipoUsuarioID = 0) then
   begin
     FormularioNovo;
+    Exit;
   end;
 
   //
@@ -178,6 +187,7 @@ begin
   begin
     FormularioPopular(pubBaseID, pubLicencaID, pubTipoUsuarioID);
     FormularioControlar(False);
+    Exit;
   end;
 end;
 
@@ -352,16 +362,20 @@ begin
   pagFormulario.ActivePageIndex := TAB_CADASTRO;
 
   // Limpa componentes da aba "Cadastro".
-  VCLEditLimpar    (edtTipoUsuarioID);
   VCLEditLimpar    (edtCodigo);
   VCLEditLimpar    (edtTitulo);
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
 
   // Limpa componentes da aba "Auditoria".
+  VCLEditLimpar(edtLicencaID);
+  VCLEditLimpar(edtLicencaTitulo);
+  VCLEditLimpar(edtBaseID);
+  VCLEditLimpar(edtBaseTitulo);
+  VCLEditLimpar(edtTipoUsuarioID);
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
-  VCLEditLimpar(EdtUpdContador);
+  VCLEditLimpar(edtUpdContador);
 end;
 
 //
@@ -388,7 +402,7 @@ begin
   // Controla os botões do formulário.
   //
   btnLocalizar.Visible := (not argEditar);
-  btnNovo.Visible      := (not argEditar) and (not locDadosPopulados);
+  btnNovo.Visible      := (not argEditar);
   btnExcluir.Visible   := (not argEditar) and (locDadosPopulados);
   btnEditar.Visible    := (not argEditar) and (locDadosPopulados);
   btnGravar.Visible    := argEditar;
@@ -443,8 +457,12 @@ begin
   FormularioControlar(True);
 
   //
-  // Indica que o ID será um novo.
+  // Carrega conteúdo dos campos necessários.
   //
+  edtLicencaID.Text     := IntegerStringConverter(gloLicencaID, True);
+  edtLicencaTitulo.Text := gloLicencaTitulo;
+  edtBaseID.Text        := IntegerStringConverter(gloBaseID,    True);
+  edtBaseTitulo.Text    := gloBaseTitulo;
   edtTipoUsuarioID.Text := STR_NOVO;
 
   //
@@ -507,11 +525,9 @@ begin
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                      ');
   locADOQuery.SQL.Add('  [base].[base_id],                                         ');
-  locADOQuery.SQL.Add('  [base].[codigo] AS [base_codigo],                         ');
   locADOQuery.SQL.Add('  [base].[titulo] AS [base_titulo],                         ');
 
   locADOQuery.SQL.Add('  [licenca].[licenca_id],                                   ');
-  locADOQuery.SQL.Add('  [licenca].[codigo] AS [licenca_codigo],                   ');
   locADOQuery.SQL.Add('  [licenca].[titulo] AS [licenca_titulo],                   ');
 
   locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id],                         ');  
@@ -561,11 +577,16 @@ begin
   //
   if locADOQuery.RecordCount >= 0 then
   begin
-    edtTipoUsuarioID.Text := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger, True);
     edtCodigo.Text        := locADOQuery.FieldByName('codigo').AsString;
     edtTitulo.Text        := locADOQuery.FieldByName('titulo').AsString;
     chkBloqueado.Checked  := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked      := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
+
+    edtLicencaID.Text     := locADOQuery.FieldByName('licenca_id').AsString;
+    edtLicencaTitulo.Text := locADOQuery.FieldByName('licenca_titulo').AsString;
+    edtBaseID.Text        := locADOQuery.FieldByName('base_id').AsString;
+    edtBaseTitulo.Text    := locADOQuery.FieldByName('base_titulo').AsString;
+    edtTipoUsuarioID.Text := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger, True);
     edtInsLocalDtHr.Text  := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss.zzz');
     edtUpdLocalDtHr.Text  := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss.zzz');
     edtUpdContador.Text   := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
@@ -595,6 +616,7 @@ begin
   //
   // Coloca o foco no código.
   //
+  pagFormulario.ActivePageIndex := TAB_CADASTRO;
   edtCodigo.SetFocus;
 end;
 
@@ -631,10 +653,18 @@ var
   locUserName         : string;
 begin
   //
+  // Determina se será um insert ou update.
+  //
+  if edtTipoUsuarioID.Text = STR_NOVO then
+    locInsert := True
+  else
+    locInsert := False;
+
+  //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locBaseID        := gloBaseID;
-  locLicencaID     := gloLicencaID;
+  locBaseID        := StringIntegerConverter(edtBaseID.Text);
+  locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
   locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
   locCodigo        := StringTrim(edtCodigo.Text);
   locTitulo        := StringTrim(edtTitulo.Text);
@@ -645,14 +675,6 @@ begin
   locHostName      := HostNameRecuperar;
   locUserName      := UserNameRecuperar;
   locUpdContador   := StringIntegerConverter(edtUpdContador.Text);
-
-  //
-  // Determina se a operação será um insert ou update.
-  //
-  if locTipoUsuarioID = 0 then
-    locInsert := True
-  else
-    locInsert := False;
 
   //
   // Consiste as informações.
@@ -1121,6 +1143,11 @@ begin
   FormularioControlar(False);
 
   //
+  // Indica que os dados foram atualizados.
+  //
+  pubDadosAtualizados := True;
+
+  //
   // Finaliza.
   //
   locADOQuery.Close;
@@ -1145,21 +1172,13 @@ var
   locBaseID           : Integer;
   locLicencaID        : Integer;
   locTipoUsuarioID    : Integer;
-  locUsuarioBaseID    : Integer;
-  locUsuarioID        : Integer;
-  locHostName         : string;
-  locUserName         : string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locBaseID        := 1;
-  locLicencaID     := 1;
-  locTipoUsuarioID := 1;
-  locUsuarioBaseID := gloUsuarioBaseID;
-  locUsuarioID     := gloUsuarioID;
-  locHostName      := HostNameRecuperar;
-  locUserName      := UserNameRecuperar;
+  locBaseID        := StringIntegerConverter(edtBaseID.Text);
+  locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
+  locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
 
   //
   // Confirma gravação com o usuário.
@@ -1313,6 +1332,11 @@ begin
   FormularioControlar(False);
 
   //
+  // Indica que os dados foram atualizados.
+  //
+  pubDadosAtualizados := True;
+
+  //
   // Finaliza.
   //
   locADOQuery.Close;
@@ -1326,7 +1350,18 @@ end;
 // FormularioCancelar.
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioCancelar;
+var
+  locBaseID       : Integer;
+  locLicencaID    : Integer;
+  locTipoUsuarioID: Integer;
 begin
+  //
+  // Carrega chave do registro que estava sendo editado.
+  //
+  locBaseID        := StringIntegerConverter(edtBaseID.Text);
+  locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
+  locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
+
   //
   // Confirma com o usuário.
   //
@@ -1340,7 +1375,7 @@ begin
   //
   // Popula somente os dados.
   //
-  FormularioPopular(1, 1, 1);
+  FormularioPopular(locBaseID, locLicencaID, locTipoUsuarioID);
 end;
 
 end.

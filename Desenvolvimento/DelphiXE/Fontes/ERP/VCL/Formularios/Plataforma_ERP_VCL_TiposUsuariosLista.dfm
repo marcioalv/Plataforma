@@ -130,6 +130,17 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       F587DF07404F1E79B289D0C45240747E0B75FA55197E137F270062EBCE23DFD4
       C452C013EAFEEE16FE17D3C1011F4A9CD9B60000000049454E44AE426082}
   end
+  object btnFechar: TBitBtn
+    Left = 624
+    Top = 376
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Anchors = [akRight, akBottom]
+    Caption = 'Fechar'
+    TabOrder = 2
+    OnClick = btnFecharClick
+  end
   object panFormulario: TPanel
     AlignWithMargins = True
     Left = 48
@@ -152,7 +163,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       645
       357)
     object lblListaQtde: TLabel
-      Left = 10
+      Left = 8
       Top = 336
       Width = 142
       Height = 13
@@ -160,7 +171,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 552
+      Left = 557
       Top = 336
       Width = 80
       Height = 13
@@ -209,20 +220,22 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
         item
           Alignment = taCenter
           Caption = 'C'#243'digo'
-          Width = 100
+          Width = 75
         end
         item
           Caption = 'T'#237'tulo'
-          Width = 300
+          Width = 250
         end
         item
           Alignment = taCenter
           Caption = 'Bloqueado'
+          Tag = 100
           Width = 70
         end
         item
           Alignment = taCenter
           Caption = 'Ativo'
+          Tag = 100
           Width = 40
         end>
       Font.Charset = DEFAULT_CHARSET
@@ -265,17 +278,6 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     Caption = 'Atualizar'
     TabOrder = 1
     OnClick = btnAtualizarClick
-  end
-  object btnFechar: TBitBtn
-    Left = 624
-    Top = 376
-    Width = 73
-    Height = 33
-    Cursor = crHandPoint
-    Anchors = [akRight, akBottom]
-    Caption = 'Fechar'
-    TabOrder = 2
-    OnClick = btnFecharClick
   end
   object btnMinimizar: TBitBtn
     Left = 544
