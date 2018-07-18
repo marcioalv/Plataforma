@@ -67,7 +67,8 @@ type
     priFiltroTitulo              : string;
     priFiltroBloqueado           : string;
     priFiltroAtivo               : string;
-  
+
+    procedure FormularioControlar;
     procedure FormularioFiltrar;
     procedure FormularioAtualizar(argIndice: Integer);  
     procedure FormularioCadastroExibir(argNovo: Boolean);
@@ -129,7 +130,7 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormShow(Sender: TObject);
 begin
-  Exit;
+  FormularioControlar;
 end;
 
 //
@@ -137,8 +138,9 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormActivate(Sender: TObject);
 begin
-  // Maximizar formulário.
   VCLSDIMaximizar(Self);
+  lblListaQtde.Top     := (lvwLista.Top + lvwLista.Height) + 8;
+  lblListaFiltros.Top  := (lvwLista.Top + lvwLista.Height) + 8;
 end;
 
 //
@@ -218,6 +220,17 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosLista.btnFecharClick(Sender: TObject);
 begin
   Close;
+end;
+
+//
+// FormularioControlar.
+//
+procedure TPlataformaERPVCLTiposUsuariosLista.FormularioControlar;
+begin
+  btnFiltrar.Visible    := (btnFiltrar.Visible)    and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_FILTRAR'));
+  btnAtualizar.Visible  := (btnAtualizar.Visible)  and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_ATUALIZAR'));
+  btnNovo.Visible       := (btnNovo.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_NOVO'));
+  btnSelecionar.Visible := (btnSelecionar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_SELECIONAR'));
 end;
 
 //

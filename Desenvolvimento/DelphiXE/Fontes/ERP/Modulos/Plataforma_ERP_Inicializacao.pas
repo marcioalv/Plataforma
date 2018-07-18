@@ -62,17 +62,51 @@ end;
 function PlataformaERPUsuarioInicializar: Boolean;
 begin
   // Inicializa usuário.
-  gloUsuarioBaseID := 0;
-  gloUsuarioID     := 0;
-  gloUsuarioLogon  := '';
-  gloUsuarioNome   := '';
+  gloUsuarioBaseID  := 0;
+  gloUsuarioID      := 0;
+  gloUsuarioLogon   := '';
+  gloUsuarioNome    := '';
+  gloUsuarioRotinas := nil;
 
   // Usuário autenticado.
   gloUsuarioBaseID := 1;
   gloUsuarioID     := 8345;
   gloUsuarioLogon  := 'marcio.alves';
   gloUsuarioNome   := 'Marcio Alves';
-  Result           := True;
-  end;
+
+  // Lista de rotinas.
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA_FILTRAR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA_ATUALIZAR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA_NOVO';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA_SELECIONAR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO_LOCALIZAR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO_NOVO';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO_EXCLUIR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO_EDITAR';
+
+  // Usuário autenticado.
+  Result := True;
+end;
 
 end.

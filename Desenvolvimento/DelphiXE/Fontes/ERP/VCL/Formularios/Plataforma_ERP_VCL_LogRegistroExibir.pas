@@ -15,6 +15,7 @@ unit Plataforma_ERP_VCL_LogRegistroExibir;
 interface
 
 uses
+  Plataforma_ERP_Generico,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -37,8 +38,8 @@ type
     edtSequencial: TEdit;
     lblLogLocalDtHr: TLabel;
     edtLogLocalDtHr: TEdit;
-    lblLogServidorDtHr: TLabel;
-    edtLogServidorDtHr: TEdit;
+    lblLogServerDtHr: TLabel;
+    edtLogServerDtHr: TEdit;
     lblRegistroAcaoTitulo: TLabel;
     edtRegistroAcaoTitulo: TEdit;
     lblHostName: TLabel;
@@ -56,7 +57,7 @@ type
   private
     procedure FormularioLimpar;
   public
-    { Public declarations }
+    pubLogRegistro: TPlataforma_ERP_LogRegistro;
   end;
 
 var
@@ -83,7 +84,22 @@ end;
 //
 procedure TPlataformaERPVCLLogRegistroExibir.FormShow(Sender: TObject);
 begin
+  //
+  // Limpa os componentes do formulário.
+  //
   FormularioLimpar;
+
+  //
+  // Carrega componentes.
+  //
+  edtSequencial.Text         := IntegerStringConverter(pubLogRegistro.Sequencial, True);
+  edtLogLocalDtHr.Text       := DateTimeStringConverter(pubLogRegistro.LogLocalDtHr,  'dd/mm/yyyy hh:nn:ss.zzz');
+  edtLogServerDtHr.Text      := DateTimeStringConverter(pubLogRegistro.LogServerDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
+  edtRegistroAcaoTitulo.Text := pubLogRegistro.RegistroAcaoTitulo;
+  edtHostName.Text           := pubLogRegistro.HostName;
+  edtUserName.Text           := pubLogRegistro.UserName;
+  edtUsuarioNome.Text        := pubLogRegistro.UsuarioNome;
+  memMensagem.Text           := pubLogRegistro.Mensagem;
 end;
 
 //
@@ -109,7 +125,7 @@ procedure TPlataformaERPVCLLogRegistroExibir.FormularioLimpar;
 begin
   VCLEditLimpar(edtSequencial);
   VCLEditLimpar(edtLogLocalDtHr);
-  VCLEditLimpar(edtLogServidorDtHr);
+  VCLEditLimpar(edtLogServerDtHr);
   VCLEditLimpar(edtRegistroAcaoTitulo);
   VCLEditLimpar(edtHostName);
   VCLEditLimpar(edtUserName);

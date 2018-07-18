@@ -1,6 +1,7 @@
 object PlataformaERPVCLLogRegistroLista: TPlataformaERPVCLLogRegistroLista
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Lista de logs do registro'
   ClientHeight = 385
@@ -13,6 +14,7 @@ object PlataformaERPVCLLogRegistroLista: TPlataformaERPVCLLogRegistroLista
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  Position = poOwnerFormCenter
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
@@ -105,27 +107,65 @@ object PlataformaERPVCLLogRegistroLista: TPlataformaERPVCLLogRegistroLista
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    ExplicitTop = -28
-    ExplicitWidth = 465
-    ExplicitHeight = 405
     object lvwLista: TListView
       AlignWithMargins = True
       Left = 8
       Top = 8
       Width = 645
       Height = 309
+      Cursor = crHandPoint
       Margins.Left = 8
       Margins.Top = 8
       Margins.Right = 8
       Margins.Bottom = 8
       Align = alClient
-      Columns = <>
+      Columns = <
+        item
+          Width = 0
+        end
+        item
+          Alignment = taRightJustify
+          Caption = 'Sequencial'
+          Width = 0
+        end
+        item
+          Alignment = taCenter
+          Caption = 'Local'
+          Width = 135
+        end
+        item
+          Alignment = taCenter
+          Caption = 'Servidor'
+          Width = 135
+        end
+        item
+          Caption = 'A'#231#227'o'
+          Width = 0
+        end
+        item
+          Caption = 'HostName'
+          Width = 0
+        end
+        item
+          Caption = 'UserName'
+          Width = 0
+        end
+        item
+          Caption = 'Usu'#225'rio'
+          Width = 0
+        end
+        item
+          Caption = 'Mensagem'
+          Width = 350
+        end>
       ReadOnly = True
       RowSelect = True
       TabOrder = 0
       ViewStyle = vsReport
-      ExplicitWidth = 250
-      ExplicitHeight = 150
+      OnCustomDrawItem = lvwListaCustomDrawItem
+      OnCustomDrawSubItem = lvwListaCustomDrawSubItem
+      OnDblClick = lvwListaDblClick
+      OnKeyPress = lvwListaKeyPress
     end
   end
   object btnFechar: TButton
@@ -138,8 +178,6 @@ object PlataformaERPVCLLogRegistroLista: TPlataformaERPVCLLogRegistroLista
     Caption = 'Fechar'
     TabOrder = 1
     OnClick = btnFecharClick
-    ExplicitLeft = 632
-    ExplicitTop = 336
   end
   object btnSelecionar: TButton
     Left = 480
@@ -162,16 +200,5 @@ object PlataformaERPVCLLogRegistroLista: TPlataformaERPVCLLogRegistroLista
     Caption = 'Minimizar'
     TabOrder = 3
     OnClick = btnMinimizarClick
-  end
-  object btnAtualizar: TButton
-    Left = 400
-    Top = 344
-    Width = 73
-    Height = 33
-    Cursor = crHandPoint
-    Anchors = [akRight, akBottom]
-    Caption = 'Atualizar'
-    TabOrder = 4
-    OnClick = btnAtualizarClick
   end
 end

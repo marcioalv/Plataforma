@@ -15,6 +15,7 @@ unit Plataforma_ERP_VCL_LogRegistroLista;
 interface
 
 uses
+  Plataforma_ERP_Generico,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -37,19 +38,22 @@ type
     lvwLista: TListView;
     btnSelecionar: TButton;
     btnMinimizar: TButton;
-    btnAtualizar: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnFecharClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure btnSelecionarClick(Sender: TObject);
-    procedure btnAtualizarClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
+    procedure lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lvwListaDblClick(Sender: TObject);
+    procedure lvwListaKeyPress(Sender: TObject; var Key: Char);
   private
+    procedure FormularioAtualizar;
     procedure FormularioSelecionar;
   public
-    { Public declarations }
+    pubLogRegistroLista: TPlataforma_ERP_LogRegistroLista;
   end;
 
 var
@@ -64,6 +68,9 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_ERP_VCL_LogRegistroExibir;
 
+const
+  LVW_LISTA_SEQUENCIAL: Byte = 0;
+  
 //
 // Evento de criação do formulário.
 //
@@ -77,7 +84,7 @@ end;
 //
 procedure TPlataformaERPVCLLogRegistroLista.FormShow(Sender: TObject);
 begin
-  Exit;
+  FormularioAtualizar;
 end;
 
 //
@@ -85,15 +92,38 @@ end;
 //
 procedure TPlataformaERPVCLLogRegistroLista.FormActivate(Sender: TObject);
 begin
-  VCLSDIMaximizar(Self);
+  Exit;
 end;
 
 //
-// Evento de click no botão "Atualizar".
+// Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLLogRegistroLista.btnAtualizarClick(Sender: TObject);
+procedure TPlataformaERPVCLLogRegistroLista.FormKeyPress(Sender: TObject; var Key: Char);
 begin
-  Exit;
+  if Key = ESC then Close;
+end;
+
+//
+// Eventos do componente "lista".
+//
+procedure TPlataformaERPVCLLogRegistroLista.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  VCLListViewZebrar(Sender, Item);
+end;
+
+procedure TPlataformaERPVCLLogRegistroLista.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  VCLListViewZebrar(Sender, Item);
+end;
+
+procedure TPlataformaERPVCLLogRegistroLista.lvwListaDblClick(Sender: TObject);
+begin
+  FormularioSelecionar;
+end;
+
+procedure TPlataformaERPVCLLogRegistroLista.lvwListaKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = ENTER then lvwListaDblClick(Sender);
 end;
 
 //
@@ -121,25 +151,52 @@ begin
 end;
 
 //
-// Evento de pressionamento de teclas no formulário.
+// FormularioAtualizar.
 //
-procedure TPlataformaERPVCLLogRegistroLista.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLLogRegistroLista.FormularioAtualizar;
+var
+  locContador   : Integer;
+  locLogRegistro: TPlataforma_ERP_LogRegistro;
+  locListItem   : TListItem;
 begin
-  if Key = ESC then Close;
+  for locContador := 0 to (Length(pubLogRegistroLista) - 1) do
+  begin
+    locLogRegistro := pubLogRegistroLista[locContador];
+  
+    locListItem         := lvwLista.Items.Add;
+    locListItem.Caption := '';
+    locListItem.SubItems.Add(IntegerStringConverter(locLogRegistro.Sequencial));
+    locListItem.SubItems.Add(DateTimeStringConverter(locLogRegistro.LogLocalDtHr,  'dd/mm/yyyy hh:nn:ss'));
+    locListItem.SubItems.Add(DateTimeStringConverter(locLogRegistro.LogServerDtHr, 'dd/mm/yyyy hh:nn:ss'));
+    locListItem.SubItems.Add(locLogRegistro.RegistroAcaoTitulo);    
+    locListItem.SubItems.Add(locLogRegistro.HostName);    
+    locListItem.SubItems.Add(locLogRegistro.UserName);
+    locListItem.SubItems.Add(locLogRegistro.UsuarioNome);
+    locListItem.SubItems.Add(locLogRegistro.Mensagem);
+  end;
 end;
 
 //
-//
+// Procedimento para selecionar uma das linhas do listview e exibir seus detalhes.
 //
 procedure TPlataformaERPVCLLogRegistroLista.FormularioSelecionar;
 var
+  locIndice    : Integer;
+  locSequencial: Integer;
   locFormulario: TPlataformaERPVCLLogRegistroExibir;
 begin
+  locIndice := VCLListViewIndiceItemRetornar(lvwLista);
+  if locIndice = VCL_NENHUM_INDICE then Exit;
+
+  locSequencial := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_SEQUENCIAL]);
+
   locFormulario := TPlataformaERPVCLLogRegistroExibir.Create(Self);
+
+  locFormulario.pubLogRegistro := pubLogRegistroLista[locSequencial - 1];
+  
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);
 end;
-
 
 end.

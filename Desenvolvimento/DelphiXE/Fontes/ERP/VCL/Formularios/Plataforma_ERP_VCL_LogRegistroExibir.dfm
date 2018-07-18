@@ -107,10 +107,6 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    ExplicitLeft = 176
-    ExplicitTop = 152
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object lblSequencial: TLabel
       Left = 16
       Top = 16
@@ -125,7 +121,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
       Height = 13
       Caption = 'Data e hora local:'
     end
-    object lblLogServidorDtHr: TLabel
+    object lblLogServerDtHr: TLabel
       Left = 272
       Top = 16
       Width = 103
@@ -203,7 +199,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
       TabOrder = 1
       Text = '99/99/9999 99:99:99.999'
     end
-    object edtLogServidorDtHr: TEdit
+    object edtLogServerDtHr: TEdit
       Left = 272
       Top = 32
       Width = 169
@@ -313,6 +309,5 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     Caption = 'Fechar'
     TabOrder = 1
     OnClick = btnFecharClick
-    ExplicitTop = 280
   end
 end

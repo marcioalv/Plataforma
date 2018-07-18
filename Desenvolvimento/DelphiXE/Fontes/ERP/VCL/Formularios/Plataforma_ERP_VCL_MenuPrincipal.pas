@@ -48,6 +48,7 @@ type
   private
     procedure Inicializar;
     procedure FormularioTituloDeterminar;
+    procedure FormularioMenuConstruir;
   public
     { Public declarations }
   end;
@@ -73,6 +74,7 @@ end;
 procedure TPlataformaERPVCLMenuPrincipal.FormShow(Sender: TObject);
 begin
   FormularioTituloDeterminar;
+  FormularioMenuConstruir;
 end;
 
 //
@@ -142,6 +144,14 @@ end;
 procedure TPlataformaERPVCLMenuPrincipal.FormularioTituloDeterminar;
 begin
   Caption := 'Plataforma ERP';
+end;
+
+//
+// FormularioMenuConstruir.
+//
+procedure TPlataformaERPVCLMenuPrincipal.FormularioMenuConstruir;
+begin
+  mniTiposUsuarios.Visible := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
 end;
 
 end.

@@ -409,14 +409,52 @@ begin
   btnCancelar.Visible  := argEditar;
   btnMinimizar.Visible := True;
   btnFechar.Visible    := (not argEditar);
+
+  //
+  // Permissões de acesso por usuário.
+  //
+  btnLocalizar.Visible := (btnLocalizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_LOCALIZAR'));
+  btnNovo.Visible      := (btnNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_NOVO'));
+  btnExcluir.Visible   := (btnExcluir.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_EXCLUIR'));
+  btnEditar.Visible    := (btnEditar.Visible)    and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_EDITAR'));
 end;
 
 //
 // FormularioLogExibir.
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioLogExibir;
+var
+  locLogRegistroLista: TPlataforma_ERP_LogRegistroLista;
 begin
-  //Plataforma_ERP_VCL_LogRegistroExibir;
+  locLogRegistroLista := nil;
+
+  SetLength(locLogRegistroLista, Length(locLogRegistroLista) + 1);
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].Sequencial         := 1;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].LogLocalDtHr       := Now;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].LogServerDtHr      := Now;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoID     := 1;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoTitulo := 'Criação';
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].HostName           := 'ws049';
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].UserName           := 'chokito';
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioBaseID      := 1;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioID          := 1;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioNome        := 'Marcio Alves';
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].Mensagem           := 'Qualquer coisa';  
+
+  SetLength(locLogRegistroLista, Length(locLogRegistroLista) + 1);
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].Sequencial         := 2;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].LogLocalDtHr       := Now;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].LogServerDtHr      := Now;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoID     := 1;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoTitulo := 'Alteração';
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].HostName           := 'ws049';
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].UserName           := 'chokito';
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioBaseID      := 1;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioID          := 1;
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioNome        := 'Marcio Alves';
+  locLogRegistroLista[Length(locLogRegistroLista) - 1].Mensagem           := 'Qualquer coisa alterada';
+
+  Plataforma_ERP_VCL_LogRegistroExibir(locLogRegistroLista);
 end;
 
 //

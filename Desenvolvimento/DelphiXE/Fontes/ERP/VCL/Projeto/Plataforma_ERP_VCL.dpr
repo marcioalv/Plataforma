@@ -22,7 +22,6 @@ uses
   Plataforma_ERP_VCL_LogRegistroExibir in '..\Formularios\Plataforma_ERP_VCL_LogRegistroExibir.pas' {PlataformaERPVCLLogRegistroExibir},
   Plataforma_ERP_VCL_LogRegistroLista in '..\Formularios\Plataforma_ERP_VCL_LogRegistroLista.pas' {PlataformaERPVCLLogRegistroLista},
   Plataforma_ERP_VCL_Generico in '..\Formularios\Plataforma_ERP_VCL_Generico.pas',
-  Plataforma_ERP_LogRegistro in '..\..\Modulos\Plataforma_ERP_LogRegistro.pas',
   Plataforma_ERP_VCL_TiposUsuariosFiltro in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosFiltro.pas' {PlataformaERPVCLTiposUsuariosFiltro},
   Plataforma_ERP_VCL_TiposUsuariosLocalizar in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosLocalizar.pas' {PlataformaERPVCLTiposUsuariosLocalizar};
 

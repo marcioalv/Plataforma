@@ -37,6 +37,7 @@ var
   gloUsuarioID       : Integer;
   gloUsuarioLogon    : string;
   gloUsuarioNome     : string;
+  gloUsuarioRotinas  : array of string;
 
   gloConexaoADOString: string;
   gloConexaoTimeOut  : Integer;

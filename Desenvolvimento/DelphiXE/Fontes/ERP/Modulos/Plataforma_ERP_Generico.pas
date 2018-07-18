@@ -34,6 +34,35 @@ const
   NUMERADOR_TIPO_USUARIO_ID: string = 'tipo_usuario_id';
 
 //
+// TPlataforma_ERP_LogRegistro.
+//
+type
+  TPlataforma_ERP_LogRegistro = record
+    Sequencial        : Integer;
+    LogLocalDtHr      : TDateTime;
+    LogServerDtHr     : TDateTime;
+    RegistroAcaoID    : Integer;
+    RegistroAcaoTitulo: string;
+    HostName          : string;
+    UserName          : string;
+    UsuarioBaseID     : Integer;
+    UsuarioID         : Integer;
+    UsuarioNome       : string;
+    Mensagem          : string;
+  end;
+
+//
+// TPlataforma_ERP_LogRegistroLista.
+//
+type
+  TPlataforma_ERP_LogRegistroLista = array of TPlataforma_ERP_LogRegistro;
+
+//
+// Plataforma_ERP_LogRegistroLimpar.
+//
+procedure Plataforma_ERP_LogRegistroLimpar(argLogRegistro: TPlataforma_ERP_LogRegistro);
+
+//
 // PlataformaERPLogar.
 //
 procedure Plataforma_ERP_Logar(argCritico  : Boolean;
@@ -43,6 +72,11 @@ procedure Plataforma_ERP_Logar(argCritico  : Boolean;
                                argMensagem4: string = '';
                                argMensagem5: string = '';
                                argMensagem6: string = '');
+
+//
+// PlataformaERPUsuarioRotina.
+//
+function Plataforma_ERP_UsuarioRotina(argRotina: string): Boolean;
 
 //
 // Plataforma_ERP_ADO_ConexaoAbrir.
@@ -72,6 +106,27 @@ implementation
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_Generico.pas';
+
+//
+// Plataforma_ERP_LogRegistroLimpar.
+//
+procedure Plataforma_ERP_LogRegistroLimpar(argLogRegistro: TPlataforma_ERP_LogRegistro);
+begin
+  with argLogRegistro do
+  begin
+    Sequencial         := 0;
+    LogLocalDtHr       := 0;
+    LogServerDtHr      := 0;
+    RegistroAcaoID     := 0;
+    RegistroAcaoTitulo := '';
+    HostName           := '';
+    UserName           := '';
+    UsuarioBaseID      := 0;
+    UsuarioID          := 0;
+    UsuarioNome        := '';
+    Mensagem           := '';
+  end;
+end;
 
 //
 // PlataformaERPLogar.
@@ -107,6 +162,24 @@ begin
   if argMensagem6 <> '' then locMensagem := locMensagem + CONCATENADOR + argMensagem6;
 
   gloLocalLog.Write(locHostName, locUserName, locAppName, locAppHashCode, locAppUserID, locAppUserName, argCritico, locMensagem);
+end;
+
+//
+// Plataforma_ERP_UsuarioRotina.
+//
+function Plataforma_ERP_UsuarioRotina(argRotina: string): Boolean;
+var
+  locContador: Integer;
+begin
+  Result := False;
+  for locContador := 0 to (Length(gloUsuarioRotinas) - 1) do
+  begin
+    if UpperCase(argRotina) = UpperCase(gloUsuarioRotinas[locContador]) then
+    begin
+      Result := True;
+      Break;
+    end;
+  end;
 end;
 
 //

@@ -167,7 +167,6 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Top = 336
       Width = 142
       Height = 13
-      Anchors = [akLeft, akBottom]
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
@@ -175,7 +174,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Top = 336
       Width = 80
       Height = 13
-      Anchors = [akRight, akBottom]
+      Anchors = [akTop, akRight]
       Caption = 'Filtros aplicados!'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
