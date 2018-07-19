@@ -1,3 +1,15 @@
+//
+// Arquivo..: Plataforma_ERP_VCL_TiposUsuariosFiltro.pas
+// Projeto..: ERP
+// Fonte....: Formulário VCL
+// Criação..: 05/Julho/2018
+// Autor....: Marcio Alves (marcioalv@yahoo.com.br)
+// Descrição: Formulário com os parâmetros de filtro para a listagem de tipos de usuários.
+//
+// Histórico de alterações:
+//   Nenhuma alteração até o momento.
+//
+
 unit Plataforma_ERP_VCL_TiposUsuariosFiltro;
 
 interface

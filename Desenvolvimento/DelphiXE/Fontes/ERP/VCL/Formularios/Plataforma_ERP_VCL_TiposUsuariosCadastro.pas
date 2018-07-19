@@ -4,7 +4,7 @@
 // Fonte....: Formulário VCL
 // Criação..: 05/Julho/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário para exibir o cadastro de um tipo de usuário.
+// Descrição: Formulário com o cadastro do tipo de usuário.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
@@ -92,6 +92,8 @@ type
     procedure btnCancelarClick(Sender: TObject);
     procedure btnEditarClick(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
+    procedure edtLicencaTituloClick(Sender: TObject);
+    procedure edtBaseTituloClick(Sender: TObject);
   private
     procedure FormularioLimpar;
 
@@ -154,6 +156,11 @@ begin
   pubBaseID           := 0;
   pubLicencaID        := 0;
   pubTipoUsuarioID    := 0;
+
+  //
+  // Exibição de cadastros.
+  //
+  VCLEditClickControlar(edtLicencaTitulo, True);
   
   //
   // Limpa os componentes do formulário.
@@ -279,6 +286,22 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosCadastro.chkAtivoExit(Sender: TObject);
 begin
   if not VCLCheckBoxSair(chkAtivo) then Exit;
+end;
+
+//
+// Evento de click no título da licença.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtLicencaTituloClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_LicencaCadastroExibir(StringIntegerConverter(edtLicencaID.Text));
+end;
+
+//
+// Evento de click no título da base.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtBaseTituloClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_BaseCadastroExibir(StringIntegerConverter(edtBaseID.Text));
 end;
 
 //
@@ -605,20 +628,28 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioLocalizar;
 var
   locFormulario   : TPlataformaERPVCLTiposUsuariosLocalizar;
+  locClicouFechar : Boolean;
   locBaseID       : Integer;
   locLicencaID    : Integer;
   locTipoUsuarioID: Integer;
 begin
   locFormulario   := TPlataformaERPVCLTiposUsuariosLocalizar.Create(Self);
   locFormulario.ShowModal;
+
+  locClicouFechar  := locFormulario.pubClicouFechar;
+  locBaseID        := locFormulario.pubBaseID;
+  locLicencaID     := locFormulario.pubLicencaID;
+  locTipoUsuarioID := locFormulario.pubTipoUsuarioID;
+
   locFormulario.Release;
   FreeAndNil(locFormulario);
 
-  locBaseID        := 1;
-  locLicencaID     := 1;
-  locTipoUsuarioID := 1;
+  if locClicouFechar then Exit;
 
-  FormularioPopular(locBaseID, locLicencaID, locTipoUsuarioID);
+  if (locBaseID > 0) and (locLicencaID > 0) and (locTipoUsuarioID > 0) then
+  begin
+    FormularioPopular(locBaseID, locLicencaID, locTipoUsuarioID);
+  end;
 end;
 
 //
@@ -640,9 +671,9 @@ begin
   // Carrega conteúdo dos campos necessários.
   //
   edtLicencaID.Text     := IntegerStringConverter(gloLicencaID, True);
-  edtLicencaTitulo.Text := gloLicencaTitulo;
+  edtLicencaTitulo.Text := StringCadastroIncluir(gloLicencaTitulo);
   edtBaseID.Text        := IntegerStringConverter(gloBaseID,    True);
-  edtBaseTitulo.Text    := gloBaseTitulo;
+  edtBaseTitulo.Text    := StringCadastroIncluir(gloBaseTitulo);
   edtTipoUsuarioID.Text := STR_NOVO;
 
   //
@@ -719,10 +750,10 @@ begin
   locADOQuery.SQL.Add('  [tipo_usuario].[upd_local_dt_hr],                         ');
   locADOQuery.SQL.Add('  [tipo_usuario].[upd_contador]                             ');  
   locADOQuery.SQL.Add('FROM                                                        ');
-  locADOQuery.SQL.Add('  [tipo_usuario]                                            ');
-  locADOQuery.SQL.Add('  INNER JOIN [base]                                         ');
+  locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)                              ');
+  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                           ');
   locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario].[base_id]          ');
-  locADOQuery.SQL.Add('  INNER JOIN [licenca]                                      ');
+  locADOQuery.SQL.Add('  INNER JOIN [licenca] WITH (NOLOCK)                        ');
   locADOQuery.SQL.Add('    ON [licenca].[licenca_id] = [tipo_usuario].[licenca_id] ');
   locADOQuery.SQL.Add('WHERE                                                       ');
   locADOQuery.SQL.Add('  [tipo_usuario].[base_id]         = :base_id    AND        ');
@@ -763,9 +794,9 @@ begin
     chkAtivo.Checked      := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
 
     edtLicencaID.Text     := locADOQuery.FieldByName('licenca_id').AsString;
-    edtLicencaTitulo.Text := locADOQuery.FieldByName('licenca_titulo').AsString;
+    edtLicencaTitulo.Text := StringCadastroIncluir(locADOQuery.FieldByName('licenca_titulo').AsString);
     edtBaseID.Text        := locADOQuery.FieldByName('base_id').AsString;
-    edtBaseTitulo.Text    := locADOQuery.FieldByName('base_titulo').AsString;
+    edtBaseTitulo.Text    := StringCadastroIncluir(locADOQuery.FieldByName('base_titulo').AsString);
     edtTipoUsuarioID.Text := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger, True);
     edtInsLocalDtHr.Text  := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss.zzz');
     edtUpdLocalDtHr.Text  := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss.zzz');
@@ -860,6 +891,21 @@ begin
   //
   // Consiste as informações.
   //
+  if locCodigo = '' then
+  begin
+    VCLConsistenciaExibir('O código do tipo de usuário deve ser informado!');
+    pagFormulario.ActivePageIndex := TAB_CADASTRO;
+    edtCodigo.SetFocus;
+    Exit;
+  end;
+
+  if locTitulo = '' then
+  begin
+    VCLConsistenciaExibir('O título do tipo de usuário deve ser informado!');
+    pagFormulario.ActivePageIndex := TAB_CADASTRO;
+    edtTitulo.SetFocus;
+    Exit;
+  end;
 
   //
   // Log dados.
@@ -961,7 +1007,7 @@ begin
   locADOQuery.SQL.Add('SELECT                                                ');
   locADOQuery.SQL.Add('  [tipo_usuario].[upd_contador]                       ');
   locADOQuery.SQL.Add('FROM                                                  ');
-  locADOQuery.SQL.Add('  [tipo_usuario]                                      ');
+  locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)                        ');
   locADOQuery.SQL.Add('WHERE                                                 ');
   locADOQuery.SQL.Add('  [tipo_usuario].[base_id]         = :base_id    AND  ');
   locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id]      = :licenca_id AND  ');
@@ -1056,8 +1102,8 @@ begin
         locADOConnection.Close;
         FreeAndNil(locADOConnection);
         locLogMensagem := 'Impossível determinar o próximo numerador para o tipo de usuário!';
-        Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, FONTE_NOME, PROCEDIMENTO_NOME);
-        VCLErroExibir(ERRO_MENSAGEM, locLogMensagem);
+        Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+        VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
         Exit
       end;
     end;
@@ -1147,8 +1193,8 @@ begin
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
       locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [tipo_usuario]!';
-      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, FONTE_NOME, PROCEDIMENTO_NOME);
-      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit
     end;
   end;
@@ -1184,8 +1230,8 @@ begin
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
       locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para determinar o novo contador de updates do registro na tabela [tipo_usuario]!';
-      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, FONTE_NOME, PROCEDIMENTO_NOME);
-      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit
     end;   
   end;

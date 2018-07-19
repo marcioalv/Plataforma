@@ -3,7 +3,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'Cadastro de tipo de usu'#225'rio'
+  Caption = 'Tipo de usu'#225'rio'
   ClientHeight = 305
   ClientWidth = 537
   Color = clBtnFace
@@ -354,6 +354,8 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Top = 80
         Width = 353
         Height = 22
+        Cursor = crHandPoint
+        Hint = 'Clique para exibir o cadastro da base de dados!'
         TabStop = False
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET
@@ -362,9 +364,12 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
+        ParentShowHint = False
         ReadOnly = True
+        ShowHint = True
         TabOrder = 2
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
+        OnClick = edtBaseTituloClick
       end
       object edtBaseID: TEdit
         Left = 280
@@ -390,17 +395,22 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Top = 32
         Width = 433
         Height = 22
+        Cursor = crHandPoint
+        Hint = 'Clique para exibir o cadastro da licen'#231'a!'
         TabStop = False
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
+        ParentShowHint = False
         ReadOnly = True
+        ShowHint = True
         TabOrder = 0
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
+        OnClick = edtLicencaTituloClick
       end
       object edtLicencaID: TEdit
         Left = 360

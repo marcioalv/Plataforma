@@ -4,7 +4,7 @@
 // Fonte....: Formulário VCL
 // Criação..: 31/Maio/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário VCL com a lista de logs ocorrido em um registro.
+// Descrição: Formulário com a lista de logs de um registro.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.

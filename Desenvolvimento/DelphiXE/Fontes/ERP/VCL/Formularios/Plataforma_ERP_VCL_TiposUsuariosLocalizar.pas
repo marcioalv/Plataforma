@@ -1,3 +1,15 @@
+//
+// Arquivo..: Plataforma_ERP_VCL_TiposUsuariosLocalizar.pas
+// Projeto..: ERP
+// Fonte....: Formulário VCL
+// Criação..: 05/Julho/2018
+// Autor....: Marcio Alves (marcioalv@yahoo.com.br)
+// Descrição: Formulário com os parâmetros de localização de cadastro de tipo de usuário.
+//
+// Histórico de alterações:
+//   Nenhuma alteração até o momento.
+//
+
 unit Plataforma_ERP_VCL_TiposUsuariosLocalizar;
 
 interface
@@ -20,7 +32,7 @@ uses
 type
   TPlataformaERPVCLTiposUsuariosLocalizar = class(TForm)
     imgFormulario: TImage;
-    btnLocalizar: TBitBtn;
+    btnConfirmar: TBitBtn;
     btnFechar: TBitBtn;
     panFormulario: TPanel;
     lblCodigo: TLabel;
@@ -38,12 +50,16 @@ type
     procedure edtCodigoEnter(Sender: TObject);
     procedure edtCodigoExit(Sender: TObject);
     procedure edtCodigoKeyPress(Sender: TObject; var Key: Char);
-    procedure btnLocalizarClick(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
   private
-    procedure FormularioLimpar;
+    procedure FormularioLimpar;    
+    procedure FormularioConfirmar;
   public
-    { Public declarations }
+    pubClicouFechar : Boolean;
+    pubBaseID       : Integer;
+    pubLicencaID    : Integer;
+    pubTipoUsuarioID: Integer;
   end;
 
 var
@@ -65,6 +81,17 @@ const
 //
 procedure TPlataformaERPVCLTiposUsuariosLocalizar.FormCreate(Sender: TObject);
 begin
+  //
+  // Inicializa variáveis públicas.
+  //
+  pubClicouFechar  := True;
+  pubBaseID        := 1;
+  pubLicencaID     := 1;
+  pubTipoUsuarioID := 1;
+
+  //
+  // Limpa componentes do formulário.
+  //
   FormularioLimpar;
 end;
 
@@ -121,11 +148,11 @@ begin
 end;
 
 //
-// Evento de click no botão "Localizar".
+// Evento de click no botão "Confirmar".
 //
-procedure TPlataformaERPVCLTiposUsuariosLocalizar.btnLocalizarClick(Sender: TObject);
+procedure TPlataformaERPVCLTiposUsuariosLocalizar.btnConfirmarClick(Sender: TObject);
 begin
-  Close;
+  FormularioConfirmar;
 end;
 
 //
@@ -143,6 +170,18 @@ procedure TPlataformaERPVCLTiposUsuariosLocalizar.FormularioLimpar;
 begin
   VCLEditLimpar(edtTipoUsuarioID);
   VCLEditLimpar(edtCodigo);
+end;
+
+//
+// Procedimento para confirmar os parâmetros do formulário.
+//
+procedure TPlataformaERPVCLTiposUsuariosLocalizar.FormularioConfirmar;
+begin
+  pubClicouFechar  := False;
+  pubBaseID        := 1;
+  pubLicencaID     := 1;
+  pubTipoUsuarioID := 1;
+  Close; 
 end;
 
 end.

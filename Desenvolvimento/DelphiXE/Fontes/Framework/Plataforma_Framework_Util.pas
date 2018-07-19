@@ -62,6 +62,8 @@ function UserNameRecuperar: string;
 
 function DriveSerialNumberRecuperar(argDriveLetra: string): Integer;
 
+function StringCadastroIncluir(argTexto: string): string;
+
 function StringConcatenar(argMensagem1: string; argMensagem2: string; argMensagem3: string = ''): string;
 
 function StringConcatenadorEnter(argValor: string): string;
@@ -160,6 +162,14 @@ var
 begin 
   GetVolumeInformation(PChar(argDriveLetra + ':\'), nil, MAX_PATH, @locVolumeSerialNumber, locNotUsed, locVolumeFlags, nil, 0);
   Result := Abs(locVolumeSerialNumber);
+end;
+
+//
+// StringCadastroIncluir.
+//
+function StringCadastroIncluir(argTexto: string): string;
+begin
+  Result := argTexto + '   ' + '›'; // '©';
 end;
 
 //

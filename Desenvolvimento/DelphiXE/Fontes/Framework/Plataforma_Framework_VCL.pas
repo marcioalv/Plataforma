@@ -107,6 +107,8 @@ procedure VCLRadioButtonControlar(argComponente: TRadioButton; argLigar: Boolean
 procedure VCLCheckBoxControlar(argComponente: TCheckBox; argLigar: Boolean);
 procedure VCLMemoControlar(argComponente: TMemo; argLigar: Boolean);
 
+procedure VCLEditClickControlar(argComponente: TEdit; argLigar: Boolean);
+
 //
 // Entrada/Saída componentes.
 //
@@ -383,7 +385,9 @@ end;
 //
 procedure VCLEditLimpar(argComponente: TEdit);
 begin
-  argComponente.Text := '';
+  argComponente.Text     := '';
+  argComponente.Cursor   := crDefault;
+  argComponente.ShowHint := False;
 end;
 
 //
@@ -813,6 +817,22 @@ begin
   argComponente.Color := clWindow;
   if not argComponente.Enabled then Exit;
   Result := True;
+end;
+
+//
+// VCLEditClickControlar.
+//
+procedure VCLEditClickControlar(argComponente: TEdit; argLigar: Boolean);
+begin
+  if argComponente.Hint = '' then
+    argComponente.Hint := 'Clique para exibir o cadastro';
+
+  argComponente.ShowHint := argLigar;
+
+  if argLigar then
+    argComponente.Cursor := crHandPoint
+  else
+    argComponente.Cursor := crDefault;
 end;
 
 //

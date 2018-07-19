@@ -4,7 +4,7 @@
 // Fonte....: Formulário VCL
 // Criação..: 05/Julho/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário para exibir a lista de tipos de usuários cadastrados.
+// Descrição: Formulário com a lista de tipos de usuários cadastrados.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.

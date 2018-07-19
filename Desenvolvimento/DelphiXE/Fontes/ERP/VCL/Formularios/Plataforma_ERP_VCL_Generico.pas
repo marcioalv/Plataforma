@@ -19,13 +19,29 @@ uses
   Plataforma_ERP_VCL_LogRegistroLista,
   System.SysUtils;
 
+//
 // Plataforma_ERP_VCL_LogRegistroExibir.
+//
 procedure Plataforma_ERP_VCL_LogRegistroExibir(argLogRegistroLista: TPlataforma_ERP_LogRegistroLista);
+
+//
+// Plataforma_ERP_VCL_BaseCadastroExibir.
+//
+procedure Plataforma_ERP_VCL_BaseCadastroExibir(argBaseID: Integer);
+
+//
+// Plataforma_ERP_VCL_LicencaCadastroExibir.
+//
+procedure Plataforma_ERP_VCL_LicencaCadastroExibir(argLicencaID: Integer);
 
 implementation
 
+uses
+  Plataforma_ERP_VCL_BaseCadastro,
+  Plataforma_ERP_VCL_LicencaCadastro;
+
 //
-// PlataformaERPLogRegistroExibir.
+// Procedimentoi para exibir o formulário de lista de logs de um registro.
 //
 procedure Plataforma_ERP_VCL_LogRegistroExibir(argLogRegistroLista: TPlataforma_ERP_LogRegistroLista);
 var
@@ -33,6 +49,36 @@ var
 begin
   locFormulario := TPlataformaERPVCLLogRegistroLista.Create(nil);
   locFormulario.pubLogRegistroLista := argLogRegistroLista;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir um cadastro de licença.
+//
+procedure Plataforma_ERP_VCL_LicencaCadastroExibir(argLicencaID: Integer);
+var
+  locFormulario: TPlataformaERPVCLLicencaCadastro;
+begin
+  if argLicencaID <= 0 then Exit;
+
+  locFormulario := TPlataformaERPVCLLicencaCadastro.Create(nil);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir um cadastro de base.
+//
+procedure Plataforma_ERP_VCL_BaseCadastroExibir(argBaseID: Integer);
+var
+  locFormulario: TPlataformaERPVCLBaseCadastro;
+begin
+  if argBaseID <= 0 then Exit;
+
+  locFormulario := TPlataformaERPVCLBaseCadastro.Create(nil);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

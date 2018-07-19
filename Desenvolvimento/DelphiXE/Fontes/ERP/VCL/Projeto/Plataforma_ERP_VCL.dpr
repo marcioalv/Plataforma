@@ -23,7 +23,9 @@ uses
   Plataforma_ERP_VCL_LogRegistroLista in '..\Formularios\Plataforma_ERP_VCL_LogRegistroLista.pas' {PlataformaERPVCLLogRegistroLista},
   Plataforma_ERP_VCL_Generico in '..\Formularios\Plataforma_ERP_VCL_Generico.pas',
   Plataforma_ERP_VCL_TiposUsuariosFiltro in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosFiltro.pas' {PlataformaERPVCLTiposUsuariosFiltro},
-  Plataforma_ERP_VCL_TiposUsuariosLocalizar in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosLocalizar.pas' {PlataformaERPVCLTiposUsuariosLocalizar};
+  Plataforma_ERP_VCL_TiposUsuariosLocalizar in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosLocalizar.pas' {PlataformaERPVCLTiposUsuariosLocalizar},
+  Plataforma_ERP_VCL_LicencaCadastro in '..\Formularios\Plataforma_ERP_VCL_LicencaCadastro.pas' {PlataformaERPVCLLicencaCadastro},
+  Plataforma_ERP_VCL_BaseCadastro in '..\Formularios\Plataforma_ERP_VCL_BaseCadastro.pas' {PlataformaERPVCLBaseCadastro};
 
 {$R *.res}
 

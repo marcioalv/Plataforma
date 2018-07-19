@@ -45,6 +45,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
     procedure mniTiposUsuariosClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     procedure Inicializar;
     procedure FormularioTituloDeterminar;
@@ -75,6 +76,14 @@ procedure TPlataformaERPVCLMenuPrincipal.FormShow(Sender: TObject);
 begin
   FormularioTituloDeterminar;
   FormularioMenuConstruir;
+end;
+
+//
+// Evento de pressionamento de teclas no formulário.
+//
+procedure TPlataformaERPVCLMenuPrincipal.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = ESC then Close;
 end;
 
 //

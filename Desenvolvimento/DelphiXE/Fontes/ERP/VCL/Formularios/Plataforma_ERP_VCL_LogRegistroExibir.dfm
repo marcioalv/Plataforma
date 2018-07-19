@@ -99,8 +99,6 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     Caption = 'Fechar'
     TabOrder = 0
     OnClick = btnFecharClick
-    ExplicitLeft = 440
-    ExplicitTop = 472
   end
   object pagFormulario: TPageControl
     Left = 48
@@ -112,8 +110,6 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     TabOrder = 1
     object tabRegistro: TTabSheet
       Caption = 'Registro'
-      ExplicitWidth = 281
-      ExplicitHeight = 165
       object lblSequencial: TLabel
         Left = 16
         Top = 16
@@ -333,6 +329,8 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     object tabDados: TTabSheet
       Caption = 'Dados'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 281
       ExplicitHeight = 165
       object memDados: TMemo
