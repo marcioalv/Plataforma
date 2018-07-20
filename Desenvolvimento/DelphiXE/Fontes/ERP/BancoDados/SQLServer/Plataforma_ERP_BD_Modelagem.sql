@@ -218,6 +218,7 @@ INSERT INTO [registro_acao] VALUES (4, 'Exclusão',  'N', 'N', 'N', 'S', 'N', 'S'
 -- Base padrão.
 --
 INSERT INTO [base] VALUES (1, '01', 'Base central', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [base] VALUES (2, '02', 'Outra base',   'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 
 --
 -- Licençã padrão.
@@ -229,7 +230,14 @@ INSERT INTO [licenca] VALUES (1, 'ABC.123.DEF.456', 'Licença central', 'N', 'S',
 --
 INSERT INTO [tipo_usuario]      VALUES (1, 1, 1, '01', 'Administrador da aplicação', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [tipo_usuario_log]  VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, 'ws049', 'chokito', 1, 1, 'Registro criado na instalação!', '')
-INSERT INTO [numerador_licenca] VALUES (1, 1, 'tipo_usuario_id', 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+
+INSERT INTO [tipo_usuario]      VALUES (2, 1, 1, '01', 'Outra base', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [tipo_usuario_log]  VALUES (2, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, 'ws049', 'chokito', 1, 1, 'Registro criado na instalação!', '')
+
+INSERT INTO [tipo_usuario]      VALUES (1, 1, 2, '02', 'Gestor da aplicação', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [tipo_usuario_log]  VALUES (1, 1, 2, 1, 1, GETDATE(), GETDATE(), 1, 'ws049', 'chokito', 1, 1, 'Registro criado na instalação!', '')
+
+INSERT INTO [numerador_licenca] VALUES (1, 1, 'tipo_usuario_id', 2, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
 
 --
 -- Usuário.

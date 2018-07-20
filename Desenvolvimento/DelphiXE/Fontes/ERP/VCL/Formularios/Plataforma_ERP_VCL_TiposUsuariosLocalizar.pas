@@ -15,6 +15,7 @@ unit Plataforma_ERP_VCL_TiposUsuariosLocalizar;
 interface
 
 uses
+  Data.Win.ADODB,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -55,6 +56,7 @@ type
   private
     procedure FormularioLimpar;    
     procedure FormularioConfirmar;
+    function TipoUsuarioLocalizar: Boolean;
   public
     pubClicouFechar : Boolean;
     pubBaseID       : Integer;
@@ -71,7 +73,10 @@ implementation
 
 uses
   Plataforma_Framework_Util,
-  Plataforma_Framework_VCL;
+  Plataforma_Framework_VCL,
+  Plataforma_ERP_Global,
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_TiposUsuariosSelecao;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_TiposUsuariosLocalizar';
@@ -177,11 +182,180 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLocalizar.FormularioConfirmar;
 begin
+  if not TipoUsuarioLocalizar then Exit;
   pubClicouFechar  := False;
-  pubBaseID        := 1;
-  pubLicencaID     := 1;
-  pubTipoUsuarioID := 1;
   Close; 
+end;
+
+//
+// Procedimento para localizar o tipo do usuário.
+//
+function TPlataformaERPVCLTiposUsuariosLocalizar.TipoUsuarioLocalizar: Boolean;
+const
+  PROCEDIMENTO_NOME: string = 'TipoUsuarioLocalizar';
+  ERRO_MENSAGEM    : string = 'Impossível localizar tipo de usuário!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locClicouFechar : Boolean;
+  locBaseID       : Integer;
+  locLicencaID    : Integer;
+  locTipoUsuarioID: Integer;
+  locFormulario   : TPlataformaERPVCLTiposUsuariosSelecao;
+begin
+  //
+  // ID da licença.
+  //
+  locLicencaID := gloLicencaID;
+
+  //
+  // ID do tipo do usuário.
+  //
+  locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(Self);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Result := False;
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do tipo de usuário.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                                      ');
+  locADOQuery.SQL.Add('  [base].[base_id],                                         ');
+  locADOQuery.SQL.Add('  [base].[titulo] AS [base_titulo],                         ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id],                              ');  
+  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id],                         ');  
+  locADOQuery.SQL.Add('  [tipo_usuario].[codigo],                                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[titulo],                                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado],                               ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]                                    ');
+  locADOQuery.SQL.Add('FROM                                                        ');
+  locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)                              ');
+  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                           ');
+  locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario].[base_id]          ');
+  locADOQuery.SQL.Add('WHERE                                                       ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id]      = :licenca_id AND        ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id] = :tipo_usuario_id       ');
+
+  locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
+  locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value := locTipoUsuarioID;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [tipo_usuario]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Result := False;
+      Exit;
+    end;
+  end;
+
+  //
+  // Nenhum registro encontrado.
+  //
+  if locADOQuery.RecordCount <= 0 then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);
+    VCLConsistenciaExibir('Nenhum tipo de usuário encontrado!');
+    Result := False;
+    Exit;
+  end;
+
+  //
+  // Apenas um registro encontrado.
+  //
+  if locADOQuery.RecordCount = 1 then
+  begin
+    pubBaseID        := locADOQuery.FieldByName('base_id').AsInteger;
+    pubLicencaID     := locADOQuery.FieldByName('licenca_id').AsInteger;
+    pubTipoUsuarioID := locADOQuery.FieldByName('tipo_usuario_id').AsInteger;
+  end;
+
+  //
+  // Vários registros encontrados.
+  //
+  if locADOQuery.RecordCount > 1 then
+  begin
+    locFormulario             := TPlataformaERPVCLTiposUsuariosSelecao.Create(Self);
+    locFormulario.pubADOQuery := locADOQuery;
+    locFormulario.ShowModal;
+
+    locClicouFechar  := locFormulario.pubClicouFechar;
+    locBaseID        := locFormulario.pubBaseID;
+    locLicencaID     := locFormulario.pubLicencaID;
+    locTipoUsuarioID := locFormulario.pubTipoUsuarioID;
+
+    locFormulario.Release;
+    FreeAndNil(locFormulario);
+
+    if locClicouFechar then
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      VCLCursorTrocar;
+      Result := False;
+      Exit;
+    end;
+
+    pubBaseID        := locBaseID;
+    pubLicencaID     := locLicencaID;
+    pubTipoUsuarioID := locTipoUsuarioID;
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+  Result := True;
 end;
 
 end.
