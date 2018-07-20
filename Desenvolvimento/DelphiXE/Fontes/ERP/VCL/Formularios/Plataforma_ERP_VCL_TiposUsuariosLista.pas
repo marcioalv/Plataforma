@@ -138,7 +138,8 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormActivate(Sender: TObject);
 begin
-  VCLSDIMaximizar(Self);
+  // VCLSDIMaximizar(Self);
+  VCLListViewColunarDimensionar(lvwLista);
   lblListaQtde.Top     := (lvwLista.Top + lvwLista.Height) + 8;
   lblListaFiltros.Top  := (lvwLista.Top + lvwLista.Height) + 8;
 end;

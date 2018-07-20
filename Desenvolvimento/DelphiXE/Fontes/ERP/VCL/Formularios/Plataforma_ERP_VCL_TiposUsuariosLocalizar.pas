@@ -202,6 +202,7 @@ var
   locBaseID       : Integer;
   locLicencaID    : Integer;
   locTipoUsuarioID: Integer;
+  locCodigo       : string;
   locFormulario   : TPlataformaERPVCLTiposUsuariosSelecao;
 begin
   //
@@ -213,6 +214,7 @@ begin
   // ID do tipo do usuário.
   //
   locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
+  locCodigo        := StringTrim(edtCodigo.Text);
 
   //
   // Troca cursor.
@@ -264,11 +266,20 @@ begin
   locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                           ');
   locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario].[base_id]          ');
   locADOQuery.SQL.Add('WHERE                                                       ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id]      = :licenca_id AND        ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id] = :tipo_usuario_id       ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id] = :licenca_id                 ');
+  locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
 
-  locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
-  locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value := locTipoUsuarioID;
+  if locTipoUsuarioID > 0 then
+  begin  
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[tipo_usuario_id] = :tipo_usuario_id ');
+    locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value := locTipoUsuarioID;
+  end;
+
+  if locCodigo <> '' then
+  begin  
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[codigo] LIKE :codigo');
+    locADOQuery.Parameters.ParamByName('codigo').Value := StringLikeGerar(locCodigo);
+  end;
 
   //
   // Executa query.

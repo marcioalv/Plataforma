@@ -178,6 +178,8 @@ function VCLListViewIndiceItemRetornar(argComponente: TListView): Integer;
 
 procedure VCLListViewQtdeLinhasMensagem(argLabel: TLabel; argListView: TListView; argFiltrosAplicados: Boolean = False);
 
+procedure VCLListViewColunarDimensionar(argComponente: TListView);
+
 
 {*************************************************************************************************}
 implementation
@@ -1515,6 +1517,44 @@ begin
       argLabel.Caption := 'Foram encontrados ' + IntegerStringConverter(argListView.Items.Count) + ' registros com os filtros informados!';
     end;
   end;  
+end;
+
+//
+// argComponente.
+//
+procedure VCLListViewColunarDimensionar(argComponente: TListView);
+var
+  locContador    : Integer;
+  locTamanhoTotal: Currency;
+  locTamanhoAtual: Currency;
+  locTamanhoNovo : Currency;
+  locPercentual  : Currency;
+begin
+  //
+  // Tamanho total atual.
+  //
+  locTamanhoTotal := 0;
+  for locContador := 0 to (argComponente.Columns.Count - 1) do
+  begin
+    locTamanhoTotal := locTamanhoTotal + argComponente.Columns[locContador].Width;
+  end;
+
+  //
+  // Novo tamanho.
+  //
+  locTamanhoNovo := (argComponente.Width - 25);
+
+  //
+  // Define o novo tamanho de cada coluna.
+  //
+  for locContador := 0 to (argComponente.Columns.Count - 1) do
+  begin
+    locTamanhoAtual := argComponente.Columns[locContador].Width;
+    locPercentual   := ((locTamanhoAtual / locTamanhoTotal) * 100.0000);
+
+    argComponente.Columns[locContador].Width := Round((locTamanhoNovo / 100.0000) * locPercentual);
+  end;  
+  
 end;
 
 end.
