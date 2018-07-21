@@ -38,21 +38,21 @@ const
 //
 type
   TPlataforma_ERP_LogRegistro = record
-    LicencaID         : Integer;
-    Sequencial        : Integer;
-    LogBaseID         : Integer;
-    LogBaseTitulo     : string;
-    LogLocalDtHr      : TDateTime;
-    LogServerDtHr     : TDateTime;
-    RegistroAcaoID    : Integer;
-    RegistroAcaoTitulo: string;
-    HostName          : string;
-    UserName          : string;
-    UsuarioBaseID     : Integer;
-    UsuarioID         : Integer;
-    UsuarioNome       : string;
-    Mensagem          : string;
-    Dados             : string;
+    LicencaID            : Integer;
+    Sequencial           : Integer;
+    LogBaseID            : Integer;
+    LogBaseDescricao     : string;
+    LogLocalDtHr         : TDateTime;
+    LogServerDtHr        : TDateTime;
+    RegistroAcaoID       : Integer;
+    RegistroAcaoDescricao: string;
+    HostName             : string;
+    UserName             : string;
+    UsuarioBaseID        : Integer;
+    UsuarioID            : Integer;
+    UsuarioNome          : string;
+    Mensagem             : string;
+    Dados                : string;
   end;
 
 //
@@ -118,21 +118,21 @@ procedure Plataforma_ERP_LogRegistroLimpar(argLogRegistro: TPlataforma_ERP_LogRe
 begin
   with argLogRegistro do
   begin
-    LicencaID          := 0;
-    Sequencial         := 0;
-    LogBaseID          := 0;
-    LogBaseTitulo      := '';
-    LogLocalDtHr       := 0;
-    LogServerDtHr      := 0;
-    RegistroAcaoID     := 0;
-    RegistroAcaoTitulo := '';
-    HostName           := '';
-    UserName           := '';
-    UsuarioBaseID      := 0;
-    UsuarioID          := 0;
-    UsuarioNome        := '';
-    Mensagem           := '';
-    Dados              := '';
+    LicencaID             := 0;
+    Sequencial            := 0;
+    LogBaseID             := 0;
+    LogBaseDescricao      := '';
+    LogLocalDtHr          := 0;
+    LogServerDtHr         := 0;
+    RegistroAcaoID        := 0;
+    RegistroAcaoDescricao := '';
+    HostName              := '';
+    UserName              := '';
+    UsuarioBaseID         := 0;
+    UsuarioID             := 0;
+    UsuarioNome           := '';
+    Mensagem              := '';
+    Dados                 := '';
   end;
 end;
 

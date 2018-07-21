@@ -4,8 +4,8 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Filtros para localiza'#231#227'o de tipos de usu'#225'rio'
-  ClientHeight = 281
-  ClientWidth = 386
+  ClientHeight = 257
+  ClientWidth = 385
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -129,7 +129,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
   end
   object btnConfirmar: TBitBtn
     Left = 48
-    Top = 240
+    Top = 216
     Width = 89
     Height = 33
     Cursor = crHandPoint
@@ -145,225 +145,225 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
   end
   object btnFechar: TBitBtn
     Left = 304
-    Top = 240
+    Top = 216
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Caption = 'Fechar'
-    TabOrder = 2
+    TabOrder = 4
     OnClick = btnFecharClick
-  end
-  object panFormulario: TPanel
-    Left = 48
-    Top = 8
-    Width = 329
-    Height = 225
-    Margins.Left = 48
-    Margins.Top = 8
-    Margins.Right = 8
-    Margins.Bottom = 48
-    BevelKind = bkTile
-    BevelOuter = bvNone
-    Caption = 'panFormulario'
-    Color = clWindow
-    ParentBackground = False
-    ShowCaption = False
-    TabOrder = 0
-    object lblCodigo: TLabel
-      Left = 16
-      Top = 64
-      Width = 37
-      Height = 13
-      Caption = 'C'#243'digo:'
-    end
-    object lblCodigoAte: TLabel
-      Left = 152
-      Top = 85
-      Width = 16
-      Height = 13
-      Caption = 'at'#233
-    end
-    object lblDescricao: TLabel
-      Left = 16
-      Top = 112
-      Width = 50
-      Height = 13
-      Caption = 'Descri'#231#227'o:'
-    end
-    object lblTipoUsuarioID: TLabel
-      Left = 16
-      Top = 16
-      Width = 15
-      Height = 13
-      Caption = 'ID:'
-    end
-    object lblTipoUsuarioIDAte: TLabel
-      Left = 72
-      Top = 37
-      Width = 16
-      Height = 13
-      Caption = 'at'#233
-    end
-    object lblBloqueado: TLabel
-      Left = 16
-      Top = 160
-      Width = 54
-      Height = 13
-      Caption = 'Bloqueado:'
-    end
-    object lblAtivo: TLabel
-      Left = 176
-      Top = 160
-      Width = 29
-      Height = 13
-      Caption = 'Ativo:'
-    end
-    object edtCodigoInicial: TEdit
-      Left = 16
-      Top = 80
-      Width = 129
-      Height = 22
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      MaxLength = 25
-      ParentFont = False
-      TabOrder = 2
-      Text = '999.999'
-      OnEnter = edtCodigoInicialEnter
-      OnExit = edtCodigoInicialExit
-      OnKeyPress = edtCodigoInicialKeyPress
-    end
-    object edtCodigoFinal: TEdit
-      Left = 176
-      Top = 80
-      Width = 129
-      Height = 22
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      MaxLength = 25
-      ParentFont = False
-      TabOrder = 3
-      Text = '999.999'
-      OnEnter = edtCodigoFinalEnter
-      OnExit = edtCodigoFinalExit
-      OnKeyPress = edtCodigoFinalKeyPress
-    end
-    object edtDescricao: TEdit
-      Left = 16
-      Top = 128
-      Width = 289
-      Height = 22
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      MaxLength = 50
-      ParentFont = False
-      TabOrder = 4
-      Text = 'Xxxxxxxxxx Wwwwwwwwww'
-      OnEnter = edtDescricaoEnter
-      OnExit = edtDescricaoExit
-      OnKeyPress = edtDescricaoKeyPress
-    end
-    object edtTipoUsuarioIDInicial: TEdit
-      Left = 16
-      Top = 32
-      Width = 49
-      Height = 22
-      Alignment = taRightJustify
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      MaxLength = 4
-      ParentFont = False
-      TabOrder = 0
-      Text = '99'
-      OnEnter = edtTipoUsuarioIDInicialEnter
-      OnExit = edtTipoUsuarioIDInicialExit
-      OnKeyPress = edtTipoUsuarioIDInicialKeyPress
-    end
-    object edtTipoUsuarioIDFinal: TEdit
-      Left = 96
-      Top = 32
-      Width = 49
-      Height = 22
-      Alignment = taRightJustify
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      MaxLength = 4
-      ParentFont = False
-      TabOrder = 1
-      Text = '99'
-      OnEnter = edtTipoUsuarioIDFinalEnter
-      OnExit = edtTipoUsuarioIDFinalExit
-      OnKeyPress = edtTipoUsuarioIDFinalKeyPress
-    end
-    object cbxBloqueado: TComboBox
-      Left = 16
-      Top = 176
-      Width = 129
-      Height = 22
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      MaxLength = 15
-      ParentFont = False
-      TabOrder = 5
-      Text = 'Wwwww'
-      OnEnter = cbxBloqueadoEnter
-      OnExit = cbxBloqueadoExit
-      OnKeyPress = cbxBloqueadoKeyPress
-    end
-    object cbxAtivo: TComboBox
-      Left = 176
-      Top = 176
-      Width = 129
-      Height = 22
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      MaxLength = 15
-      ParentFont = False
-      TabOrder = 6
-      Text = 'Wwwww'
-      OnEnter = cbxAtivoEnter
-      OnExit = cbxAtivoExit
-      OnKeyPress = cbxAtivoKeyPress
-    end
   end
   object btnLimpar: TBitBtn
     Left = 144
-    Top = 240
+    Top = 216
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Caption = 'Limpar'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = btnLimparClick
   end
   object btnMinimizar: TBitBtn
     Left = 224
-    Top = 240
+    Top = 216
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Caption = 'Minimizar'
-    TabOrder = 4
+    TabOrder = 3
+    OnClick = btnMinimizarClick
+  end
+  object pagFormulario: TPageControl
+    Left = 48
+    Top = 8
+    Width = 329
+    Height = 201
+    Cursor = crHandPoint
+    ActivePage = tabPadrao
+    TabOrder = 0
+    object tabPadrao: TTabSheet
+      Caption = 'Padr'#227'o'
+      object lblCodigo: TLabel
+        Left = 16
+        Top = 16
+        Width = 37
+        Height = 13
+        Caption = 'C'#243'digo:'
+      end
+      object lblCodigoAte: TLabel
+        Left = 152
+        Top = 37
+        Width = 16
+        Height = 13
+        Caption = 'at'#233
+      end
+      object lblDescricao: TLabel
+        Left = 16
+        Top = 64
+        Width = 50
+        Height = 13
+        Caption = 'Descri'#231#227'o:'
+      end
+      object edtCodigoInicial: TEdit
+        Left = 16
+        Top = 32
+        Width = 129
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        TabOrder = 0
+        Text = '999.999'
+        OnEnter = edtCodigoInicialEnter
+        OnExit = edtCodigoInicialExit
+        OnKeyPress = edtCodigoInicialKeyPress
+      end
+      object edtCodigoFinal: TEdit
+        Left = 176
+        Top = 32
+        Width = 129
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        TabOrder = 1
+        Text = '999.999'
+        OnEnter = edtCodigoFinalEnter
+        OnExit = edtCodigoFinalExit
+        OnKeyPress = edtCodigoFinalKeyPress
+      end
+      object edtDescricao: TEdit
+        Left = 16
+        Top = 80
+        Width = 289
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 50
+        ParentFont = False
+        TabOrder = 2
+        Text = 'Xxxxxxxxxx Wwwwwwwwww'
+        OnEnter = edtDescricaoEnter
+        OnExit = edtDescricaoExit
+        OnKeyPress = edtDescricaoKeyPress
+      end
+    end
+    object tabAdicional: TTabSheet
+      Caption = 'Adicional'
+      ImageIndex = 1
+      object lblTipoUsuarioID: TLabel
+        Left = 16
+        Top = 16
+        Width = 15
+        Height = 13
+        Caption = 'ID:'
+      end
+      object lblTipoUsuarioIDAte: TLabel
+        Left = 94
+        Top = 37
+        Width = 16
+        Height = 13
+        Caption = 'at'#233
+      end
+      object lblBloqueado: TLabel
+        Left = 16
+        Top = 64
+        Width = 54
+        Height = 13
+        Caption = 'Bloqueado:'
+      end
+      object lblAtivo: TLabel
+        Left = 16
+        Top = 112
+        Width = 29
+        Height = 13
+        Caption = 'Ativo:'
+      end
+      object edtTipoUsuarioIDInicial: TEdit
+        Left = 16
+        Top = 32
+        Width = 65
+        Height = 22
+        Alignment = taRightJustify
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 4
+        ParentFont = False
+        TabOrder = 0
+        Text = '999.999'
+        OnEnter = edtTipoUsuarioIDInicialEnter
+        OnExit = edtTipoUsuarioIDInicialExit
+        OnKeyPress = edtTipoUsuarioIDInicialKeyPress
+      end
+      object edtTipoUsuarioIDFinal: TEdit
+        Left = 120
+        Top = 32
+        Width = 65
+        Height = 22
+        Alignment = taRightJustify
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 4
+        ParentFont = False
+        TabOrder = 1
+        Text = '999.999'
+        OnEnter = edtTipoUsuarioIDFinalEnter
+        OnExit = edtTipoUsuarioIDFinalExit
+        OnKeyPress = edtTipoUsuarioIDFinalKeyPress
+      end
+      object cbxBloqueado: TComboBox
+        Left = 16
+        Top = 80
+        Width = 169
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 15
+        ParentFont = False
+        TabOrder = 2
+        Text = 'Wwwww'
+        OnEnter = cbxBloqueadoEnter
+        OnExit = cbxBloqueadoExit
+        OnKeyPress = cbxBloqueadoKeyPress
+      end
+      object cbxAtivo: TComboBox
+        Left = 16
+        Top = 128
+        Width = 169
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 15
+        ParentFont = False
+        TabOrder = 3
+        Text = 'Wwwww'
+        OnEnter = cbxAtivoEnter
+        OnExit = cbxAtivoExit
+        OnKeyPress = cbxAtivoKeyPress
+      end
+    end
   end
 end

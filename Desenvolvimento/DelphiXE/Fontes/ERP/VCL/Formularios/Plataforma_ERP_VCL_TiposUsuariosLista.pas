@@ -95,7 +95,7 @@ const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_TiposUsuariosLista.pas';
 
   LVW_LISTA_BASE_ID        : Integer = 0;
-  LVW_LISTA_BASE_TITULO    : Integer = 1;
+  LVW_LISTA_BASE_DESCRICAO : Integer = 1;
   LVW_LISTA_LICENCA_ID     : Integer = 2;
   LVW_LISTA_TIPO_USUARIO_ID: Integer = 3;
   LVW_LISTA_CODIGO         : Integer = 4;
@@ -143,7 +143,11 @@ procedure TPlataformaERPVCLTiposUsuariosLista.FormActivate(Sender: TObject);
 begin
   // VCLSDIMaximizar(Self);
   VCLListViewColunarDimensionar(lvwLista);
-  lblListaQtde.Top     := (lvwLista.Top + lvwLista.Height) + 8;
+
+  lblListaQtde.Left := lvwLista.Left;
+  lblListaQtde.Top  := (lvwLista.Top + lvwLista.Height) + 8;
+
+  lblListaFiltros.Left := (lvwLista.Left + lvwLista.Width) - lblListaFiltros.Width;
   lblListaFiltros.Top  := (lvwLista.Top + lvwLista.Height) + 8;
 
   //
@@ -357,7 +361,7 @@ begin
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                      ');
   locADOQuery.SQL.Add('  [base].[base_id]                 AS [base_id],            ');
-  locADOQuery.SQL.Add('  [base].[titulo]                  AS [base_titulo],        ');
+  locADOQuery.SQL.Add('  [base].[descricao]               AS [base_descricao],     ');
   locADOQuery.SQL.Add('  [licenca].[licenca_id]           AS [licenca_id],         ');
   locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id] AS [tipo_usuario_id],    ');
   locADOQuery.SQL.Add('  [tipo_usuario].[codigo]          AS [codigo],             ');
@@ -472,7 +476,7 @@ begin
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('base_id').AsInteger));
-      locListItem.SubItems.Add(locADOQuery.FieldByName('base_titulo').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('base_descricao').AsString);
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('licenca_id').AsInteger));
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);

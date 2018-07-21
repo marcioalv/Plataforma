@@ -169,7 +169,10 @@ end;
 //
 function StringCadastroIncluir(argTexto: string): string;
 begin
-  Result := argTexto + '   ' + '›'; // '©';
+  if argTexto = '' then
+    Result := argTexto
+  else
+    Result := argTexto + '   ' + '›'; // '©';
 end;
 
 //

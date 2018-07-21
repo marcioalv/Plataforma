@@ -165,14 +165,14 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       511)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 336
+      Top = 488
       Width = 142
       Height = 13
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 630
-      Top = 336
+      Left = 645
+      Top = 488
       Width = 80
       Height = 13
       Anchors = [akTop, akRight]
@@ -184,19 +184,18 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Font.Style = []
       ParentFont = False
       Visible = False
-      ExplicitLeft = 557
     end
     object lvwLista: TListView
       AlignWithMargins = True
       Left = 8
       Top = 33
       Width = 718
-      Height = 446
+      Height = 448
       Cursor = crHandPoint
       Margins.Left = 8
       Margins.Top = 8
       Margins.Right = 8
-      Margins.Bottom = 32
+      Margins.Bottom = 30
       Align = alClient
       Columns = <
         item
@@ -208,7 +207,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
         end
         item
           Caption = 'Base'
-          Width = 100
+          Width = 0
         end
         item
           Caption = 'Licenca ID'
@@ -254,6 +253,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
+      ExplicitHeight = 440
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True

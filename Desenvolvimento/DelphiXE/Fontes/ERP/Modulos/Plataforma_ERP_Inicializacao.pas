@@ -106,7 +106,7 @@ begin
   gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO_EXCLUIR';
 
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
-  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO_EDITAR';
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_CADASTRO_ALTERAR';
 
   // Usuário autenticado.
   Result := True;

@@ -227,7 +227,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         TabOrder = 2
         Text = '99/99/9999 99:99:99.999'
       end
-      object edtRegistroAcaoTitulo: TEdit
+      object edtRegistroAcaoDescricao: TEdit
         Left = 16
         Top = 128
         Width = 425
@@ -308,7 +308,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         ScrollBars = ssVertical
         TabOrder = 7
       end
-      object edtBaseTitulo: TEdit
+      object edtBaseDescricao: TEdit
         Left = 16
         Top = 80
         Width = 425
@@ -329,10 +329,6 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     object tabDados: TTabSheet
       Caption = 'Dados'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 281
-      ExplicitHeight = 165
       object memDados: TMemo
         Left = 16
         Top = 16

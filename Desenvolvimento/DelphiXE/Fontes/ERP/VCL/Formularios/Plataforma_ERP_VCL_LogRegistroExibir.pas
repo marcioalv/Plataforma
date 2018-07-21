@@ -48,12 +48,12 @@ type
     edtSequencial: TEdit;
     edtLogLocalDtHr: TEdit;
     edtLogServerDtHr: TEdit;
-    edtRegistroAcaoTitulo: TEdit;
+    edtRegistroAcaoDescricao: TEdit;
     edtHostName: TEdit;
     edtUserName: TEdit;
     edtUsuarioNome: TEdit;
     memMensagem: TMemo;
-    edtBaseTitulo: TEdit;
+    edtBaseDescricao: TEdit;
     memDados: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -97,16 +97,16 @@ begin
   //
   // Carrega componentes.
   //
-  edtSequencial.Text         := IntegerStringConverter(pubLogRegistro.Sequencial, True);
-  edtLogLocalDtHr.Text       := DateTimeStringConverter(pubLogRegistro.LogLocalDtHr,  'dd/mm/yyyy hh:nn:ss.zzz');
-  edtLogServerDtHr.Text      := DateTimeStringConverter(pubLogRegistro.LogServerDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
-  edtBaseTitulo.Text         := pubLogRegistro.LogBaseTitulo;
-  edtRegistroAcaoTitulo.Text := pubLogRegistro.RegistroAcaoTitulo;
-  edtHostName.Text           := pubLogRegistro.HostName;
-  edtUserName.Text           := pubLogRegistro.UserName;
-  edtUsuarioNome.Text        := pubLogRegistro.UsuarioNome;
-  memMensagem.Text           := pubLogRegistro.Mensagem;
-  memDados.Text              := StringLogDadosDescreverEnter(pubLogRegistro.Dados);
+  edtSequencial.Text            := IntegerStringConverter(pubLogRegistro.Sequencial, True);
+  edtLogLocalDtHr.Text          := DateTimeStringConverter(pubLogRegistro.LogLocalDtHr,  'dd/mm/yyyy hh:nn:ss.zzz');
+  edtLogServerDtHr.Text         := DateTimeStringConverter(pubLogRegistro.LogServerDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
+  edtBaseDescricao.Text         := pubLogRegistro.LogBaseDescricao;
+  edtRegistroAcaoDescricao.Text := pubLogRegistro.RegistroAcaoDescricao;
+  edtHostName.Text              := pubLogRegistro.HostName;
+  edtUserName.Text              := pubLogRegistro.UserName;
+  edtUsuarioNome.Text           := pubLogRegistro.UsuarioNome;
+  memMensagem.Text              := pubLogRegistro.Mensagem;
+  memDados.Text                 := StringLogDadosDescreverEnter(pubLogRegistro.Dados);
 end;
 
 //
@@ -133,8 +133,8 @@ begin
   VCLEditLimpar(edtSequencial);
   VCLEditLimpar(edtLogLocalDtHr);
   VCLEditLimpar(edtLogServerDtHr);
-  VCLEditLimpar(edtBaseTitulo);
-  VCLEditLimpar(edtRegistroAcaoTitulo);
+  VCLEditLimpar(edtBaseDescricao);
+  VCLEditLimpar(edtRegistroAcaoDescricao);
   VCLEditLimpar(edtHostName);
   VCLEditLimpar(edtUserName);
   VCLEditLimpar(edtUsuarioNome);

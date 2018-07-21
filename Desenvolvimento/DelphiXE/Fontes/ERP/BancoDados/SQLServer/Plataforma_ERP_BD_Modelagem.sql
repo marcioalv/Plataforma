@@ -21,7 +21,7 @@ GO
 --
 CREATE TABLE [dbo].[registro_acao] (
   [registro_acao_id] TINYINT                                  NOT NULL,
-  [titulo]           VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]        VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [Criacao]          CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [Consulta]         CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [Alteracao]        CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
@@ -51,7 +51,7 @@ GO
 CREATE TABLE [dbo].[base] (
   [base_id]          SMALLINT                                  NOT NULL,
   [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [titulo]           VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]        VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ins_local_dt_hr]  DATETIME                                  NOT NULL,
@@ -74,7 +74,7 @@ GO
 CREATE TABLE [dbo].[licenca] (
   [licenca_id]       INT                                       NOT NULL,
   [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [titulo]           VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]        VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ins_local_dt_hr]  DATETIME                                  NOT NULL,

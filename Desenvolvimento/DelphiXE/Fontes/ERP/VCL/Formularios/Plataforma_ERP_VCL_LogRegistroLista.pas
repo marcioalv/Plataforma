@@ -168,7 +168,7 @@ begin
     locListItem.SubItems.Add(IntegerStringConverter(locLogRegistro.Sequencial));
     locListItem.SubItems.Add(DateTimeStringConverter(locLogRegistro.LogLocalDtHr,  'dd/mm/yyyy hh:nn:ss'));
     locListItem.SubItems.Add(DateTimeStringConverter(locLogRegistro.LogServerDtHr, 'dd/mm/yyyy hh:nn:ss'));
-    locListItem.SubItems.Add(locLogRegistro.RegistroAcaoTitulo);    
+    locListItem.SubItems.Add(locLogRegistro.RegistroAcaoDescricao);
     locListItem.SubItems.Add(locLogRegistro.HostName);    
     locListItem.SubItems.Add(locLogRegistro.UserName);
     locListItem.SubItems.Add(locLogRegistro.UsuarioNome);

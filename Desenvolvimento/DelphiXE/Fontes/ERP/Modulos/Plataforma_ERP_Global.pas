@@ -27,11 +27,11 @@ var
 
   gloBaseID          : Integer;
   gloBaseCodigo      : string;
-  gloBaseTitulo      : string;
+  gloBaseDescricao   : string;
 
   gloLicencaID       : Integer;
   gloLicencaCodigo   : string;
-  gloLicencaTitulo   : string;
+  gloLicencaDescricao: string;
 
   gloUsuarioBaseID   : Integer;
   gloUsuarioID       : Integer;

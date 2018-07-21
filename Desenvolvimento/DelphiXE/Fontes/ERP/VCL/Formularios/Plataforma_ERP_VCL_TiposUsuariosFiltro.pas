@@ -27,30 +27,32 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.Buttons,
-  Vcl.Imaging.pngimage;
+  Vcl.Imaging.pngimage, Vcl.ComCtrls;
 
 type
   TPlataformaERPVCLTiposUsuariosFiltro = class(TForm)
     imgFormulario: TImage;
     btnConfirmar: TBitBtn;
     btnFechar: TBitBtn;
-    panFormulario: TPanel;
-    lblCodigo: TLabel;
-    edtCodigoInicial: TEdit;
-    lblCodigoAte: TLabel;
-    edtCodigoFinal: TEdit;
-    lblDescricao: TLabel;
-    edtDescricao: TEdit;
-    lblTipoUsuarioID: TLabel;
-    edtTipoUsuarioIDInicial: TEdit;
-    lblTipoUsuarioIDAte: TLabel;
-    edtTipoUsuarioIDFinal: TEdit;
-    lblBloqueado: TLabel;
-    cbxBloqueado: TComboBox;
-    lblAtivo: TLabel;
-    cbxAtivo: TComboBox;
     btnLimpar: TBitBtn;
     btnMinimizar: TBitBtn;
+    pagFormulario: TPageControl;
+    tabPadrao: TTabSheet;
+    tabAdicional: TTabSheet;
+    lblCodigo: TLabel;
+    lblCodigoAte: TLabel;
+    lblDescricao: TLabel;
+    edtCodigoInicial: TEdit;
+    edtCodigoFinal: TEdit;
+    edtDescricao: TEdit;
+    lblTipoUsuarioID: TLabel;
+    lblTipoUsuarioIDAte: TLabel;
+    lblBloqueado: TLabel;
+    lblAtivo: TLabel;
+    edtTipoUsuarioIDInicial: TEdit;
+    edtTipoUsuarioIDFinal: TEdit;
+    cbxBloqueado: TComboBox;
+    cbxAtivo: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -78,6 +80,7 @@ type
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
+    procedure btnMinimizarClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioLimpar;
@@ -105,6 +108,9 @@ uses
   Plataforma_Framework_VCL;
 
 const
+  TAB_PADRAO   : Byte = 0;
+  TAB_ADICIONAL: Byte = 1;
+
   FONTE_NOME: string = 'Plataforma_ERP_VCL_TiposUsuariosFiltro';
 
 //
@@ -125,6 +131,11 @@ begin
   pubAtivo                := '';
 
   //
+  // Posiciona o tab padrão.
+  //
+  pagFormulario.ActivePageIndex := TAB_PADRAO;
+
+  //
   // Inicializa componentes do formulário.
   //
   FormularioInicializar;
@@ -140,6 +151,9 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosFiltro.FormShow(Sender: TObject);
 begin
+  //
+  // Filtros memorizados.
+  //
   edtTipoUsuarioIDInicial.Text := IntegerStringConverter(pubTipoUsuarioIDInicial, True);
   edtTipoUsuarioIDFinal.Text   := IntegerStringConverter(pubTipoUsuarioIDFinal, True);
   edtCodigoInicial.Text        := pubCodigoInicial;
@@ -147,6 +161,11 @@ begin
   edtDescricao.Text            := pubDescricao;
   VCLComboBoxPopular(cbxBloqueado, pubBloqueado);
   VCLComboBoxPopular(cbxAtivo,     pubAtivo);
+
+  //
+  // Foco no componente desejado.
+  //
+  edtCodigoInicial.SetFocus;
 end;
 
 //
@@ -286,16 +305,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Limpar".
-//
-procedure TPlataformaERPVCLTiposUsuariosFiltro.btnLimparClick(Sender: TObject);
-begin
-  FormularioLimpar;
-  edtTipoUsuarioIDInicial.SetFocus;
-end;
-
-//
-// Evento de click no botão "Confirmar".
+// Evento de click no botão "confirmar".
 //
 procedure TPlataformaERPVCLTiposUsuariosFiltro.btnConfirmarClick(Sender: TObject);
 begin
@@ -303,7 +313,28 @@ begin
 end;
 
 //
-// Evento de click no botão "Fechar".
+// Evento de click no botão "limpar".
+//
+procedure TPlataformaERPVCLTiposUsuariosFiltro.btnLimparClick(Sender: TObject);
+begin
+  FormularioLimpar;
+
+  if pagFormulario.ActivePageIndex = TAB_PADRAO then
+    edtCodigoInicial.SetFocus
+  else
+    edtTipoUsuarioIDInicial.SetFocus;
+end;
+
+//
+// Evento de click no botão "minimizar".
+//
+procedure TPlataformaERPVCLTiposUsuariosFiltro.btnMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+//
+// Evento de click no botão "fechar".
 //
 procedure TPlataformaERPVCLTiposUsuariosFiltro.btnFecharClick(Sender: TObject);
 begin

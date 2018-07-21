@@ -262,6 +262,10 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 112
@@ -386,7 +390,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         TabOrder = 4
         Text = '9.999'
       end
-      object edtBaseTitulo: TEdit
+      object edtBaseDescricao: TEdit
         Left = 16
         Top = 80
         Width = 353
@@ -406,7 +410,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         ShowHint = True
         TabOrder = 2
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
-        OnClick = edtBaseTituloClick
+        OnClick = edtBaseDescricaoClick
       end
       object edtBaseID: TEdit
         Left = 280
@@ -427,7 +431,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Text = '999.999'
         Visible = False
       end
-      object edtLicencaTitulo: TEdit
+      object edtLicencaDescricao: TEdit
         Left = 16
         Top = 32
         Width = 433
@@ -447,7 +451,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         ShowHint = True
         TabOrder = 0
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
-        OnClick = edtLicencaTituloClick
+        OnClick = edtLicencaDescricaoClick
       end
       object edtLicencaID: TEdit
         Left = 360
@@ -520,15 +524,15 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     TabOrder = 5
     OnClick = btnCancelarClick
   end
-  object btnEditar: TBitBtn
+  object btnAlterar: TBitBtn
     Left = 296
     Top = 264
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Caption = 'Editar'
+    Caption = 'Alterar'
     TabOrder = 6
-    OnClick = btnEditarClick
+    OnClick = btnAlterarClick
   end
   object btnNovo: TBitBtn
     Left = 136
