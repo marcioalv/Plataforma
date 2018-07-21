@@ -79,7 +79,7 @@ begin
   gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA';
 
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
-  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA_FILTRAR';
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA_LOCALIZAR';
 
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
   gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA_ATUALIZAR';

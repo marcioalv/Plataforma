@@ -171,7 +171,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 634
+      Left = 630
       Top = 336
       Width = 80
       Height = 13
@@ -217,6 +217,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
         item
           Alignment = taRightJustify
           Caption = 'ID'
+          Width = 0
         end
         item
           Alignment = taCenter
@@ -224,7 +225,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
           Width = 75
         end
         item
-          Caption = 'T'#237'tulo'
+          Caption = 'Descri'#231#227'o'
           Width = 250
         end
         item
@@ -313,15 +314,15 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     TabOrder = 5
     OnClick = btnNovoClick
   end
-  object btnFiltrar: TBitBtn
+  object btnLocalizar: TBitBtn
     Left = 313
     Top = 530
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Anchors = [akRight, akBottom]
-    Caption = 'Filtrar'
+    Caption = 'Localizar'
     TabOrder = 6
-    OnClick = btnFiltrarClick
+    OnClick = btnLocalizarClick
   end
 end

@@ -1486,11 +1486,11 @@ begin
     argLabel.Font.Color := clRed;
     if not argFiltrosAplicados then
     begin
-      argLabel.Caption := 'Nenhum registro encontrado!';
+      argLabel.Caption := 'Nenhum registro cadastrado!';
     end
     else
     begin
-      argLabel.Caption := 'Nenhum registro encontrado com os filtros informados!';
+      argLabel.Caption := 'Nenhum registro localizado com os filtros informados!';
     end;
   end;
 
@@ -1498,11 +1498,11 @@ begin
   begin
     if not argFiltrosAplicados then
     begin
-      argLabel.Caption := 'Um único registro encontrado!';
+      argLabel.Caption := 'Um único registro localizado!';
     end
     else
     begin
-      argLabel.Caption := 'Um único registro encontrado com os filtros informados!';
+      argLabel.Caption := 'Um único registro localizado com os filtros informados!';
     end;
   end;
 
@@ -1510,11 +1510,11 @@ begin
   begin
     if not argFiltrosAplicados then
     begin
-      argLabel.Caption := 'Foram encontrados ' + IntegerStringConverter(argListView.Items.Count) + ' registros!';
+      argLabel.Caption := 'Foram localizados ' + IntegerStringConverter(argListView.Items.Count) + ' registros!';
     end
     else
     begin
-      argLabel.Caption := 'Foram encontrados ' + IntegerStringConverter(argListView.Items.Count) + ' registros com os filtros informados!';
+      argLabel.Caption := 'Foram localizados ' + IntegerStringConverter(argListView.Items.Count) + ' registros com os filtros informados!';
     end;
   end;  
 end;

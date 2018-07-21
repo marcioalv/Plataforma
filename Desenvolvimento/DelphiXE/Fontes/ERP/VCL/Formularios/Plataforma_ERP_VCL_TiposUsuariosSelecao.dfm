@@ -205,7 +205,7 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
           Caption = 'C'#243'digo'
         end
         item
-          Caption = 'T'#237'tulo'
+          Caption = 'Descri'#231#227'o'
           Width = 250
         end
         item
@@ -227,7 +227,6 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
-      ExplicitWidth = 293
     end
   end
   object btnMinimizar: TBitBtn

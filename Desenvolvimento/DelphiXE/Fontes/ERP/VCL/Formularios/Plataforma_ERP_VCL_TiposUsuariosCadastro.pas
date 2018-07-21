@@ -1,4 +1,4 @@
-//                                                                
+//
 // Arquivo..: Plataforma_ERP_VCL_TiposUsuariosCadastro.pas
 // Projeto..: ERP
 // Fonte....: Formulário VCL
@@ -39,8 +39,8 @@ type
     tabAuditoria: TTabSheet;
     lblCodigo: TLabel;
     edtCodigo: TEdit;
-    lblTitulo: TLabel;
-    edtTitulo: TEdit;
+    lblDescricao: TLabel;
+    edtDescricao: TEdit;
     chkBloqueado: TCheckBox;
     chkAtivo: TCheckBox;
     lblInsDtHt: TLabel;
@@ -51,7 +51,6 @@ type
     edtUpdContador: TEdit;
     btnLog: TButton;
     btnExcluir: TBitBtn;
-    btnLocalizar: TBitBtn;
     btnGravar: TBitBtn;
     btnMinimizar: TBitBtn;
     btnFechar: TBitBtn;
@@ -66,6 +65,8 @@ type
     lblLicenca: TLabel;
     edtLicencaTitulo: TEdit;
     edtLicencaID: TEdit;
+    lblCodigoCadastrado: TLabel;
+    edtCodigoCadastrado: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -76,10 +77,10 @@ type
     procedure edtCodigoExit(Sender: TObject);
     procedure edtCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure edtCodigoKeyPress(Sender: TObject; var Key: Char);
-    procedure edtTituloEnter(Sender: TObject);
-    procedure edtTituloExit(Sender: TObject);
-    procedure edtTituloKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure edtTituloKeyPress(Sender: TObject; var Key: Char);
+    procedure edtDescricaoEnter(Sender: TObject);
+    procedure edtDescricaoExit(Sender: TObject);
+    procedure edtDescricaoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtDescricaoKeyPress(Sender: TObject; var Key: Char);
     procedure chkBloqueadoEnter(Sender: TObject);
     procedure chkBloqueadoExit(Sender: TObject);
     procedure chkBloqueadoKeyPress(Sender: TObject; var Key: Char);
@@ -87,7 +88,6 @@ type
     procedure chkAtivoExit(Sender: TObject);
     procedure chkAtivoKeyPress(Sender: TObject; var Key: Char);
     procedure btnLogClick(Sender: TObject);
-    procedure btnLocalizarClick(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure btnEditarClick(Sender: TObject);
@@ -96,13 +96,9 @@ type
     procedure edtBaseTituloClick(Sender: TObject);
   private
     procedure FormularioLimpar;
-
     procedure FormularioControlar(argEditar: Boolean);
-
     procedure FormularioLogExibir;
-
     procedure FormularioLocalizar;
-
     procedure FormularioNovo;
 
     procedure FormularioPopular(argBaseID       : Integer;
@@ -110,12 +106,10 @@ type
                                 argTipoUsuarioID: Integer);
 
     procedure FormularioEditar;
-
     procedure FormularioGravar;
-
     procedure FormularioCancelar;
-
-   procedure FormularioExcluir;
+    procedure FormularioExcluir;
+    procedure FormularioCodigoSugerir;
   public
     pubDadosAtualizados: Boolean;
     pubBaseID          : Integer;
@@ -207,7 +201,7 @@ begin
 end;
 
 //
-// Eventos do componente "Código".
+// Eventos do componente "código".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.edtCodigoEnter(Sender: TObject);
 begin
@@ -230,30 +224,30 @@ begin
 end;
 
 //
-// Eventos do componente "Título".
+// Eventos do componente "descrição".
 //
-procedure TPlataformaERPVCLTiposUsuariosCadastro.edtTituloEnter(Sender: TObject);
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtDescricaoEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtTitulo) then Exit;
+  if not VCLEditEntrar(edtDescricao) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosCadastro.edtTituloKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtDescricaoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosCadastro.edtTituloKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtDescricaoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosCadastro.edtTituloExit(Sender: TObject);
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtDescricaoExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtTitulo) then Exit;
+  if not VCLEditSair(edtDescricao) then Exit;
 end;
 
 //
-// Eventos do componente "Bloqueado".
+// Eventos do componente "bloqueado".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.chkBloqueadoEnter(Sender: TObject);
 begin
@@ -305,7 +299,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Log alterações".
+// Evento de click no botão "log alterações".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnLogClick(Sender: TObject);
 begin
@@ -313,15 +307,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Localizar".
-//
-procedure TPlataformaERPVCLTiposUsuariosCadastro.btnLocalizarClick(Sender: TObject);
-begin
-  FormularioLocalizar;
-end;
-
-//
-// Evento de click no botão "Novo".
+// Evento de click no botão "novo".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnNovoClick(Sender: TObject);
 begin
@@ -329,7 +315,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Excluir".
+// Evento de click no botão "excluir".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnExcluirClick(Sender: TObject);
 begin
@@ -337,7 +323,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Editar".
+// Evento de click no botão "editar".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnEditarClick(Sender: TObject);
 begin
@@ -345,7 +331,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Gravar".
+// Evento de click no botão "gravar".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnGravarClick(Sender: TObject);
 begin
@@ -353,7 +339,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Minimizar".
+// Evento de click no botão "minimizar".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnMinimizarClick(Sender: TObject);
 begin
@@ -361,7 +347,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Cancelar".
+// Evento de click no botão "cancelar".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnCancelarClick(Sender: TObject);
 begin
@@ -369,7 +355,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Fechar".
+// Evento de click no botão "fechar".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnFecharClick(Sender: TObject);
 begin
@@ -384,13 +370,14 @@ begin
   // Posiciona pagecontrole na primeira aba.  
   pagFormulario.ActivePageIndex := TAB_CADASTRO;
 
-  // Limpa componentes da aba "Cadastro".
+  // Limpa componentes da aba "cadastro".
   VCLEditLimpar    (edtCodigo);
-  VCLEditLimpar    (edtTitulo);
+  VCLEditLimpar    (edtCodigoCadastrado);
+  VCLEditLimpar    (edtDescricao);
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
 
-  // Limpa componentes da aba "Auditoria".
+  // Limpa componentes da aba "auditoria".
   VCLEditLimpar(edtLicencaID);
   VCLEditLimpar(edtLicencaTitulo);
   VCLEditLimpar(edtBaseID);
@@ -417,15 +404,20 @@ begin
   // Controla os componentes do formulário.
   //
   VCLEditControlar    (edtCodigo,    argEditar);
-  VCLEditControlar    (edtTitulo,    argEditar);
+  VCLEditControlar    (edtDescricao, argEditar);
   VCLCheckBoxControlar(chkBloqueado, argEditar);
   VCLCheckBoxControlar(chkAtivo,     argEditar);
+
+  //
+  // Exibe o último código cadastrado somente se for um novo cadastro.
+  //
+  lblCodigoCadastrado.Visible := (argEditar) and (not locDadosPopulados);
+  edtCodigoCadastrado.Visible := (argEditar) and (not locDadosPopulados);
 
   //
   // Controla os botões do formulário.
   //
   btnLog.Visible       := (not argEditar) and (locDadosPopulados);
-  btnLocalizar.Visible := (not argEditar);
   btnNovo.Visible      := (not argEditar);
   btnExcluir.Visible   := (not argEditar) and (locDadosPopulados);
   btnEditar.Visible    := (not argEditar) and (locDadosPopulados);
@@ -437,11 +429,10 @@ begin
   //
   // Permissões de acesso por usuário.
   //
-  btnLog.Visible       := (btnLog.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_LOG'));
-  btnLocalizar.Visible := (btnLocalizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_LOCALIZAR'));
-  btnNovo.Visible      := (btnNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_NOVO'));
-  btnExcluir.Visible   := (btnExcluir.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_EXCLUIR'));
-  btnEditar.Visible    := (btnEditar.Visible)    and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_EDITAR'));
+  btnLog.Visible       := (btnLog.Visible)     and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_LOG'));
+  btnNovo.Visible      := (btnNovo.Visible)    and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_NOVO'));
+  btnExcluir.Visible   := (btnExcluir.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_EXCLUIR'));
+  btnEditar.Visible    := (btnEditar.Visible)  and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_EDITAR'));
 end;
 
 //
@@ -675,6 +666,12 @@ begin
   edtBaseID.Text        := IntegerStringConverter(gloBaseID,    True);
   edtBaseTitulo.Text    := StringCadastroIncluir(gloBaseTitulo);
   edtTipoUsuarioID.Text := STR_NOVO;
+  chkAtivo.Checked      := True;
+
+  //
+  // Exibe o último código cadastrado.
+  //
+  FormularioCodigoSugerir;
 
   //
   // Coloca o foco no código.
@@ -696,7 +693,9 @@ var
   locADOQuery     : TADOQuery;
   locLogMensagem  : string;
 begin
+  //
   // Troca cursor.
+  //
   VCLCursorTrocar(True);
 
   //
@@ -743,7 +742,7 @@ begin
 
   locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id],                         ');  
   locADOQuery.SQL.Add('  [tipo_usuario].[codigo],                                  ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[titulo],                                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[descricao],                               ');
   locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado],                               ');
   locADOQuery.SQL.Add('  [tipo_usuario].[ativo],                                   ');
   locADOQuery.SQL.Add('  [tipo_usuario].[ins_local_dt_hr],                         ');
@@ -789,7 +788,7 @@ begin
   if locADOQuery.RecordCount >= 0 then
   begin
     edtCodigo.Text        := locADOQuery.FieldByName('codigo').AsString;
-    edtTitulo.Text        := locADOQuery.FieldByName('titulo').AsString;
+    edtDescricao.Text     := locADOQuery.FieldByName('descricao').AsString;
     chkBloqueado.Checked  := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked      := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
 
@@ -853,7 +852,7 @@ var
   locLicencaID             : Integer;
   locTipoUsuarioID         : Integer;
   locCodigo                : string;
-  locTitulo                : string;
+  locDescricao             : string;
   locBloqueado             : Boolean;
   locAtivo                 : Boolean;
   locInsLocalDtHr          : TDateTime;
@@ -879,7 +878,7 @@ begin
   locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
   locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
   locCodigo        := StringTrim(edtCodigo.Text);
-  locTitulo        := StringTrim(edtTitulo.Text);
+  locDescricao     := StringTrim(edtDescricao.Text);
   locBloqueado     := chkBloqueado.Checked;
   locAtivo         := chkAtivo.Checked;
   locUsuarioBaseID := gloUsuarioBaseID;
@@ -899,11 +898,11 @@ begin
     Exit;
   end;
 
-  if locTitulo = '' then
+  if locDescricao = '' then
   begin
-    VCLConsistenciaExibir('O título do tipo de usuário deve ser informado!');
+    VCLConsistenciaExibir('A descrição do tipo de usuário deve ser informada!');
     pagFormulario.ActivePageIndex := TAB_CADASTRO;
-    edtTitulo.SetFocus;
+    edtDescricao.SetFocus;
     Exit;
   end;
 
@@ -912,7 +911,7 @@ begin
   //
   locTipoUsuarioLogLogDados := '';
   LogDadosStringDescrever ('Código',    locCodigo,    locTipoUsuarioLogLogDados);
-  LogDadosStringDescrever ('Título',    locTitulo,    locTipoUsuarioLogLogDados);
+  LogDadosStringDescrever ('Descrição', locDescricao, locTipoUsuarioLogLogDados);
   LogDadosBooleanDescrever('Bloqueado', locBloqueado, locTipoUsuarioLogLogDados);
   LogDadosBooleanDescrever('Ativo',     locAtivo,     locTipoUsuarioLogLogDados);
 
@@ -1125,7 +1124,7 @@ begin
     locADOQuery.SQL.Add('  [licenca_id],             ');
     locADOQuery.SQL.Add('  [tipo_usuario_id],        ');
     locADOQuery.SQL.Add('  [codigo],                 ');
-    locADOQuery.SQL.Add('  [titulo],                 ');
+    locADOQuery.SQL.Add('  [descricao],              ');
     locADOQuery.SQL.Add('  [bloqueado],              ');
     locADOQuery.SQL.Add('  [ativo],                  ');
     locADOQuery.SQL.Add('  [ins_local_dt_hr],        ');
@@ -1139,7 +1138,7 @@ begin
     locADOQuery.SQL.Add('  :licenca_id,              '); // licenca_id.
     locADOQuery.SQL.Add('  :tipo_usuario_id,         '); // tipo_usuario_id.
     locADOQuery.SQL.Add('  :codigo,                  '); // codigo.
-    locADOQuery.SQL.Add('  :titulo,                  '); // titulo.
+    locADOQuery.SQL.Add('  :Descricao,               '); // descricao.
     locADOQuery.SQL.Add('  :bloqueado,               '); // bloqueado.
     locADOQuery.SQL.Add('  :ativo,                   '); // ativo.
     locADOQuery.SQL.Add('  :local_dt_hr,             '); // ins_local_dt_hr.
@@ -1158,7 +1157,7 @@ begin
     locADOQuery.SQL.Add('  [tipo_usuario]                          ');
     locADOQuery.SQL.Add('SET                                       ');
     locADOQuery.SQL.Add('  [codigo]           = :codigo,           ');
-    locADOQuery.SQL.Add('  [titulo]           = :titulo,           ');
+    locADOQuery.SQL.Add('  [descricao]        = :descricao,        ');
     locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,        ');
     locADOQuery.SQL.Add('  [ativo]            = :ativo,            ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,      ');
@@ -1177,7 +1176,7 @@ begin
   locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
   locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value := locTipoUsuarioID;
   locADOQuery.Parameters.ParamByName('codigo').Value          := locCodigo;
-  locADOQuery.Parameters.ParamByName('titulo').Value          := locTitulo;
+  locADOQuery.Parameters.ParamByName('descricao').Value       := locDescricao;
   locADOQuery.Parameters.ParamByName('bloqueado').Value       := BooleanStringConverter(locBloqueado);
   locADOQuery.Parameters.ParamByName('ativo').Value           := BooleanStringConverter(locAtivo);
   locADOQuery.Parameters.ParamByName('local_dt_hr').Value     := Now;
@@ -1618,6 +1617,109 @@ begin
   // Popula somente os dados.
   //
   FormularioPopular(locBaseID, locLicencaID, locTipoUsuarioID);
+end;
+
+//
+// Procedimento par sugerir o próximo código.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioCodigoSugerir;
+const
+  PROCEDIMENTO_NOME: string = 'FormularioCodigoSugerir';
+  ERRO_MENSAGEM    : string = 'Impossível sugerir informações sobre o próximo código do tipo de usuário!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locLicencaID    : Integer;
+begin
+  //
+  // ID da licença.
+  //
+  locLicencaID := gloLicencaID;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(Self);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do código do tipo de usuário.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT TOP 1                                ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[codigo],                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[descricao]                ');
+  locADOQuery.SQL.Add('FROM                                        ');
+  locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)              ');
+  locADOQuery.SQL.Add('WHERE                                       ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id] = :licenca_id ');
+  locADOQuery.SQL.Add('ORDER BY                                    ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[ins_server_dt_hr] DESC    ');
+
+  locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar último cadastro na tabela [tipo_usuario]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Registro encontrado então carrega componentes.
+  //
+  if locADOQuery.RecordCount >= 0 then
+  begin
+    edtCodigoCadastrado.Text := locADOQuery.FieldByName('codigo').AsString;
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+
+  VCLCursorTrocar;
 end;
 
 end.

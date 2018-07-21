@@ -129,7 +129,7 @@ CREATE TABLE [dbo].[tipo_usuario] (
   [licenca_id]       INT                                       NOT NULL,
   [tipo_usuario_id]  TINYINT                                   NOT NULL,
   [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [titulo]           VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]        VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ins_local_dt_hr]  DATETIME                                  NOT NULL,

@@ -39,8 +39,8 @@ type
     edtCodigoInicial: TEdit;
     lblCodigoAte: TLabel;
     edtCodigoFinal: TEdit;
-    lblTitulo: TLabel;
-    edtTitulo: TEdit;
+    lblDescricao: TLabel;
+    edtDescricao: TEdit;
     lblTipoUsuarioID: TLabel;
     edtTipoUsuarioIDInicial: TEdit;
     lblTipoUsuarioIDAte: TLabel;
@@ -66,9 +66,9 @@ type
     procedure edtCodigoFinalEnter(Sender: TObject);
     procedure edtCodigoFinalExit(Sender: TObject);
     procedure edtCodigoFinalKeyPress(Sender: TObject; var Key: Char);
-    procedure edtTituloEnter(Sender: TObject);
-    procedure edtTituloExit(Sender: TObject);
-    procedure edtTituloKeyPress(Sender: TObject; var Key: Char);
+    procedure edtDescricaoEnter(Sender: TObject);
+    procedure edtDescricaoExit(Sender: TObject);
+    procedure edtDescricaoKeyPress(Sender: TObject; var Key: Char);
     procedure cbxBloqueadoEnter(Sender: TObject);
     procedure cbxBloqueadoExit(Sender: TObject);
     procedure cbxBloqueadoKeyPress(Sender: TObject; var Key: Char);
@@ -88,7 +88,7 @@ type
     pubTipoUsuarioIDFinal  : Integer;
     pubCodigoInicial       : string;
     pubCodigoFinal         : string;
-    pubTitulo              : string;
+    pubDescricao           : string;
     pubBloqueado           : string;
     pubAtivo               : string;
   end;
@@ -120,7 +120,7 @@ begin
   pubTipoUsuarioIDFinal   := 0;
   pubCodigoInicial        := '';
   pubCodigoFinal          := '';
-  pubTitulo               := '';
+  pubDescricao            := '';
   pubBloqueado            := '';
   pubAtivo                := '';
 
@@ -144,7 +144,7 @@ begin
   edtTipoUsuarioIDFinal.Text   := IntegerStringConverter(pubTipoUsuarioIDFinal, True);
   edtCodigoInicial.Text        := pubCodigoInicial;
   edtCodigoFinal.Text          := pubCodigoFinal;
-  edtTitulo.Text               := pubTitulo;
+  edtDescricao.Text            := pubDescricao;
   VCLComboBoxPopular(cbxBloqueado, pubBloqueado);
   VCLComboBoxPopular(cbxAtivo,     pubAtivo);
 end;
@@ -230,21 +230,21 @@ begin
 end;
 
 //
-// Eventos do componente "título".
+// Eventos do componente "descrição".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtTituloEnter(Sender: TObject);
+procedure TPlataformaERPVCLTiposUsuariosFiltro.edtDescricaoEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtTitulo) then Exit;
+  if not VCLEditEntrar(edtDescricao) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtTituloKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLTiposUsuariosFiltro.edtDescricaoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtTituloExit(Sender: TObject);
+procedure TPlataformaERPVCLTiposUsuariosFiltro.edtDescricaoExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtTitulo) then Exit;
+  if not VCLEditSair(edtDescricao) then Exit;
 end;
 
 //
@@ -328,7 +328,7 @@ begin
   VCLEditLimpar    (edtTipoUsuarioIDFinal);
   VCLEditLimpar    (edtCodigoInicial);
   VCLEditLimpar    (edtCodigoFinal);
-  VCLEditLimpar    (edtTitulo);
+  VCLEditLimpar    (edtDescricao);
   VCLComboBoxLimpar(cbxBloqueado);
   VCLComboBoxLimpar(cbxAtivo);
 end;
@@ -343,7 +343,7 @@ begin
   pubTipoUsuarioIDFinal   := StringIntegerConverter(edtTipoUsuarioIDFinal.Text);
   pubCodigoInicial        := StringTrim(edtCodigoInicial.Text);
   pubCodigoFinal          := StringTrim(edtCodigoFinal.Text);
-  pubTitulo               := StringTrim(edtTitulo.Text);
+  pubDescricao            := StringTrim(edtDescricao.Text);
   pubBloqueado            := Copy(cbxBloqueado.Text, 1, 1);
   pubAtivo                := Copy(cbxAtivo.Text, 1, 1);
   Close;

@@ -258,7 +258,7 @@ begin
   locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id],                              ');  
   locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id],                         ');  
   locADOQuery.SQL.Add('  [tipo_usuario].[codigo],                                  ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[titulo],                                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[descricao],                               ');
   locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado],                               ');
   locADOQuery.SQL.Add('  [tipo_usuario].[ativo]                                    ');
   locADOQuery.SQL.Add('FROM                                                        ');

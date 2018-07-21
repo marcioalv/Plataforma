@@ -5,7 +5,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   BorderStyle = bsSingle
   Caption = 'Tipo de usu'#225'rio'
   ClientHeight = 305
-  ClientWidth = 537
+  ClientWidth = 536
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -137,14 +137,10 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabAuditoria
+    ActivePage = tabCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -152,18 +148,32 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Height = 13
         Caption = 'C'#243'digo:'
       end
-      object lblTitulo: TLabel
+      object lblDescricao: TLabel
         Left = 16
         Top = 64
-        Width = 30
+        Width = 50
         Height = 13
-        Caption = 'T'#237'tulo:'
+        Caption = 'Descri'#231#227'o:'
+      end
+      object lblCodigoCadastrado: TLabel
+        Left = 320
+        Top = 16
+        Width = 124
+        Height = 13
+        Caption = #218'ltimo c'#243'digo cadastrado:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
       end
       object edtCodigo: TEdit
         Left = 16
         Top = 32
         Width = 57
         Height = 22
+        Alignment = taCenter
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -178,7 +188,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         OnKeyDown = edtCodigoKeyDown
         OnKeyPress = edtCodigoKeyPress
       end
-      object edtTitulo: TEdit
+      object edtDescricao: TEdit
         Left = 16
         Top = 80
         Width = 433
@@ -192,10 +202,10 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         ParentFont = False
         TabOrder = 1
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
-        OnEnter = edtTituloEnter
-        OnExit = edtTituloExit
-        OnKeyDown = edtTituloKeyDown
-        OnKeyPress = edtTituloKeyPress
+        OnEnter = edtDescricaoEnter
+        OnExit = edtDescricaoExit
+        OnKeyDown = edtDescricaoKeyDown
+        OnKeyPress = edtDescricaoKeyPress
       end
       object chkBloqueado: TCheckBox
         Left = 16
@@ -204,6 +214,8 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Height = 17
         Cursor = crHandPoint
         Caption = 'Bloqueado'
+        ParentShowHint = False
+        ShowHint = False
         TabOrder = 2
         OnEnter = chkBloqueadoEnter
         OnExit = chkBloqueadoExit
@@ -216,10 +228,35 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Height = 17
         Cursor = crHandPoint
         Caption = 'Ativo'
+        ParentShowHint = False
+        ShowHint = False
         TabOrder = 3
         OnEnter = chkAtivoEnter
         OnExit = chkAtivoExit
         OnKeyPress = chkAtivoKeyPress
+      end
+      object edtCodigoCadastrado: TEdit
+        Left = 320
+        Top = 32
+        Width = 129
+        Height = 22
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 4
+        Text = '999.999'
+        OnEnter = edtCodigoEnter
+        OnExit = edtCodigoExit
+        OnKeyDown = edtCodigoKeyDown
+        OnKeyPress = edtCodigoKeyPress
       end
     end
     object tabAuditoria: TTabSheet
@@ -443,16 +480,6 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     TabOrder = 1
     OnClick = btnExcluirClick
   end
-  object btnLocalizar: TBitBtn
-    Left = 48
-    Top = 264
-    Width = 81
-    Height = 33
-    Cursor = crHandPoint
-    Caption = 'Localizar'
-    TabOrder = 2
-    OnClick = btnLocalizarClick
-  end
   object btnGravar: TBitBtn
     Left = 296
     Top = 264
@@ -460,7 +487,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Height = 33
     Cursor = crHandPoint
     Caption = 'Gravar'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = btnGravarClick
   end
   object btnMinimizar: TBitBtn
@@ -470,7 +497,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Height = 33
     Cursor = crHandPoint
     Caption = 'Minimizar'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = btnMinimizarClick
   end
   object btnFechar: TBitBtn
@@ -480,7 +507,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Height = 33
     Cursor = crHandPoint
     Caption = 'Fechar'
-    TabOrder = 5
+    TabOrder = 4
     OnClick = btnFecharClick
   end
   object btnCancelar: TBitBtn
@@ -490,7 +517,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Height = 33
     Cursor = crHandPoint
     Caption = 'Cancelar'
-    TabOrder = 6
+    TabOrder = 5
     OnClick = btnCancelarClick
   end
   object btnEditar: TBitBtn
@@ -500,7 +527,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Height = 33
     Cursor = crHandPoint
     Caption = 'Editar'
-    TabOrder = 7
+    TabOrder = 6
     OnClick = btnEditarClick
   end
   object btnNovo: TBitBtn
@@ -510,7 +537,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Height = 33
     Cursor = crHandPoint
     Caption = 'Novo'
-    TabOrder = 8
+    TabOrder = 7
     OnClick = btnNovoClick
   end
 end

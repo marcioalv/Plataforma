@@ -65,7 +65,7 @@ const
   LVW_LISTA_LICENCA_ID     : Byte = 2;
   LVW_LISTA_TIPO_USUARIO_ID: Byte = 3;
   LVW_LISTA_CODIGO         : Byte = 4;
-  LVW_LISTA_TITULO         : Byte = 5;
+  LVW_LISTA_DESCRICAO      : Byte = 5;
   LVW_LISTA_BLOQUEADO      : Byte = 6;
 
 //
@@ -168,7 +168,7 @@ begin
     locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('licenca_id').AsInteger));
     locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('tipo_usuario_id').AsInteger));
     locListItem.SubItems.Add(pubADOQuery.FieldByName('codigo').AsString);
-    locListItem.SubItems.Add(pubADOQuery.FieldByName('titulo').AsString);
+    locListItem.SubItems.Add(pubADOQuery.FieldByName('descricao').AsString);
     locListItem.SubItems.Add(FlagSimNaoStringConverter(pubADOQuery.FieldByName('bloqueado').AsString));
 
     //

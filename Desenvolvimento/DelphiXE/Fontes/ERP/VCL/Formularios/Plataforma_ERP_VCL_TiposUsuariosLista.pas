@@ -42,7 +42,7 @@ type
     btnSelecionar: TBitBtn;
     btnNovo: TBitBtn;
     pbaProgresso: TProgressBar;
-    btnFiltrar: TBitBtn;
+    btnLocalizar: TBitBtn;
     lblListaQtde: TLabel;
     lblListaFiltros: TLabel;
     procedure FormCreate(Sender: TObject);
@@ -58,18 +58,18 @@ type
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
-    procedure btnFiltrarClick(Sender: TObject);
+    procedure btnLocalizarClick(Sender: TObject);
   private
     priFiltroTipoUsuarioIDInicial: Integer;
     priFiltroTipoUsuarioIDFinal  : Integer;
     priFiltroCodigoInicial       : string;
     priFiltroCodigoFinal         : string;
-    priFiltroTitulo              : string;
+    priFiltroDescricao           : string;
     priFiltroBloqueado           : string;
     priFiltroAtivo               : string;
 
     procedure FormularioControlar;
-    procedure FormularioFiltrar;
+    procedure FormularioLocalizar;
     procedure FormularioAtualizar(argIndice: Integer);  
     procedure FormularioCadastroExibir(argNovo: Boolean);
   public
@@ -99,7 +99,7 @@ const
   LVW_LISTA_LICENCA_ID     : Integer = 2;
   LVW_LISTA_TIPO_USUARIO_ID: Integer = 3;
   LVW_LISTA_CODIGO         : Integer = 4;
-  LVW_LISTA_TITULO         : Integer = 5;
+  LVW_LISTA_DESCRICAO      : Integer = 5;
   LVW_LISTA_BLOQUEADO      : Integer = 6;
   LVW_LISTA_ATIVO          : Integer = 7;
 
@@ -115,7 +115,7 @@ begin
   priFiltroTipoUsuarioIDFinal   := 0;
   priFiltroCodigoInicial        := '';
   priFiltroCodigoFinal          := '';
-  priFiltroTitulo               := '';
+  priFiltroDescricao            := '';
   priFiltroBloqueado            := '';
   priFiltroAtivo                := '';
 
@@ -130,6 +130,9 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormShow(Sender: TObject);
 begin
+  //
+  // Controla a exibição dos componentes no formulário.
+  //
   FormularioControlar;
 end;
 
@@ -142,6 +145,11 @@ begin
   VCLListViewColunarDimensionar(lvwLista);
   lblListaQtde.Top     := (lvwLista.Top + lvwLista.Height) + 8;
   lblListaFiltros.Top  := (lvwLista.Top + lvwLista.Height) + 8;
+
+  //
+  // Atualiza a lista.
+  //
+  FormularioAtualizar(VCL_NENHUM_INDICE);
 end;
 
 //
@@ -176,11 +184,11 @@ begin
 end;
 
 //
-// Evento de click no botão "Filtrar".
+// Evento de click no botão "Localizar".
 //
-procedure TPlataformaERPVCLTiposUsuariosLista.btnFiltrarClick(Sender: TObject);
+procedure TPlataformaERPVCLTiposUsuariosLista.btnLocalizarClick(Sender: TObject);
 begin
-  FormularioFiltrar;
+  FormularioLocalizar;
 end;
 
 //
@@ -228,16 +236,16 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormularioControlar;
 begin
-  btnFiltrar.Visible    := (btnFiltrar.Visible)    and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_FILTRAR'));
+  btnLocalizar.Visible  := (btnLocalizar.Visible)  and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_LOCALIZAR'));
   btnAtualizar.Visible  := (btnAtualizar.Visible)  and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_ATUALIZAR'));
   btnNovo.Visible       := (btnNovo.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_NOVO'));
   btnSelecionar.Visible := (btnSelecionar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_SELECIONAR'));
 end;
 
 //
-// Procedimento para filtrar dados da lista.
+// Procedimento para localizar registros cadastros.
 //
-procedure TPlataformaERPVCLTiposUsuariosLista.FormularioFiltrar;
+procedure TPlataformaERPVCLTiposUsuariosLista.FormularioLocalizar;
 var
   locFormulario          : TPlataformaERPVCLTiposUsuariosFiltro;
   locClicouFechar        : Boolean;
@@ -245,7 +253,7 @@ var
   locTipoUsuarioIDFinal  : Integer;
   locCodigoInicial       : string;
   locCodigoFinal         : string;
-  locTitulo              : string;
+  locDescricao           : string;
   locBloqueado           : string;
   locAtivo               : string;
 begin
@@ -255,7 +263,7 @@ begin
   locFormulario.pubTipoUsuarioIDFinal   := priFiltroTipoUsuarioIDFinal;
   locFormulario.pubCodigoInicial        := priFiltroCodigoInicial;
   locFormulario.pubCodigoFinal          := priFiltroCodigoFinal;
-  locFormulario.pubTitulo               := priFiltroTitulo;
+  locFormulario.pubDescricao            := priFiltroDescricao;
   locFormulario.pubBloqueado            := priFiltroBloqueado;
   locFormulario.pubAtivo                := priFiltroAtivo;
   
@@ -266,7 +274,7 @@ begin
   locTipoUsuarioIDFinal   := locFormulario.pubTipoUsuarioIDFinal;
   locCodigoInicial        := locFormulario.pubCodigoInicial;
   locCodigoFinal          := locFormulario.pubCodigoFinal;
-  locTitulo               := locFormulario.pubTitulo;
+  locDescricao            := locFormulario.pubDescricao;
   locBloqueado            := locFormulario.pubBloqueado;
   locAtivo                := locFormulario.pubAtivo;
   
@@ -279,7 +287,7 @@ begin
     priFiltroTipoUsuarioIDFinal   := locTipoUsuarioIDFinal;
     priFiltroCodigoInicial        := locCodigoInicial;
     priFiltroCodigoFinal          := locCodigoFinal;
-    priFiltroTitulo               := locTitulo;
+    priFiltroDescricao            := locDescricao;
     priFiltroBloqueado            := locBloqueado;
     priFiltroAtivo                := locAtivo;
 
@@ -353,7 +361,7 @@ begin
   locADOQuery.SQL.Add('  [licenca].[licenca_id]           AS [licenca_id],         ');
   locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id] AS [tipo_usuario_id],    ');
   locADOQuery.SQL.Add('  [tipo_usuario].[codigo]          AS [codigo],             ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[titulo]          AS [titulo],             ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[descricao]       AS [descricao],          ');
   locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado]       AS [bloqueado],          ');
   locADOQuery.SQL.Add('  [tipo_usuario].[ativo]           AS [ativo]               ');
   locADOQuery.SQL.Add('FROM                                                        ');
@@ -398,11 +406,11 @@ begin
     locADOQuery.Parameters.ParamByName('codigo_final').Value := priFiltroCodigoFinal;
   end;
 
-  if priFiltroTitulo <> '' then
+  if priFiltroDescricao <> '' then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [tipo_usuario].[titulo] LIKE :titulo ');
-    locADOQuery.Parameters.ParamByName('titulo').Value := StringLikeGerar(priFiltroTitulo);
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[descricao] LIKE :descricao ');
+    locADOQuery.Parameters.ParamByName('descricao').Value := StringLikeGerar(priFiltroDescricao);
   end;
   
   if (priFiltroBloqueado <> '') AND (priFiltroBloqueado <> FLAG_AMBOS) then
@@ -468,7 +476,7 @@ begin
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('licenca_id').AsInteger));
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
-      locListItem.SubItems.Add(locADOQuery.FieldByName('titulo').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('descricao').AsString);
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('ativo').AsString));
 
