@@ -121,14 +121,14 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
         Height = 13
         Caption = 'C'#243'digo:'
       end
-      object lblTitulo: TLabel
+      object lblDescricao: TLabel
         Left = 16
         Top = 64
-        Width = 30
+        Width = 50
         Height = 13
-        Caption = 'T'#237'tulo:'
+        Caption = 'Descri'#231#227'o:'
       end
-      object lblTipoUsuarioID: TLabel
+      object lblLicencaID: TLabel
         Left = 16
         Top = 16
         Width = 15
@@ -151,7 +151,7 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
         TabOrder = 0
         Text = 'WWWW.9999.WWWW.9999'
       end
-      object edtTitulo: TEdit
+      object edtDescricao: TEdit
         Left = 16
         Top = 80
         Width = 345
@@ -184,7 +184,7 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
         Caption = 'Ativo'
         TabOrder = 3
       end
-      object edtTipoUsuarioID: TEdit
+      object edtLicencaID: TEdit
         Left = 16
         Top = 32
         Width = 65
@@ -203,6 +203,10 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 16
@@ -288,6 +292,7 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
     Cursor = crHandPoint
     Caption = 'Minimizar'
     TabOrder = 1
+    OnClick = btnMinimizarClick
   end
   object btnFechar: TBitBtn
     Left = 360
@@ -297,5 +302,6 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
     Cursor = crHandPoint
     Caption = 'Fechar'
     TabOrder = 2
+    OnClick = btnFecharClick
   end
 end

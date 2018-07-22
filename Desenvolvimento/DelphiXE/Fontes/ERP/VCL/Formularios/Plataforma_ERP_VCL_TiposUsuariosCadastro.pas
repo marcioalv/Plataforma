@@ -366,7 +366,9 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioLimpar;
 begin
-  // Posiciona pagecontrole na primeira aba.  
+  //
+  // Posiciona pagecontrole na primeira aba.
+  //
   pagFormulario.ActivePageIndex := TAB_CADASTRO;
 
   // Limpa componentes da aba "cadastro".
@@ -376,7 +378,9 @@ begin
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
 
+  //
   // Limpa componentes da aba "auditoria".
+  //
   VCLEditLimpar(edtLicencaID);
   VCLEditLimpar(edtLicencaDescricao);
   VCLEditLimpar(edtBaseID);
@@ -385,6 +389,12 @@ begin
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
   VCLEditLimpar(edtUpdContador);
+
+  //
+  // Controla os componentes de exibição de cadastro.
+  //
+  VCLEditClickControlar(edtLicencaDescricao, False);
+  VCLEditClickControlar(edtBaseDescricao,    False);
 end;
 
 //
@@ -414,6 +424,12 @@ begin
   edtCodigoCadastrado.Visible := (argEditar) and (not locDadosPopulados);
 
   //
+  // Controla os componentes de exibição de cadastro.
+  //
+  VCLEditClickControlar(edtLicencaDescricao, True);
+  VCLEditClickControlar(edtBaseDescricao,    True);
+
+  //
   // Controla os botões do formulário.
   //
   btnLog.Visible       := (not argEditar) and (locDadosPopulados);
@@ -432,6 +448,15 @@ begin
   btnNovo.Visible      := (btnNovo.Visible)    and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_NOVO'));
   btnExcluir.Visible   := (btnExcluir.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_EXCLUIR'));
   btnAlterar.Visible   := (btnAlterar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_ALTERAR'));
+
+  //
+  // Ajusta o título do formulário.
+  //
+  Self.Caption := 'Tipo de usuário';
+
+  if (not locDadosPopulados) and (argEditar) then Self.Caption := Self.Caption + ' - novo cadastro';
+  if locDadosPopulados and argEditar         then Self.Caption := Self.Caption + ' - alterando cadastro';
+  if locDadosPopulados and (not argEditar)   then Self.Caption := Self.Caption + ' - consultando cadastro';
 end;
 
 //
@@ -649,7 +674,7 @@ begin
 end;
 
 //
-// FormularioPopular.
+// Procedimento para popular os componentes com os dados de um cadastro.
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioPopular(argBaseID       : Integer;
                                                                    argLicencaID    : Integer;
@@ -766,8 +791,8 @@ begin
     edtBaseID.Text           := locADOQuery.FieldByName('base_id').AsString;
     edtBaseDescricao.Text    := StringCadastroIncluir(locADOQuery.FieldByName('base_descricao').AsString);
     edtTipoUsuarioID.Text    := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger, True);
-    edtInsLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss.zzz');
-    edtUpdLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss.zzz');
+    edtInsLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
+    edtUpdLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
     edtUpdContador.Text      := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
   end;
 
@@ -1557,7 +1582,7 @@ begin
 end;
 
 //
-// FormularioCancelar.
+// Procedimento para cancelar a edição dos dados do formulário.
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioCancelar;
 var
@@ -1575,7 +1600,14 @@ begin
   //
   // Confirma com o usuário.
   //
-  if not VCLQuestionamentoExibir('Deseja realmente cancelar a alteração destes dados?') then Exit;
+  if StringIntegerConverter(edtTipoUsuarioID.Text) = 0 then
+  begin
+    if not VCLQuestionamentoExibir('Deseja realmente cancelar a digitação destes dados?') then Exit;
+  end
+  else
+  begin
+    if not VCLQuestionamentoExibir('Deseja realmente cancelar a alteração destes dados?') then Exit;
+  end;
 
   //
   // Componentes desligados para edição.

@@ -63,7 +63,8 @@ var
 begin
   if argLicencaID <= 0 then Exit;
 
-  locFormulario := TPlataformaERPVCLLicencaCadastro.Create(nil);
+  locFormulario              := TPlataformaERPVCLLicencaCadastro.Create(nil);
+  locFormulario.pubLicencaID := argLicencaID;
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);
@@ -78,7 +79,8 @@ var
 begin
   if argBaseID <= 0 then Exit;
 
-  locFormulario := TPlataformaERPVCLBaseCadastro.Create(nil);
+  locFormulario           := TPlataformaERPVCLBaseCadastro.Create(nil);
+  locFormulario.pubBaseID := argBaseID;
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

@@ -127,13 +127,13 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
       F587DF07404F1E79B289D0C45240747E0B75FA55197E137F270062EBCE23DFD4
       C452C013EAFEEE16FE17D3C1011F4A9CD9B60000000049454E44AE426082}
   end
-  object btnConfirmar: TBitBtn
-    Left = 48
+  object btnLocalizar: TBitBtn
+    Left = 64
     Top = 216
-    Width = 89
+    Width = 73
     Height = 33
     Cursor = crHandPoint
-    Caption = 'Confirmar'
+    Caption = 'Localizar'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -141,7 +141,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    OnClick = btnConfirmarClick
+    OnClick = btnLocalizarClick
   end
   object btnFechar: TBitBtn
     Left = 304

@@ -88,12 +88,14 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabCadastro
+    ActivePage = tabAuditoria
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitWidth = 473
-      ExplicitHeight = 221
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 96
         Top = 16
@@ -101,12 +103,12 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
         Height = 13
         Caption = 'C'#243'digo:'
       end
-      object lblTitulo: TLabel
+      object lblDescricao: TLabel
         Left = 16
         Top = 64
-        Width = 30
+        Width = 50
         Height = 13
-        Caption = 'T'#237'tulo:'
+        Caption = 'Descri'#231#227'o:'
       end
       object lblTipoUsuarioID: TLabel
         Left = 16
@@ -131,7 +133,7 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
         TabOrder = 0
         Text = '999.999'
       end
-      object edtTitulo: TEdit
+      object edtDescricao: TEdit
         Left = 16
         Top = 80
         Width = 345
@@ -183,8 +185,6 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitWidth = 473
-      ExplicitHeight = 221
       object lblInsDtHt: TLabel
         Left = 16
         Top = 16
@@ -270,6 +270,7 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
     Cursor = crHandPoint
     Caption = 'Minimizar'
     TabOrder = 1
+    OnClick = btnMinimizarClick
   end
   object btnFechar: TBitBtn
     Left = 360
@@ -279,5 +280,6 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
     Cursor = crHandPoint
     Caption = 'Fechar'
     TabOrder = 2
+    OnClick = btnFecharClick
   end
 end

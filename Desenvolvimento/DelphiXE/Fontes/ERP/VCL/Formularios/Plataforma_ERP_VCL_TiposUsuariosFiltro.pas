@@ -32,7 +32,7 @@ uses
 type
   TPlataformaERPVCLTiposUsuariosFiltro = class(TForm)
     imgFormulario: TImage;
-    btnConfirmar: TBitBtn;
+    btnLocalizar: TBitBtn;
     btnFechar: TBitBtn;
     btnLimpar: TBitBtn;
     btnMinimizar: TBitBtn;
@@ -77,14 +77,14 @@ type
     procedure cbxAtivoEnter(Sender: TObject);
     procedure cbxAtivoExit(Sender: TObject);
     procedure cbxAtivoKeyPress(Sender: TObject; var Key: Char);
-    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnLocalizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioLimpar;
-    procedure FormularioConfirmar;
+    procedure FormularioLocalizar;
   public
     pubClicouFechar        : Boolean;
     pubTipoUsuarioIDInicial: Integer;
@@ -305,11 +305,11 @@ begin
 end;
 
 //
-// Evento de click no botão "confirmar".
+// Evento de click no botão "localizar".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.btnConfirmarClick(Sender: TObject);
+procedure TPlataformaERPVCLTiposUsuariosFiltro.btnLocalizarClick(Sender: TObject);
 begin
-  FormularioConfirmar;
+  FormularioLocalizar;
 end;
 
 //
@@ -365,9 +365,9 @@ begin
 end;
 
 //
-// Procedimento para confirmar os dados do filtro.
+// Procedimento para localizar os dados do filtro.
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.FormularioConfirmar;
+procedure TPlataformaERPVCLTiposUsuariosFiltro.FormularioLocalizar;
 begin
   pubClicouFechar         := False;
   pubTipoUsuarioIDInicial := StringIntegerConverter(edtTipoUsuarioIDInicial.Text);

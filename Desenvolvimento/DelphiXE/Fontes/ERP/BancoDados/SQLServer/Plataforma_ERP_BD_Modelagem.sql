@@ -58,7 +58,7 @@ CREATE TABLE [dbo].[base] (
   [ins_server_dt_hr] DATETIME                                  NOT NULL,
   [upd_local_dt_hr]  DATETIME                                  NULL,
   [upd_server_dt_hr] DATETIME                                  NULL,
-  [seq_upd]          INT                                       NOT NULL,
+  [upd_contador]     INT                                       NOT NULL,
 
   CONSTRAINT [base_pk] PRIMARY KEY CLUSTERED ([base_id]),
   CONSTRAINT [base_ix_codigo] UNIQUE         ([codigo]),
@@ -81,7 +81,7 @@ CREATE TABLE [dbo].[licenca] (
   [ins_server_dt_hr] DATETIME                                  NOT NULL,
   [upd_local_dt_hr]  DATETIME                                  NULL,
   [upd_server_dt_hr] DATETIME                                  NULL,
-  [seq_upd]          INT                                       NOT NULL,
+  [upd_contador]     INT                                       NOT NULL,
 
   CONSTRAINT [licenca_pk]        PRIMARY KEY CLUSTERED ([licenca_id]),
   CONSTRAINT [licenca_ix_codigo] UNIQUE                ([codigo]),
