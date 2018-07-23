@@ -17,7 +17,13 @@ interface
 uses
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_LogRegistroLista,
+  Plataforma_ERP_VCL_DataExibicao,
   System.SysUtils;
+
+//
+// Plataforma_ERP_VCL_DataExibir.
+//
+procedure Plataforma_ERP_VCL_DataExibir(argData: TDateTime);
 
 //
 // Plataforma_ERP_VCL_LogRegistroExibir.
@@ -41,7 +47,23 @@ uses
   Plataforma_ERP_VCL_LicencaCadastro;
 
 //
-// Procedimentoi para exibir o formulário de lista de logs de um registro.
+// Procedimento para exibir informações sobre uma data.
+//
+procedure Plataforma_ERP_VCL_DataExibir(argData: TDateTime);
+var
+  locFormulario: TPlataformaERPVCLDataExibicao;
+begin
+  if argData <= 0 then Exit;
+
+  locFormulario         := TPlataformaERPVCLDataExibicao.Create(nil);
+  locFormulario.pubData := argData;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o formulário de lista de logs de um registro.
 //
 procedure Plataforma_ERP_VCL_LogRegistroExibir(argLogRegistroLista: TPlataforma_ERP_LogRegistroLista);
 var

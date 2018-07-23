@@ -94,6 +94,8 @@ type
     procedure btnNovoClick(Sender: TObject);
     procedure edtLicencaDescricaoClick(Sender: TObject);
     procedure edtBaseDescricaoClick(Sender: TObject);
+    procedure edtInsLocalDtHrClick(Sender: TObject);
+    procedure edtUpdLocalDtHrClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -149,12 +151,7 @@ begin
   pubBaseID           := 0;
   pubLicencaID        := 0;
   pubTipoUsuarioID    := 0;
-
-  //
-  // Exibição de cadastros.
-  //
-  VCLEditClickControlar(edtLicencaDescricao, True);
-  
+ 
   //
   // Limpa os componentes do formulário.
   //
@@ -298,6 +295,22 @@ begin
 end;
 
 //
+// Evento de click na data de criação.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtInsLocalDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtInsLocalDtHr.Text));
+end;
+
+//
+// Evento de click na data da última alteração.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtUpdLocalDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtUpdLocalDtHr.Text));
+end;
+
+//
 // Evento de click no botão "log alterações".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnLogClick(Sender: TObject);
@@ -395,6 +408,8 @@ begin
   //
   VCLEditClickControlar(edtLicencaDescricao, False);
   VCLEditClickControlar(edtBaseDescricao,    False);
+  VCLEditClickControlar(edtInsLocalDtHr,     False);
+  VCLEditClickControlar(edtUpdLocalDtHr,     False);
 end;
 
 //
@@ -428,6 +443,8 @@ begin
   //
   VCLEditClickControlar(edtLicencaDescricao, True);
   VCLEditClickControlar(edtBaseDescricao,    True);
+  VCLEditClickControlar(edtInsLocalDtHr,     True);
+  VCLEditClickControlar(edtUpdLocalDtHr,     True);
 
   //
   // Controla os botões do formulário.
@@ -648,11 +665,6 @@ begin
   FormularioLimpar;
 
   //
-  // Componentes ligados para edição.
-  //
-  FormularioControlar(True);
-
-  //
   // Carrega conteúdo dos campos necessários.
   //
   edtLicencaID.Text        := IntegerStringConverter(gloLicencaID, True);
@@ -667,6 +679,11 @@ begin
   //
   FormularioCodigoSugerir;
 
+  //
+  // Componentes ligados para edição.
+  //
+  FormularioControlar(True);
+  
   //
   // Coloca o foco no código.
   //
@@ -794,7 +811,7 @@ begin
     edtInsLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
     edtUpdLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
     edtUpdContador.Text      := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
-  end;
+  end; 
 
   //
   // Finaliza.
@@ -803,7 +820,6 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
-
   VCLCursorTrocar;
 end;
 

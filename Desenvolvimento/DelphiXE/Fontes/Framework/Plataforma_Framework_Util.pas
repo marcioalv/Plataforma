@@ -60,6 +60,12 @@ function HostNameRecuperar: string;
 
 function UserNameRecuperar: string;
 
+function FeriadoFixoDeterminar(argData: TDateTime): string;
+
+function PeriodoDeterminar(argData: TDateTime): string;
+
+function DiaSemanaDeterminar(argData: TDateTime): string;
+
 function DriveSerialNumberRecuperar(argDriveLetra: string): Integer;
 
 function StringCadastroIncluir(argTexto: string): string;
@@ -149,6 +155,61 @@ begin
   SetLength(Result, locNetUserNameLength);
   GetUserName(pChar(Result), locNetUserNameLength);
   SetLength(Result, StrLen(pChar(Result)));
+end;
+
+//
+// FeriadoFixoDeterminar.
+//
+function FeriadoFixoDeterminar(argData: TDateTime): string;
+var
+  locDia: Integer;
+  locMes: Integer;
+begin
+  locDia := DayOfTheMonth(argData);
+  locMes := MonthOfTheYear(argData);
+
+  Result := '';
+  
+  if (locDia =  1) and (locMes =  1) then Result := 'Confraternização universal';
+  if (locDia = 21) and (locMes =  4) then Result := 'Tiradentes';
+  if (locDia =  1) and (locMes =  5) then Result := 'Dia do trabalhador';
+  if (locDia =  7) and (locMes =  9) then Result := 'Dia da pátria';
+  if (locDia = 12) and (locMes = 10) then Result := 'Nossa Senhora Aparecida';
+  if (locDia =  2) and (locMes = 11) then Result := 'Finados';
+  if (locDia = 15) and (locMEs = 11) then Result := 'Proclamação da república';
+  if (locDia = 25) and (locMes = 12) then Result := 'Natal';
+
+  if (locDia = 21) and (locMes =  7) then Result := 'Dia do Marcio';
+end;
+
+//
+// PeriodoDeterminar.
+//
+function PeriodoDeterminar(argData: TDateTime): string;
+begin
+  if FormatDateTime('hh', argData) < '12' then
+    Result := 'Manhã'
+  else
+    Result := 'Tarde';
+end;
+
+//
+// DiaSemanaDeterminar.
+//
+function DiaSemanaDeterminar(argData: TDateTime): string;
+var
+  locDiaSemana: Word;
+begin
+  locDiaSemana := DayOfTheWeek(argData);
+
+  Result := '';
+  if locDiaSemana = 1 then Result := 'Domingo';
+  if locDiaSemana = 2 then Result := 'Segunda-feira';
+  if locDiaSemana = 3 then Result := 'Terça-feira';
+  if locDiaSemana = 4 then Result := 'Quarta-feira';
+  if locDiaSemana = 5 then Result := 'Quinta-feira';
+  if locDiaSemana = 6 then Result := 'Sexta-feira';
+  if locDiaSemana = 7 then Result := 'Sábado';
 end;
 
 //

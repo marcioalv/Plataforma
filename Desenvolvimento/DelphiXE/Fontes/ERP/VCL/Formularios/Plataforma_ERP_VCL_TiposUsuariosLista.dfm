@@ -171,7 +171,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 645
+      Left = 641
       Top = 488
       Width = 80
       Height = 13
@@ -184,6 +184,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Font.Style = []
       ParentFont = False
       Visible = False
+      ExplicitLeft = 645
     end
     object lvwLista: TListView
       AlignWithMargins = True
@@ -249,11 +250,12 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       ParentFont = False
       TabOrder = 0
       ViewStyle = vsReport
+      OnColumnClick = lvwListaColumnClick
+      OnCompare = lvwListaCompare
       OnCustomDrawItem = lvwListaCustomDrawItem
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
-      ExplicitHeight = 440
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True

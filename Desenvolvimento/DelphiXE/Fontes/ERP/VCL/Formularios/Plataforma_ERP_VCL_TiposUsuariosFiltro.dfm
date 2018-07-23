@@ -179,7 +179,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
     Width = 329
     Height = 201
     Cursor = crHandPoint
-    ActivePage = tabPadrao
+    ActivePage = tabAdicional
     TabOrder = 0
     object tabPadrao: TTabSheet
       Caption = 'Padr'#227'o'

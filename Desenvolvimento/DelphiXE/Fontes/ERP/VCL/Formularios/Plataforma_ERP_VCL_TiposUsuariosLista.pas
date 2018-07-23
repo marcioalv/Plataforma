@@ -59,7 +59,12 @@ type
     procedure btnFecharClick(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
     procedure btnLocalizarClick(Sender: TObject);
+    procedure lvwListaColumnClick(Sender: TObject; Column: TListColumn);
+    procedure lvwListaCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
   private
+    priListViewIndiceColuna      : Integer;
+    priListViewOrdemAscendente   : Boolean;
+  
     priFiltroTipoUsuarioIDInicial: Integer;
     priFiltroTipoUsuarioIDFinal  : Integer;
     priFiltroCodigoInicial       : string;
@@ -111,6 +116,9 @@ begin
   //
   // Inicializa variáveis privadas.
   //
+  priListViewIndiceColuna       := VCL_NENHUM_INDICE;
+  priListViewOrdemAscendente    := False;
+  
   priFiltroTipoUsuarioIDInicial := 0;
   priFiltroTipoUsuarioIDFinal   := 0;
   priFiltroCodigoInicial        := '';
@@ -167,6 +175,16 @@ end;
 //
 // Eventos de controle da lista.
 //
+procedure TPlataformaERPVCLTiposUsuariosLista.lvwListaColumnClick(Sender: TObject; Column: TListColumn);
+begin
+  VCLListViewColunaClicar(Sender, Column, priListViewIndiceColuna, priListViewOrdemAscendente);
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosLista.lvwListaCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
+begin
+  VCLListViewComparar(Sender, Item1, Item2, Compare, priListViewIndiceColuna, priListViewOrdemAscendente);
+end;
+
 procedure TPlataformaERPVCLTiposUsuariosLista.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);

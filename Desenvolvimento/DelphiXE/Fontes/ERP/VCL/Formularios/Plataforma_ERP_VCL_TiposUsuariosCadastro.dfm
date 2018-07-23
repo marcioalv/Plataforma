@@ -313,6 +313,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Top = 128
         Width = 169
         Height = 22
+        Hint = 'Clique para exibir informa'#231#245'es sobre a data de cria'#231#227'o!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -322,15 +323,19 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
+        ParentShowHint = False
         ReadOnly = True
+        ShowHint = True
         TabOrder = 5
         Text = '99/99/9999 99:99:99.999'
+        OnClick = edtInsLocalDtHrClick
       end
       object edtUpdLocalDtHr: TEdit
         Left = 200
         Top = 128
         Width = 169
         Height = 22
+        Hint = 'Clique para exibir informa'#231#245'es sobre a data da '#250'ltima altera'#231#227'o!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -343,6 +348,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         ReadOnly = True
         TabOrder = 6
         Text = '99/99/9999 99:99:99.999'
+        OnClick = edtUpdLocalDtHrClick
       end
       object edtUpdContador: TEdit
         Left = 384
