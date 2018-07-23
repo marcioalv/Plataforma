@@ -15,7 +15,7 @@ unit Plataforma_ERP_VCL_LogRegistroLista;
 interface
 
 uses
-  Plataforma_ERP_Generico,
+  Data.Win.ADODB,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -53,7 +53,7 @@ type
     procedure FormularioAtualizar;
     procedure FormularioSelecionar;
   public
-    pubLogRegistroLista: TPlataforma_ERP_LogRegistroLista;
+    pubADOQuery: TADOQuery;
   end;
 
 var
@@ -69,7 +69,20 @@ uses
   Plataforma_ERP_VCL_LogRegistroExibir;
 
 const
-  LVW_LISTA_SEQUENCIAL: Byte = 0;
+  LVW_LISTA_SEQUENCIAL             : Byte =  0;
+  LVW_LISTA_LOG_LOCAL_DT_HR        : Byte =  1;
+  LVW_LISTA_LOG_SERVER_DT_HR       : Byte =  2;
+  LVW_LISTA_LOG_BASE_ID            : Byte =  3;
+  LVW_LISTA_LOG_BASE_DESCRICAO     : Byte =  4;
+  LVW_LISTA_REGISTRO_ACAO_ID       : Byte =  5;
+  LVW_LISTA_REGISTRO_ACAO_DESCRICAO: Byte =  6;
+  LVW_LISTA_HOST_NAME              : Byte =  7;
+  LVW_LISTA_USER_NAME              : Byte =  8;
+  LVW_LISTA_USUARIO_BASE_ID        : Byte =  9;
+  LVW_LISTA_USUARIO_ID             : Byte = 10;
+  LVW_LISTA_USUARIO_NOME           : Byte = 11;
+  LVW_LISTA_MENSAGEM               : Byte = 12;
+  LVW_LISTA_DADOS                  : Byte = 13;
   
 //
 // Evento de criação do formulário.
@@ -155,24 +168,31 @@ end;
 //
 procedure TPlataformaERPVCLLogRegistroLista.FormularioAtualizar;
 var
-  locContador   : Integer;
-  locLogRegistro: TPlataforma_ERP_LogRegistro;
-  locListItem   : TListItem;
+  locListItem: TListItem;
 begin
-  for locContador := 0 to (Length(pubLogRegistroLista) - 1) do
+  pubADOQuery.Last;
+  pubADOQuery.First;
+
+  while not pubADOQuery.Eof do
   begin
-    locLogRegistro := pubLogRegistroLista[locContador];
-  
     locListItem         := lvwLista.Items.Add;
     locListItem.Caption := '';
-    locListItem.SubItems.Add(IntegerStringConverter(locLogRegistro.Sequencial));
-    locListItem.SubItems.Add(DateTimeStringConverter(locLogRegistro.LogLocalDtHr,  'dd/mm/yyyy hh:nn:ss'));
-    locListItem.SubItems.Add(DateTimeStringConverter(locLogRegistro.LogServerDtHr, 'dd/mm/yyyy hh:nn:ss'));
-    locListItem.SubItems.Add(locLogRegistro.RegistroAcaoDescricao);
-    locListItem.SubItems.Add(locLogRegistro.HostName);    
-    locListItem.SubItems.Add(locLogRegistro.UserName);
-    locListItem.SubItems.Add(locLogRegistro.UsuarioNome);
-    locListItem.SubItems.Add(locLogRegistro.Mensagem);
+    locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('sequencial').AsInteger));
+    locListItem.SubItems.Add(DateTimeStringConverter(pubADOQuery.FieldByName('log_local_dt_hr').AsDateTime,  'dd/mm/yyyy hh:nn:ss'));
+    locListItem.SubItems.Add(DateTimeStringConverter(pubADOQuery.FieldByName('log_server_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss'));
+    locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('log_base_id').AsInteger));
+    locListItem.SubItems.Add(pubADOQuery.FieldByName('log_base_descricao').AsString);
+    locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('registro_acao_id').AsInteger));
+    locListItem.SubItems.Add(pubADOQuery.FieldByName('registro_acao_descricao').AsString);
+    locListItem.SubItems.Add(pubADOQuery.FieldByName('host_name').AsString);
+    locListItem.SubItems.Add(pubADOQuery.FieldByName('user_name').AsString);
+    locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('usuario_base_id').AsInteger));
+    locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('usuario_id').AsInteger));
+    locListItem.SubItems.Add(pubADOQuery.FieldByName('usuario_nome').AsString);
+    locListItem.SubItems.Add(pubADOQuery.FieldByName('mensagem').AsString);
+    locListItem.SubItems.Add(pubADOQuery.FieldByName('dados').AsString);
+
+    pubADOQuery.Next;
   end;
 end;
 
@@ -182,17 +202,26 @@ end;
 procedure TPlataformaERPVCLLogRegistroLista.FormularioSelecionar;
 var
   locIndice    : Integer;
-  locSequencial: Integer;
   locFormulario: TPlataformaERPVCLLogRegistroExibir;
 begin
   locIndice := VCLListViewIndiceItemRetornar(lvwLista);
   if locIndice = VCL_NENHUM_INDICE then Exit;
 
-  locSequencial := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_SEQUENCIAL]);
-
-  locFormulario := TPlataformaERPVCLLogRegistroExibir.Create(Self);
-
-  locFormulario.pubLogRegistro := pubLogRegistroLista[locSequencial - 1];
+  locFormulario                          := TPlataformaERPVCLLogRegistroExibir.Create(Self);
+  locFormulario.pubSequencial            := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_SEQUENCIAL]);
+  locFormulario.pubLogLocalDtHr          := StringDateTimeConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LOG_LOCAL_DT_HR]);
+  locFormulario.pubLogServerDtHr         := StringDateTimeConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LOG_SERVER_DT_HR]);
+  locFormulario.pubLogBaseID             := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LOG_BASE_ID]);
+  locFormulario.pubLogBaseDescricao      := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LOG_BASE_DESCRICAO];
+  locFormulario.pubRegistroAcaoID        := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_REGISTRO_ACAO_ID]);
+  locFormulario.pubRegistroAcaoDescricao := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_REGISTRO_ACAO_DESCRICAO];
+  locFormulario.pubHostName              := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_HOST_NAME];
+  locFormulario.pubUserName              := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_USER_NAME];
+  locFormulario.pubUsuarioBaseID         := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_USUARIO_BASE_ID]);
+  locFormulario.pubUsuarioID             := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_USUARIO_ID]);
+  locFormulario.pubUsuarioNome           := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_USUARIO_NOME];
+  locFormulario.pubMensagem              := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_MENSAGEM];
+  locFormulario.pubDados                 := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_DADOS];
   
   locFormulario.ShowModal;
   locFormulario.Release;

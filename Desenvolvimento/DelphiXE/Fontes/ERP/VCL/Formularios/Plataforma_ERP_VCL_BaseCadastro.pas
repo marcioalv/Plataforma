@@ -58,6 +58,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
+    procedure edtInsLocalDtHrClick(Sender: TObject);
+    procedure edtUpdLocalDtHrClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -77,7 +79,8 @@ uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
-  Plataforma_ERP_Generico;
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_Generico;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_BaseCadastro.pas';
@@ -131,6 +134,22 @@ begin
 end;
 
 //
+// Evento de click no componente "data e hora de criação".
+//
+procedure TPlataformaERPVCLBaseCadastro.edtInsLocalDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtInsLocalDtHr.Text));
+end;
+
+//
+// Evento de click no componente "data e hora da última alteração".
+//
+procedure TPlataformaERPVCLBaseCadastro.edtUpdLocalDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtUpdLocalDtHr.Text));
+end;
+
+//
 // Evento de click no botão "minimizar".
 //
 procedure TPlataformaERPVCLBaseCadastro.btnMinimizarClick(Sender: TObject);
@@ -160,6 +179,9 @@ begin
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
   VCLEditLimpar(edtUpdContador);
+
+  VCLEditClickControlar(edtInsLocalDtHr, False);
+  VCLEditClickControlar(edtUpdLocalDtHr, False);
 end;
 
 //
@@ -181,6 +203,12 @@ begin
   //
   btnMinimizar.Visible := True;
   btnFechar.Visible    := (not argEditar);
+
+  //
+  // Controla a exibição dos cadastros.
+  //
+  VCLEditClickControlar(edtInsLocalDtHr, True);
+  VCLEditClickControlar(edtUpdLocalDtHr, True);
 end;
 
 //
@@ -293,8 +321,12 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
-
   VCLCursorTrocar;
+
+  //
+  // Controla os componentes.
+  //
+  FormularioControlar(False);
 end;
 
 end.

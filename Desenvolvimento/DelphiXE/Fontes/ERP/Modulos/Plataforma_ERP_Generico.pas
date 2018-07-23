@@ -34,39 +34,6 @@ const
   NUMERADOR_TIPO_USUARIO_ID: string = 'tipo_usuario_id';
 
 //
-// TPlataforma_ERP_LogRegistro.
-//
-type
-  TPlataforma_ERP_LogRegistro = record
-    LicencaID            : Integer;
-    Sequencial           : Integer;
-    LogBaseID            : Integer;
-    LogBaseDescricao     : string;
-    LogLocalDtHr         : TDateTime;
-    LogServerDtHr        : TDateTime;
-    RegistroAcaoID       : Integer;
-    RegistroAcaoDescricao: string;
-    HostName             : string;
-    UserName             : string;
-    UsuarioBaseID        : Integer;
-    UsuarioID            : Integer;
-    UsuarioNome          : string;
-    Mensagem             : string;
-    Dados                : string;
-  end;
-
-//
-// TPlataforma_ERP_LogRegistroLista.
-//
-type
-  TPlataforma_ERP_LogRegistroLista = array of TPlataforma_ERP_LogRegistro;
-
-//
-// Plataforma_ERP_LogRegistroLimpar.
-//
-procedure Plataforma_ERP_LogRegistroLimpar(argLogRegistro: TPlataforma_ERP_LogRegistro);
-
-//
 // PlataformaERPLogar.
 //
 procedure Plataforma_ERP_Logar(argCritico  : Boolean;
@@ -110,31 +77,6 @@ implementation
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_Generico.pas';
-
-//
-// Plataforma_ERP_LogRegistroLimpar.
-//
-procedure Plataforma_ERP_LogRegistroLimpar(argLogRegistro: TPlataforma_ERP_LogRegistro);
-begin
-  with argLogRegistro do
-  begin
-    LicencaID             := 0;
-    Sequencial            := 0;
-    LogBaseID             := 0;
-    LogBaseDescricao      := '';
-    LogLocalDtHr          := 0;
-    LogServerDtHr         := 0;
-    RegistroAcaoID        := 0;
-    RegistroAcaoDescricao := '';
-    HostName              := '';
-    UserName              := '';
-    UsuarioBaseID         := 0;
-    UsuarioID             := 0;
-    UsuarioNome           := '';
-    Mensagem              := '';
-    Dados                 := '';
-  end;
-end;
 
 //
 // PlataformaERPLogar.

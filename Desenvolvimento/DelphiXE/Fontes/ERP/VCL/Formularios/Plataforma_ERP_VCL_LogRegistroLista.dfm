@@ -139,6 +139,18 @@ object PlataformaERPVCLLogRegistroLista: TPlataformaERPVCLLogRegistroLista
           Width = 135
         end
         item
+          Caption = 'Base ID'
+          Width = 0
+        end
+        item
+          Caption = 'Base'
+          Width = 0
+        end
+        item
+          Caption = 'A'#231#227'o ID'
+          Width = 0
+        end
+        item
           Caption = 'A'#231#227'o'
           Width = 0
         end
@@ -151,12 +163,24 @@ object PlataformaERPVCLLogRegistroLista: TPlataformaERPVCLLogRegistroLista
           Width = 0
         end
         item
+          Caption = 'Usu'#225'rio Base ID'
+          Width = 0
+        end
+        item
+          Caption = 'Usu'#225'rio ID'
+          Width = 0
+        end
+        item
           Caption = 'Usu'#225'rio'
           Width = 0
         end
         item
           Caption = 'Mensagem'
           Width = 350
+        end
+        item
+          Caption = 'Dados'
+          Width = 0
         end>
       ReadOnly = True
       RowSelect = True

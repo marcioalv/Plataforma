@@ -18,6 +18,7 @@ uses
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_LogRegistroLista,
   Plataforma_ERP_VCL_DataExibicao,
+  Data.Win.ADODB,
   System.SysUtils;
 
 //
@@ -28,7 +29,7 @@ procedure Plataforma_ERP_VCL_DataExibir(argData: TDateTime);
 //
 // Plataforma_ERP_VCL_LogRegistroExibir.
 //
-procedure Plataforma_ERP_VCL_LogRegistroExibir(argLogRegistroLista: TPlataforma_ERP_LogRegistroLista);
+procedure Plataforma_ERP_VCL_LogRegistroExibir(argADOQuery: TADOQuery);
 
 //
 // Plataforma_ERP_VCL_BaseCadastroExibir.
@@ -65,12 +66,12 @@ end;
 //
 // Procedimento para exibir o formulário de lista de logs de um registro.
 //
-procedure Plataforma_ERP_VCL_LogRegistroExibir(argLogRegistroLista: TPlataforma_ERP_LogRegistroLista);
+procedure Plataforma_ERP_VCL_LogRegistroExibir(argADOQuery: TADOQuery);
 var
   locFormulario: TPlataformaERPVCLLogRegistroLista;
 begin
-  locFormulario := TPlataformaERPVCLLogRegistroLista.Create(nil);
-  locFormulario.pubLogRegistroLista := argLogRegistroLista;
+  locFormulario             := TPlataformaERPVCLLogRegistroLista.Create(nil);
+  locFormulario.pubADOQuery := argADOQuery;
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

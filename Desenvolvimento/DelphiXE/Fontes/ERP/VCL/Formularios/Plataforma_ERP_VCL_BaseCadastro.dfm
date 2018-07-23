@@ -211,6 +211,7 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
         Top = 32
         Width = 169
         Height = 22
+        Hint = 'Clique para informa'#231#245'es sobre a data de cria'#231#227'o!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -223,12 +224,14 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
         ReadOnly = True
         TabOrder = 0
         Text = '99/99/9999 99:99:99.999'
+        OnClick = edtInsLocalDtHrClick
       end
       object edtUpdLocalDtHr: TEdit
         Left = 16
         Top = 80
         Width = 169
         Height = 22
+        Hint = 'Clique para informa'#231#245'es sobre a data da '#250'ltima altera'#231#227'o!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -241,6 +244,7 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
         ReadOnly = True
         TabOrder = 1
         Text = '99/99/9999 99:99:99.999'
+        OnClick = edtUpdLocalDtHrClick
       end
       object edtUpdContador: TEdit
         Left = 200

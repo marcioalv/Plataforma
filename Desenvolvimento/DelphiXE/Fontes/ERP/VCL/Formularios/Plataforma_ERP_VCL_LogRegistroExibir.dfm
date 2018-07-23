@@ -166,7 +166,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         Height = 13
         Caption = 'Mensagem:'
       end
-      object lblBase: TLabel
+      object lblLogBase: TLabel
         Left = 16
         Top = 64
         Width = 27
@@ -196,6 +196,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         Top = 32
         Width = 169
         Height = 22
+        Hint = 'Clique para exibir informa'#231#245'es sobre a data local!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -208,12 +209,14 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         ReadOnly = True
         TabOrder = 1
         Text = '99/99/9999 99:99:99.999'
+        OnClick = edtLogLocalDtHrClick
       end
       object edtLogServerDtHr: TEdit
         Left = 272
         Top = 32
         Width = 169
         Height = 22
+        Hint = 'Clique para exibir informa'#231#245'es sobre a data no servidor!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -226,6 +229,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         ReadOnly = True
         TabOrder = 2
         Text = '99/99/9999 99:99:99.999'
+        OnClick = edtLogServerDtHrClick
       end
       object edtRegistroAcaoDescricao: TEdit
         Left = 16
@@ -308,11 +312,12 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         ScrollBars = ssVertical
         TabOrder = 7
       end
-      object edtBaseDescricao: TEdit
+      object edtLogBaseDescricao: TEdit
         Left = 16
         Top = 80
         Width = 425
         Height = 22
+        Hint = 'Clique para informa'#231#245'es sobre a base de dados do log!'
         TabStop = False
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET
@@ -324,6 +329,79 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         ReadOnly = True
         TabOrder = 8
         Text = '999.999'
+        OnClick = edtLogBaseDescricaoClick
+      end
+      object edtLogBaseID: TEdit
+        Left = 336
+        Top = 80
+        Width = 73
+        Height = 22
+        TabStop = False
+        Alignment = taCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 9
+        Text = 'edtLogBaseID'
+        Visible = False
+      end
+      object edtRegistroAcaoID: TEdit
+        Left = 288
+        Top = 128
+        Width = 121
+        Height = 22
+        TabStop = False
+        Alignment = taCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 10
+        Text = 'edtRegistroAcaoID'
+        Visible = False
+      end
+      object edtUsuarioID: TEdit
+        Left = 320
+        Top = 272
+        Width = 89
+        Height = 22
+        TabStop = False
+        Alignment = taCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 11
+        Text = 'edtUsuarioID'
+        Visible = False
+      end
+      object edtUsuarioBaseID: TEdit
+        Left = 192
+        Top = 272
+        Width = 113
+        Height = 22
+        TabStop = False
+        Alignment = taCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 12
+        Text = 'edtUsuarioBaseID'
+        Visible = False
       end
     end
     object tabDados: TTabSheet

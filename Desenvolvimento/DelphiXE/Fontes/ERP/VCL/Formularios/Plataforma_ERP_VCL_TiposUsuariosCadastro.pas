@@ -484,13 +484,12 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioLogExibir';
   ERRO_MENSAGEM    : string = 'Impossível consultar dados sobre os logs do registro!';
 var
-  locADOConnection   : TADOConnection;
-  locADOQuery        : TADOQuery;
-  locLogMensagem     : string;
-  locBaseID          : Integer;
-  locLicencaID       : Integer;
-  locTipoUsuarioID   : Integer;
-  locLogRegistroLista: TPlataforma_ERP_LogRegistroLista;  
+  locADOConnection : TADOConnection;
+  locADOQuery      : TADOQuery;
+  locLogMensagem   : string;
+  locBaseID        : Integer;
+  locLicencaID     : Integer;
+  locTipoUsuarioID : Integer;
 begin
   //
   // Carrega chave do registro.
@@ -498,11 +497,6 @@ begin
   locBaseID        := StringIntegerConverter(edtBaseID.Text);
   locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
   locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
-
-  //
-  // Inicializa array de registros de log.
-  //  
-  locLogRegistroLista := nil;
 
   //
   // Troca cursor.
@@ -540,8 +534,7 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                                            ');
-  locADOQuery.SQL.Add('  [tipo_usuario_log].[licenca_id]          AS [licenca_id],                       ');
-  locADOQuery.SQL.Add('  [tipo_usuario_log].[tipo_usuario_log_sq] AS [tipo_usuario_log_sq],              ');  
+  locADOQuery.SQL.Add('  [tipo_usuario_log].[tipo_usuario_log_sq] AS [sequencial],                       ');  
   locADOQuery.SQL.Add('  [base].[base_id]                         AS [log_base_id],                      ');
   locADOQuery.SQL.Add('  [base].[descricao]                       AS [log_base_descricao],               ');
   locADOQuery.SQL.Add('  [tipo_usuario_log].[log_local_dt_hr]     AS [log_local_dt_hr],                  ');
@@ -595,45 +588,17 @@ begin
     end;
   end;
 
-  locADOQuery.Last;
-  locADOQuery.First;
+  //
+  // Troca o cursor.
+  //
+  VCLCursorTrocar;  
 
   //
-  // Registro encontrado então carrega componentes.
+  // Exibe formulário.
   //
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
-    //
-    // Percorre lista de registros.
-    //
-    while not locADOQuery.Eof do
-    begin
-      //
-      // Insere registro no array.
-      //
-      SetLength(locLogRegistroLista, Length(locLogRegistroLista) + 1);
-      Plataforma_ERP_LogRegistroLimpar(locLogRegistroLista[Length(locLogRegistroLista) - 1]);      
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].LicencaID             := locADOQuery.FieldByName('licenca_id').AsInteger;      
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].Sequencial            := locADOQuery.FieldByName('tipo_usuario_log_sq').AsInteger;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].LogBaseID             := locADOQuery.FieldByName('log_base_id').AsInteger;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].LogBaseDescricao      := locADOQuery.FieldByName('log_base_descricao').AsString;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].LogLocalDtHr          := locADOQuery.FieldByName('log_local_dt_hr').AsDateTime;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].LogServerDtHr         := locADOQuery.FieldByName('log_server_dt_hr').AsDateTime;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoID        := locADOQuery.FieldByName('registro_acao_id').AsInteger;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].RegistroAcaoDescricao := locADOQuery.FieldByName('registro_acao_descricao').AsString;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].HostName              := locADOQuery.FieldByName('host_name').AsString;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].UserName              := locADOQuery.FieldByName('user_name').AsString;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioBaseID         := locADOQuery.FieldByName('usuario_base_id').AsInteger;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioID             := locADOQuery.FieldByName('usuario_id').AsInteger;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].UsuarioNome           := locADOQuery.FieldByName('usuario_nome').AsString;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].Mensagem              := locADOQuery.FieldByName('mensagem').AsString;
-      locLogRegistroLista[Length(locLogRegistroLista) - 1].Dados                 := locADOQuery.FieldByName('dados').AsString;
-
-      //
-      // Próximo registro.
-      //
-      locADOQuery.Next;
-    end;
+    Plataforma_ERP_VCL_LogRegistroExibir(locADOQuery);
   end;
 
   //
@@ -643,15 +608,6 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
-  VCLCursorTrocar;  
-
-  //
-  // Exibe formulário.
-  //
-  if locLogRegistroLista <> nil then
-  begin
-    Plataforma_ERP_VCL_LogRegistroExibir(locLogRegistroLista);
-  end;
 end;
 
 //

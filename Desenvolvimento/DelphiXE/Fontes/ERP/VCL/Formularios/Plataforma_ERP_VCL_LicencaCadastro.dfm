@@ -110,7 +110,7 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabCadastro
+    ActivePage = tabAuditoria
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
@@ -203,10 +203,6 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 16
@@ -245,6 +241,7 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
         ReadOnly = True
         TabOrder = 0
         Text = '99/99/9999 99:99:99.999'
+        OnClick = edtInsLocalDtHrClick
       end
       object edtUpdLocalDtHr: TEdit
         Left = 16
@@ -263,6 +260,7 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
         ReadOnly = True
         TabOrder = 1
         Text = '99/99/9999 99:99:99.999'
+        OnClick = edtUpdLocalDtHrClick
       end
       object edtUpdContador: TEdit
         Left = 200

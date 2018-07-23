@@ -15,7 +15,6 @@ unit Plataforma_ERP_VCL_LogRegistroExibir;
 interface
 
 uses
-  Plataforma_ERP_Generico,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -44,7 +43,7 @@ type
     lblUserName: TLabel;
     lblUsuarioNome: TLabel;
     lblMensagem: TLabel;
-    lblBase: TLabel;
+    lblLogBase: TLabel;
     edtSequencial: TEdit;
     edtLogLocalDtHr: TEdit;
     edtLogServerDtHr: TEdit;
@@ -53,16 +52,36 @@ type
     edtUserName: TEdit;
     edtUsuarioNome: TEdit;
     memMensagem: TMemo;
-    edtBaseDescricao: TEdit;
+    edtLogBaseDescricao: TEdit;
     memDados: TMemo;
+    edtLogBaseID: TEdit;
+    edtRegistroAcaoID: TEdit;
+    edtUsuarioID: TEdit;
+    edtUsuarioBaseID: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnFecharClick(Sender: TObject);
+    procedure edtLogLocalDtHrClick(Sender: TObject);
+    procedure edtLogServerDtHrClick(Sender: TObject);
+    procedure edtLogBaseDescricaoClick(Sender: TObject);
   private
     procedure FormularioLimpar;
   public
-    pubLogRegistro: TPlataforma_ERP_LogRegistro;
+    pubSequencial           : Integer;
+    pubLogLocalDtHr         : TDateTime;
+    pubLogServerDtHr        : TDateTime;
+    pubLogBaseID            : Integer;
+    pubLogBaseDescricao     : string;
+    pubRegistroAcaoID       : Integer;
+    pubRegistroAcaoDescricao: string;
+    pubHostName             : string;
+    pubUserName             : string;
+    pubUsuarioBaseID        : Integer;
+    pubUsuarioID            : Integer;
+    pubUsuarioNome          : string;
+    pubMensagem             : string;
+    pubDados                : string;
   end;
 
 var
@@ -74,14 +93,60 @@ implementation
 
 uses
   Plataforma_Framework_Util,
-  Plataforma_Framework_VCL;
+  Plataforma_Framework_VCL,
+  Plataforma_ERP_VCL_Generico;
 
 //
 // Evento de criação do formulário.
 //
 procedure TPlataformaERPVCLLogRegistroExibir.FormCreate(Sender: TObject);
 begin
+  //
+  // Inicializa variáveis públicas.
+  //
+  pubSequencial            := 0;
+  pubLogLocalDtHr          := 0;
+  pubLogServerDtHr         := 0;
+  pubLogBaseID             := 0;
+  pubLogBaseDescricao      := '';
+  pubRegistroAcaoID        := 0;
+  pubRegistroAcaoDescricao := '';
+  pubHostName              := '';
+  pubUserName              := '';
+  pubUsuarioBaseID         := 0;
+  pubUsuarioID             := 0;
+  pubUsuarioNome           := '';
+  pubMensagem              := '';
+  pubDados                 := '';
+
+  //
+  // Exibe a aba apropriada.
+  //
   pagFormulario.ActivePageIndex := 0;
+end;
+
+//
+// Evento de click no componente "base".
+//
+procedure TPlataformaERPVCLLogRegistroExibir.edtLogBaseDescricaoClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_BaseCadastroExibir(StringIntegerConverter(edtLogBaseID.Text));
+end;
+
+//
+// Evento de click no componente "data e hora local".
+//
+procedure TPlataformaERPVCLLogRegistroExibir.edtLogLocalDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtLogLocalDtHr.Text));
+end;
+
+//
+// Evento de click no componente "data e hora no servidor".
+//
+procedure TPlataformaERPVCLLogRegistroExibir.edtLogServerDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtLogServerDtHr.Text));
 end;
 
 //
@@ -97,16 +162,27 @@ begin
   //
   // Carrega componentes.
   //
-  edtSequencial.Text            := IntegerStringConverter(pubLogRegistro.Sequencial, True);
-  edtLogLocalDtHr.Text          := DateTimeStringConverter(pubLogRegistro.LogLocalDtHr,  'dd/mm/yyyy hh:nn:ss.zzz');
-  edtLogServerDtHr.Text         := DateTimeStringConverter(pubLogRegistro.LogServerDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
-  edtBaseDescricao.Text         := pubLogRegistro.LogBaseDescricao;
-  edtRegistroAcaoDescricao.Text := pubLogRegistro.RegistroAcaoDescricao;
-  edtHostName.Text              := pubLogRegistro.HostName;
-  edtUserName.Text              := pubLogRegistro.UserName;
-  edtUsuarioNome.Text           := pubLogRegistro.UsuarioNome;
-  memMensagem.Text              := pubLogRegistro.Mensagem;
-  memDados.Text                 := StringLogDadosDescreverEnter(pubLogRegistro.Dados);
+  edtSequencial.Text            := IntegerStringConverter(pubSequencial, True);
+  edtLogLocalDtHr.Text          := DateTimeStringConverter(pubLogLocalDtHr,  'dd/mm/yyyy hh:nn:ss.zzz');
+  edtLogServerDtHr.Text         := DateTimeStringConverter(pubLogServerDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
+  edtLogBaseID.Text             := IntegerStringConverter(pubLogBaseID, True);
+  edtLogBaseDescricao.Text      := pubLogBaseDescricao;
+  edtRegistroAcaoID.Text        := IntegerStringConverter(pubRegistroAcaoID, True);
+  edtRegistroAcaoDescricao.Text := pubRegistroAcaoDescricao;
+  edtHostName.Text              := pubHostName;
+  edtUserName.Text              := pubUserName;
+  edtUsuarioBaseID.Text         := IntegerStringConverter(pubUsuarioBaseID);
+  edtUsuarioID.Text             := IntegerStringConverter(pubUsuarioID);
+  edtUsuarioNome.Text           := pubUsuarioNome;
+  memMensagem.Text              := pubMensagem;
+  memDados.Text                 := StringLogDadosDescreverEnter(pubDados);
+
+  //
+  // Controle de click para a exibição dos cadastros.
+  //
+  VCLEditClickControlar(edtLogBaseDescricao, True);
+  VCLEditClickControlar(edtLogLocalDtHr,     True);
+  VCLEditClickControlar(edtLogServerDtHr,    True);    
 end;
 
 //
@@ -133,13 +209,26 @@ begin
   VCLEditLimpar(edtSequencial);
   VCLEditLimpar(edtLogLocalDtHr);
   VCLEditLimpar(edtLogServerDtHr);
-  VCLEditLimpar(edtBaseDescricao);
+
+  VCLEditLimpar(edtLogBaseID);
+  VCLEditLimpar(edtLogBaseDescricao);
+
+  VCLEditLimpar(edtRegistroAcaoID);
   VCLEditLimpar(edtRegistroAcaoDescricao);
+  
   VCLEditLimpar(edtHostName);
   VCLEditLimpar(edtUserName);
+
+  VCLEditLimpar(edtUsuarioBaseID);
+  VCLEditLimpar(edtUsuarioID);
   VCLEditLimpar(edtUsuarioNome);
+
   VCLMemoLimpar(memMensagem);
   VCLMemoLimpar(memDados);
+
+  VCLEditClickControlar(edtLogBaseDescricao, False);
+  VCLEditClickControlar(edtLogLocalDtHr,     False);
+  VCLEditClickControlar(edtLogServerDtHr,    False);  
 end;
 
 end.
