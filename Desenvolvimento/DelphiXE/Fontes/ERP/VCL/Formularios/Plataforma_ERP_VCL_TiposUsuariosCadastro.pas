@@ -67,6 +67,7 @@ type
     edtLicencaID: TEdit;
     lblCodigoCadastrado: TLabel;
     edtCodigoCadastrado: TEdit;
+    btnAtualizar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -96,6 +97,7 @@ type
     procedure edtBaseDescricaoClick(Sender: TObject);
     procedure edtInsLocalDtHrClick(Sender: TObject);
     procedure edtUpdLocalDtHrClick(Sender: TObject);
+    procedure btnAtualizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -319,6 +321,16 @@ begin
 end;
 
 //
+// Evento de click no botão "atualizar".
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.btnAtualizarClick(Sender: TObject);
+begin
+  FormularioPopular(StringIntegerConverter(edtBaseID.Text),
+                    StringIntegerConverter(edtLicencaID.Text),
+                    StringIntegerConverter(edtTipoUsuarioID.Text));
+end;
+
+//
 // Evento de click no botão "novo".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnNovoClick(Sender: TObject);
@@ -378,11 +390,11 @@ end;
 // Procedimento para limpar os componentes do formulário.
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioLimpar;
-begin
+begin 
   //
   // Posiciona pagecontrole na primeira aba.
   //
-  pagFormulario.ActivePageIndex := TAB_CADASTRO;
+  VCLPageControlInicializar(pagFormulario);
 
   // Limpa componentes da aba "cadastro".
   VCLEditLimpar    (edtCodigo);
@@ -450,6 +462,7 @@ begin
   // Controla os botões do formulário.
   //
   btnLog.Visible       := (not argEditar) and (locDadosPopulados);
+  btnAtualizar.Visible := (not argEditar) and (locDadosPopulados);
   btnNovo.Visible      := (not argEditar);
   btnExcluir.Visible   := (not argEditar) and (locDadosPopulados);
   btnAlterar.Visible   := (not argEditar) and (locDadosPopulados);
@@ -461,10 +474,14 @@ begin
   //
   // Permissões de acesso por usuário.
   //
-  btnLog.Visible       := (btnLog.Visible)     and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_LOG'));
-  btnNovo.Visible      := (btnNovo.Visible)    and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_NOVO'));
-  btnExcluir.Visible   := (btnExcluir.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_EXCLUIR'));
-  btnAlterar.Visible   := (btnAlterar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_ALTERAR'));
+  tabCadastro.TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_ABA_CADASTRO');
+  tabAuditoria.TabVisible := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_ABA_AUDITORIA');
+      
+  btnLog.Visible       := (btnLog.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_LOG'));
+  btnAtualizar.Visible := (btnAtualizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_ATUALIZAR'));
+  btnNovo.Visible      := (btnNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_NOVO'));
+  btnExcluir.Visible   := (btnExcluir.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_EXCLUIR'));
+  btnAlterar.Visible   := (btnAlterar.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_ALTERAR'));
 
   //
   // Ajusta o título do formulário.
@@ -643,7 +660,7 @@ begin
   //
   // Coloca o foco no código.
   //
-  edtCodigo.SetFocus;
+  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCodigo);
 end;
 
 //
@@ -792,8 +809,7 @@ begin
   //
   // Coloca o foco no código.
   //
-  pagFormulario.ActivePageIndex := TAB_CADASTRO;
-  edtCodigo.SetFocus;
+  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCodigo);
 end;
 
 //
@@ -859,16 +875,14 @@ begin
   if locCodigo = '' then
   begin
     VCLConsistenciaExibir('O código do tipo de usuário deve ser informado!');
-    pagFormulario.ActivePageIndex := TAB_CADASTRO;
-    edtCodigo.SetFocus;
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCodigo);
     Exit;
   end;
 
   if locDescricao = '' then
   begin
     VCLConsistenciaExibir('A descrição do tipo de usuário deve ser informada!');
-    pagFormulario.ActivePageIndex := TAB_CADASTRO;
-    edtDescricao.SetFocus;
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtDescricao);
     Exit;
   end;
 

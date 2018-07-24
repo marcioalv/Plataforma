@@ -28,29 +28,45 @@ uses
   Vcl.ComCtrls,
   Vcl.Buttons,
   Vcl.Imaging.pngimage,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, Vcl.Grids, Vcl.Samples.Calendar;
 
 type
   TPlataformaERPVCLDataExibicao = class(TForm)
     imgFormulario: TImage;
     btnFechar: TBitBtn;
     btnMinimizar: TBitBtn;
-    Panel1: TPanel;
-    lblData: TLabel;
-    edtData: TEdit;
+    panFormulario: TPanel;
+    lblDia: TLabel;
+    edtDia: TEdit;
     lblDiaSemana: TLabel;
     edtDiaSemana: TEdit;
-    lblHorario: TLabel;
-    edtHorario: TEdit;
-    lblMilesimos: TLabel;
+    lblHora: TLabel;
+    edtHora: TEdit;
+    lblPeriodo: TLabel;
     edtPeriodo: TEdit;
     lblFeriado: TLabel;
     edtFeriado: TEdit;
+    lblMes: TLabel;
+    edtMes: TEdit;
+    lblAno: TLabel;
+    edtAno: TEdit;
+    lblMinuto: TLabel;
+    edtMinuto: TEdit;
+    lblSegundo: TLabel;
+    edtSegundo: TEdit;
+    edtMilesimos: TEdit;
+    lblMilesimos: TLabel;
+    lblMinutoSeparador: TLabel;
+    lblSegundoSeparador: TLabel;
+    lblMesSeparador: TLabel;
+    lblAnoSeparador: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
+    procedure panFormularioClick(Sender: TObject);
+    procedure calCalendarioChange(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioAtualizar(argData: TDateTime);
@@ -109,6 +125,11 @@ begin
   VCLSDIMinimizar;
 end;
 
+procedure TPlataformaERPVCLDataExibicao.calCalendarioChange(Sender: TObject);
+begin
+
+end;
+
 //
 // Evento de click no botão "fechar".
 //
@@ -122,46 +143,79 @@ end;
 //
 procedure TPlataformaERPVCLDataExibicao.FormularioLimpar;
 begin
-  VCLEditLimpar(edtData);
-  VCLEditLimpar(edtHorario);
-  VCLEditLimpar(edtPeriodo);
+  VCLEditLimpar(edtDia);
+  VCLEditLimpar(edtMes);
+  VCLEditLimpar(edtAno);
   VCLEditLimpar(edtDiaSemana);
   VCLEditLimpar(edtFeriado);
+  VCLEditLimpar(edtHora);
+  VCLEditLimpar(edtMinuto);
+  VCLEditLimpar(edtSegundo);
+  VCLEditLimpar(edtMilesimos);
+  VCLEditLimpar(edtPeriodo);
+end;
+
+procedure TPlataformaERPVCLDataExibicao.panFormularioClick(Sender: TObject);
+begin
+
 end;
 
 //
 // Procedimento para atualizar as informações sobre a data nos componentes do formulário.
 //
 procedure TPlataformaERPVCLDataExibicao.FormularioAtualizar(argData: TDateTime);
-var
-  argFormatacaoHorario: string;
 begin
-  argFormatacaoHorario := 'hh:nn';
-  if FormatDateTime('ss',  argData) <> '00'  then argFormatacaoHorario := argFormatacaoHorario + ':ss';
-  if FormatDateTime('zzz', argData) <> '000' then argFormatacaoHorario := argFormatacaoHorario + '.zzz';
-
-  edtData.Text      := FormatDateTime('dd/mm/yyyy',         argData);
-  edtHorario.Text   := FormatDateTime(argFormatacaoHorario, argData);
-  edtPeriodo.Text   := PeriodoDeterminar(argData);
+  edtDia.Text       := FormatDateTime('dd',   argData);
+  edtMes.Text       := NomeMesDeterminar(argData);
+  edtAno.Text       := FormatDateTime('yyyy', argData);
   edtDiaSemana.Text := DiaSemanaDeterminar(argData);
-  edtFeriado.Text   := FeriadoFixoDeterminar(argData);
+ 
+  edtFeriado.Text   := FeriadoFixoDeterminar(argData);  
 
-  if edtHorario.Text = '00:00:00' then
-  begin
-    lblHorario.Visible := False;
-    edtHorario.Visible := False;
-  end;
-
-  if edtDiaSemana.Text = '' then
-  begin
-    lblDiaSemana.Visible := False;
-    edtDiaSemana.Visible := False;
-  end;
+  edtHora.Text      := FormatDateTime('hh',  argData);
+  edtMinuto.Text    := FormatDateTime('nn',  argData);
+  edtSegundo.Text   := FormatDateTime('ss',  argData);
+  edtMilesimos.Text := FormatDateTime('zzz', argData);
+  edtPeriodo.Text   := PeriodoDeterminar(argData);
 
   if edtFeriado.Text = '' then
   begin
-    lblFeriado.Visible := False;
-    edtFeriado.Visible := False;
+    edtFeriado.Text := 'Nenhum feriado programado nesta data!';
+  end;
+
+  if (edtHora.Text = '00') then
+  begin
+    lblHora.Visible := False;
+    edtHora.Visible := False;
+  end;
+
+  if (edtMinuto.Text = '00') then
+  begin
+    lblMinutoSeparador.Visible := False;
+    lblMinuto.Visible          := False;
+    edtMinuto.Visible          := False;
+  end;
+
+  if (edtSegundo.Text = '00') then
+  begin
+    lblSegundoSeparador.Visible := False;
+    lblSegundo.Visible          := False;
+    edtSegundo.Visible          := False;    
+  end;
+
+  if (edtMilesimos.Text = '000') then
+  begin
+    lblMilesimos.Visible := False;
+    edtMilesimos.Visible := False;
+  end;
+
+  if (edtHora.Text      = '00') and
+     (edtMinuto.Text    = '00') and
+     (edtSegundo.Text   = '00') and
+     (edtMilesimos.Text = '000') then
+  begin
+    lblPeriodo.Visible := False;
+    edtPeriodo.Visible := False;    
   end;
 end;
 

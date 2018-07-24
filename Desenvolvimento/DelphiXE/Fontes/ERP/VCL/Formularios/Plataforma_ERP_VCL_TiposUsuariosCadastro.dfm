@@ -65,6 +65,32 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       05C6798FC77389DFB6EF3E4C038188D76F4444C40236E91792CF639D04B6A21E
       41BC3560A8F4808642FE006C2D27A9AEBA4EA70000000049454E44AE426082}
   end
+  object btnGravar: TBitBtn
+    Left = 296
+    Top = 264
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Gravar'
+    TabOrder = 4
+    OnClick = btnGravarClick
+  end
+  object btnAlterar: TBitBtn
+    Left = 296
+    Top = 264
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Alterar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 3
+    OnClick = btnAlterarClick
+  end
   object pagFormulario: TPageControl
     Left = 48
     Top = 8
@@ -79,6 +105,10 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -493,18 +523,8 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 1
-    OnClick = btnExcluirClick
-  end
-  object btnGravar: TBitBtn
-    Left = 296
-    Top = 264
-    Width = 73
-    Height = 33
-    Cursor = crHandPoint
-    Caption = 'Gravar'
     TabOrder = 2
-    OnClick = btnGravarClick
+    OnClick = btnExcluirClick
   end
   object btnMinimizar: TBitBtn
     Left = 376
@@ -519,7 +539,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 5
     OnClick = btnMinimizarClick
   end
   object btnFechar: TBitBtn
@@ -529,7 +549,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Height = 33
     Cursor = crHandPoint
     Caption = 'Fechar'
-    TabOrder = 4
+    TabOrder = 7
     OnClick = btnFecharClick
   end
   object btnCancelar: TBitBtn
@@ -545,24 +565,8 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 5
-    OnClick = btnCancelarClick
-  end
-  object btnAlterar: TBitBtn
-    Left = 296
-    Top = 264
-    Width = 73
-    Height = 33
-    Cursor = crHandPoint
-    Caption = 'Alterar'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
     TabOrder = 6
-    OnClick = btnAlterarClick
+    OnClick = btnCancelarClick
   end
   object btnNovo: TBitBtn
     Left = 136
@@ -577,7 +581,23 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 7
+    TabOrder = 1
     OnClick = btnNovoClick
+  end
+  object btnAtualizar: TBitBtn
+    Left = 48
+    Top = 264
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Atualizar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 8
+    OnClick = btnAtualizarClick
   end
 end

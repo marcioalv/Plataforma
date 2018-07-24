@@ -58,6 +58,7 @@ type
     edtRegistroAcaoID: TEdit;
     edtUsuarioID: TEdit;
     edtUsuarioBaseID: TEdit;
+    btnMinimizar: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -65,6 +66,7 @@ type
     procedure edtLogLocalDtHrClick(Sender: TObject);
     procedure edtLogServerDtHrClick(Sender: TObject);
     procedure edtLogBaseDescricaoClick(Sender: TObject);
+    procedure btnMinimizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
   public
@@ -191,6 +193,14 @@ end;
 procedure TPlataformaERPVCLLogRegistroExibir.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Evento de click no botão "minimizar".
+//
+procedure TPlataformaERPVCLLogRegistroExibir.btnMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
 end;
 
 //

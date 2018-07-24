@@ -425,6 +425,10 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     object tabDados: TTabSheet
       Caption = 'Dados'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object memDados: TMemo
         Left = 8
         Top = 8
@@ -445,5 +449,15 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         TabOrder = 0
       end
     end
+  end
+  object btnMinimizar: TButton
+    Left = 408
+    Top = 496
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Minimizar'
+    TabOrder = 2
+    OnClick = btnMinimizarClick
   end
 end

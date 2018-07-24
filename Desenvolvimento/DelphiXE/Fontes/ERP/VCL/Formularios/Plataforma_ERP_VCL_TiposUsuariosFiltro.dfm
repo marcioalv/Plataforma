@@ -4,7 +4,7 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Filtros para localiza'#231#227'o de tipos de usu'#225'rio'
-  ClientHeight = 282
+  ClientHeight = 281
   ClientWidth = 393
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -114,13 +114,17 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
   object pagFormulario: TPageControl
     Left = 48
     Top = 8
-    Width = 329
+    Width = 330
     Height = 225
     Cursor = crHandPoint
-    ActivePage = tabAdicional
+    ActivePage = tabAuditoria
     TabOrder = 0
-    object tabPadrao: TTabSheet
-      Caption = 'Padr'#227'o'
+    object tabCadastro: TTabSheet
+      Caption = 'Cadastro'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -147,6 +151,32 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
         Width = 55
         Height = 14
         Caption = 'Descri'#231#227'o:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblBloqueado: TLabel
+        Left = 16
+        Top = 128
+        Width = 61
+        Height = 14
+        Caption = 'Bloqueado:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblAtivo: TLabel
+        Left = 176
+        Top = 128
+        Width = 32
+        Height = 14
+        Caption = 'Ativo:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -210,9 +240,45 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
         OnExit = edtDescricaoExit
         OnKeyPress = edtDescricaoKeyPress
       end
+      object cbxBloqueado: TComboBox
+        Left = 16
+        Top = 144
+        Width = 129
+        Height = 26
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 15
+        ParentFont = False
+        TabOrder = 3
+        Text = 'Wwwww'
+        OnEnter = cbxBloqueadoEnter
+        OnExit = cbxBloqueadoExit
+        OnKeyPress = cbxBloqueadoKeyPress
+      end
+      object cbxAtivo: TComboBox
+        Left = 176
+        Top = 144
+        Width = 129
+        Height = 26
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 15
+        ParentFont = False
+        TabOrder = 4
+        Text = 'Wwwww'
+        OnEnter = cbxAtivoEnter
+        OnExit = cbxAtivoExit
+        OnKeyPress = cbxAtivoKeyPress
+      end
     end
-    object tabAdicional: TTabSheet
-      Caption = 'Adicional'
+    object tabAuditoria: TTabSheet
+      Caption = 'Auditoria'
       ImageIndex = 1
       object lblTipoUsuarioID: TLabel
         Left = 16
@@ -234,12 +300,12 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
         Height = 13
         Caption = 'at'#233
       end
-      object lblBloqueado: TLabel
+      object lblInsDtHr: TLabel
         Left = 16
         Top = 72
-        Width = 61
+        Width = 70
         Height = 14
-        Caption = 'Bloqueado:'
+        Caption = 'Data cria'#231#227'o:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -247,18 +313,32 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
         Font.Style = []
         ParentFont = False
       end
-      object lblAtivo: TLabel
+      object lblInsDtHrAte: TLabel
+        Left = 152
+        Top = 93
+        Width = 16
+        Height = 13
+        Caption = 'at'#233
+      end
+      object lblUpdDtHr: TLabel
         Left = 16
         Top = 128
-        Width = 32
+        Width = 82
         Height = 14
-        Caption = 'Ativo:'
+        Caption = 'Data altera'#231#227'o:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
+      end
+      object lblUpdDtHrAte: TLabel
+        Left = 152
+        Top = 149
+        Width = 16
+        Height = 13
+        Caption = 'at'#233
       end
       object edtTipoUsuarioIDInicial: TEdit
         Left = 16
@@ -298,41 +378,89 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
         OnExit = edtTipoUsuarioIDFinalExit
         OnKeyPress = edtTipoUsuarioIDFinalKeyPress
       end
-      object cbxBloqueado: TComboBox
+      object medInsDtHrInicial: TMaskEdit
         Left = 16
         Top = 88
-        Width = 289
+        Width = 127
         Height = 26
+        Alignment = taCenter
+        EditMask = '99/99/9999'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15
         Font.Name = 'Tahoma'
         Font.Style = []
-        MaxLength = 15
+        MaxLength = 10
         ParentFont = False
         TabOrder = 2
-        Text = 'Wwwww'
-        OnEnter = cbxBloqueadoEnter
-        OnExit = cbxBloqueadoExit
-        OnKeyPress = cbxBloqueadoKeyPress
+        Text = '  /  /    '
+        OnEnter = medInsDtHrInicialEnter
+        OnExit = medInsDtHrInicialExit
+        OnKeyDown = medInsDtHrInicialKeyDown
+        OnKeyPress = medInsDtHrInicialKeyPress
       end
-      object cbxAtivo: TComboBox
-        Left = 16
-        Top = 144
-        Width = 289
+      object medInsDtHrFinal: TMaskEdit
+        Left = 176
+        Top = 88
+        Width = 127
         Height = 26
+        Alignment = taCenter
+        EditMask = '99/99/9999'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15
         Font.Name = 'Tahoma'
         Font.Style = []
-        MaxLength = 15
+        MaxLength = 10
         ParentFont = False
         TabOrder = 3
-        Text = 'Wwwww'
-        OnEnter = cbxAtivoEnter
-        OnExit = cbxAtivoExit
-        OnKeyPress = cbxAtivoKeyPress
+        Text = '  /  /    '
+        OnEnter = medInsDtHrFinalEnter
+        OnExit = medInsDtHrFinalExit
+        OnKeyDown = medInsDtHrFinalKeyDown
+        OnKeyPress = medInsDtHrFinalKeyPress
+      end
+      object medUpdDtHrInicial: TMaskEdit
+        Left = 16
+        Top = 144
+        Width = 127
+        Height = 26
+        Alignment = taCenter
+        EditMask = '99/99/9999'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 10
+        ParentFont = False
+        TabOrder = 4
+        Text = '  /  /    '
+        OnEnter = medUpdDtHrInicialEnter
+        OnExit = medUpdDtHrInicialExit
+        OnKeyDown = medUpdDtHrInicialKeyDown
+        OnKeyPress = medUpdDtHrInicialKeyPress
+      end
+      object medUpdDtHrFinal: TMaskEdit
+        Left = 176
+        Top = 144
+        Width = 127
+        Height = 26
+        Alignment = taCenter
+        EditMask = '99/99/9999'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 10
+        ParentFont = False
+        TabOrder = 5
+        Text = '  /  /    '
+        OnEnter = medUpdDtHrFinalEnter
+        OnExit = medUpdDtHrFinalExit
+        OnKeyDown = medUpdDtHrFinalKeyDown
+        OnKeyPress = medUpdDtHrFinalKeyPress
       end
     end
   end

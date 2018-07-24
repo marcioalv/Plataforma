@@ -66,6 +66,8 @@ function PeriodoDeterminar(argData: TDateTime): string;
 
 function DiaSemanaDeterminar(argData: TDateTime): string;
 
+function NomeMesDeterminar(argData: TDateTime): string;
+
 function DriveSerialNumberRecuperar(argDriveLetra: string): Integer;
 
 function StringCadastroIncluir(argTexto: string): string;
@@ -178,8 +180,6 @@ begin
   if (locDia =  2) and (locMes = 11) then Result := 'Finados';
   if (locDia = 15) and (locMEs = 11) then Result := 'Proclamação da república';
   if (locDia = 25) and (locMes = 12) then Result := 'Natal';
-
-  if (locDia = 21) and (locMes =  7) then Result := 'Dia do Marcio';
 end;
 
 //
@@ -203,13 +203,37 @@ begin
   locDiaSemana := DayOfTheWeek(argData);
 
   Result := '';
-  if locDiaSemana = 1 then Result := 'Domingo';
-  if locDiaSemana = 2 then Result := 'Segunda-feira';
-  if locDiaSemana = 3 then Result := 'Terça-feira';
-  if locDiaSemana = 4 then Result := 'Quarta-feira';
-  if locDiaSemana = 5 then Result := 'Quinta-feira';
-  if locDiaSemana = 6 then Result := 'Sexta-feira';
-  if locDiaSemana = 7 then Result := 'Sábado';
+  if locDiaSemana = 7 then Result := 'Domingo';
+  if locDiaSemana = 1 then Result := 'Segunda-feira';
+  if locDiaSemana = 2 then Result := 'Terça-feira';
+  if locDiaSemana = 3 then Result := 'Quarta-feira';
+  if locDiaSemana = 4 then Result := 'Quinta-feira';
+  if locDiaSemana = 5 then Result := 'Sexta-feira';
+  if locDiaSemana = 6 then Result := 'Sábado';
+end;
+
+//
+// NomeMesDeterminar.
+//
+function NomeMesDeterminar(argData: TDateTime): string;
+var
+  locMes: Word;
+begin
+  locMes := MonthOfTheYear(argData);
+
+  Result := '';
+  if locMes =  1 then Result := 'Janeiro';
+  if locMes =  2 then Result := 'Fevereiro';
+  if locMes =  3 then Result := 'Março';
+  if locMes =  4 then Result := 'Abril';
+  if locMes =  5 then Result := 'Maio';
+  if locMes =  6 then Result := 'Junho';
+  if locMes =  7 then Result := 'Julho';
+  if locMes =  8 then Result := 'Agosto';
+  if locMes =  9 then Result := 'Setembro';
+  if locMes = 10 then Result := 'Outubro';
+  if locMes = 11 then Result := 'Novembro';
+  if locMes = 12 then Result := 'Dezembro';
 end;
 
 //

@@ -152,6 +152,12 @@ procedure VCLProgressBarInicializar(argComponente: TProgressBar; argTamanho: Int
 procedure VCLProgressBarIncrementar(argComponente: TProgressBar);
 
 //
+// PageControl.
+//
+procedure VCLPageControlInicializar(argComponente: TPageControl);
+procedure VCLPageControlFocar(argComponente: TPageControl; argTabIndice: Integer; argControle: TWinControl);
+
+//
 // Específicos para listview.
 //
 procedure VCLListViewItemPosicionar(argComponente: TListView; argIndice: Integer);
@@ -1037,6 +1043,35 @@ end;
 procedure VCLProgressBarIncrementar(argComponente: TProgressBar);
 begin
   argComponente.Position := argComponente.Position + 1;
+end;
+
+//
+// VCLPageControlInicializar.
+//
+procedure VCLPageControlInicializar(argComponente: TPageControl);
+var
+  locContador: Integer;
+begin
+  for locContador := 0 to (argComponente.PageCount - 1) do
+  begin
+    if argComponente.Pages[locContador].TabVisible then
+    begin
+      argComponente.ActivePageIndex := locContador;
+      Break;
+    end;
+  end;
+end;
+
+//
+// VCLPageControlFocar.
+//
+procedure VCLPageControlFocar(argComponente: TPageControl; argTabIndice: Integer; argControle: TWinControl);
+begin
+  if argComponente.Pages[argTabIndice].TabVisible then
+  begin
+    argComponente.ActivePageIndex := argTabIndice;
+    argControle.SetFocus;
+  end;
 end;
 
 //
