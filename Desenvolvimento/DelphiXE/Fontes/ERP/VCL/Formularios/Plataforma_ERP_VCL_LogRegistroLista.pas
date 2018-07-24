@@ -178,8 +178,8 @@ begin
     locListItem         := lvwLista.Items.Add;
     locListItem.Caption := '';
     locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('sequencial').AsInteger));
-    locListItem.SubItems.Add(DateTimeStringConverter(pubADOQuery.FieldByName('log_local_dt_hr').AsDateTime,  'dd/mm/yyyy hh:nn:ss'));
-    locListItem.SubItems.Add(DateTimeStringConverter(pubADOQuery.FieldByName('log_server_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss'));
+    locListItem.SubItems.Add(DateTimeStringConverter(pubADOQuery.FieldByName('log_local_dt_hr').AsDateTime,  'dd/mm/yyyy hh:nn:ss.zzz'));
+    locListItem.SubItems.Add(DateTimeStringConverter(pubADOQuery.FieldByName('log_server_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss.zzz'));
     locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('log_base_id').AsInteger));
     locListItem.SubItems.Add(pubADOQuery.FieldByName('log_base_descricao').AsString);
     locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('registro_acao_id').AsInteger));
@@ -194,6 +194,8 @@ begin
 
     pubADOQuery.Next;
   end;
+
+  VCLListViewFocar(lvwLista);
 end;
 
 //
