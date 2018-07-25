@@ -27,7 +27,8 @@ uses
   Plataforma_ERP_VCL_LicencaCadastro in '..\Formularios\Plataforma_ERP_VCL_LicencaCadastro.pas' {PlataformaERPVCLLicencaCadastro},
   Plataforma_ERP_VCL_BaseCadastro in '..\Formularios\Plataforma_ERP_VCL_BaseCadastro.pas' {PlataformaERPVCLBaseCadastro},
   Plataforma_ERP_VCL_TiposUsuariosSelecao in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosSelecao.pas' {PlataformaERPVCLTiposUsuariosSelecao},
-  Plataforma_ERP_VCL_DataExibicao in '..\Formularios\Plataforma_ERP_VCL_DataExibicao.pas' {PlataformaERPVCLDataExibicao};
+  Plataforma_ERP_VCL_DataExibicao in '..\Formularios\Plataforma_ERP_VCL_DataExibicao.pas' {PlataformaERPVCLDataExibicao},
+  Plataforma_ERP_VCL_DataSelecao in '..\Formularios\Plataforma_ERP_VCL_DataSelecao.pas' {PlataformaERPVCLDataSelecao};
 
 {$R *.res}
 

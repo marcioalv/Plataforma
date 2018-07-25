@@ -572,8 +572,8 @@ begin
   locADOQuery.SQL.Add('  INNER JOIN [registro_acao] WITH (NOLOCK)                                        ');
   locADOQuery.SQL.Add('    ON [registro_acao].[registro_acao_id] = [tipo_usuario_log].[registro_acao_id] ');
   locADOQuery.SQL.Add('  INNER JOIN [usuario] WITH (NOLOCK)                                              ');
-  locADOQuery.SQL.Add('    ON [usuario].[base_id]    = [tipo_usuario_log].[base_id]    AND               ');
-  locADOQuery.SQL.Add('       [usuario].[licenca_id] = [tipo_usuario_log].[licenca_id] AND               ');
+  locADOQuery.SQL.Add('    ON [usuario].[base_id]    = [tipo_usuario_log].[usuario_base_id] AND          ');
+  locADOQuery.SQL.Add('       [usuario].[licenca_id] = [tipo_usuario_log].[licenca_id]      AND          ');
   locADOQuery.SQL.Add('       [usuario].[usuario_id] = [tipo_usuario_log].[usuario_id]                   ');
   locADOQuery.SQL.Add('WHERE                                                                             ');
   locADOQuery.SQL.Add('  [tipo_usuario_log].[base_id]         = :base_id    AND                          ');

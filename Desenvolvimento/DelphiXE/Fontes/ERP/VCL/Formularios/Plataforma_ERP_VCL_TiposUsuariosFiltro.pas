@@ -28,7 +28,8 @@ uses
   Vcl.ExtCtrls,
   Vcl.Buttons,
   Vcl.Imaging.pngimage,
-  Vcl.ComCtrls, Vcl.Mask;
+  Vcl.ComCtrls,
+  Vcl.Mask;
 
 type
   TPlataformaERPVCLTiposUsuariosFiltro = class(TForm)
@@ -62,6 +63,10 @@ type
     medUpdDtHrInicial: TMaskEdit;
     lblUpdDtHrAte: TLabel;
     medUpdDtHrFinal: TMaskEdit;
+    imgInsDtHrInicial: TImage;
+    imgUpdDtHrInicial: TImage;
+    imgInsDtHrFinal: TImage;
+    imgUpdDtHrFinal: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -106,6 +111,10 @@ type
     procedure medUpdDtHrFinalExit(Sender: TObject);
     procedure medUpdDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure medUpdDtHrFinalKeyPress(Sender: TObject; var Key: Char);
+    procedure imgInsDtHrInicialClick(Sender: TObject);
+    procedure imgInsDtHrFinalClick(Sender: TObject);
+    procedure imgUpdDtHrInicialClick(Sender: TObject);
+    procedure imgUpdDtHrFinalClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioLimpar;
@@ -135,7 +144,8 @@ implementation
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
-  Plataforma_ERP_Generico;
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_Generico;
 
 const
   TAB_CADASTRO : Byte = 0;
@@ -359,13 +369,18 @@ end;
 
 procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrInicialKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  Exit;
+  if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medInsDtHrInicial);
 end;
 
 procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrInicialExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medInsDtHrInicial) then Exit;
   if not VCLMaskEditDataValidar(medInsDtHrInicial) then Exit;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosFiltro.imgInsDtHrInicialClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataSelecionar(medInsDtHrInicial);
 end;
 
 //
@@ -383,13 +398,18 @@ end;
 
 procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  Exit;
+  if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medInsDtHrFinal);
 end;
 
 procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrFinalExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medInsDtHrFinal) then Exit;
   if not VCLMaskEditDataValidar(medInsDtHrFinal) then Exit;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosFiltro.imgInsDtHrFinalClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataSelecionar(medInsDtHrFinal);
 end;
 
 //
@@ -407,13 +427,18 @@ end;
 
 procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrInicialKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  Exit;
+  if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrInicial);
 end;
 
 procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrInicialExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medUpdDtHrInicial) then Exit;
   if not VCLMaskEditDataValidar(medUpdDtHrInicial) then Exit;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosFiltro.imgUpdDtHrInicialClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrInicial);
 end;
 
 //
@@ -431,13 +456,18 @@ end;
 
 procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  Exit;
+  if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrFinal);
 end;
 
 procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrFinalExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medUpdDtHrFinal) then Exit;
   if not VCLMaskEditDataValidar(medUpdDtHrFinal) then Exit;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosFiltro.imgUpdDtHrFinalClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrFinal);
 end;
 
 //
@@ -518,16 +548,19 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosFiltro.FormularioLocalizar;
 begin
   pubClicouFechar         := False;
-  pubTipoUsuarioIDInicial := StringIntegerConverter(edtTipoUsuarioIDInicial.Text);
-  pubTipoUsuarioIDFinal   := StringIntegerConverter(edtTipoUsuarioIDFinal.Text);
   pubCodigoInicial        := StringTrim(edtCodigoInicial.Text);
   pubCodigoFinal          := StringTrim(edtCodigoFinal.Text);
   pubDescricao            := StringTrim(edtDescricao.Text);
   pubBloqueado            := Copy(cbxBloqueado.Text, 1, 1);
   pubAtivo                := Copy(cbxAtivo.Text, 1, 1);
+  pubTipoUsuarioIDInicial := StringIntegerConverter(edtTipoUsuarioIDInicial.Text);
+  pubTipoUsuarioIDFinal   := StringIntegerConverter(edtTipoUsuarioIDFinal.Text);
+  pubInsDtHrInicial       := StringDateTimeConverter(medInsDtHrInicial.Text);
+  pubInsDtHrFinal         := StringDateTimeConverter(medInsDtHrFinal.Text);
+  pubUpdDtHrInicial       := StringDateTimeConverter(medUpdDtHrInicial.Text);
+  pubUpdDtHrFinal         := StringDateTimeConverter(medUpdDtHrFinal.Text);
   Close;
 end;
-
 
 end.
 

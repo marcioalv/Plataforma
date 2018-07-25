@@ -65,13 +65,17 @@ type
     priListViewIndiceColuna      : Integer;
     priListViewOrdemAscendente   : Boolean;
   
-    priFiltroTipoUsuarioIDInicial: Integer;
-    priFiltroTipoUsuarioIDFinal  : Integer;
     priFiltroCodigoInicial       : string;
     priFiltroCodigoFinal         : string;
     priFiltroDescricao           : string;
     priFiltroBloqueado           : string;
     priFiltroAtivo               : string;
+    priFiltroTipoUsuarioIDInicial: Integer;
+    priFiltroTipoUsuarioIDFinal  : Integer;
+    priFiltroInsDtHrInicial      : TDateTime;
+    priFiltroInsDtHrFinal        : TDateTime;
+    priFiltroUpdDtHrInicial      : TDateTime;
+    priFiltroUpdDtHrFinal        : TDateTime;
 
     procedure FormularioControlar;
     procedure FormularioLocalizar;
@@ -119,13 +123,17 @@ begin
   priListViewIndiceColuna       := VCL_NENHUM_INDICE;
   priListViewOrdemAscendente    := False;
   
-  priFiltroTipoUsuarioIDInicial := 0;
-  priFiltroTipoUsuarioIDFinal   := 0;
   priFiltroCodigoInicial        := '';
   priFiltroCodigoFinal          := '';
   priFiltroDescricao            := '';
   priFiltroBloqueado            := '';
   priFiltroAtivo                := '';
+  priFiltroTipoUsuarioIDInicial := 0;
+  priFiltroTipoUsuarioIDFinal   := 0;
+  priFiltroInsDtHrInicial       := 0;
+  priFiltroInsDtHrFinal         := 0;
+  priFiltroUpdDtHrInicial       := 0;
+  priFiltroUpdDtHrFinal         := 0;
 
   //
   // Mensagem para o label de quantidade de registros.
@@ -271,47 +279,63 @@ procedure TPlataformaERPVCLTiposUsuariosLista.FormularioLocalizar;
 var
   locFormulario          : TPlataformaERPVCLTiposUsuariosFiltro;
   locClicouFechar        : Boolean;
-  locTipoUsuarioIDInicial: Integer;
-  locTipoUsuarioIDFinal  : Integer;
   locCodigoInicial       : string;
   locCodigoFinal         : string;
   locDescricao           : string;
   locBloqueado           : string;
   locAtivo               : string;
+  locTipoUsuarioIDInicial: Integer;
+  locTipoUsuarioIDFinal  : Integer;
+  locInsDtHrInicial      : TDateTime;
+  locInsDtHrFinal        : TDateTime;
+  locUpdDtHrInicial      : TDateTime;
+  locUpdDtHrFinal        : TDateTime;
 begin
   locFormulario := TPlataformaERPVCLTiposUsuariosFiltro.Create(Self);
 
-  locFormulario.pubTipoUsuarioIDInicial := priFiltroTipoUsuarioIDInicial;
-  locFormulario.pubTipoUsuarioIDFinal   := priFiltroTipoUsuarioIDFinal;
   locFormulario.pubCodigoInicial        := priFiltroCodigoInicial;
   locFormulario.pubCodigoFinal          := priFiltroCodigoFinal;
   locFormulario.pubDescricao            := priFiltroDescricao;
   locFormulario.pubBloqueado            := priFiltroBloqueado;
   locFormulario.pubAtivo                := priFiltroAtivo;
+  locFormulario.pubTipoUsuarioIDInicial := priFiltroTipoUsuarioIDInicial;
+  locFormulario.pubTipoUsuarioIDFinal   := priFiltroTipoUsuarioIDFinal;
+  locFormulario.pubInsDtHrInicial       := priFiltroInsDtHrInicial;
+  locFormulario.pubInsDtHrFinal         := priFiltroInsDtHrFinal;
+  locFormulario.pubUpdDtHrInicial       := priFiltroUpdDtHrInicial;
+  locFormulario.pubUpdDtHrFinal         := priFiltroUpdDtHrFinal;
   
   locFormulario.ShowModal;
 
   locClicouFechar         := locFormulario.pubClicouFechar;
-  locTipoUsuarioIDInicial := locFormulario.pubTipoUsuarioIDInicial;
-  locTipoUsuarioIDFinal   := locFormulario.pubTipoUsuarioIDFinal;
   locCodigoInicial        := locFormulario.pubCodigoInicial;
   locCodigoFinal          := locFormulario.pubCodigoFinal;
   locDescricao            := locFormulario.pubDescricao;
   locBloqueado            := locFormulario.pubBloqueado;
   locAtivo                := locFormulario.pubAtivo;
+  locTipoUsuarioIDInicial := locFormulario.pubTipoUsuarioIDInicial;
+  locTipoUsuarioIDFinal   := locFormulario.pubTipoUsuarioIDFinal;
+  locInsDtHrInicial       := locFormulario.pubInsDtHrInicial;
+  locInsDtHrFinal         := locFormulario.pubInsDtHrFinal;
+  locUpdDtHrInicial       := locFormulario.pubUpdDtHrInicial;
+  locUpdDtHrFinal         := locFormulario.pubUpdDtHrFinal;
   
   locFormulario.Release;
   FreeAndNil(locFormulario);
 
   if not locClicouFechar then
   begin
-    priFiltroTipoUsuarioIDInicial := locTipoUsuarioIDInicial;
-    priFiltroTipoUsuarioIDFinal   := locTipoUsuarioIDFinal;
     priFiltroCodigoInicial        := locCodigoInicial;
     priFiltroCodigoFinal          := locCodigoFinal;
     priFiltroDescricao            := locDescricao;
     priFiltroBloqueado            := locBloqueado;
     priFiltroAtivo                := locAtivo;
+    priFiltroTipoUsuarioIDInicial := locTipoUsuarioIDInicial;
+    priFiltroTipoUsuarioIDFinal   := locTipoUsuarioIDFinal;
+    priFiltroInsDtHrInicial       := locInsDtHrInicial;
+    priFiltroInsDtHrFinal         := locInsDtHrFinal;
+    priFiltroUpdDtHrInicial       := locUpdDtHrInicial;
+    priFiltroUpdDtHrFinal         := locUpdDtHrFinal;
 
     FormularioAtualizar(VCL_NENHUM_INDICE);
   end;
@@ -447,7 +471,57 @@ begin
     locFiltros := True;
     locADOQuery.SQL.Add(' AND [tipo_usuario].[ativo] = :ativo ');
     locADOQuery.Parameters.ParamByName('ativo').Value := priFiltroAtivo;
-  end;  
+  end;
+
+  if priFiltroInsDtHrInicial <> 0 then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND CAST([tipo_usuario].[ins_local_dt_hr] AS DATE) >= :ins_local_dt_hr_inicial ');
+    locADOQuery.Parameters.ParamByName('ins_local_dt_hr_inicial').Value := priFiltroInsDtHrInicial;
+  end;
+
+  if priFiltroInsDtHrFinal <> 0 then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND CAST([tipo_usuario].[ins_local_dt_hr] AS DATE) <= :ins_local_dt_hr_final ');
+    locADOQuery.Parameters.ParamByName('ins_local_dt_hr_final').Value := priFiltroInsDtHrFinal;
+  end;
+
+  if priFiltroUpdDtHrInicial <> 0 then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND EXISTS (SELECT TOP 1                                                                                 ');
+    locADOQuery.SQL.Add('               1                                                                                          ');
+    locADOQuery.SQL.Add('             FROM                                                                                         ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log] WITH (NOLOCK)                                                           ');
+    locADOQuery.SQL.Add('               INNER JOIN [registro_acao] WITH (NOLOCK)                                                   ');
+    locADOQuery.SQL.Add('                 ON [registro_acao].[registro_acao_id] = [tipo_usuario_log].[registro_acao_id]            ');
+    locADOQuery.SQL.Add('             WHERE                                                                                        ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[base_id]                        = [tipo_usuario].[base_id]         AND ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[licenca_id]                     = [tipo_usuario].[licenca_id]      AND ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[tipo_usuario_id]                = [tipo_usuario].[tipo_usuario_id] AND ');
+    locADOQuery.SQL.Add('               CAST([tipo_usuario_log].[log_local_dt_hr] AS DATE) >= :log_local_dt_hr_inicial         AND ');
+    locADOQuery.SQL.Add('               [registro_acao].[alteracao]                         = ''S'')                               ');
+    locADOQuery.Parameters.ParamByName('log_local_dt_hr_inicial').Value := priFiltroUpdDtHrInicial;
+  end;
+
+  if priFiltroUpdDtHrFinal <> 0 then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND EXISTS (SELECT TOP 1                                                                                 ');
+    locADOQuery.SQL.Add('               1                                                                                          ');
+    locADOQuery.SQL.Add('             FROM                                                                                         ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log] WITH (NOLOCK)                                                           ');
+    locADOQuery.SQL.Add('               INNER JOIN [registro_acao] WITH (NOLOCK)                                                   ');
+    locADOQuery.SQL.Add('                 ON [registro_acao].[registro_acao_id] = [tipo_usuario_log].[registro_acao_id]            ');
+    locADOQuery.SQL.Add('             WHERE                                                                                        ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[base_id]                        = [tipo_usuario].[base_id]         AND ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[licenca_id]                     = [tipo_usuario].[licenca_id]      AND ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[tipo_usuario_id]                = [tipo_usuario].[tipo_usuario_id] AND ');
+    locADOQuery.SQL.Add('               CAST([tipo_usuario_log].[log_local_dt_hr] AS DATE) <= :log_local_dt_hr_final           AND ');
+    locADOQuery.SQL.Add('               [registro_acao].[alteracao]                         = ''S'')                               ');
+    locADOQuery.Parameters.ParamByName('log_local_dt_hr_final').Value := priFiltroUpdDtHrFinal;
+  end;
 
   //
   // Order by.

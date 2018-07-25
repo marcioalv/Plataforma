@@ -15,11 +15,19 @@ unit Plataforma_ERP_VCL_Generico;
 interface
 
 uses
+  Plataforma_Framework_Util,
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_LogRegistroLista,
+  Plataforma_ERP_VCL_DataSelecao,
   Plataforma_ERP_VCL_DataExibicao,
   Data.Win.ADODB,
-  System.SysUtils;
+  System.SysUtils,
+  VCL.Mask;
+
+//
+// Plataforma_ERP_VCL_DataSelecionar.
+//
+procedure Plataforma_ERP_VCL_DataSelecionar(argComponente: TMaskEdit);
 
 //
 // Plataforma_ERP_VCL_DataExibir.
@@ -46,6 +54,32 @@ implementation
 uses
   Plataforma_ERP_VCL_BaseCadastro,
   Plataforma_ERP_VCL_LicencaCadastro;
+
+//
+// Procedimento para selecionar uma data.
+//
+procedure Plataforma_ERP_VCL_DataSelecionar(argComponente: TMaskEdit);
+var
+  locFormulario  : TPlataformaERPVCLDataSelecao;
+  locClicouFechar: Boolean;
+  locData        : TDateTime;
+begin
+  locFormulario         := TPlataformaERPVCLDataSelecao.Create(nil);
+  locFormulario.pubData := StringDateTimeConverter(argComponente.Text);
+
+  locFormulario.ShowModal;
+
+  locClicouFechar := locFormulario.pubClicouFechar;
+  locData         := locFormulario.pubData;
+
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    argComponente.Text := DateTimeStringConverter(locData, 'dd/mm/yyyy');
+  end;
+end;
 
 //
 // Procedimento para exibir informações sobre uma data.
