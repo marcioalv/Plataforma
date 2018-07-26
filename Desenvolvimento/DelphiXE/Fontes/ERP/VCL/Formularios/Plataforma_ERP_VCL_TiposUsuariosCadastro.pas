@@ -29,7 +29,7 @@ uses
   Vcl.Buttons,
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls, Vcl.Menus;
 
 type
   TPlataformaERPVCLTiposUsuariosCadastro = class(TForm)
@@ -430,6 +430,7 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioControlar(argEditar: Boolean);
 var
   locDadosPopulados: Boolean;
+  locIdentificador : string;
 begin
   //
   // Determina se existem dados populados no formulário.
@@ -486,11 +487,12 @@ begin
   //
   // Ajusta o título do formulário.
   //
-  Self.Caption := 'Tipo de usuário';
+  Self.Caption     := 'Tipo de usuário';
+  locIdentificador := ': ' + edtDescricao.Text;
 
   if (not locDadosPopulados) and (argEditar) then Self.Caption := Self.Caption + ' - novo cadastro';
-  if locDadosPopulados and argEditar         then Self.Caption := Self.Caption + ' - alterando cadastro';
-  if locDadosPopulados and (not argEditar)   then Self.Caption := Self.Caption + ' - consultando cadastro';
+  if locDadosPopulados and argEditar         then Self.Caption := Self.Caption + ' - alterando cadastro' + locIdentificador;
+  if locDadosPopulados and (not argEditar)   then Self.Caption := Self.Caption + ' - consultando cadastro' + locIdentificador;
 end;
 
 //
@@ -572,9 +574,9 @@ begin
   locADOQuery.SQL.Add('  INNER JOIN [registro_acao] WITH (NOLOCK)                                        ');
   locADOQuery.SQL.Add('    ON [registro_acao].[registro_acao_id] = [tipo_usuario_log].[registro_acao_id] ');
   locADOQuery.SQL.Add('  INNER JOIN [usuario] WITH (NOLOCK)                                              ');
-  locADOQuery.SQL.Add('    ON [usuario].[licenca_id] = [tipo_usuario_log].[licenca_id]      AND          ');
-  locADOQuery.SQL.Add('       [usuario].[base_id]    = [tipo_usuario_log].[usuario_base_id] AND          ');
-  locADOQuery.SQL.Add('       [usuario].[usuario_id] = [tipo_usuario_log].[usuario_id]                   ');
+  locADOQuery.SQL.Add('    ON [usuario].[licenca_id] = [tipo_usuario_log].[licenca_id]          AND      ');
+  locADOQuery.SQL.Add('       [usuario].[base_id]    = [tipo_usuario_log].[log_usuario_base_id] AND      ');
+  locADOQuery.SQL.Add('       [usuario].[usuario_id] = [tipo_usuario_log].[log_usuario_id]               ');
   locADOQuery.SQL.Add('WHERE                                                                             ');
   locADOQuery.SQL.Add('  [tipo_usuario_log].[licenca_id]      = :licenca_id AND                          ');
   locADOQuery.SQL.Add('  [tipo_usuario_log].[base_id]         = :base_id    AND                          ');
@@ -615,7 +617,7 @@ begin
   //
   if locADOQuery.RecordCount > 0 then
   begin
-    Plataforma_ERP_VCL_LogRegistroExibir(locADOQuery);
+    Plataforma_ERP_VCL_LogRegistroExibir('tipo de usuário: ' + edtDescricao.Text, locADOQuery);
   end;
 
   //
@@ -765,10 +767,13 @@ begin
   end;
 
   //
-  // Registro encontrado então carrega componentes.
+  // Registro encontrado.
   //
   if locADOQuery.RecordCount >= 0 then
   begin
+    //
+    // Carrega componentes.
+    //
     edtCodigo.Text           := locADOQuery.FieldByName('codigo').AsString;
     edtDescricao.Text        := locADOQuery.FieldByName('descricao').AsString;
     chkBloqueado.Checked     := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
@@ -823,6 +828,7 @@ var
   locLogMensagem           : string;
 
   locInsert                : Boolean;
+  locRegistroAcao          : Byte;
   locRegistroAcaoID        : Integer;
   locTipoUsuarioLogSq      : Integer;
   locTipoUsuarioLogMsg     : string;
@@ -883,15 +889,6 @@ begin
     VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtDescricao);
     Exit;
   end;
-
-  //
-  // Log dados.
-  //
-  locTipoUsuarioLogLogDados := '';
-  LogDadosStringDescrever ('Código',    locCodigo,    locTipoUsuarioLogLogDados);
-  LogDadosStringDescrever ('Descrição', locDescricao, locTipoUsuarioLogLogDados);
-  LogDadosBooleanDescrever('Bloqueado', locBloqueado, locTipoUsuarioLogLogDados);
-  LogDadosBooleanDescrever('Ativo',     locAtivo,     locTipoUsuarioLogLogDados);
 
   //
   // Confirma gravação com o usuário.
@@ -1030,13 +1027,28 @@ begin
   //
   if locInsert then
   begin
-    locRegistroAcaoID    := Plataforma_ERP_RegistroAcaoIDDeterminar(locADOConnection, True, False, False, False);
+    locRegistroAcao      := REGISTRO_ACAO_CRIACAO;
     locTipoUsuarioLogMsg := MENSAGEM_REGISTRO_ACAO_CRIADO;
   end
   else
   begin
-    locRegistroAcaoID    := Plataforma_ERP_RegistroAcaoIDDeterminar(locADOConnection, False, False, True, False);
+    locRegistroAcao      := REGISTRO_ACAO_ALTERACAO;
     locTipoUsuarioLogMsg := MENSAGEM_REGISTRO_ACAO_ALTERADO;
+  end;
+
+  try
+    locRegistroAcaoID := Plataforma_ERP_RegistroAcaoIDDeterminar(locADOConnection, locRegistroAcao);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit
+    end;
   end;
 
   //
@@ -1051,7 +1063,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao tentar iniciar uma transação com o banco de dados da aplicação!';
+      locLogMensagem := ERRO_MENSAGEM_BD_TRANSACAO_INICIAR;
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, ERRO_MENSAGEM_TENTE_NOVAMENTE, locExcecao.Message);
       Exit
@@ -1218,6 +1230,18 @@ begin
   locUpdContador  := locADOQuery.FieldByName('upd_contador').AsInteger;
 
   //
+  // Log dados.
+  //
+  locTipoUsuarioLogLogDados := '';
+  LogDadosIntegerDescrever('Licença',       locLicencaID,     locTipoUsuarioLogLogDados);
+  LogDadosIntegerDescrever('Base',          locBaseID,        locTipoUsuarioLogLogDados);
+  LogDadosIntegerDescrever('TipoUsuarioID', locTipoUsuarioID, locTipoUsuarioLogLogDados);
+  LogDadosStringDescrever ('Código',        locCodigo,        locTipoUsuarioLogLogDados);
+  LogDadosStringDescrever ('Descrição',     locDescricao,     locTipoUsuarioLogLogDados);
+  LogDadosBooleanDescrever('Bloqueado',     locBloqueado,     locTipoUsuarioLogLogDados);
+  LogDadosBooleanDescrever('Ativo',         locAtivo,         locTipoUsuarioLogLogDados);
+
+  //
   // Determina o próximo sequencial da tabela tipo_usuario_log.
   //
   locADOQuery.Close;
@@ -1275,8 +1299,8 @@ begin
   locADOQuery.SQL.Add('  [registro_acao_id],           ');
   locADOQuery.SQL.Add('  [host_name],                  ');
   locADOQuery.SQL.Add('  [user_name],                  ');
-  locADOQuery.SQL.Add('  [usuario_base_id],            ');
-  locADOQuery.SQL.Add('  [usuario_id],                 ');
+  locADOQuery.SQL.Add('  [log_usuario_base_id],        ');
+  locADOQuery.SQL.Add('  [log_usuario_id],             ');
   locADOQuery.SQL.Add('  [mensagem],                   ');  
   locADOQuery.SQL.Add('  [dados]                       ');
   locADOQuery.SQL.Add(')                               ');
@@ -1291,8 +1315,8 @@ begin
   locADOQuery.SQL.Add('  :registro_acao_id,            '); // registro_acao_id.
   locADOQuery.SQL.Add('  :host_name,                   '); // host_name.
   locADOQuery.SQL.Add('  :user_name,                   '); // user_name.
-  locADOQuery.SQL.Add('  :usuario_base_id,             '); // usuario_base_id.
-  locADOQuery.SQL.Add('  :usuario_id,                  '); // usuario_id.
+  locADOQuery.SQL.Add('  :log_usuario_base_id,         '); // log_usuario_base_id.
+  locADOQuery.SQL.Add('  :log_usuario_id,              '); // log_usuario_id.
   locADOQuery.SQL.Add('  :mensagem,                    '); // mensagem.
   locADOQuery.SQL.Add('  :dados                        '); // dados.
   locADOQuery.SQL.Add(')                               ');
@@ -1306,8 +1330,8 @@ begin
   locADOQuery.Parameters.ParamByName('registro_acao_id').Value    := locRegistroAcaoID;
   locADOQuery.Parameters.ParamByName('host_name').Value           := locHostName;
   locADOQuery.Parameters.ParamByName('user_name').Value           := locUserName;
-  locADOQuery.Parameters.ParamByName('usuario_base_id').Value     := locUsuarioBaseID;
-  locADOQuery.Parameters.ParamByName('usuario_id').Value          := locUsuarioID;
+  locADOQuery.Parameters.ParamByName('log_usuario_base_id').Value := locUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('log_usuario_id').Value      := locUsuarioID;
   locADOQuery.Parameters.ParamByName('mensagem').Value            := locTipoUsuarioLogMsg;
   locADOQuery.Parameters.ParamByName('dados').Value               := locTipoUsuarioLogLogDados;
 
@@ -1346,7 +1370,7 @@ begin
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, ERRO_MENSAGEM_TENTE_NOVAMENTE, locExcecao.Message);
       Exit
     end;
-  end;  
+  end;
 
   //
   // Atualiza componentes que sofreram alteração com a gravação.
@@ -1373,6 +1397,22 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  //
+  // Grava log de ocorrência.
+  //  
+  try
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locTipoUsuarioID,locTipoUsuarioLogMsg, locTipoUsuarioLogLogDados);
+  except
+    on locExcecao: Exception do
+    begin
+      VCLErroExibir(locExcecao.Message);
+    end;
+  end;
+
+  //
+  // Tipo de usuário gravado!
+  //
   VCLInformacaoExibir('Tipo de usuário gravado com sucesso!');
 end;
 
@@ -1384,13 +1424,13 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioExcluir';
   ERRO_MENSAGEM    : string = 'Impossível excluir dados do tipo de usuário!';
 var
-  locADOConnection    : TADOConnection;
-  locADOQuery         : TADOQuery;
-  locLogMensagem      : string;
-
-  locLicencaID        : Integer;
-  locBaseID           : Integer;
-  locTipoUsuarioID    : Integer;
+  locADOConnection         : TADOConnection;
+  locADOQuery              : TADOQuery;
+  locLogMensagem           : string;
+  locLicencaID             : Integer;
+  locBaseID                : Integer;
+  locTipoUsuarioID         : Integer;
+  locTipoUsuarioLogLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
@@ -1398,6 +1438,18 @@ begin
   locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
   locBaseID        := StringIntegerConverter(edtBaseID.Text);
   locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
+
+  //
+  // Log dados.
+  //
+  locTipoUsuarioLogLogDados := '';
+  LogDadosIntegerDescrever('Licença',       locLicencaID,         locTipoUsuarioLogLogDados);
+  LogDadosIntegerDescrever('Base',          locBaseID,            locTipoUsuarioLogLogDados);
+  LogDadosIntegerDescrever('TipoUsuarioID', locTipoUsuarioID,     locTipoUsuarioLogLogDados);
+  LogDadosStringDescrever ('Código',        edtCodigo.Text,       locTipoUsuarioLogLogDados);
+  LogDadosStringDescrever ('Descrição',     edtDescricao.Text,    locTipoUsuarioLogLogDados);
+  LogDadosBooleanDescrever('Bloqueado',     chkBloqueado.Checked, locTipoUsuarioLogLogDados);
+  LogDadosBooleanDescrever('Ativo',         chkAtivo.Checked,     locTipoUsuarioLogLogDados);
 
   //
   // Confirma gravação com o usuário.
@@ -1440,7 +1492,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao tentar iniciar uma transação com o banco de dados da aplicação!';
+      locLogMensagem := ERRO_MENSAGEM_BD_TRANSACAO_INICIAR;
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, ERRO_MENSAGEM_TENTE_NOVAMENTE, locExcecao.Message);
       Exit
@@ -1488,7 +1540,7 @@ begin
   end;
 
   //
-  // Determina se o código do tipo do usuário já existe no banco de dados para um outro registro.
+  // Comando SQL para excluir um registro da tabela tipo_usuario.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
@@ -1562,6 +1614,14 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  //
+  // Log de ocorrência.
+  //
+  try
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locTipoUsuarioID, 'Registro excluído com sucesso!', locTipoUsuarioLogLogDados);
+  except
+  end;
   VCLInformacaoExibir('Tipo de usuário excluído com sucesso!');
 end;
 

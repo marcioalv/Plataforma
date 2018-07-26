@@ -21,6 +21,12 @@ uses
   Plataforma_ERP_Global;
 
 const
+  REGISTRO_ACAO_CRIACAO  : Byte = 0;
+  REGISTRO_ACAO_CONSULTA : Byte = 1;
+  REGISTRO_ACAO_ALTERACAO: Byte = 2;
+  REGISTRO_ACAO_EXCLUSAO : Byte = 3;
+
+const
   ERRO_MENSAGEM_TENTE_NOVAMENTE       : string = 'Por favor tente novamente agora!';
   
   ERRO_MENSAGEM_BD_CONEXAO_ABRIR      : string = 'Ocorreu algum problema ao tentar estabelecer uma conexão com o banco de dados da aplicação!';
@@ -55,6 +61,14 @@ function Plataforma_ERP_UsuarioRotina(argRotina: string): Boolean;
 procedure Plataforma_ERP_ADO_ConexaoAbrir(argADOConnection: TADOConnection);
 
 //
+// Plataforma_ERP_ADO_LogOcorrenciaInserir.
+//
+procedure Plataforma_ERP_ADO_LogOcorrenciaInserir(argRegistroAcao: Byte;
+                                                  argID          : Integer;
+                                                  argMensagem    : string;
+                                                  argDados       : string);
+
+//
 // Plataforma_ERP_ADO_NumeradorLicencaDeterminar.
 //
 function Plataforma_ERP_ADO_NumeradorLicencaDeterminar(argADOConnection: TADOConnection;
@@ -68,10 +82,7 @@ function Plataforma_ERP_ADO_NumeradorLicencaDeterminar(argADOConnection: TADOCon
 // Plataforma_ERP_RegistroAcaoIDDeterminar.
 //
 function Plataforma_ERP_RegistroAcaoIDDeterminar(argADOConnection: TADOConnection;
-                                                 argCriacao      : Boolean;
-                                                 argConsulta     : Boolean;
-                                                 argAlteracao    : Boolean;
-                                                 argExclusao     : Boolean): Integer;
+                                                 argRegistroAcao : Byte): Integer;
 
 implementation
 
@@ -158,6 +169,233 @@ begin
       raise Exception.Create(StringConcatenar(locLogMsg, locExcecao.Message));
     end;
   end;
+end;
+
+//
+// Plataforma_ERP_ADO_LogOcorrenciaInserir.
+//
+procedure Plataforma_ERP_ADO_LogOcorrenciaInserir(argRegistroAcao: Byte;
+                                                  argID          : Integer;
+                                                  argMensagem    : string;
+                                                  argDados       : string);
+const
+  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_ADO_LogOcorrenciaIn  serir';
+var
+  locLogMensagem    : string;
+  locADOConnection  : TADOConnection;
+  locADOQuery       : TADOQuery;
+  locBaseID         : Integer;
+  locLicencaID      : Integer;
+  locHostName       : string;
+  locUserName       : string;
+  locUsuarioBaseID  : Integer;
+  locUsuarioID      : Integer;
+  locLogOcorrenciaID: LongInt;
+  locRegistroAcaoID : Integer;
+begin
+  //
+  // Carrega variáveis locais.
+  //
+  locBaseID        := gloBaseID;
+  locLicencaID     := gloLicencaID;
+  locHostName      := HostNameRecuperar;
+  locUserName      := UserNameRecuperar;
+  locUsuarioBaseID := gloUsuarioBaseID;
+  locUsuarioID     := gloUsuarioID;
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(nil);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      raise Exception.Create(locExcecao.Message);
+    end;
+  end;
+
+  //
+  // Determina o ID do registro da ação.
+  //
+  try
+    locRegistroAcaoID := Plataforma_ERP_RegistroAcaoIDDeterminar(locADOConnection, argRegistroAcao);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum problema ao inserir registro na tabela [log_ocorrencia]!';
+      Plataforma_ERP_Logar(True, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      raise Exception.Create(StringConcatenar(locLogMensagem, locExcecao.Message));
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Determina o próximo log_ocorrencia_id.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                                             ');
+  locADOQuery.SQL.Add('  MAX([log_ocorrencia].[log_ocorrencia_id]) AS [log_ocorrencia_id] ');
+  locADOQuery.SQL.Add('FROM                                                               ');
+  locADOQuery.SQL.Add('  [log_ocorrencia] WITH (NOLOCK)                                   ');
+  locADOQuery.SQL.Add('WHERE                                                              ');
+  locADOQuery.SQL.Add('  [log_ocorrencia].[base_id] = :base_id                            ');
+
+  locADOQuery.Parameters.ParamByName('base_id').Value := locBaseID;
+
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum problema ao executar query para determina o próximo log_ocorrencia_id na tabela [log_ocorrencia]!';
+      Plataforma_ERP_Logar(True, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      raise Exception.Create(StringConcatenar(locLogMensagem, locExcecao.Message));
+    end;
+  end;
+
+  locLogOcorrenciaID := 0;
+  
+  if locADOQuery.RecordCount > 0 then
+  begin
+    if not locADOQuery.FieldByName('log_ocorrencia_id').IsNull then
+    begin
+      locLogOcorrenciaID := locADOQuery.FieldByName('log_ocorrencia_id').AsInteger;
+    end;
+  end;
+
+  Inc(locLogOcorrenciaID);
+
+  //
+  // Inicia transação com o banco de dados.
+  //
+  try
+    locADOConnection.BeginTrans;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := ERRO_MENSAGEM_BD_TRANSACAO_INICIAR;
+      Plataforma_ERP_Logar(True, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      raise Exception.Create(StringConcatenar(locLogMensagem, locExcecao.Message));
+      Exit
+    end;
+  end;
+
+  //
+  // Insere dados na tabela log_ocorrencia_id.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('INSERT INTO [log_ocorrencia] (');
+  locADOQuery.SQL.Add(' base_id,                     ');
+  locADOQuery.SQL.Add(' log_ocorrencia_id,           ');
+  locADOQuery.SQL.Add(' log_licenca_id,              ');
+  locADOQuery.SQL.Add(' log_local_dt_hr,             ');
+  locADOQuery.SQL.Add(' log_server_dt_hr,            ');
+  locADOQuery.SQL.Add(' registro_acao_id,            ');
+  locADOQuery.SQL.Add(' host_name,                   ');
+  locADOQuery.SQL.Add(' user_name,                   ');
+  locADOQuery.SQL.Add(' log_usuario_base_id,         ');
+  locADOQuery.SQL.Add(' log_usuario_id,              ');
+  locADOQuery.SQL.Add(' id,                          ');
+  locADOQuery.SQL.Add(' mensagem,                    ');
+  locADOQuery.SQL.Add(' dados                        ');
+  locADOQuery.SQL.Add(')                             ');
+  locADOQuery.SQL.Add('VALUES (                      ');
+  locADOQuery.SQL.Add(' :base_id,                    '); // base_id.
+  locADOQuery.SQL.Add(' :log_ocorrencia_id,          '); // log_ocorrencia_id.
+  locADOQuery.SQL.Add(' :log_licenca_id,             '); // log_licenca_id.
+  locADOQuery.SQL.Add(' :log_local_dt_hr,            '); // log_local_dt_hr.
+  locADOQuery.SQL.Add(' GETDATE(),                   '); // log_server_dt_hr.
+  locADOQuery.SQL.Add(' :registro_acao_id,           '); // registro_acao_id.
+  locADOQuery.SQL.Add(' :host_name,                  '); // host_name.
+  locADOQuery.SQL.Add(' :user_name,                  '); // user_name.
+  locADOQuery.SQL.Add(' :log_usuario_base_id,        '); // log_usuario_base_id.
+  locADOQuery.SQL.Add(' :log_usuario_id,             '); // log_usuario_id.
+  locADOQuery.SQL.Add(' :id,                         '); // id.
+  locADOQuery.SQL.Add(' :mensagem,                   '); // mensagem.
+  locADOQuery.SQL.Add(' :dados                       '); // dados.
+  locADOQuery.SQL.Add(')                             ');
+
+  locADOQuery.Parameters.ParamByName('base_id').Value             := locBaseID;
+  locADOQuery.Parameters.ParamByName('log_ocorrencia_id').Value   := locLogOcorrenciaID;
+  locADOQuery.Parameters.ParamByName('log_licenca_id').Value      := locLicencaID;
+  locADOQuery.Parameters.ParamByName('log_local_dt_hr').Value     := Now;
+  locADOQuery.Parameters.ParamByName('registro_acao_id').Value    := locRegistroAcaoID;
+  locADOQuery.Parameters.ParamByName('host_name').Value           := locHostName;
+  locADOQuery.Parameters.ParamByName('user_name').Value           := locUserName;
+  locADOQuery.Parameters.ParamByName('log_usuario_base_id').Value := locUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('log_usuario_id').Value      := locUsuarioID;
+  locADOQuery.Parameters.ParamByName('id').Value                  := argID;
+  locADOQuery.Parameters.ParamByName('mensagem').Value            := argMensagem;
+  locADOQuery.Parameters.ParamByName('dados').Value               := argDados;
+
+  try
+    locADOQuery.ExecSQL;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.RollbackTrans;
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [log_ocorrencia]!';
+      Plataforma_ERP_Logar(True, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      raise Exception.Create(StringConcatenar(locLogMensagem, locExcecao.Message));
+    end;
+  end;
+
+  //
+  // Finaliza transação com o banco de dados.
+  //
+  try
+    locADOConnection.CommitTrans;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.RollbackTrans;
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := ERRO_MENSAGEM_BD_TRANSACAO_CONFIRMAR;
+      Plataforma_ERP_Logar(True, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      raise Exception.Create(StringConcatenar(locLogMensagem, locLogMensagem));
+    end;
+  end;  
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
 end;
 
 //
@@ -333,10 +571,7 @@ end;
 // Plataforma_ERP_RegistroAcaoIDDeterminar.
 //
 function Plataforma_ERP_RegistroAcaoIDDeterminar(argADOConnection: TADOConnection;
-                                                 argCriacao      : Boolean;
-                                                 argConsulta     : Boolean;
-                                                 argAlteracao    : Boolean;
-                                                 argExclusao     : Boolean): Integer;
+                                                 argRegistroAcao : Byte): Integer;
 const
   FUNCAO_NOME: string = 'Plataforma_ERP_RegistroAcaoIDDeterminar';
 var
@@ -360,16 +595,16 @@ begin
   locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)      ');
   locADOQuery.SQL.Add('WHERE                                ');
 
-  if argCriacao then
+  if argRegistroAcao = REGISTRO_ACAO_CRIACAO then
     locADOQuery.SQL.Add(' [registro_acao].[criacao]   = ''S'' ');
 
-  if argConsulta then
+  if argRegistroAcao = REGISTRO_ACAO_CONSULTA then
     locADOQuery.SQL.Add(' [registro_acao].[consulta]  = ''S'' ');
 
-  if argAlteracao then
+  if argRegistroAcao = REGISTRO_ACAO_ALTERACAO then
     locADOQuery.SQL.Add(' [registro_acao].[alteracao] = ''S'' ');
 
-  if argExclusao then
+  if argRegistroAcao = REGISTRO_ACAO_EXCLUSAO then
     locADOQuery.SQL.Add(' [registro_acao].[exclusao]  = ''S'' ');
 
   // Executa query.

@@ -42,7 +42,6 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnFecharClick(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
     procedure btnSelecionarClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
     procedure lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
@@ -53,7 +52,8 @@ type
     procedure FormularioAtualizar;
     procedure FormularioSelecionar;
   public
-    pubADOQuery: TADOQuery;
+    pubIdentificador: string;
+    pubADOQuery     : TADOQuery;
   end;
 
 var
@@ -89,7 +89,8 @@ const
 //
 procedure TPlataformaERPVCLLogRegistroLista.FormCreate(Sender: TObject);
 begin
-  Exit;
+  pubIdentificador := '';
+  pubADOQuery      := nil;
 end;
 
 //
@@ -97,15 +98,8 @@ end;
 //
 procedure TPlataformaERPVCLLogRegistroLista.FormShow(Sender: TObject);
 begin
+  VCLListViewColunarDimensionar(lvwLista);
   FormularioAtualizar;
-end;
-
-//
-// Evento de ativação do formulário.
-//
-procedure TPlataformaERPVCLLogRegistroLista.FormActivate(Sender: TObject);
-begin
-  Exit;
 end;
 
 //
@@ -170,6 +164,19 @@ procedure TPlataformaERPVCLLogRegistroLista.FormularioAtualizar;
 var
   locListItem: TListItem;
 begin
+  //
+  // Título do formulário.
+  //
+  Self.Caption := 'Exibindo lista de logs de registro';
+
+  if pubIdentificador <> '' then
+  begin
+    Self.Caption := Self.Caption + ' - ' + pubIdentificador;
+  end;
+
+  //
+  // Carrega lista.
+  //
   pubADOQuery.Last;
   pubADOQuery.First;
 
@@ -210,6 +217,7 @@ begin
   if locIndice = VCL_NENHUM_INDICE then Exit;
 
   locFormulario                          := TPlataformaERPVCLLogRegistroExibir.Create(Self);
+  locFormulario.pubIdentificador         := pubIdentificador;
   locFormulario.pubSequencial            := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_SEQUENCIAL]);
   locFormulario.pubLogLocalDtHr          := StringDateTimeConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LOG_LOCAL_DT_HR]);
   locFormulario.pubLogServerDtHr         := StringDateTimeConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LOG_SERVER_DT_HR]);

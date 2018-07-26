@@ -70,6 +70,7 @@ type
   private
     procedure FormularioLimpar;
   public
+    pubIdentificador        : string;
     pubSequencial           : Integer;
     pubLogLocalDtHr         : TDateTime;
     pubLogServerDtHr        : TDateTime;
@@ -106,6 +107,7 @@ begin
   //
   // Inicializa variáveis públicas.
   //
+  pubIdentificador         := '';
   pubSequencial            := 0;
   pubLogLocalDtHr          := 0;
   pubLogServerDtHr         := 0;
@@ -160,6 +162,16 @@ begin
   // Limpa os componentes do formulário.
   //
   FormularioLimpar;
+
+  //
+  // Título do formulário.
+  //
+  Self.Caption := 'Log de registro';
+
+  if pubIdentificador <> '' then
+  begin
+    Self.Caption := Self.Caption + ' - ' + pubIdentificador;
+  end;
 
   //
   // Carrega componentes.

@@ -1088,7 +1088,6 @@ end;
 //
 procedure VCLComboBoxSelecionar(argComponente: TComboBox; argValor: string);
 var
-  locTexto   : string;
   locContador: Integer;
 begin
   VCLComboBoxLimpar(argComponente);

@@ -146,6 +146,7 @@ function HorarioFormatar(argHorario: string): string;
 function HorarioValidar(argHorario: string): Boolean;
 
 procedure LogDadosStringDescrever (argCampo: string; argValor: string;  var outRetorno: string);
+procedure LogDadosIntegerDescrever(argCampo: string; argValor: Integer; var outRetorno: string);
 procedure LogDadosBooleanDescrever(argCampo: string; argValor: Boolean; var outRetorno: string);
 
 implementation
@@ -977,6 +978,11 @@ procedure LogDadosStringDescrever(argCampo: string; argValor: string; var outRet
 begin
   if outRetorno <> '' then outRetorno := outRetorno + '; ';
   outRetorno := outRetorno + argCampo + ': [' + argValor + ']';
+end;
+
+procedure LogDadosIntegerDescrever(argCampo: string; argValor: Integer; var outRetorno: string);
+begin
+  LogDadosStringDescrever(argCampo, IntegerStringConverter(argValor), outRetorno);
 end;
 
 procedure LogDadosBooleanDescrever(argCampo: string; argValor: Boolean; var outRetorno: string);

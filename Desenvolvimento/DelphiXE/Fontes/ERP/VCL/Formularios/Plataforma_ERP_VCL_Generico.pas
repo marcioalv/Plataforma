@@ -37,7 +37,7 @@ procedure Plataforma_ERP_VCL_DataExibir(argData: TDateTime);
 //
 // Plataforma_ERP_VCL_LogRegistroExibir.
 //
-procedure Plataforma_ERP_VCL_LogRegistroExibir(argADOQuery: TADOQuery);
+procedure Plataforma_ERP_VCL_LogRegistroExibir(argIdentificador: string; argADOQuery: TADOQuery);
 
 //
 // Plataforma_ERP_VCL_BaseCadastroExibir.
@@ -100,12 +100,13 @@ end;
 //
 // Procedimento para exibir o formulário de lista de logs de um registro.
 //
-procedure Plataforma_ERP_VCL_LogRegistroExibir(argADOQuery: TADOQuery);
+procedure Plataforma_ERP_VCL_LogRegistroExibir(argIdentificador: string; argADOQuery: TADOQuery);
 var
   locFormulario: TPlataformaERPVCLLogRegistroLista;
 begin
-  locFormulario             := TPlataformaERPVCLLogRegistroLista.Create(nil);
-  locFormulario.pubADOQuery := argADOQuery;
+  locFormulario                  := TPlataformaERPVCLLogRegistroLista.Create(nil);
+  locFormulario.pubIdentificador := argIdentificador;
+  locFormulario.pubADOQuery      := argADOQuery;
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);
