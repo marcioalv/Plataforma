@@ -254,7 +254,6 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitWidth = 473
       object lblInsDtHt: TLabel
         Left = 16
         Top = 112

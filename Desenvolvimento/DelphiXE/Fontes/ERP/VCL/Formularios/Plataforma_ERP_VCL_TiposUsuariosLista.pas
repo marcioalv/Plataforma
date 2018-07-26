@@ -103,9 +103,9 @@ uses
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_TiposUsuariosLista.pas';
 
-  LVW_LISTA_BASE_ID        : Integer = 0;
-  LVW_LISTA_BASE_DESCRICAO : Integer = 1;
-  LVW_LISTA_LICENCA_ID     : Integer = 2;
+  LVW_LISTA_LICENCA_ID     : Integer = 0;
+  LVW_LISTA_BASE_ID        : Integer = 1;
+  LVW_LISTA_BASE_DESCRICAO : Integer = 2;
   LVW_LISTA_TIPO_USUARIO_ID: Integer = 3;
   LVW_LISTA_CODIGO         : Integer = 4;
   LVW_LISTA_DESCRICAO      : Integer = 5;
@@ -402,9 +402,9 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                      ');
+  locADOQuery.SQL.Add('  [licenca].[licenca_id]           AS [licenca_id],         ');
   locADOQuery.SQL.Add('  [base].[base_id]                 AS [base_id],            ');
   locADOQuery.SQL.Add('  [base].[descricao]               AS [base_descricao],     ');
-  locADOQuery.SQL.Add('  [licenca].[licenca_id]           AS [licenca_id],         ');
   locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id] AS [tipo_usuario_id],    ');
   locADOQuery.SQL.Add('  [tipo_usuario].[codigo]          AS [codigo],             ');
   locADOQuery.SQL.Add('  [tipo_usuario].[descricao]       AS [descricao],          ');
@@ -476,51 +476,51 @@ begin
   if priFiltroInsDtHrInicial <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND CAST([tipo_usuario].[ins_local_dt_hr] AS DATE) >= :ins_local_dt_hr_inicial ');
-    locADOQuery.Parameters.ParamByName('ins_local_dt_hr_inicial').Value := priFiltroInsDtHrInicial;
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[ins_local_dt_hr] >= :ins_local_dt_hr_inicial ');
+    locADOQuery.Parameters.ParamByName('ins_local_dt_hr_inicial').Value := DateTimeHorarioInicial(priFiltroInsDtHrInicial);
   end;
 
   if priFiltroInsDtHrFinal <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND CAST([tipo_usuario].[ins_local_dt_hr] AS DATE) <= :ins_local_dt_hr_final ');
-    locADOQuery.Parameters.ParamByName('ins_local_dt_hr_final').Value := priFiltroInsDtHrFinal;
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[ins_local_dt_hr] <= :ins_local_dt_hr_final ');
+    locADOQuery.Parameters.ParamByName('ins_local_dt_hr_final').Value := DateTimeHorarioFinal(priFiltroInsDtHrFinal);
   end;
 
   if priFiltroUpdDtHrInicial <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND EXISTS (SELECT TOP 1                                                                                 ');
-    locADOQuery.SQL.Add('               1                                                                                          ');
-    locADOQuery.SQL.Add('             FROM                                                                                         ');
-    locADOQuery.SQL.Add('               [tipo_usuario_log] WITH (NOLOCK)                                                           ');
-    locADOQuery.SQL.Add('               INNER JOIN [registro_acao] WITH (NOLOCK)                                                   ');
-    locADOQuery.SQL.Add('                 ON [registro_acao].[registro_acao_id] = [tipo_usuario_log].[registro_acao_id]            ');
-    locADOQuery.SQL.Add('             WHERE                                                                                        ');
-    locADOQuery.SQL.Add('               [tipo_usuario_log].[base_id]                        = [tipo_usuario].[base_id]         AND ');
-    locADOQuery.SQL.Add('               [tipo_usuario_log].[licenca_id]                     = [tipo_usuario].[licenca_id]      AND ');
-    locADOQuery.SQL.Add('               [tipo_usuario_log].[tipo_usuario_id]                = [tipo_usuario].[tipo_usuario_id] AND ');
-    locADOQuery.SQL.Add('               CAST([tipo_usuario_log].[log_local_dt_hr] AS DATE) >= :log_local_dt_hr_inicial         AND ');
-    locADOQuery.SQL.Add('               [registro_acao].[alteracao]                         = ''S'')                               ');
-    locADOQuery.Parameters.ParamByName('log_local_dt_hr_inicial').Value := priFiltroUpdDtHrInicial;
+    locADOQuery.SQL.Add(' AND EXISTS (SELECT TOP 1                                                                      ');
+    locADOQuery.SQL.Add('               1                                                                               ');
+    locADOQuery.SQL.Add('             FROM                                                                              ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log] WITH (NOLOCK)                                                ');
+    locADOQuery.SQL.Add('               INNER JOIN [registro_acao] WITH (NOLOCK)                                        ');
+    locADOQuery.SQL.Add('                 ON [registro_acao].[registro_acao_id] = [tipo_usuario_log].[registro_acao_id] ');
+    locADOQuery.SQL.Add('             WHERE                                                                             ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[licenca_id]       = [tipo_usuario].[licenca_id]      AND    ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[base_id]          = [tipo_usuario].[base_id]         AND    ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[tipo_usuario_id]  = [tipo_usuario].[tipo_usuario_id] AND    ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[log_local_dt_hr] >= :log_local_dt_hr_inicial         AND    ');
+    locADOQuery.SQL.Add('               [registro_acao].[alteracao]           = ''S'')                                  ');
+    locADOQuery.Parameters.ParamByName('log_local_dt_hr_inicial').Value := DateTimeHorarioInicial(priFiltroUpdDtHrInicial);
   end;
 
   if priFiltroUpdDtHrFinal <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND EXISTS (SELECT TOP 1                                                                                 ');
-    locADOQuery.SQL.Add('               1                                                                                          ');
-    locADOQuery.SQL.Add('             FROM                                                                                         ');
-    locADOQuery.SQL.Add('               [tipo_usuario_log] WITH (NOLOCK)                                                           ');
-    locADOQuery.SQL.Add('               INNER JOIN [registro_acao] WITH (NOLOCK)                                                   ');
-    locADOQuery.SQL.Add('                 ON [registro_acao].[registro_acao_id] = [tipo_usuario_log].[registro_acao_id]            ');
-    locADOQuery.SQL.Add('             WHERE                                                                                        ');
-    locADOQuery.SQL.Add('               [tipo_usuario_log].[base_id]                        = [tipo_usuario].[base_id]         AND ');
-    locADOQuery.SQL.Add('               [tipo_usuario_log].[licenca_id]                     = [tipo_usuario].[licenca_id]      AND ');
-    locADOQuery.SQL.Add('               [tipo_usuario_log].[tipo_usuario_id]                = [tipo_usuario].[tipo_usuario_id] AND ');
-    locADOQuery.SQL.Add('               CAST([tipo_usuario_log].[log_local_dt_hr] AS DATE) <= :log_local_dt_hr_final           AND ');
-    locADOQuery.SQL.Add('               [registro_acao].[alteracao]                         = ''S'')                               ');
-    locADOQuery.Parameters.ParamByName('log_local_dt_hr_final').Value := priFiltroUpdDtHrFinal;
+    locADOQuery.SQL.Add(' AND EXISTS (SELECT TOP 1                                                                      ');
+    locADOQuery.SQL.Add('               1                                                                               ');
+    locADOQuery.SQL.Add('             FROM                                                                              ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log] WITH (NOLOCK)                                                ');
+    locADOQuery.SQL.Add('               INNER JOIN [registro_acao] WITH (NOLOCK)                                        ');
+    locADOQuery.SQL.Add('                 ON [registro_acao].[registro_acao_id] = [tipo_usuario_log].[registro_acao_id] ');
+    locADOQuery.SQL.Add('             WHERE                                                                             ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[licenca_id]       = [tipo_usuario].[licenca_id]      AND    ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[base_id]          = [tipo_usuario].[base_id]         AND    ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[tipo_usuario_id]  = [tipo_usuario].[tipo_usuario_id] AND    ');
+    locADOQuery.SQL.Add('               [tipo_usuario_log].[log_local_dt_hr] <= :log_local_dt_hr_final           AND    ');
+    locADOQuery.SQL.Add('               [registro_acao].[alteracao]           = ''S'')                                  ');
+    locADOQuery.Parameters.ParamByName('log_local_dt_hr_final').Value := DateTimeHorarioFinal(priFiltroUpdDtHrFinal);
   end;
 
   //
@@ -567,9 +567,9 @@ begin
     
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('licenca_id').AsInteger));
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('base_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('base_descricao').AsString);
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('licenca_id').AsInteger));
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('descricao').AsString);
@@ -626,8 +626,8 @@ begin
   if argNovo then
   begin
     locIndice        := VCL_NENHUM_INDICE;
-    locBaseID        := 0;
     locLicencaID     := 0;
+    locBaseID        := 0;
     locTipoUsuarioID := 0;
   end
   else
@@ -635,15 +635,15 @@ begin
     locIndice := VCLListViewIndiceItemRetornar(lvwLista);
     if locIndice <= VCL_NENHUM_INDICE then Exit;
 
-    locBaseID        := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_BASE_ID]);
     locLicencaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
+    locBaseID        := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_BASE_ID]);
     locTipoUsuarioID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_ID]);
   end;
 
   locFormulario := TPlataformaERPVCLTiposUsuariosCadastro.Create(Self);
 
-  locFormulario.pubBaseID        := locBaseID;
   locFormulario.pubLicencaID     := locLicencaID;
+  locFormulario.pubBaseID        := locBaseID;
   locFormulario.pubTipoUsuarioID := locTipoUsuarioID;
   
   locFormulario.ShowModal;

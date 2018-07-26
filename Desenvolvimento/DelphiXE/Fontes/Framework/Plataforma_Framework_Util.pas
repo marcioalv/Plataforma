@@ -45,6 +45,19 @@ const
   F11         : Integer = 122;
   F12         : Integer = 123;
 
+  JANEIRO     : string = 'Janeiro';
+  FEVEREIRO   : string = 'Fevereiro';
+  MARCO       : string = 'Março';
+  ABRIL       : string = 'Abril';
+  MAIO        : string = 'Maio';
+  JUNHO       : string = 'Junho';
+  JULHO       : string = 'Julho';
+  AGOSTO      : string = 'Agosto';
+  SETEMBRO    : string = 'Setembro';
+  OUTUBRO     : string = 'Outubro';
+  NOVEMBRO    : string = 'Novembro';
+  DEZEMBRO    : string = 'Dezembro';
+
   ESQUERDA    : Byte = 0;
   DIREITA     : Byte = 1;
 
@@ -67,6 +80,10 @@ function PeriodoDeterminar(argData: TDateTime): string;
 function DiaSemanaDeterminar(argData: TDateTime): string;
 
 function NomeMesDeterminar(argData: TDateTime): string;
+
+function DateTimeHorarioInicial(argData: TDateTime): TDateTime;
+                                   
+function DateTimeHorarioFinal(argData: TDateTime): TDateTime;
 
 function DriveSerialNumberRecuperar(argDriveLetra: string): Integer;
 
@@ -222,18 +239,58 @@ begin
   locMes := MonthOfTheYear(argData);
 
   Result := '';
-  if locMes =  1 then Result := 'Janeiro';
-  if locMes =  2 then Result := 'Fevereiro';
-  if locMes =  3 then Result := 'Março';
-  if locMes =  4 then Result := 'Abril';
-  if locMes =  5 then Result := 'Maio';
-  if locMes =  6 then Result := 'Junho';
-  if locMes =  7 then Result := 'Julho';
-  if locMes =  8 then Result := 'Agosto';
-  if locMes =  9 then Result := 'Setembro';
-  if locMes = 10 then Result := 'Outubro';
-  if locMes = 11 then Result := 'Novembro';
-  if locMes = 12 then Result := 'Dezembro';
+  if locMes =  1 then Result := JANEIRO;
+  if locMes =  2 then Result := FEVEREIRO;
+  if locMes =  3 then Result := MARCO;
+  if locMes =  4 then Result := ABRIL;
+  if locMes =  5 then Result := MAIO;
+  if locMes =  6 then Result := JUNHO;
+  if locMes =  7 then Result := JULHO;
+  if locMes =  8 then Result := AGOSTO;
+  if locMes =  9 then Result := SETEMBRO;
+  if locMes = 10 then Result := OUTUBRO;
+  if locMes = 11 then Result := NOVEMBRO;
+  if locMes = 12 then Result := DEZEMBRO;
+end;
+
+//
+// DateTimeHorarioInicial.
+//
+function DateTimeHorarioInicial(argData: TDateTime): TDateTime;
+var
+  locDia: Word;
+  locMes: Word;
+  locAno: Word;
+begin
+  locDia := DayOf(argData);
+  locMes := MonthOf(argData);
+  locAno := YearOf(argData);
+
+  try
+    Result := EncodeDateTime(locAno, locMes, locDia, 0, 0, 0, 0);
+  except
+    Result := 0;
+  end;
+end;
+
+//
+// DateTimeHorarioFinal.
+//
+function DateTimeHorarioFinal(argData: TDateTime): TDateTime;
+var
+  locDia: Word;
+  locMes: Word;
+  locAno: Word;
+begin
+  locDia := DayOf(argData);
+  locMes := MonthOf(argData);
+  locAno := YearOf(argData);
+
+  try
+    Result := EncodeDateTime(locAno, locMes, locDia, 23, 59, 59, 999);
+  except
+    Result := 0;
+  end;
 end;
 
 //

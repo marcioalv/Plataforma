@@ -19,6 +19,7 @@ uses
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
+  System.DateUtils,
   System.Classes,
   Vcl.Graphics,
   Vcl.Forms,
@@ -31,14 +32,15 @@ uses
 
 const
   VCL_DIGITACAO_LIVRE           : Byte = 0;
-  VCL_DIGITACAO_ALFANUMERICA    : Byte = 1;
-  VCL_DIGITACAO_NUMERICA_INTEIRA: Byte = 2;
-  VCL_DIGITACAO_NUMERICA_DECIMAL: Byte = 3;
-  VCL_DIGITACAO_DINHEIRO        : Byte = 4;
-  VCL_DIGITACAO_DATA            : Byte = 5;
-  VCL_DIGITACAO_HORARIO         : Byte = 6;
-  VCL_DIGITACAO_CHAVE           : Byte = 7;
-  VCL_DIGITACAO_CODIGO          : Byte = 8;
+  VCL_DIGITACAO_ALFABETICA      : Byte = 1;
+  VCL_DIGITACAO_ALFANUMERICA    : Byte = 2;
+  VCL_DIGITACAO_NUMERICA_INTEIRA: Byte = 3;
+  VCL_DIGITACAO_NUMERICA_DECIMAL: Byte = 4;
+  VCL_DIGITACAO_DINHEIRO        : Byte = 5;
+  VCL_DIGITACAO_DATA            : Byte = 6;
+  VCL_DIGITACAO_HORARIO         : Byte = 7;
+  VCL_DIGITACAO_CHAVE           : Byte = 8;
+  VCL_DIGITACAO_CODIGO          : Byte = 9;
 
   VCL_MOVIMENTO_SUBIR_TODOS     : Byte = 0;
   VCL_MOVIMENTO_SUBIR           : Byte = 1;
@@ -133,6 +135,8 @@ function VCLCheckBoxSair(argComponente: TCheckBox): Boolean;
 procedure VCLComboBoxSimNaoPopular(argComponente: TComboBox; argCompleto: Boolean);
 function  VCLComboBoxSimNaoFlagDeterminar(argComponente: TComboBox): string;
 procedure VCLComboBoxPopular(argComponente: TComboBox; argValor: string);
+procedure VCLComboBoxMesesPopular(argComponente: TComboBox);
+procedure VCLComboBoxAnosPopular(argComponente: TComboBox);
 
 //
 // Validações.
@@ -144,6 +148,11 @@ function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = Tr
 function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
 
 function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True) : Boolean;
+
+//
+// Específicos para combobox.
+//
+procedure VCLComboBoxSelecionar(argComponente: TComboBox; argValor: string);
 
 //
 // Específicos para progressbar.
@@ -542,9 +551,10 @@ begin
   end;
 
   //
-  // Teclas permitidas para a digitação alfanumérica, código e chave.
+  // Teclas permitidas para a digitação alfabética, alfanumérica, código e chave.
   //
-  if (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
+  if (argTipo = VCL_DIGITACAO_ALFABETICA) or
+     (argTipo = VCL_DIGITACAO_ALFANUMERICA) or
      (argTipo = VCL_DIGITACAO_CODIGO) or
      (argTipo = VCL_DIGITACAO_CHAVE) then
   begin
@@ -577,35 +587,12 @@ begin
   end;
 
   //
-  // Teclas permitidas somente para a digiação alfanumérica.
+  // Teclas permitidas somente para a digiação alfabética e alfanumérica.
   //
   if (argTipo = VCL_DIGITACAO_CODIGO) or
+     (argTipo = VCL_DIGITACAO_ALFABETICA) or
      (argTipo = VCL_DIGITACAO_ALFANUMERICA) then
   begin
-    if (argTecla = ' ') or
-       (argTecla = '_') or
-       (argTecla = '.') or
-       (argTecla = ',') or
-       (argTecla = ';') or
-       (argTecla = '|') then Exit;
-
-    if (argTecla = '+') or
-       (argTecla = '*') or
-       (argTecla = '=') then Exit;
-
-    if (argTecla = '!') or
-       (argTecla = '?') or
-       (argTecla = '@') or
-       (argTecla = '#') or
-       (argTecla = '$') or
-       (argTecla = '&') then Exit;
-
-    if (argTecla = '[') or (argTecla = ']') or
-       (argTecla = '{') or (argTecla = '}') or
-       (argTecla = '<') or (argTecla = '>') or
-       (argTecla = '(') or (argTecla = ')') or
-       (argTecla = '\') or (argTecla = '/') then Exit;
-
     if (argTecla = 'a') or
        (argTecla = 'b') or
        (argTecla = 'c') or
@@ -650,6 +637,37 @@ begin
 
     if (argTecla = 'ù') or (argTecla = 'ú') or (argTecla = 'û') or (argTecla = 'ü') then Exit;
     if (argTecla = 'Ù') or (argTecla = 'Ú') or (argTecla = 'Û') or (argTecla = 'Ü') then Exit;
+  end;
+    
+  //
+  // Teclas permitidas somente para a digitação código e alfanumérica.
+  //
+  if (argTipo = VCL_DIGITACAO_CODIGO) or
+     (argTipo = VCL_DIGITACAO_ALFANUMERICA) then
+  begin
+    if (argTecla = ' ') or
+       (argTecla = '_') or
+       (argTecla = '.') or
+       (argTecla = ',') or
+       (argTecla = ';') or
+       (argTecla = '|') then Exit;
+
+    if (argTecla = '+') or
+       (argTecla = '*') or
+       (argTecla = '=') then Exit;
+
+    if (argTecla = '!') or
+       (argTecla = '?') or
+       (argTecla = '@') or
+       (argTecla = '#') or
+       (argTecla = '$') or
+       (argTecla = '&') then Exit;
+
+    if (argTecla = '[') or (argTecla = ']') or
+       (argTecla = '{') or (argTecla = '}') or
+       (argTecla = '<') or (argTecla = '>') or
+       (argTecla = '(') or (argTecla = ')') or
+       (argTecla = '\') or (argTecla = '/') then Exit;
   end;
 
   //
@@ -896,6 +914,44 @@ begin
 end;
 
 //
+// VCLComboBoxMesesPopular.
+//
+procedure VCLComboBoxMesesPopular(argComponente: TComboBox);
+begin
+  argComponente.Clear;
+  argComponente.Items.BeginUpdate;
+  argComponente.Items.Add(JANEIRO);
+  argComponente.Items.Add(FEVEREIRO);
+  argComponente.Items.Add(MARCO);
+  argComponente.Items.Add(ABRIL);
+  argComponente.Items.Add(MAIO);
+  argComponente.Items.Add(JUNHO);
+  argComponente.Items.Add(JULHO);
+  argComponente.Items.Add(AGOSTO);
+  argComponente.Items.Add(SETEMBRO);
+  argComponente.Items.Add(OUTUBRO);
+  argComponente.Items.Add(NOVEMBRO);
+  argComponente.Items.Add(DEZEMBRO);
+  argComponente.Items.EndUpdate;
+end;
+
+//
+// VCLComboBoAnosPopular.
+//
+procedure VCLComboBoxAnosPopular(argComponente: TComboBox);
+var
+  locContador: Integer;
+begin
+  argComponente.Clear;
+  argComponente.Items.BeginUpdate;
+  for locContador := (YearOf(Date) - 115) to (YearOf(Date) + 30) do
+  begin
+    argComponente.Items.Add(IntToStr(locContador));
+  end;
+  argComponente.Items.EndUpdate;  
+end;
+
+//
 // VCLComboBoxValidar.
 //
 function VCLComboBoxValidar(argComponente: TComboBox): Boolean;
@@ -921,6 +977,7 @@ begin
       argComponente.Text      := argComponente.Items[locContador];
       argComponente.ItemIndex := locContador;
       locEncontrou            := True;
+      Break;
     end;
   end;
 
@@ -1024,6 +1081,26 @@ begin
   end;
   
   Result := True;
+end;
+
+//
+// VCLComboBoxSelecionar.
+//
+procedure VCLComboBoxSelecionar(argComponente: TComboBox; argValor: string);
+var
+  locTexto   : string;
+  locContador: Integer;
+begin
+  VCLComboBoxLimpar(argComponente);
+  for locContador := 0 to (argComponente.Items.Count - 1) do
+  begin
+    if UpperCase(argValor) = UpperCase(Copy(argComponente.Items[locContador], 1, Length(argValor))) then
+    begin
+      argComponente.Text      := argComponente.Items[locContador];
+      argComponente.ItemIndex := locContador;
+      Break
+    end;
+  end;
 end;
 
 //
