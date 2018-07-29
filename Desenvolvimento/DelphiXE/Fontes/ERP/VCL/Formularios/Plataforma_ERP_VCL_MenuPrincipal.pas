@@ -21,6 +21,7 @@ uses
   Plataforma_ERP_Generico,
   Plataforma_ERP_Inicializacao,
   Plataforma_ERP_VCL_LogLocalLista,
+  Plataforma_ERP_VCL_UsuarioLista,
   Plataforma_ERP_VCL_TiposUsuariosLista,
   Winapi.Windows,
   Winapi.Messages,
@@ -31,7 +32,8 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Dialogs,
-  Vcl.Menus;
+  Vcl.Menus,
+  Vcl.ExtCtrls;
 
 type
   TPlataformaERPVCLMenuPrincipal = class(TForm)
@@ -41,11 +43,14 @@ type
     mniLogUsoLocal: TMenuItem;
     Controledeacesso1: TMenuItem;
     mniTiposUsuarios: TMenuItem;
+    Image1: TImage;
+    mniUsuarios: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
     procedure mniTiposUsuariosClick(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure mniUsuariosClick(Sender: TObject);
   private
     procedure Inicializar;
     procedure FormularioTituloDeterminar;
@@ -100,7 +105,20 @@ begin
 end;
 
 //
-// Evento de click na opção "Tipos de usuários".
+// Evento de click na opção "usuários".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniUsuariosClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLUsuarioLista;
+begin
+  locFormulario := TPlataformaERPVCLUsuarioLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "tipos de usuários".
 //
 procedure TPlataformaERPVCLMenuPrincipal.mniTiposUsuariosClick(Sender: TObject);
 var

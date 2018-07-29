@@ -856,9 +856,15 @@ begin
   argComponente.ShowHint := argLigar;
 
   if argLigar and (argComponente.Text <> '') then
-    argComponente.Cursor := crHandPoint
+  begin
+    argComponente.Cursor := crHandPoint;
+  end
   else
+  begin
     argComponente.Cursor := crDefault;
+  end;
+
+  argComponente.Refresh;
 end;
 
 //

@@ -108,6 +108,14 @@ object PlataformaERPVCLDataSelecao: TPlataformaERPVCLDataSelecao
       C9E0031BC0A90BD126974B0F68E29A4A1C8E43BF99D9F55866EAE626979FAE3C
       F905095D1D3F044A05BD0000000049454E44AE426082}
   end
+  object imgBackground: TImage
+    Left = 0
+    Top = 304
+    Width = 105
+    Height = 105
+    Center = True
+    Stretch = True
+  end
   object btnFechar: TBitBtn
     Left = 344
     Top = 360

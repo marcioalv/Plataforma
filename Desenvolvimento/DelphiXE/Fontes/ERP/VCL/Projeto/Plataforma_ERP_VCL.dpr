@@ -1,5 +1,7 @@
 program Plataforma_ERP_VCL;
 
+{$R *.dres}
+
 uses
   Vcl.Forms,
   Plataforma_ERP_VCL_MenuPrincipal in '..\Formularios\Plataforma_ERP_VCL_MenuPrincipal.pas' {PlataformaERPVCLMenuPrincipal},
@@ -28,7 +30,10 @@ uses
   Plataforma_ERP_VCL_BaseCadastro in '..\Formularios\Plataforma_ERP_VCL_BaseCadastro.pas' {PlataformaERPVCLBaseCadastro},
   Plataforma_ERP_VCL_TiposUsuariosSelecao in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosSelecao.pas' {PlataformaERPVCLTiposUsuariosSelecao},
   Plataforma_ERP_VCL_DataExibicao in '..\Formularios\Plataforma_ERP_VCL_DataExibicao.pas' {PlataformaERPVCLDataExibicao},
-  Plataforma_ERP_VCL_DataSelecao in '..\Formularios\Plataforma_ERP_VCL_DataSelecao.pas' {PlataformaERPVCLDataSelecao};
+  Plataforma_ERP_VCL_DataSelecao in '..\Formularios\Plataforma_ERP_VCL_DataSelecao.pas' {PlataformaERPVCLDataSelecao},
+  Plataforma_ERP_VCL_UsuarioLista in '..\Formularios\Plataforma_ERP_VCL_UsuarioLista.pas' {PlataformaERPVCLUsuarioLista},
+  Plataforma_ERP_VCL_UsuarioFiltro in '..\Formularios\Plataforma_ERP_VCL_UsuarioFiltro.pas' {PlataformaERPVCLUsuarioFiltro},
+  Plataforma_ERP_VCL_UsuarioCadastro in '..\Formularios\Plataforma_ERP_VCL_UsuarioCadastro.pas' {PlataformaERPVCLUsuarioCadastro};
 
 {$R *.res}
 
@@ -36,5 +41,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
+  Application.CreateForm(TPlataformaERPVCLUsuarioLista, PlataformaERPVCLUsuarioLista);
+  Application.CreateForm(TPlataformaERPVCLUsuarioCadastro, PlataformaERPVCLUsuarioCadastro);
   Application.Run;
 end.

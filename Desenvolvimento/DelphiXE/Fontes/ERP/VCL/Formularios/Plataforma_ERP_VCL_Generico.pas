@@ -22,7 +22,14 @@ uses
   Plataforma_ERP_VCL_DataExibicao,
   Data.Win.ADODB,
   System.SysUtils,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
   VCL.Mask;
+
+//
+// Plataforma_ERP_FormularioBackgound.
+//
+procedure Plataforma_ERP_VCL_FormularioBackground(argComponente: TImage);
 
 //
 // Plataforma_ERP_VCL_DataSelecionar.
@@ -54,6 +61,17 @@ implementation
 uses
   Plataforma_ERP_VCL_BaseCadastro,
   Plataforma_ERP_VCL_LicencaCadastro;
+
+//
+// Procedimento para configurar a imagem de background padrão dos formulários.
+//
+procedure Plataforma_ERP_VCL_FormularioBackground(argComponente: TImage);
+begin
+  argComponente.SendToBack;
+  argComponente.Align := alClient;
+  argComponente.Picture.Bitmap.LoadFromResourceName(HInstance, 'FORM_BACKGROUND_DEFAULT');
+  argComponente.Refresh;
+end;
 
 //
 // Procedimento para selecionar uma data.

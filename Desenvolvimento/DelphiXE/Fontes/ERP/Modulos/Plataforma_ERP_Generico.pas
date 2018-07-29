@@ -38,6 +38,7 @@ const
 
 const
   NUMERADOR_TIPO_USUARIO_ID: string = 'tipo_usuario_id';
+  NUMERADOR_USUARIO_ID     : string = 'usuario_id';
 
 //
 // PlataformaERPLogar.
@@ -58,7 +59,7 @@ function Plataforma_ERP_UsuarioRotina(argRotina: string): Boolean;
 //
 // Plataforma_ERP_ADO_ConexaoAbrir.
 //
-procedure Plataforma_ERP_ADO_ConexaoAbrir(argADOConnection: TADOConnection);
+procedure Plataforma_ERP_ADO_ConexaoAbrir(var argADOConnection: TADOConnection);
 
 //
 // Plataforma_ERP_ADO_LogOcorrenciaInserir.
@@ -146,7 +147,7 @@ end;
 //
 // Plataforma_ERP_ADO_ConexaoAbrir.
 //
-procedure Plataforma_ERP_ADO_ConexaoAbrir(argADOConnection: TADOConnection);
+procedure Plataforma_ERP_ADO_ConexaoAbrir(var argADOConnection: TADOConnection);
 const
   PROCEDIMENTO_NOME: string = 'Plataforma_ERP_ADO_ConexaoAbrir';
 var
@@ -158,8 +159,8 @@ begin
   // Time-out de conexão.
   argADOConnection.ConnectionTimeout := gloConexaoTimeOut;
 
+  // Abre conexão com o banco de dados da aplicação.
   try
-    // Abre conexão com o banco de dados da aplicação.
     argADOConnection.Open;
   except
     on locExcecao: Exception do

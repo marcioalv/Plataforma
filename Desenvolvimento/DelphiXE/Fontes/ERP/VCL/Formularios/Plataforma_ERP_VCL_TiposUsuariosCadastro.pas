@@ -29,7 +29,8 @@ uses
   Vcl.Buttons,
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
-  Vcl.ComCtrls, Vcl.Menus;
+  Vcl.ComCtrls,
+  Vcl.Menus;
 
 type
   TPlataformaERPVCLTiposUsuariosCadastro = class(TForm)
@@ -68,6 +69,7 @@ type
     lblCodigoCadastrado: TLabel;
     edtCodigoCadastrado: TEdit;
     btnAtualizar: TBitBtn;
+    imgBackground: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -132,8 +134,7 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
-  Plataforma_ERP_VCL_Generico,
-  Plataforma_ERP_VCL_TiposUsuariosLocalizar;
+  Plataforma_ERP_VCL_Generico;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_TipoUsuariosCadastro.pas';
@@ -170,6 +171,19 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormShow(Sender: TObject);
 begin
+  //
+  // Background do formulário.
+  //
+  Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+
+  //
+  // Controla os componentes de exibição de cadastro.
+  //
+  VCLEditClickControlar(edtLicencaDescricao, False);
+  VCLEditClickControlar(edtBaseDescricao,    False);
+  VCLEditClickControlar(edtInsLocalDtHr,     False);
+  VCLEditClickControlar(edtUpdLocalDtHr,     False);
+
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
   //
@@ -414,14 +428,6 @@ begin
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
   VCLEditLimpar(edtUpdContador);
-
-  //
-  // Controla os componentes de exibição de cadastro.
-  //
-  VCLEditClickControlar(edtLicencaDescricao, False);
-  VCLEditClickControlar(edtBaseDescricao,    False);
-  VCLEditClickControlar(edtInsLocalDtHr,     False);
-  VCLEditClickControlar(edtUpdLocalDtHr,     False);
 end;
 
 //
@@ -1071,7 +1077,7 @@ begin
   end;  
 
   // 
-  // Determinba o próximo ID do tipo de usuário.
+  // Determina o próximo ID do tipo de usuário.
   //
   if locInsert then
   begin
@@ -1402,7 +1408,7 @@ begin
   // Grava log de ocorrência.
   //  
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locTipoUsuarioID,locTipoUsuarioLogMsg, locTipoUsuarioLogLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locTipoUsuarioID, locTipoUsuarioLogMsg, locTipoUsuarioLogLogDados);
   except
     on locExcecao: Exception do
     begin
@@ -1654,14 +1660,14 @@ begin
   end;
 
   //
-  // Componentes desligados para edição.
-  //
-  FormularioControlar(False);
-
-  //
   // Popula somente os dados.
   //
   FormularioPopular(locLicencaID, locBaseID, locTipoUsuarioID);
+
+  //
+  // Componentes desligados para edição.
+  //
+  FormularioControlar(False);
 end;
 
 //

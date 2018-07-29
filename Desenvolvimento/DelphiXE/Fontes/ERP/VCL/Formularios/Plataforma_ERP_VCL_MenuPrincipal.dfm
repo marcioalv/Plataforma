@@ -20,6 +20,19 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object Image1: TImage
+    Left = 0
+    Top = 0
+    Width = 727
+    Height = 425
+    Align = alClient
+    Center = True
+    Stretch = True
+    ExplicitLeft = 440
+    ExplicitTop = 224
+    ExplicitWidth = 105
+    ExplicitHeight = 105
+  end
   object mnuFormulario: TMainMenu
     Left = 280
     Top = 80
@@ -34,6 +47,10 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
       end
       object Controledeacesso1: TMenuItem
         Caption = 'Controle de acesso'
+        object mniUsuarios: TMenuItem
+          Caption = 'Usu'#225'rios'
+          OnClick = mniUsuariosClick
+        end
         object mniTiposUsuarios: TMenuItem
           Caption = 'Tipos de usu'#225'rios'
           OnClick = mniTiposUsuariosClick

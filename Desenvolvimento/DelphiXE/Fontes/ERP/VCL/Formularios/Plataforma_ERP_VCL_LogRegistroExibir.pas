@@ -59,6 +59,7 @@ type
     edtUsuarioID: TEdit;
     edtUsuarioBaseID: TEdit;
     btnMinimizar: TButton;
+    imgBackground: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -130,34 +131,15 @@ begin
 end;
 
 //
-// Evento de click no componente "base".
-//
-procedure TPlataformaERPVCLLogRegistroExibir.edtLogBaseDescricaoClick(Sender: TObject);
-begin
-  Plataforma_ERP_VCL_BaseCadastroExibir(StringIntegerConverter(edtLogBaseID.Text));
-end;
-
-//
-// Evento de click no componente "data e hora local".
-//
-procedure TPlataformaERPVCLLogRegistroExibir.edtLogLocalDtHrClick(Sender: TObject);
-begin
-  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtLogLocalDtHr.Text));
-end;
-
-//
-// Evento de click no componente "data e hora no servidor".
-//
-procedure TPlataformaERPVCLLogRegistroExibir.edtLogServerDtHrClick(Sender: TObject);
-begin
-  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtLogServerDtHr.Text));
-end;
-
-//
 // Evento de exibição do formulário.
 //
 procedure TPlataformaERPVCLLogRegistroExibir.FormShow(Sender: TObject);
 begin
+  //
+  // Background do formulário.
+  //
+  Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+
   //
   // Limpa os componentes do formulário.
   //
@@ -205,6 +187,30 @@ end;
 procedure TPlataformaERPVCLLogRegistroExibir.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Evento de click no componente "base".
+//
+procedure TPlataformaERPVCLLogRegistroExibir.edtLogBaseDescricaoClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_BaseCadastroExibir(StringIntegerConverter(edtLogBaseID.Text));
+end;
+
+//
+// Evento de click no componente "data e hora local".
+//
+procedure TPlataformaERPVCLLogRegistroExibir.edtLogLocalDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtLogLocalDtHr.Text));
+end;
+
+//
+// Evento de click no componente "data e hora no servidor".
+//
+procedure TPlataformaERPVCLLogRegistroExibir.edtLogServerDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtLogServerDtHr.Text));
 end;
 
 //

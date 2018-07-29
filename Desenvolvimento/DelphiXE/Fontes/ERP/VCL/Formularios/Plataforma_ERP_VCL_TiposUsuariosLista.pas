@@ -45,6 +45,7 @@ type
     btnLocalizar: TBitBtn;
     lblListaQtde: TLabel;
     lblListaFiltros: TLabel;
+    imgBackground: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -97,6 +98,7 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_Generico,
   Plataforma_ERP_VCL_TiposUsuariosFiltro,
   Plataforma_ERP_VCL_TiposUsuariosCadastro;
 
@@ -147,9 +149,19 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosLista.FormShow(Sender: TObject);
 begin
   //
+  // Imagem de background.
+  //
+  Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+
+  //
   // Controla a exibição dos componentes no formulário.
   //
   FormularioControlar;
+
+  //
+  // Atualiza a lista.
+  //
+  FormularioAtualizar(VCL_NENHUM_INDICE);
 end;
 
 //
@@ -157,7 +169,6 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormActivate(Sender: TObject);
 begin
-  // VCLSDIMaximizar(Self);
   VCLListViewColunarDimensionar(lvwLista);
 
   lblListaQtde.Left := lvwLista.Left;
@@ -165,11 +176,6 @@ begin
 
   lblListaFiltros.Left := (lvwLista.Left + lvwLista.Width) - lblListaFiltros.Width;
   lblListaFiltros.Top  := (lvwLista.Top + lvwLista.Height) + 8;
-
-  //
-  // Atualiza a lista.
-  //
-  FormularioAtualizar(VCL_NENHUM_INDICE);
 end;
 
 //
@@ -214,7 +220,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Localizar".
+// Evento de click no botão "localizar".
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.btnLocalizarClick(Sender: TObject);
 begin
@@ -222,7 +228,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Atualizar".
+// Evento de click no botão "atualizar".
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.btnAtualizarClick(Sender: TObject);
 begin
@@ -230,7 +236,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Novo".
+// Evento de click no botão "novo".
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.btnNovoClick(Sender: TObject);
 begin
@@ -238,7 +244,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Selecionar".
+// Evento de click no botão "selecionar".
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.btnSelecionarClick(Sender: TObject);
 begin
@@ -246,7 +252,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Minimizar".
+// Evento de click no botão "minimizar".
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.btnMinimizarClick(Sender: TObject);
 begin
@@ -254,7 +260,7 @@ begin
 end;
 
 //
-// Evento de click no botão "Fechar".
+// Evento de click no botão "fechar".
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.btnFecharClick(Sender: TObject);
 begin
@@ -262,7 +268,7 @@ begin
 end;
 
 //
-// FormularioControlar.
+// Controla a exibição dos componentes do formulário.
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormularioControlar;
 begin
@@ -376,6 +382,7 @@ begin
   //
   locADOConnection := TADOConnection.Create(Self);
 
+  // Abre conexão com o banco de dados da aplicação.
   try
     Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
   except
@@ -526,8 +533,8 @@ begin
   //
   // Order by.
   //  
-  locADOQuery.SQL.Add('ORDER BY                                                    ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[codigo] ASC                               ');
+  locADOQuery.SQL.Add('ORDER BY                      ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[codigo] ASC ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
 

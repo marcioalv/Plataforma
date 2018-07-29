@@ -1,16 +1,16 @@
 //
-// Arquivo..: Plataforma_ERP_VCL_TiposUsuariosFiltro.pas
-// Projeto..: ERP
+// Arquivo..: Plataforma_ERP_VCL_UsuarioFiltro.pas
+// Projeto..: ERP                                                         
 // Fonte....: Formulário VCL
 // Criação..: 05/Julho/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário com os parâmetros de filtro para a listagem de tipos de usuários.
+// Descrição: Formulário com os parâmetros de filtro para a listagem de usuários.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
 //
 
-unit Plataforma_ERP_VCL_TiposUsuariosFiltro;
+unit Plataforma_ERP_VCL_UsuarioFiltro;
 
 interface
 
@@ -32,7 +32,7 @@ uses
   Vcl.Mask;
 
 type
-  TPlataformaERPVCLTiposUsuariosFiltro = class(TForm)
+  TPlataformaERPVCLUsuarioFiltro = class(TForm)
     imgFormulario: TImage;
     btnLocalizar: TBitBtn;
     btnFechar: TBitBtn;
@@ -46,11 +46,11 @@ type
     lblDescricao: TLabel;
     edtCodigoInicial: TEdit;
     edtCodigoFinal: TEdit;
-    edtDescricao: TEdit;
-    lblTipoUsuarioID: TLabel;
-    lblTipoUsuarioIDAte: TLabel;
-    edtTipoUsuarioIDInicial: TEdit;
-    edtTipoUsuarioIDFinal: TEdit;
+    edtNome: TEdit;
+    lblUsuarioID: TLabel;
+    lblUsuarioIDAte: TLabel;
+    edtUsuarioIDInicial: TEdit;
+    edtUsuarioIDFinal: TEdit;
     lblBloqueado: TLabel;
     lblAtivo: TLabel;
     cbxBloqueado: TComboBox;
@@ -71,21 +71,21 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure edtTipoUsuarioIDInicialEnter(Sender: TObject);
-    procedure edtTipoUsuarioIDInicialExit(Sender: TObject);
-    procedure edtTipoUsuarioIDInicialKeyPress(Sender: TObject; var Key: Char);
-    procedure edtTipoUsuarioIDFinalEnter(Sender: TObject);
-    procedure edtTipoUsuarioIDFinalExit(Sender: TObject);
-    procedure edtTipoUsuarioIDFinalKeyPress(Sender: TObject; var Key: Char);
+    procedure edtUsuarioIDInicialEnter(Sender: TObject);
+    procedure edtUsuarioIDInicialExit(Sender: TObject);
+    procedure edtUsuarioIDInicialKeyPress(Sender: TObject; var Key: Char);
+    procedure edtUsuarioIDFinalEnter(Sender: TObject);
+    procedure edtUsuarioIDFinalExit(Sender: TObject);
+    procedure edtUsuarioIDFinalKeyPress(Sender: TObject; var Key: Char);
     procedure edtCodigoInicialEnter(Sender: TObject);
     procedure edtCodigoInicialExit(Sender: TObject);
     procedure edtCodigoInicialKeyPress(Sender: TObject; var Key: Char);
     procedure edtCodigoFinalEnter(Sender: TObject);
     procedure edtCodigoFinalExit(Sender: TObject);
     procedure edtCodigoFinalKeyPress(Sender: TObject; var Key: Char);
-    procedure edtDescricaoEnter(Sender: TObject);
-    procedure edtDescricaoExit(Sender: TObject);
-    procedure edtDescricaoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtNomeEnter(Sender: TObject);
+    procedure edtNomeExit(Sender: TObject);
+    procedure edtNomeKeyPress(Sender: TObject; var Key: Char);
     procedure cbxBloqueadoEnter(Sender: TObject);
     procedure cbxBloqueadoExit(Sender: TObject);
     procedure cbxBloqueadoKeyPress(Sender: TObject; var Key: Char);
@@ -121,22 +121,22 @@ type
     procedure FormularioLimpar;
     procedure FormularioLocalizar;
   public
-    pubClicouFechar        : Boolean;
-    pubCodigoInicial       : string;
-    pubCodigoFinal         : string;
-    pubDescricao           : string;
-    pubBloqueado           : string;
-    pubAtivo               : string;
-    pubTipoUsuarioIDInicial: Integer;
-    pubTipoUsuarioIDFinal  : Integer;
-    pubInsDtHrInicial      : TDateTime;
-    pubInsDtHrFinal        : TDateTime;
-    pubUpdDtHrInicial      : TDateTime;
-    pubUpdDtHrFinal        : TDateTime;    
+    pubClicouFechar    : Boolean;
+    pubCodigoInicial   : string;
+    pubCodigoFinal     : string;
+    pubNome            : string;
+    pubBloqueado       : string;
+    pubAtivo           : string;
+    pubUsuarioIDInicial: Integer;
+    pubUsuarioIDFinal  : Integer;
+    pubInsDtHrInicial  : TDateTime;
+    pubInsDtHrFinal    : TDateTime;
+    pubUpdDtHrInicial  : TDateTime;
+    pubUpdDtHrFinal    : TDateTime;    
   end;
 
 var
-  PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro;
+  PlataformaERPVCLUsuarioFiltro: TPlataformaERPVCLUsuarioFiltro;
 
 implementation
 
@@ -152,28 +152,28 @@ const
   TAB_CADASTRO : Byte = 0;
   TAB_AUDITORIA: Byte = 1;
 
-  FONTE_NOME: string = 'Plataforma_ERP_VCL_TiposUsuariosFiltro';
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_UsuarioFiltro';
 
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.FormCreate(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis públicas.
   //
-  pubClicouFechar         := True;
-  pubTipoUsuarioIDInicial := 0;
-  pubTipoUsuarioIDFinal   := 0;
-  pubCodigoInicial        := '';
-  pubCodigoFinal          := '';
-  pubDescricao            := '';
-  pubBloqueado            := '';
-  pubAtivo                := '';
-  pubInsDtHrInicial       := 0;
-  pubInsDtHrFinal         := 0;
-  pubUpdDtHrInicial       := 0;
-  pubUpdDtHrFinal         := 0;
+  pubClicouFechar     := True;
+  pubUsuarioIDInicial := 0;
+  pubUsuarioIDFinal   := 0;
+  pubCodigoInicial    := '';
+  pubCodigoFinal      := '';
+  pubNome             := '';
+  pubBloqueado        := '';
+  pubAtivo            := '';
+  pubInsDtHrInicial   := 0;
+  pubInsDtHrFinal     := 0;
+  pubUpdDtHrInicial   := 0;
+  pubUpdDtHrFinal     := 0;
 
   //
   // Posiciona o tab padrão.
@@ -194,7 +194,7 @@ end;
 //
 // Evento de exibição do formulário.
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.FormShow(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.FormShow(Sender: TObject);
 begin
   //
   // Background do formulário.
@@ -204,84 +204,84 @@ begin
   //
   // Filtros memorizados.
   //
-  edtCodigoInicial.Text        := pubCodigoInicial;
-  edtCodigoFinal.Text          := pubCodigoFinal;
-  edtDescricao.Text            := pubDescricao;
+  edtCodigoInicial.Text    := pubCodigoInicial;
+  edtCodigoFinal.Text      := pubCodigoFinal;
+  edtNome.Text             := pubNome;
   VCLComboBoxPopular(cbxBloqueado, pubBloqueado);
   VCLComboBoxPopular(cbxAtivo,     pubAtivo);
-  edtTipoUsuarioIDInicial.Text := IntegerStringConverter(pubTipoUsuarioIDInicial, True);
-  edtTipoUsuarioIDFinal.Text   := IntegerStringConverter(pubTipoUsuarioIDFinal,   True);
-  medInsDtHrInicial.Text       := DateTimeStringConverter(pubInsDtHrInicial, 'dd/mm/yyyy hh:nn');
-  medInsDtHrFinal.Text         := DateTimeStringConverter(pubInsDtHrFinal,   'dd/mm/yyyy hh:nn');
-  medUpdDtHrInicial.Text       := DateTimeStringConverter(pubUpdDtHrInicial, 'dd/mm/yyyy hh:nn');
-  medUpdDtHrFinal.Text         := DateTimeStringConverter(pubUpdDtHrFinal,   'dd/mm/yyyy hh:nn');
+  edtUsuarioIDInicial.Text := IntegerStringConverter(pubUsuarioIDInicial, True);
+  edtUsuarioIDFinal.Text   := IntegerStringConverter(pubUsuarioIDFinal,   True);
+  medInsDtHrInicial.Text   := DateTimeStringConverter(pubInsDtHrInicial, 'dd/mm/yyyy hh:nn');
+  medInsDtHrFinal.Text     := DateTimeStringConverter(pubInsDtHrFinal,   'dd/mm/yyyy hh:nn');
+  medUpdDtHrInicial.Text   := DateTimeStringConverter(pubUpdDtHrInicial, 'dd/mm/yyyy hh:nn');
+  medUpdDtHrFinal.Text     := DateTimeStringConverter(pubUpdDtHrFinal,   'dd/mm/yyyy hh:nn');
   
 
   //
   // Foco no componente desejado.
   //
   if pagFormulario.ActivePageIndex = TAB_CADASTRO  then edtCodigoInicial.SetFocus;
-  if pagFormulario.ActivePageIndex = TAB_AUDITORIA then edtTipoUsuarioIDInicial.SetFocus;
+  if pagFormulario.ActivePageIndex = TAB_AUDITORIA then edtUsuarioIDInicial.SetFocus;
 end;
 
 //
 // Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
 end;
 
 //
-// Eventos do componente "ID inicial" do tipo do usuário.
+// Eventos do componente "ID inicial" do usuário.
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtTipoUsuarioIDInicialEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.edtUsuarioIDInicialEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtTipoUsuarioIDInicial) then Exit;
+  if not VCLEditEntrar(edtUsuarioIDInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtTipoUsuarioIDInicialKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.edtUsuarioIDInicialKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_NUMERICA_INTEIRA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtTipoUsuarioIDInicialExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.edtUsuarioIDInicialExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtTipoUsuarioIDInicial) then Exit;
+  if not VCLEditSair(edtUsuarioIDInicial) then Exit;
 end;
 
 //
-// Eventos do componente "ID final" do tipo do usuário.
+// Eventos do componente "ID final" do usuário.
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtTipoUsuarioIDFinalEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.edtUsuarioIDFinalEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtTipoUsuarioIDFinal) then Exit;
+  if not VCLEditEntrar(edtUsuarioIDFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtTipoUsuarioIDFinalKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.edtUsuarioIDFinalKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_NUMERICA_INTEIRA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtTipoUsuarioIDFinalExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.edtUsuarioIDFinalExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtTipoUsuarioIDFinal) then Exit;
+  if not VCLEditSair(edtUsuarioIDFinal) then Exit;
 end;
 
 //
 // Eventos do componente "código inicial".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtCodigoInicialEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.edtCodigoInicialEnter(Sender: TObject);
 begin
   if not VCLEditEntrar(edtCodigoInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtCodigoInicialKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.edtCodigoInicialKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtCodigoInicialExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.edtCodigoInicialExit(Sender: TObject);
 begin
   if not VCLEditSair(edtCodigoInicial) then Exit;
 end;
@@ -289,53 +289,53 @@ end;
 //
 // Eventos do componente "código final".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtCodigoFinalEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.edtCodigoFinalEnter(Sender: TObject);
 begin
   if not VCLEditEntrar(edtCodigoFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtCodigoFinalKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.edtCodigoFinalKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtCodigoFinalExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.edtCodigoFinalExit(Sender: TObject);
 begin
   if not VCLEditSair(edtCodigoFinal) then Exit;
 end;
 
 //
-// Eventos do componente "descrição".
+// Eventos do componente "nome".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtDescricaoEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.edtNomeEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtDescricao) then Exit;
+  if not VCLEditEntrar(edtNome) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtDescricaoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.edtNomeKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.edtDescricaoExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.edtNomeExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtDescricao) then Exit;
+  if not VCLEditSair(edtNome) then Exit;
 end;
 
 //
 // Eventos do componente "bloqueado".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.cbxBloqueadoEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.cbxBloqueadoEnter(Sender: TObject);
 begin
   if not VCLComboBoxEntrar(cbxBloqueado) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.cbxBloqueadoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.cbxBloqueadoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.cbxBloqueadoExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.cbxBloqueadoExit(Sender: TObject);
 begin
   if not VCLComboBoxSair(cbxBloqueado) then Exit;
   if not VCLComboBoxValidar(cbxBloqueado) then Exit;
@@ -344,17 +344,17 @@ end;
 //
 // Eventos do componente "ativo".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.cbxAtivoEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.cbxAtivoEnter(Sender: TObject);
 begin
   if not VCLComboBoxEntrar(cbxAtivo) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.cbxAtivoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.cbxAtivoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.cbxAtivoExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.cbxAtivoExit(Sender: TObject);
 begin
   if not VCLComboBoxSair(cbxAtivo) then Exit;
   if not VCLComboBoxValidar(cbxAtivo) then Exit;
@@ -363,28 +363,28 @@ end;
 //
 // Eventos do componente "data de criação inicial".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrInicialEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.medInsDtHrInicialEnter(Sender: TObject);
 begin
   if not VCLMaskEditEntrar(medInsDtHrInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrInicialKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.medInsDtHrInicialKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrInicialKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLUsuarioFiltro.medInsDtHrInicialKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medInsDtHrInicial);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrInicialExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.medInsDtHrInicialExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medInsDtHrInicial) then Exit;
   if not VCLMaskEditDataValidar(medInsDtHrInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.imgInsDtHrInicialClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.imgInsDtHrInicialClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataSelecionar(medInsDtHrInicial);
 end;
@@ -392,28 +392,28 @@ end;
 //
 // Eventos do componente "data de criação final".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrFinalEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.medInsDtHrFinalEnter(Sender: TObject);
 begin
   if not VCLMaskEditEntrar(medInsDtHrFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrFinalKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.medInsDtHrFinalKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLUsuarioFiltro.medInsDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medInsDtHrFinal);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medInsDtHrFinalExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.medInsDtHrFinalExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medInsDtHrFinal) then Exit;
   if not VCLMaskEditDataValidar(medInsDtHrFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.imgInsDtHrFinalClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.imgInsDtHrFinalClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataSelecionar(medInsDtHrFinal);
 end;
@@ -421,28 +421,28 @@ end;
 //
 // Eventos do componente "data de alteração inicial".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrInicialEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.medUpdDtHrInicialEnter(Sender: TObject);
 begin
   if not VCLMaskEditEntrar(medUpdDtHrInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrInicialKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.medUpdDtHrInicialKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrInicialKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLUsuarioFiltro.medUpdDtHrInicialKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrInicial);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrInicialExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.medUpdDtHrInicialExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medUpdDtHrInicial) then Exit;
   if not VCLMaskEditDataValidar(medUpdDtHrInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.imgUpdDtHrInicialClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.imgUpdDtHrInicialClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrInicial);
 end;
@@ -450,28 +450,28 @@ end;
 //
 // Eventos do componente "data de alteração final".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrFinalEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.medUpdDtHrFinalEnter(Sender: TObject);
 begin
   if not VCLMaskEditEntrar(medUpdDtHrFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrFinalKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioFiltro.medUpdDtHrFinalKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLUsuarioFiltro.medUpdDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrFinal);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.medUpdDtHrFinalExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.medUpdDtHrFinalExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medUpdDtHrFinal) then Exit;
   if not VCLMaskEditDataValidar(medUpdDtHrFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosFiltro.imgUpdDtHrFinalClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.imgUpdDtHrFinalClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrFinal);
 end;
@@ -479,7 +479,7 @@ end;
 //
 // Evento de click no botão "localizar".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.btnLocalizarClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.btnLocalizarClick(Sender: TObject);
 begin
   FormularioLocalizar;
 end;
@@ -487,18 +487,18 @@ end;
 //
 // Evento de click no botão "limpar".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.btnLimparClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.btnLimparClick(Sender: TObject);
 begin
   FormularioLimpar;
 
   if pagFormulario.ActivePageIndex = TAB_CADASTRO  then edtCodigoInicial.SetFocus;
-  if pagFormulario.ActivePageIndex = TAB_AUDITORIA then edtTipoUsuarioIDInicial.SetFocus;
+  if pagFormulario.ActivePageIndex = TAB_AUDITORIA then edtUsuarioIDInicial.SetFocus;
 end;
 
 //
 // Evento de click no botão "minimizar".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.btnMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.btnMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
@@ -506,7 +506,7 @@ end;
 //
 // Evento de click no botão "fechar".
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.btnFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioFiltro.btnFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -514,13 +514,13 @@ end;
 //
 // Procedimento para inicializar os componentes do formulário.
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.FormularioInicializar;
+procedure TPlataformaERPVCLUsuarioFiltro.FormularioInicializar;
 begin
   //
   // Controla os componentes conforme permissão de acesso.
   //
-  pagFormulario.Pages[TAB_CADASTRO].TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_FILTRO_CADASTRO');
-  pagFormulario.Pages[TAB_AUDITORIA].TabVisible := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_FILTRO_AUDITORIA');
+  pagFormulario.Pages[TAB_CADASTRO].TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_FILTRO_CADASTRO');
+  pagFormulario.Pages[TAB_AUDITORIA].TabVisible := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_FILTRO_AUDITORIA');
 
   //
   // Componentes pré-carregados.
@@ -532,16 +532,16 @@ end;
 //
 // Procedimento para limpar os componentes do formulário.
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.FormularioLimpar;
+procedure TPlataformaERPVCLUsuarioFiltro.FormularioLimpar;
 begin
   VCLEditLimpar    (edtCodigoInicial);
   VCLEditLimpar    (edtCodigoFinal);
-  VCLEditLimpar    (edtDescricao);
+  VCLEditLimpar    (edtNome);
   VCLComboBoxLimpar(cbxBloqueado);
   VCLComboBoxLimpar(cbxAtivo);
 
-  VCLEditLimpar    (edtTipoUsuarioIDInicial);
-  VCLEditLimpar    (edtTipoUsuarioIDFinal);
+  VCLEditLimpar    (edtUsuarioIDInicial);
+  VCLEditLimpar    (edtUsuarioIDFinal);
   VCLMaskEditLimpar(medInsDtHrInicial);
   VCLMaskEditLimpar(medInsDtHrFinal);
   VCLMaskEditLimpar(medUpdDtHrInicial);
@@ -551,20 +551,20 @@ end;
 //
 // Procedimento para localizar os dados do filtro.
 //
-procedure TPlataformaERPVCLTiposUsuariosFiltro.FormularioLocalizar;
+procedure TPlataformaERPVCLUsuarioFiltro.FormularioLocalizar;
 begin
-  pubClicouFechar         := False;
-  pubCodigoInicial        := StringTrim(edtCodigoInicial.Text);
-  pubCodigoFinal          := StringTrim(edtCodigoFinal.Text);
-  pubDescricao            := StringTrim(edtDescricao.Text);
-  pubBloqueado            := Copy(cbxBloqueado.Text, 1, 1);
-  pubAtivo                := Copy(cbxAtivo.Text, 1, 1);
-  pubTipoUsuarioIDInicial := StringIntegerConverter(edtTipoUsuarioIDInicial.Text);
-  pubTipoUsuarioIDFinal   := StringIntegerConverter(edtTipoUsuarioIDFinal.Text);
-  pubInsDtHrInicial       := StringDateTimeConverter(medInsDtHrInicial.Text);
-  pubInsDtHrFinal         := StringDateTimeConverter(medInsDtHrFinal.Text);
-  pubUpdDtHrInicial       := StringDateTimeConverter(medUpdDtHrInicial.Text);
-  pubUpdDtHrFinal         := StringDateTimeConverter(medUpdDtHrFinal.Text);
+  pubClicouFechar     := False;
+  pubCodigoInicial    := StringTrim(edtCodigoInicial.Text);
+  pubCodigoFinal      := StringTrim(edtCodigoFinal.Text);
+  pubNome             := StringTrim(edtNome.Text);
+  pubBloqueado        := Copy(cbxBloqueado.Text, 1, 1);
+  pubAtivo            := Copy(cbxAtivo.Text, 1, 1);
+  pubUsuarioIDInicial := StringIntegerConverter(edtUsuarioIDInicial.Text);
+  pubUsuarioIDFinal   := StringIntegerConverter(edtUsuarioIDFinal.Text);
+  pubInsDtHrInicial   := StringDateTimeConverter(medInsDtHrInicial.Text);
+  pubInsDtHrFinal     := StringDateTimeConverter(medInsDtHrFinal.Text);
+  pubUpdDtHrInicial   := StringDateTimeConverter(medUpdDtHrInicial.Text);
+  pubUpdDtHrFinal     := StringDateTimeConverter(medUpdDtHrFinal.Text);
   Close;
 end;
 

@@ -49,6 +49,14 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
       7D1DCF6F8CD6DE05835FE2A902FC05BDD027307001845E0000000049454E44AE
       426082}
   end
+  object imgBackground: TImage
+    Left = 0
+    Top = 177
+    Width = 105
+    Height = 105
+    Center = True
+    Stretch = True
+  end
   object pagFormulario: TPageControl
     Left = 48
     Top = 8

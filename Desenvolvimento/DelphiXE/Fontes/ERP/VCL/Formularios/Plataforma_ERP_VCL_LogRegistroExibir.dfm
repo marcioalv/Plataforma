@@ -53,6 +53,14 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
       1290226C77B0C7EB5D3EE0B257783960F5863E901C44AB0D2EC5179FEE4F7E03
       BE489FDEF026F30C0000000049454E44AE426082}
   end
+  object imgBackground: TImage
+    Left = 0
+    Top = 457
+    Width = 105
+    Height = 105
+    Center = True
+    Stretch = True
+  end
   object btnFechar: TButton
     Left = 488
     Top = 512

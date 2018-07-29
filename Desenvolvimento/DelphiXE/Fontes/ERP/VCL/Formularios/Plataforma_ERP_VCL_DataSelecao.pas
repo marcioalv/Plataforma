@@ -35,6 +35,7 @@ type
     imgMesIncrementar: TImage;
     lblHoje: TLabel;
     btnSelecionar: TBitBtn;
+    imgBackground: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
@@ -71,7 +72,8 @@ implementation
 
 uses
   Plataforma_Framework_Util,
-  Plataforma_Framework_VCL;
+  Plataforma_Framework_VCL,
+  Plataforma_ERP_VCL_Generico;
 
 //
 // Evento de criação do formulário.
@@ -98,6 +100,11 @@ procedure TPlataformaERPVCLDataSelecao.FormShow(Sender: TObject);
 var
   locData: TDateTime;
 begin
+  //
+  // Background do formulário.
+  //
+  Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+
   //
   // Determina a data apropriada.
   //

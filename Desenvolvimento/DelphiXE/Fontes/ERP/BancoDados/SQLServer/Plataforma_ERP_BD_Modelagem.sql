@@ -379,6 +379,8 @@ INSERT INTO [numerador_licenca] VALUES (1, 1, 'tipo_usuario_id', 2, 'N', 'S', GE
 INSERT INTO [usuario]     VALUES (1, 1, 1, '000.001', 'Administrador do sistema', 2, 1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [usuario_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, 'ws049', 'chokito', 1, 1, 'Registro criado na instalação!', '')
 
+INSERT INTO [numerador_licenca] VALUES (1, 1, 'usuario_id', 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+
 --
 -- Chave estrangeira do tipo de usuário para o usuário.
 --

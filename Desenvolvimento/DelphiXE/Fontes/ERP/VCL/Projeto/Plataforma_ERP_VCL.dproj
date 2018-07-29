@@ -179,6 +179,22 @@
             <Form>PlataformaERPVCLDataSelecao</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_UsuarioLista.pas">
+            <Form>PlataformaERPVCLUsuarioLista</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_UsuarioFiltro.pas">
+            <Form>PlataformaERPVCLUsuarioFiltro</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_UsuarioCadastro.pas">
+            <Form>PlataformaERPVCLUsuarioCadastro</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <RcItem Include="..\..\..\..\..\Imagem\Background\Formulario\FORM_BACKGROUND_DEFAULT.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>FORM_BACKGROUND_DEFAULT</ResourceId>
+        </RcItem>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -208,6 +224,12 @@
                 <DeployFile LocalName="..\..\Instalacao\Plataforma_ERP_VCL.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Plataforma_ERP_VCL.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\..\..\Imagem\Background\Formulario\FORM_BACKGROUND_DEFAULT.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

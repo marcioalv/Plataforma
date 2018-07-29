@@ -38,6 +38,7 @@ type
     lvwLista: TListView;
     btnSelecionar: TButton;
     btnMinimizar: TButton;
+    imgBackground: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -66,6 +67,7 @@ implementation
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
+  Plataforma_ERP_VCL_Generico,
   Plataforma_ERP_VCL_LogRegistroExibir;
 
 const
@@ -98,7 +100,19 @@ end;
 //
 procedure TPlataformaERPVCLLogRegistroLista.FormShow(Sender: TObject);
 begin
+  //
+  // Background do formulário.
+  //
+  Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+
+  //
+  // Ajusta tamanhos das colunas do listview.
+  //
   VCLListViewColunarDimensionar(lvwLista);
+
+  //
+  // Atualiza informações do listview.
+  //
   FormularioAtualizar;
 end;
 

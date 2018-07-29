@@ -67,6 +67,14 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       8D1BC3CE3FEF723F815BAC78B1379FF16D78B34E9C8DFE06E9148F3F58557A2E
       0000000049454E44AE426082}
   end
+  object imgBackground: TImage
+    Left = 0
+    Top = 168
+    Width = 105
+    Height = 105
+    Center = True
+    Stretch = True
+  end
   object btnFechar: TBitBtn
     Left = 392
     Top = 224
@@ -116,7 +124,6 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
     ParentBackground = False
     ShowCaption = False
     TabOrder = 2
-    OnClick = panFormularioClick
     object lblDia: TLabel
       Left = 16
       Top = 16

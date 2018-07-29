@@ -1,10 +1,10 @@
-object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCadastro
+object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'Tipo de usu'#225'rio'
-  ClientHeight = 331
+  Caption = 'Usu'#225'rio'
+  ClientHeight = 406
   ClientWidth = 577
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -29,52 +29,32 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Picture.Data = {
       0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
       00200806000000737A7AF4000000017352474200AECE1CE90000000467414D41
-      0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000004
-      F24944415478DAB5977F6C535514C7EFBD7DEBCA706E2EFE0A1A111D6C996B07
-      2E6A241A071AA380014DB6B683C8C2A612457061E90F352935D9DAC7E284087F
-      381432756BF7238E18242C5174E00F3299DA96A1C4B905C5A901649DA475ED7B
-      EF7A5EB7415F779F7B05F6FE79EFFE38E77EEEF7DE7BCE7D185DC1536CE5D760
-      8A9C08A3628CD0398A502BD1EBB7075A6A47D3F585D33528316F7F9C12E91098
-      A6D8D23F4589BB7FA0BDEEB759053059F8FD60B59AD5064AB8433EFBB6AB0230
-      591A1FA058B4638AEF80D66170FB6ED0E7E849020842BD910940D17B21BFBD46
-      FE2E7DFE9D8CF8587823C5D22A28E660848338CEB9035D5B7F5701A0189CEF05
-      65AB189CEB833EDBFBF297D1E23D8C315EC606A06F84FC0ED704A8771FC3578C
-      62F472A8CDDE3C0DE01EB377A98EE0AFD842D15F4085FC49C7DDE0780DBB1BAA
-      0BFAED6F2EA96C9C2F527178FA3E492C53784C1FB9F5748BFB5F0580D1CAD740
-      618FDA5A057DF6445F93D5FB29983DAA02EA0450AFD1EC7D12137C50CD172CCB
-      DDA136E79012A0D2B31A53B25FC52606009913009EA710221F33DCFEADA3D8F8
-      BDDF3E02C7F41182D0176A000662C8E96BDD32A60090371FC2D231B6B27424E4
-      73DC76B92F7F1C2C4B157D286A820DB855FE2EB6D61712C4FDC8F445E958A820
-      7A0372BB25050050AF00EA4F54441B07690D97D4B2785EC298EC4AEE218AD2E2
-      810E6760D297BA021449191723D9FD07DC110540C1063E5B1FA101D8E10B180A
-      EC0505AA1383AFF5DE8E24FC011896A574DA258811E7C94EF7C5FC277666CEC9
-      8D7E07BE8A18085DB09CE55305C52E65CD0C248B7344B750CAE0C2526CFC7530
-      D8046699ECC9A1B3F0DA963712693E3F2FCB0C2A7C983A7B8CA829E0770C3001
-      E4E011FB6774142AB392D6F62322709B252E7E94A50E5B667A5010A34F735CD6
-      AF50BA25A9E13358CAC792BB2A00165734DC2711DD31A82549D4215882D330F8
-      2A4D835F7E76807ACF81DDDC245F831958F760BFAFEE9C026089859F2720EA81
-      D25A0899BA996788248AE9B7F03E05A53C18A40CDED769120702110CDA14B960
-      E0070F6D19C745EB1AF275A2EE6BA8BC49E3CCFE8240B2120249FF544562638A
-      F8558CE94656F463AF12EA13C5C8C3F8FFB21BEB8124F54CC06FEB66B599ACFC
-      5BF07A45F32251BC1943683D0F6EF3349AC40421920D472DC66A84685A0AD1F4
-      B8E6F111ED06009E6A374061C8F7B96AED2566CF9D949061CDFE28FA323D0088
-      09797F44B37A7BDD820A4019007C3E7B0008097A81DED8DFE908B3DA674868D7
-      0280460B85BBB23B3B2B44563BECA787603F1D9D358009235A05B79E162600FB
-      16746D014086A10271C1A254154CE6864588E84EA53799048057D21A3C2E3D12
-      B204DBEDED5733FBC9C91C911590EF814BD3B2C3B822D466EB5402F06F4340DB
-      9426403D9EF8D1A03DDAFAA3C3844A4D01BF73DAC5A5A8DCA5E7384335A5B816
-      72C3420DCE2E208E14622DF4B0F14E524C6A4EF86CDFCCE8D8E522C69FE73E8B
-      246927805CAF32B87C2FB0C2BDA02301505EDEA1FB891B6A864CB881D1F90C11
-      847B7FE87AED6C3AEA9A2C9EE500DD030370299389C3BFC10B277C8E7D725979
-      23B2F22F428F7A20CF4D32A88563B7239DC193FC1D800156264D6610FE2BAB21
-      931E99AA9AFE6BB6AEF1662A487648AD55729282F3B13CD066D71C5E15BEAC3C
-      0F2F9BFC63037B6337A4DFDDA9894CF5F8CD5FEF32E4C4E7AC00B9FA42AD8E33
-      57025052C92F43A24403ED8E5E3991B3FAFC079E682BF0DD889AD60000000049
-      454E44AE426082}
+      0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000002
+      7A4944415478DAED96CF6B135110C7E76DD6422A5188DA3F40C1424C524D3DB6
+      820711241E02DAEE2A88A8D08B0725D4DD821072EA6E3445F022B909D1A444C1
+      4BD583070B7AF25792DAA8A84855F4202D0A5A4BF7C773A2E0CF8D7D2FBE1810
+      DF61591E336F3EFB9D7D3343A0CD8BFC8973F70133B0E0CC5B3367D30B7F0D60
+      C360669D8FB83ABA26D07BD5E74D0A4FF091B79D8FD95A29FDBE65003D4A26E1
+      12F71C01E2F7B6A04F1D17764E8FEB0F84034406CD7E22C1357CEDF89D1DA574
+      C6B197C56A17927302012889AA6619CDA34CD614C6A68A5A5218405831374B04
+      6EB1AA850873DDF6DAAE5269C01102D0A31A4314C81976000009607DB9A03D16
+      0210558DFA5F3FCA034008E9AB9C3F76B36D009886FE6A41BFF11F4008405835
+      0E4B404EF3842794862B457D5A9402DBD1F42A47FC45F049C16A7EF8831080D0
+      EE54872CFB5FA37990293CA597AA453DC1A414EB2771A46111E58FB1C8CF0500
+      A9941479D49923040E36FC70A08E44E9FE4A7124CF7A2C673BC69EA098EFB0CA
+      041A185CA916B41D3C2772CF0311D57C8B4E2BBD158089A98216FF37017AE3A9
+      4E2BE0AFB7D874BDD27B1A51987509ECBB5FD02E0B0308EDCA0665D9C26E0847
+      B0C174B11C8A434959029A955704C7EFE486ACA6007AD593AB2D6A1FC7C08730
+      F0721E59BF4379816DDC08BE9ACF4D4EA66D6680B0626CC3A038FBC19AE602FF
+      02721B7CBE01AC8CCF960488EE31E398CB8BB0C4ECC7CF002F4196B6FC0CF103
+      C017D99D875FC76DC10BD3791D6FC9D6860078C5867123D38AE0DF28DC58B538
+      72CF1320AA181378C3B82A591304499C13C61A2970173736B516004E61B93EEA
+      09B071EF8990436D3FFF99ECCBB1C89B5A497FEE09D08ED576804FE269EA21A1
+      1C13F20000000049454E44AE426082}
   end
   object imgBackground: TImage
     Left = 0
-    Top = 225
+    Top = 305
     Width = 105
     Height = 105
     Center = True
@@ -82,7 +62,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnGravar: TBitBtn
     Left = 328
-    Top = 280
+    Top = 360
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -92,7 +72,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnAlterar: TBitBtn
     Left = 328
-    Top = 280
+    Top = 360
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -110,16 +90,17 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Left = 48
     Top = 16
     Width = 514
-    Height = 249
+    Height = 329
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabCadastro
+    ActivePage = tabAuditoria
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
+      ExplicitHeight = 221
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -133,12 +114,12 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
       end
-      object lblDescricao: TLabel
+      object lblNome: TLabel
         Left = 16
         Top = 72
-        Width = 55
+        Width = 36
         Height = 14
-        Caption = 'Descri'#231#227'o:'
+        Caption = 'Nome:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -159,10 +140,23 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
       end
+      object lblTipoUsuario: TLabel
+        Left = 16
+        Top = 128
+        Width = 28
+        Height = 14
+        Caption = 'Tipo:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
       object edtCodigo: TEdit
         Left = 16
         Top = 32
-        Width = 73
+        Width = 89
         Height = 26
         Alignment = taCenter
         Font.Charset = DEFAULT_CHARSET
@@ -179,7 +173,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         OnKeyDown = edtCodigoKeyDown
         OnKeyPress = edtCodigoKeyPress
       end
-      object edtDescricao: TEdit
+      object edtNome: TEdit
         Left = 16
         Top = 88
         Width = 473
@@ -193,14 +187,14 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         ParentFont = False
         TabOrder = 1
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
-        OnEnter = edtDescricaoEnter
-        OnExit = edtDescricaoExit
-        OnKeyDown = edtDescricaoKeyDown
-        OnKeyPress = edtDescricaoKeyPress
+        OnEnter = edtNomeEnter
+        OnExit = edtNomeExit
+        OnKeyDown = edtNomeKeyDown
+        OnKeyPress = edtNomeKeyPress
       end
       object chkBloqueado: TCheckBox
         Left = 16
-        Top = 136
+        Top = 192
         Width = 73
         Height = 17
         Cursor = crHandPoint
@@ -220,7 +214,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object chkAtivo: TCheckBox
         Left = 16
-        Top = 160
+        Top = 216
         Width = 49
         Height = 17
         Cursor = crHandPoint
@@ -261,13 +255,75 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         OnKeyDown = edtCodigoKeyDown
         OnKeyPress = edtCodigoKeyPress
       end
+      object edtTipoUsuarioCodigo: TEdit
+        Left = 16
+        Top = 144
+        Width = 89
+        Height = 26
+        Alignment = taCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        TabOrder = 5
+        Text = '999.999'
+        OnEnter = edtCodigoEnter
+        OnExit = edtCodigoExit
+        OnKeyDown = edtCodigoKeyDown
+        OnKeyPress = edtCodigoKeyPress
+      end
+      object edtTipoUsuarioDescricao: TEdit
+        Left = 112
+        Top = 144
+        Width = 377
+        Height = 26
+        Cursor = crHandPoint
+        Hint = 'Clique para exibir o cadastro da licen'#231'a!'
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ReadOnly = True
+        ShowHint = True
+        TabOrder = 6
+        Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
+        OnClick = edtLicencaDescricaoClick
+      end
+      object edtTipoUsuarioID: TEdit
+        Left = 392
+        Top = 144
+        Width = 65
+        Height = 26
+        TabStop = False
+        Alignment = taRightJustify
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 7
+        Text = '999.999'
+        Visible = False
+      end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitHeight = 221
       object lblInsDtHt: TLabel
         Left = 16
-        Top = 112
+        Top = 128
         Width = 42
         Height = 14
         Caption = 'Cria'#231#227'o:'
@@ -280,7 +336,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object lblUpdDtHr: TLabel
         Left = 216
-        Top = 112
+        Top = 128
         Width = 90
         Height = 14
         Caption = #218'ltima altera'#231#227'o:'
@@ -293,7 +349,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object lblUpdContador: TLabel
         Left = 416
-        Top = 112
+        Top = 128
         Width = 61
         Height = 14
         Caption = 'Altera'#231#245'es:'
@@ -304,9 +360,9 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
       end
-      object lblTipoUsuarioID: TLabel
+      object lblUsuarioID: TLabel
         Left = 416
-        Top = 64
+        Top = 72
         Width = 16
         Height = 14
         Caption = 'ID:'
@@ -319,7 +375,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object lblBase: TLabel
         Left = 16
-        Top = 64
+        Top = 72
         Width = 29
         Height = 14
         Caption = 'Base:'
@@ -345,7 +401,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object edtInsLocalDtHr: TEdit
         Left = 16
-        Top = 128
+        Top = 144
         Width = 185
         Height = 26
         Hint = 'Clique para exibir informa'#231#245'es sobre a data de cria'#231#227'o!'
@@ -367,7 +423,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object edtUpdLocalDtHr: TEdit
         Left = 216
-        Top = 128
+        Top = 144
         Width = 185
         Height = 26
         Hint = 'Clique para exibir informa'#231#245'es sobre a data da '#250'ltima altera'#231#227'o!'
@@ -387,7 +443,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object edtUpdContador: TEdit
         Left = 416
-        Top = 128
+        Top = 144
         Width = 73
         Height = 26
         TabStop = False
@@ -405,7 +461,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object btnLog: TButton
         Left = 16
-        Top = 168
+        Top = 208
         Width = 113
         Height = 33
         Cursor = crHandPoint
@@ -419,9 +475,9 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         TabOrder = 8
         OnClick = btnLogClick
       end
-      object edtTipoUsuarioID: TEdit
+      object edtUsuarioID: TEdit
         Left = 416
-        Top = 80
+        Top = 88
         Width = 73
         Height = 26
         TabStop = False
@@ -439,7 +495,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object edtBaseDescricao: TEdit
         Left = 16
-        Top = 80
+        Top = 88
         Width = 385
         Height = 26
         Cursor = crHandPoint
@@ -461,7 +517,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
       end
       object edtBaseID: TEdit
         Left = 280
-        Top = 80
+        Top = 88
         Width = 65
         Height = 26
         TabStop = False
@@ -523,7 +579,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnExcluir: TBitBtn
     Left = 248
-    Top = 280
+    Top = 360
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -539,7 +595,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnMinimizar: TBitBtn
     Left = 408
-    Top = 280
+    Top = 360
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -555,7 +611,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnFechar: TBitBtn
     Left = 488
-    Top = 280
+    Top = 360
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -565,7 +621,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnCancelar: TBitBtn
     Left = 488
-    Top = 280
+    Top = 360
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -581,7 +637,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnNovo: TBitBtn
     Left = 168
-    Top = 280
+    Top = 360
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -597,7 +653,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object btnAtualizar: TBitBtn
     Left = 48
-    Top = 280
+    Top = 360
     Width = 73
     Height = 33
     Cursor = crHandPoint

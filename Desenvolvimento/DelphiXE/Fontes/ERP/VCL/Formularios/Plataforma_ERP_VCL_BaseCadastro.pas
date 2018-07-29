@@ -53,6 +53,7 @@ type
     btnFechar: TBitBtn;
     lblTipoUsuarioID: TLabel;
     edtBaseID: TEdit;
+    imgBackground: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
@@ -119,6 +120,14 @@ end;
 //
 procedure TPlataformaERPVCLBaseCadastro.FormShow(Sender: TObject);
 begin
+  //
+  // Background do formulário.
+  //
+  Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+
+  //
+  // Popula formulário.
+  //
   if pubBaseID > 0 then
   begin
     FormularioPopular(pubBaseID);

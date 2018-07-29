@@ -60,13 +60,12 @@ type
     lblSegundoSeparador: TLabel;
     lblMesSeparador: TLabel;
     lblAnoSeparador: TLabel;
+    imgBackground: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
-    procedure panFormularioClick(Sender: TObject);
-    procedure calCalendarioChange(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioAtualizar(argData: TDateTime);
@@ -83,13 +82,19 @@ implementation
 
 uses
   Plataforma_Framework_Util,
-  Plataforma_Framework_VCL;
+  Plataforma_Framework_VCL,
+  Plataforma_ERP_VCL_Generico;
 
 //
 // Evento de criação do formulário.
 //
 procedure TPlataformaERPVCLDataExibicao.FormCreate(Sender: TObject);
 begin
+  //
+  // Background do formulário.
+  //
+  Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+  
   //
   // Inicializa variáveis públicas.
   //
@@ -125,11 +130,6 @@ begin
   VCLSDIMinimizar;
 end;
 
-procedure TPlataformaERPVCLDataExibicao.calCalendarioChange(Sender: TObject);
-begin
-
-end;
-
 //
 // Evento de click no botão "fechar".
 //
@@ -153,11 +153,6 @@ begin
   VCLEditLimpar(edtSegundo);
   VCLEditLimpar(edtMilesimos);
   VCLEditLimpar(edtPeriodo);
-end;
-
-procedure TPlataformaERPVCLDataExibicao.panFormularioClick(Sender: TObject);
-begin
-
 end;
 
 //

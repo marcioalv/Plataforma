@@ -53,6 +53,7 @@ type
     edtUpdContador: TEdit;
     btnMinimizar: TBitBtn;
     btnFechar: TBitBtn;
+    imgBackground: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -119,6 +120,14 @@ end;
 //
 procedure TPlataformaERPVCLLicencaCadastro.FormShow(Sender: TObject);
 begin
+  //
+  // Background do formulário.
+  //
+  Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+
+  //
+  // Popula formulário.
+  //
   if pubLicencaID > 0 then
   begin
     FormularioPopular(pubLicencaID);
