@@ -60,15 +60,21 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     Center = True
     Stretch = True
   end
-  object btnGravar: TBitBtn
-    Left = 328
+  object btnCancelar: TBitBtn
+    Left = 488
     Top = 360
     Width = 73
     Height = 33
     Cursor = crHandPoint
-    Caption = 'Gravar'
-    TabOrder = 4
-    OnClick = btnGravarClick
+    Caption = 'Cancelar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 6
+    OnClick = btnCancelarClick
   end
   object btnAlterar: TBitBtn
     Left = 328
@@ -86,6 +92,22 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     TabOrder = 3
     OnClick = btnAlterarClick
   end
+  object btnGravar: TBitBtn
+    Left = 328
+    Top = 360
+    Width = 73
+    Height = 33
+    Cursor = crHandPoint
+    Caption = 'Gravar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 4
+    OnClick = btnGravarClick
+  end
   object pagFormulario: TPageControl
     Left = 48
     Top = 16
@@ -96,11 +118,10 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabAuditoria
+    ActivePage = tabCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitHeight = 221
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -153,6 +174,50 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Font.Style = []
         ParentFont = False
       end
+      object imgTipoUsuarioSelecionar: TImage
+        Left = 472
+        Top = 148
+        Width = 18
+        Height = 18
+        Cursor = crHandPoint
+        AutoSize = True
+        Picture.Data = {
+          07544269746D617026040000424D260400000000000036000000280000001200
+          0000120000000100180000000000F00300000000000000000000000000000000
+          0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFAFA296A5764ADDDCDBFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFAFA397AE7033AF
+          6F32A57649FFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFB1A59AAE7033AF6F32AF6F32AD9E90FFFFFF
+          0000FFFFFFFFFFFFFFFFFFFFFFFFFEFEFECECAC7AFA397AB9B8CB6ACA3E3E2E1
+          FFFFFFB3A89DAE7033AF6F32AF6F32AB9B8CFFFFFFFFFFFF0000FFFFFFFFFFFF
+          FFFFFFCFCCC9A3784FAF6F32AF6F32AF6F32AF6F32AE7034A27F5FAE6F34AF6F
+          32AF6F32AA9989FFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFFC4C0BAAC7037AF6F
+          32AB713AA28467A48D76A27C57AE7033AF6F32AF6F32AF6F32A99786FFFFFFFF
+          FFFFFFFFFFFFFFFF0000FFFFFFEAE9E9A9723DAF6F32A28264ECECECFFFFFFFF
+          FFFFFFFFFFCCC9C5A87341AF6F32A37A53FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0000FFFFFFA99888AF6F32A4784EF8F8F8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          CECBC8AE6F34AE6F34DCDBDAFFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFA37951
+          AF6F32B6ACA3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA27E5CAF6F
+          32B0A599FFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFA9723DAF6F32D0CDCAFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA5917CAF6F32A79481FFFFFFFF
+          FFFFFFFFFFFFFFFF0000FFFFFFA77443AF6F32C6C1BCFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFA38971AF6F32AA998AFFFFFFFFFFFFFFFFFFFFFFFF
+          0000FFFFFFA18366AF6F32A48D76FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          F3F3F3A8723FAF6F32C1BCB6FFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFC1BBB5
+          AF6F32AE7034C1BCB6FFFFFFFFFFFFFFFFFFFFFFFFFCFCFCA38970AF6F32A674
+          44F9F9F9FFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFFA28367AF6F32AD6F
+          35A58F7ACBC7C3D9D7D6BDB6AFA27C57AF6F32AE6F34C2BCB7FFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFF0000FFFFFFFFFFFFF5F5F5A18366AF6F32AF6F32AF6F32AF
+          6F32AF6F32AF6F32AC7037B8AFA7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0000FFFFFFFFFFFFFFFFFFFFFFFFBDB6AFA2805FAA713BAE6F34A67446A48E78
+          DDDCDBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000}
+        OnClick = imgTipoUsuarioSelecionarClick
+      end
       object edtCodigo: TEdit
         Left = 16
         Top = 32
@@ -185,7 +250,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Font.Style = []
         MaxLength = 100
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 2
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
         OnEnter = edtNomeEnter
         OnExit = edtNomeExit
@@ -207,7 +272,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         ParentFont = False
         ParentShowHint = False
         ShowHint = False
-        TabOrder = 2
+        TabOrder = 6
         OnEnter = chkBloqueadoEnter
         OnExit = chkBloqueadoExit
         OnKeyPress = chkBloqueadoKeyPress
@@ -227,7 +292,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         ParentFont = False
         ParentShowHint = False
         ShowHint = False
-        TabOrder = 3
+        TabOrder = 7
         OnEnter = chkAtivoEnter
         OnExit = chkAtivoExit
         OnKeyPress = chkAtivoKeyPress
@@ -248,7 +313,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         MaxLength = 25
         ParentFont = False
         ReadOnly = True
-        TabOrder = 4
+        TabOrder = 1
         Text = '999.999'
         OnEnter = edtCodigoEnter
         OnExit = edtCodigoExit
@@ -268,17 +333,17 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Font.Style = []
         MaxLength = 25
         ParentFont = False
-        TabOrder = 5
+        TabOrder = 3
         Text = '999.999'
-        OnEnter = edtCodigoEnter
-        OnExit = edtCodigoExit
-        OnKeyDown = edtCodigoKeyDown
-        OnKeyPress = edtCodigoKeyPress
+        OnEnter = edtTipoUsuarioCodigoEnter
+        OnExit = edtTipoUsuarioCodigoExit
+        OnKeyDown = edtTipoUsuarioCodigoKeyDown
+        OnKeyPress = edtTipoUsuarioCodigoKeyPress
       end
       object edtTipoUsuarioDescricao: TEdit
         Left = 112
         Top = 144
-        Width = 377
+        Width = 353
         Height = 26
         Cursor = crHandPoint
         Hint = 'Clique para exibir o cadastro da licen'#231'a!'
@@ -293,12 +358,11 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         ParentShowHint = False
         ReadOnly = True
         ShowHint = True
-        TabOrder = 6
+        TabOrder = 4
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
-        OnClick = edtLicencaDescricaoClick
       end
       object edtTipoUsuarioID: TEdit
-        Left = 392
+        Left = 360
         Top = 144
         Width = 65
         Height = 26
@@ -312,7 +376,26 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 7
+        TabOrder = 5
+        Text = '999.999'
+        Visible = False
+      end
+      object edtTipoUsuarioBaseID: TEdit
+        Left = 264
+        Top = 144
+        Width = 65
+        Height = 26
+        TabStop = False
+        Alignment = taRightJustify
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 8
         Text = '999.999'
         Visible = False
       end
@@ -320,7 +403,10 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitHeight = 221
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 128
@@ -616,24 +702,14 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     Height = 33
     Cursor = crHandPoint
     Caption = 'Fechar'
-    TabOrder = 7
-    OnClick = btnFecharClick
-  end
-  object btnCancelar: TBitBtn
-    Left = 488
-    Top = 360
-    Width = 73
-    Height = 33
-    Cursor = crHandPoint
-    Caption = 'Cancelar'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 6
-    OnClick = btnCancelarClick
+    TabOrder = 7
+    OnClick = btnFecharClick
   end
   object btnNovo: TBitBtn
     Left = 168

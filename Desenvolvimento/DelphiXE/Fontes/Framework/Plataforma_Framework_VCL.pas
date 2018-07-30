@@ -110,6 +110,7 @@ procedure VCLCheckBoxControlar(argComponente: TCheckBox; argLigar: Boolean);
 procedure VCLMemoControlar(argComponente: TMemo; argLigar: Boolean);
 
 procedure VCLEditClickControlar(argComponente: TEdit; argLigar: Boolean);
+procedure VCLEditSelecaoControlar(argComponente: TEdit; argImage: TImage; argLigar: Boolean);
 
 //
 // Entrada/Saída componentes.
@@ -865,6 +866,23 @@ begin
   end;
 
   argComponente.Refresh;
+end;
+
+//
+// VCLEditSelecaoControlar.
+//
+procedure VCLEditSelecaoControlar(argComponente: TEdit; argImage: TImage; argLigar: Boolean);
+begin
+  if not argLigar then
+  begin
+    argComponente.Width := (argImage.Left + argImage.Width) - argComponente.Left - 1;
+  end
+  else
+  begin
+    argComponente.Width := (argImage.Left - argComponente.Left) - Round(argImage.Width / 2);
+  end;
+
+  argImage.Visible := argLigar;
 end;
 
 //

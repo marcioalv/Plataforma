@@ -155,8 +155,8 @@
             <Form>PlataformaERPVCLTiposUsuariosFiltro</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_TiposUsuariosLocalizar.pas">
-            <Form>PlataformaERPVCLTiposUsuariosLocalizar</Form>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_TiposUsuariosSelecao.pas">
+            <Form>PlataformaERPVCLTiposUsuariosSelecao</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_LicencaCadastro.pas">
@@ -167,8 +167,8 @@
             <Form>PlataformaERPVCLBaseCadastro</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_TiposUsuariosSelecao.pas">
-            <Form>PlataformaERPVCLTiposUsuariosSelecao</Form>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_TiposUsuariosCodigo.pas">
+            <Form>PlataformaERPVCLTiposUsuariosCodigo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_DataExibicao.pas">

@@ -1,3 +1,15 @@
+//
+// Arquivo..: Plataforma_ERP_VCL_TiposUsuariosLocalizar.pas
+// Projeto..: ERP
+// Fonte....: Formulário VCL
+// Criação..: 05/Julho/2018
+// Autor....: Marcio Alves (marcioalv@yahoo.com.br)
+// Descrição: Formulário com os parâmetros de localização de cadastro de tipo de usuário.
+//
+// Histórico de alterações:
+//   Nenhuma alteração até o momento.
+//
+
 unit Plataforma_ERP_VCL_TiposUsuariosSelecao;
 
 interface
@@ -13,36 +25,32 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Dialogs,
-  Vcl.ExtCtrls,
   Vcl.StdCtrls,
+  Vcl.ExtCtrls,
   Vcl.Buttons,
-  Vcl.Imaging.pngimage,
-  Vcl.ComCtrls;
+  Vcl.Imaging.pngimage, Vcl.ComCtrls;
 
 type
   TPlataformaERPVCLTiposUsuariosSelecao = class(TForm)
+    imgFormulario: TImage;
     btnConfirmar: TBitBtn;
     btnFechar: TBitBtn;
     panFormulario: TPanel;
     btnMinimizar: TBitBtn;
-    imgFormulario: TImage;
+    imgBackground: TImage;
     lvwLista: TListView;
+    btnAtualizar: TBitBtn;
     procedure FormCreate(Sender: TObject);
-    procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
-    procedure lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
-    procedure lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
-    procedure lvwListaDblClick(Sender: TObject);
-    procedure lvwListaKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnConfirmarClick(Sender: TObject);
-    procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
   private
-    procedure FormularioAtualizar;
+    procedure FormularioLimpar;    
     procedure FormularioConfirmar;
   public
     pubClicouFechar : Boolean;
-    pubADOQuery     : TADOQuery;
     pubBaseID       : Integer;
     pubLicencaID    : Integer;
     pubTipoUsuarioID: Integer;
@@ -57,32 +65,39 @@ implementation
 
 uses
   Plataforma_Framework_Util,
-  Plataforma_Framework_VCL;
+  Plataforma_Framework_VCL,
+  Plataforma_ERP_Global,
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_TiposUsuariosCodigo;
 
 const
-  LVW_LISTA_BASE_ID        : Byte = 0;
-  LVW_LISTA_BASE_TITULO    : Byte = 1;
-  LVW_LISTA_LICENCA_ID     : Byte = 2;
-  LVW_LISTA_TIPO_USUARIO_ID: Byte = 3;
-  LVW_LISTA_CODIGO         : Byte = 4;
-  LVW_LISTA_DESCRICAO      : Byte = 5;
-  LVW_LISTA_BLOQUEADO      : Byte = 6;
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_TiposUsuariosLocalizar';
 
 //
 // Evento de criação do formulário.
 //
 procedure TPlataformaERPVCLTiposUsuariosSelecao.FormCreate(Sender: TObject);
 begin
-  pubClicouFechar := True;
-  pubADOQuery     := nil;
+  //
+  // Inicializa variáveis públicas.
+  //
+  pubClicouFechar  := True;
+  pubBaseID        := 1;
+  pubLicencaID     := 1;
+  pubTipoUsuarioID := 1;
+
+  //
+  // Limpa componentes do formulário.
+  //
+  FormularioLimpar;
 end;
 
 //
-// Evento se exibição do formulário.
+// Evento de exibição do formulário.
 //
 procedure TPlataformaERPVCLTiposUsuariosSelecao.FormShow(Sender: TObject);
 begin
-  FormularioAtualizar;
+  Exit;
 end;
 
 //
@@ -94,42 +109,11 @@ begin
 end;
 
 //
-// Eventos do componente "Lista".
-//
-procedure TPlataformaERPVCLTiposUsuariosSelecao.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
-begin
-  VCLListViewZebrar(Sender, Item);
-end;
-
-procedure TPlataformaERPVCLTiposUsuariosSelecao.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
-begin
-  VCLListViewZebrar(Sender, Item);
-end;
-
-procedure TPlataformaERPVCLTiposUsuariosSelecao.lvwListaKeyPress(Sender: TObject; var Key: Char);
-begin
-  if Key = ENTER then lvwListaDblClick(Sender);
-end;
-
-procedure TPlataformaERPVCLTiposUsuariosSelecao.lvwListaDblClick(Sender: TObject);
-begin
-  FormularioConfirmar;
-end;
-
-//
 // Evento de click no botão "Confirmar".
 //
 procedure TPlataformaERPVCLTiposUsuariosSelecao.btnConfirmarClick(Sender: TObject);
 begin
   FormularioConfirmar;
-end;
-
-//
-// Evento de click no botão "Minimizar".
-//
-procedure TPlataformaERPVCLTiposUsuariosSelecao.btnMinimizarClick(Sender: TObject);
-begin
-  VCLSDIMinimizar;
 end;
 
 //
@@ -140,70 +124,26 @@ begin
   Close;
 end;
 
-//
-// Procedimento para atualizar a lista.
-//
-procedure TPlataformaERPVCLTiposUsuariosSelecao.FormularioAtualizar;
-var
-  locListItem: TListItem;
+procedure TPlataformaERPVCLTiposUsuariosSelecao.btnLimparClick(Sender: TObject);
 begin
-  //
-  // Inicializa posição da query.
-  //
-  pubADOQuery.Last;
-  pubADOQuery.First;
 
-  //
-  // Percorre query lendo cada um dos registros.
-  //
-  while not pubADOQuery.EOF do
-  begin
-    //
-    // Insere registros no listview.
-    //
-    locListItem         := lvwLista.Items.Add;
-    locListItem.Caption := '';
-    locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('base_id').AsInteger));
-    locListItem.SubItems.Add(pubADOQuery.FieldByName('base_titulo').AsString);
-    locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('licenca_id').AsInteger));
-    locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('tipo_usuario_id').AsInteger));
-    locListItem.SubItems.Add(pubADOQuery.FieldByName('codigo').AsString);
-    locListItem.SubItems.Add(pubADOQuery.FieldByName('descricao').AsString);
-    locListItem.SubItems.Add(FlagSimNaoStringConverter(pubADOQuery.FieldByName('bloqueado').AsString));
-
-    //
-    // Próximo registro.
-    //
-    pubADOQuery.Next;
-  end;
-  
-  //
-  // Finaliza query.
-  //
-  pubADOQuery.Close;
-  FreeAndNil(pubADOQuery);
-
-  //
-  // Posiciona foco.
-  //
-  VCLListViewFocar(lvwLista);
 end;
 
 //
-// Procedimento para confirmar a seleção de uma linha da lista.
+// Procedimento para limpar os componentes do formulário.
+//
+procedure TPlataformaERPVCLTiposUsuariosSelecao.FormularioLimpar;
+begin
+end;
+
+//
+// Procedimento para confirmar os parâmetros do formulário.
 //
 procedure TPlataformaERPVCLTiposUsuariosSelecao.FormularioConfirmar;
-var
-  locIndice: Integer;
 begin
-  locIndice := VCLListViewIndiceItemRetornar(lvwLista);
-  if locIndice = VCL_NENHUM_INDICE then Exit;
-
   pubClicouFechar  := False;
-  pubBaseID        := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_BASE_ID]);
-  pubLicencaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
-  pubTipoUsuarioID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_ID]);
-  Close;
+  Close; 
 end;
+
 
 end.

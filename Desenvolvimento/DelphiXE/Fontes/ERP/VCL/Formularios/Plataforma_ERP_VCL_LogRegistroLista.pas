@@ -49,6 +49,7 @@ type
     procedure lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure lvwListaDblClick(Sender: TObject);
     procedure lvwListaKeyPress(Sender: TObject; var Key: Char);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     procedure FormularioAtualizar;
     procedure FormularioSelecionar;
@@ -122,6 +123,17 @@ end;
 procedure TPlataformaERPVCLLogRegistroLista.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Evento de fechamento do formulário.
+//
+procedure TPlataformaERPVCLLogRegistroLista.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  //
+  // Para preservar a memória do sistema o ADOQuery precisa ser destruído.
+  //
+  FreeAndNil(pubADOQuery);
 end;
 
 //

@@ -15,6 +15,7 @@ object PlataformaERPVCLLogRegistroLista: TPlataformaERPVCLLogRegistroLista
   KeyPreview = True
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
