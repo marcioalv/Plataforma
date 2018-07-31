@@ -852,7 +852,7 @@ end;
 procedure VCLEditClickControlar(argComponente: TEdit; argLigar: Boolean);
 begin
   if argComponente.Hint = '' then
-    argComponente.Hint := 'Clique para exibir o cadastro';
+    argComponente.Hint := 'Clique para exibir informações!';
 
   argComponente.ShowHint := argLigar;
 

@@ -76,6 +76,9 @@ type
     edtTipoUsuarioID: TEdit;
     imgTipoUsuarioSelecionar: TImage;
     edtTipoUsuarioBaseID: TEdit;
+    mnuFormulario: TMainMenu;
+    mniCadastro: TMenuItem;
+    mniCadastroTipoUsuario: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -111,6 +114,8 @@ type
     procedure edtTipoUsuarioCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure edtTipoUsuarioCodigoKeyPress(Sender: TObject; var Key: Char);
     procedure imgTipoUsuarioSelecionarClick(Sender: TObject);
+    procedure edtTipoUsuarioDescricaoClick(Sender: TObject);
+    procedure mniCadastroTipoUsuarioClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -227,6 +232,14 @@ begin
 end;
 
 //
+// Evento de click na opção de menu "cadastro de tipos de usuários".
+//
+procedure TPlataformaERPVCLUsuarioCadastro.mniCadastroTipoUsuarioClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_TipoUsuarioListaExibir;
+end;
+
+//
 // Eventos do componente "código".
 //
 procedure TPlataformaERPVCLUsuarioCadastro.edtCodigoEnter(Sender: TObject);
@@ -305,6 +318,13 @@ end;
 procedure TPlataformaERPVCLUsuarioCadastro.imgTipoUsuarioSelecionarClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_TipoUsuarioSelecionar(edtLicencaID, edtTipoUsuarioBaseID, edtTipoUsuarioID, edtTipoUsuarioCodigo, edtTipoUsuarioDescricao);
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.edtTipoUsuarioDescricaoClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_TipoUsuarioExibir(StringIntegerConverter(edtBaseID.Text),
+                                       StringIntegerConverter(edtTipoUsuarioBaseID.Text),
+                                       StringIntegerConverter(edtTipoUsuarioID.Text));
 end;
 
 //
@@ -388,9 +408,17 @@ end;
 //
 procedure TPlataformaERPVCLUsuarioCadastro.btnAtualizarClick(Sender: TObject);
 begin
+  //
+  // Popula componentes com as informações do cadastro.
+  //
   FormularioPopular(StringIntegerConverter(edtLicencaID.Text),
                     StringIntegerConverter(edtBaseID.Text),
                     StringIntegerConverter(edtUsuarioID.Text));
+
+  //
+  // Controla a exibição dos componentes.
+  //
+  FormularioControlar(False);
 end;
 
 //
@@ -709,9 +737,9 @@ begin
   // Carrega conteúdo dos campos necessários.
   //
   edtLicencaID.Text        := IntegerStringConverter(gloLicencaID, True);
-  edtLicencaDescricao.Text := StringCadastroIncluir(gloLicencaDescricao);
+  edtLicencaDescricao.Text := gloLicencaDescricao;
   edtBaseID.Text           := IntegerStringConverter(gloBaseID,    True);
-  edtBaseDescricao.Text    := StringCadastroIncluir(gloBaseDescricao);
+  edtBaseDescricao.Text    := gloBaseDescricao;
   edtUsuarioID.Text        := STR_NOVO;
   chkAtivo.Checked         := True;
 
@@ -860,9 +888,9 @@ begin
     chkAtivo.Checked     := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
 
     edtLicencaID.Text        := locADOQuery.FieldByName('licenca_id').AsString;
-    edtLicencaDescricao.Text := StringCadastroIncluir(locADOQuery.FieldByName('licenca_descricao').AsString);
+    edtLicencaDescricao.Text := locADOQuery.FieldByName('licenca_descricao').AsString;
     edtBaseID.Text           := locADOQuery.FieldByName('base_id').AsString;
-    edtBaseDescricao.Text    := StringCadastroIncluir(locADOQuery.FieldByName('base_descricao').AsString);
+    edtBaseDescricao.Text    := locADOQuery.FieldByName('base_descricao').AsString;
     edtUsuarioID.Text        := IntegerStringConverter(locADOQuery.FieldByName('usuario_id').AsInteger, True);
     edtInsLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
     edtUpdLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');

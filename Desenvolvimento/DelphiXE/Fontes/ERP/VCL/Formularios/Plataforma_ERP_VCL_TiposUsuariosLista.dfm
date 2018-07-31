@@ -4,8 +4,8 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Lista de tipos de usu'#225'rios'
-  ClientHeight = 569
-  ClientWidth = 794
+  ClientHeight = 465
+  ClientWidth = 729
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,8 +20,8 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   DesignSize = (
-    794
-    569)
+    729
+    465)
   PixelsPerInch = 96
   TextHeight = 13
   object imgBackground: TImage
@@ -85,8 +85,8 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       454E44AE426082}
   end
   object btnFechar: TBitBtn
-    Left = 705
-    Top = 520
+    Left = 640
+    Top = 416
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -100,13 +100,15 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     ParentFont = False
     TabOrder = 2
     OnClick = btnFecharClick
+    ExplicitLeft = 705
+    ExplicitTop = 520
   end
   object panFormulario: TPanel
     AlignWithMargins = True
     Left = 48
     Top = 16
-    Width = 730
-    Height = 489
+    Width = 665
+    Height = 385
     Margins.Left = 48
     Margins.Top = 16
     Margins.Right = 16
@@ -119,9 +121,11 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
+    ExplicitWidth = 730
+    ExplicitHeight = 489
     DesignSize = (
-      726
-      485)
+      661
+      381)
     object lblListaQtde: TLabel
       Left = 16
       Top = 464
@@ -130,7 +134,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 589
+      Left = 520
       Top = 464
       Width = 80
       Height = 13
@@ -149,8 +153,8 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       AlignWithMargins = True
       Left = 8
       Top = 33
-      Width = 710
-      Height = 422
+      Width = 645
+      Height = 318
       Cursor = crHandPoint
       Margins.Left = 8
       Margins.Top = 8
@@ -181,11 +185,11 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
         item
           Alignment = taCenter
           Caption = 'C'#243'digo'
-          Width = 125
+          Width = 100
         end
         item
           Caption = 'Descri'#231#227'o'
-          Width = 400
+          Width = 350
         end
         item
           Alignment = taCenter
@@ -220,7 +224,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       AlignWithMargins = True
       Left = 8
       Top = 8
-      Width = 710
+      Width = 645
       Height = 17
       Margins.Left = 8
       Margins.Top = 8
@@ -229,11 +233,12 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Align = alTop
       TabOrder = 1
       Visible = False
+      ExplicitWidth = 710
     end
   end
   object btnAtualizar: TBitBtn
-    Left = 385
-    Top = 520
+    Left = 320
+    Top = 416
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -247,10 +252,12 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     ParentFont = False
     TabOrder = 1
     OnClick = btnAtualizarClick
+    ExplicitLeft = 385
+    ExplicitTop = 520
   end
   object btnMinimizar: TBitBtn
-    Left = 625
-    Top = 520
+    Left = 560
+    Top = 416
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -264,10 +271,12 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     ParentFont = False
     TabOrder = 3
     OnClick = btnMinimizarClick
+    ExplicitLeft = 625
+    ExplicitTop = 520
   end
   object btnSelecionar: TBitBtn
-    Left = 545
-    Top = 520
+    Left = 480
+    Top = 416
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -281,10 +290,12 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     ParentFont = False
     TabOrder = 4
     OnClick = btnSelecionarClick
+    ExplicitLeft = 545
+    ExplicitTop = 520
   end
   object btnNovo: TBitBtn
-    Left = 465
-    Top = 520
+    Left = 400
+    Top = 416
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -298,10 +309,12 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     ParentFont = False
     TabOrder = 5
     OnClick = btnNovoClick
+    ExplicitLeft = 465
+    ExplicitTop = 520
   end
   object btnLocalizar: TBitBtn
-    Left = 305
-    Top = 520
+    Left = 240
+    Top = 416
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -315,5 +328,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     ParentFont = False
     TabOrder = 6
     OnClick = btnLocalizarClick
+    ExplicitLeft = 305
+    ExplicitTop = 520
   end
 end

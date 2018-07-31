@@ -221,7 +221,6 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         Top = 32
         Width = 185
         Height = 26
-        Hint = 'Clique para exibir informa'#231#245'es sobre a data local!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -241,7 +240,6 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         Top = 32
         Width = 185
         Height = 26
-        Hint = 'Clique para exibir informa'#231#245'es sobre a data no servidor!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -348,7 +346,6 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
         Top = 80
         Width = 473
         Height = 26
-        Hint = 'Clique para informa'#231#245'es sobre a base de dados do log!'
         TabStop = False
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET

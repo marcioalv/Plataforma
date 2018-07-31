@@ -29,7 +29,7 @@ uses
   Vcl.Buttons,
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls, Vcl.Menus;
 
 type
   TPlataformaERPVCLUsuarioLista = class(TForm)
@@ -46,6 +46,9 @@ type
     lblListaQtde: TLabel;
     lblListaFiltros: TLabel;
     imgBackground: TImage;
+    mnuFormulario: TMainMenu;
+    mniCadastro: TMenuItem;
+    mniCadastroTipoUsuario: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -62,6 +65,7 @@ type
     procedure btnLocalizarClick(Sender: TObject);
     procedure lvwListaColumnClick(Sender: TObject; Column: TListColumn);
     procedure lvwListaCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
+    procedure mniCadastroTipoUsuarioClick(Sender: TObject);
   private
     priListViewIndiceColuna   : Integer;
     priListViewOrdemAscendente: Boolean;
@@ -184,6 +188,14 @@ end;
 procedure TPlataformaERPVCLUsuarioLista.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Evento de click na opção de menu "cadastro de tipos de usuários".
+//
+procedure TPlataformaERPVCLUsuarioLista.mniCadastroTipoUsuarioClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_TipoUsuarioListaExibir;
 end;
 
 //

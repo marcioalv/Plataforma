@@ -56,6 +56,18 @@ procedure Plataforma_ERP_VCL_BaseCadastroExibir(argBaseID: Integer);
 procedure Plataforma_ERP_VCL_LicencaCadastroExibir(argLicencaID: Integer);
 
 //
+// Plataforma_ERP_VCL_TipoUsuarioListaExibir.
+//
+procedure Plataforma_ERP_VCL_TipoUsuarioListaExibir;
+
+//
+// Plataforma_ERP_VCL_TipoUsuarioExibir.
+//
+procedure Plataforma_ERP_VCL_TipoUsuarioExibir(argLicencaID        : Integer;
+                                               argTipoUsuarioBaseID: Integer;
+                                               argTipoUsuarioID    : Integer);
+
+//
 // Plataforma_ERP_VCL_TipoUsuarioValidar.
 //
 procedure Plataforma_ERP_VCL_TipoUsuarioValidar(argNovo                : Boolean;
@@ -86,6 +98,8 @@ uses
   Plataforma_ERP_VCL_DataExibicao,
   Plataforma_ERP_VCL_BaseCadastro,
   Plataforma_ERP_VCL_LicencaCadastro,
+  Plataforma_ERP_VCL_TiposUsuariosLista,
+  Plataforma_ERP_VCL_TiposUsuariosCadastro,
   Plataforma_ERP_VCL_TiposUsuariosCodigo,
   Plataforma_ERP_VCL_TiposUsuariosSelecao;
 
@@ -184,6 +198,37 @@ begin
 
   locFormulario           := TPlataformaERPVCLBaseCadastro.Create(nil);
   locFormulario.pubBaseID := argBaseID;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir a lista de tipos de usuários cadastrados.
+//
+procedure Plataforma_ERP_VCL_TipoUsuarioListaExibir;
+var
+  locFormulario: TPlataformaERPVCLTiposUsuariosLista;
+begin
+  locFormulario := TPlataformaERPVCLTiposUsuariosLista.Create(nil);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o cadastro de tipo de usuário.
+//
+procedure Plataforma_ERP_VCL_TipoUsuarioExibir(argLicencaID        : Integer;
+                                               argTipoUsuarioBaseID: Integer;
+                                               argTipoUsuarioID    : Integer);
+var
+  locFormulario: TPlataformaERPVCLTiposUsuariosCadastro;
+begin
+  locFormulario := TPlataformaERPVCLTiposUsuariosCadastro.Create(nil);
+  locFormulario.pubLicencaID     := argLicencaID;
+  locFormulario.pubBaseID        := argTipoUsuarioBaseID;
+  locFormulario.pubTipoUsuarioID := argTipoUsuarioID;
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

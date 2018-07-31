@@ -96,10 +96,6 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 60
-      ExplicitTop = -40
-      ExplicitWidth = 0
-      ExplicitHeight = 189
       object lblCodigo: TLabel
         Left = 96
         Top = 16
@@ -263,7 +259,6 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
         Top = 32
         Width = 185
         Height = 26
-        Hint = 'Clique para informa'#231#245'es sobre a data de cria'#231#227'o!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -273,7 +268,9 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
+        ParentShowHint = False
         ReadOnly = True
+        ShowHint = False
         TabOrder = 0
         Text = '99/99/9999 99:99:99.999'
         OnClick = edtInsLocalDtHrClick
@@ -283,7 +280,6 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
         Top = 88
         Width = 185
         Height = 26
-        Hint = 'Clique para informa'#231#245'es sobre a data da '#250'ltima altera'#231#227'o!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -293,7 +289,9 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
+        ParentShowHint = False
         ReadOnly = True
+        ShowHint = False
         TabOrder = 1
         Text = '99/99/9999 99:99:99.999'
         OnClick = edtUpdLocalDtHrClick

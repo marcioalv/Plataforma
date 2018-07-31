@@ -247,7 +247,9 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
+        ParentShowHint = False
         ReadOnly = True
+        ShowHint = False
         TabOrder = 0
         Text = '99/99/9999 99:99:99.999'
         OnClick = edtInsLocalDtHrClick
@@ -266,7 +268,9 @@ object PlataformaERPVCLLicencaCadastro: TPlataformaERPVCLLicencaCadastro
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
+        ParentShowHint = False
         ReadOnly = True
+        ShowHint = False
         TabOrder = 1
         Text = '99/99/9999 99:99:99.999'
         OnClick = edtUpdLocalDtHrClick

@@ -340,9 +340,17 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnAtualizarClick(Sender: TObject);
 begin
+  //
+  // Popula componentes com as informações do cadastro.
+  //
   FormularioPopular(StringIntegerConverter(edtLicencaID.Text),
                     StringIntegerConverter(edtBaseID.Text),
                     StringIntegerConverter(edtTipoUsuarioID.Text));
+
+  //
+  // Controla a exibição dos componentes.
+  //
+  FormularioControlar(False);
 end;
 
 //
@@ -650,9 +658,9 @@ begin
   // Carrega conteúdo dos campos necessários.
   //
   edtLicencaID.Text        := IntegerStringConverter(gloLicencaID, True);
-  edtLicencaDescricao.Text := StringCadastroIncluir(gloLicencaDescricao);
+  edtLicencaDescricao.Text := gloLicencaDescricao;
   edtBaseID.Text           := IntegerStringConverter(gloBaseID,    True);
-  edtBaseDescricao.Text    := StringCadastroIncluir(gloBaseDescricao);
+  edtBaseDescricao.Text    := gloBaseDescricao;
   edtTipoUsuarioID.Text    := STR_NOVO;
   chkAtivo.Checked         := True;
 
@@ -787,9 +795,9 @@ begin
     chkAtivo.Checked         := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
 
     edtLicencaID.Text        := locADOQuery.FieldByName('licenca_id').AsString;
-    edtLicencaDescricao.Text := StringCadastroIncluir(locADOQuery.FieldByName('licenca_descricao').AsString);
+    edtLicencaDescricao.Text := locADOQuery.FieldByName('licenca_descricao').AsString;
     edtBaseID.Text           := locADOQuery.FieldByName('base_id').AsString;
-    edtBaseDescricao.Text    := StringCadastroIncluir(locADOQuery.FieldByName('base_descricao').AsString);
+    edtBaseDescricao.Text    := locADOQuery.FieldByName('base_descricao').AsString;
     edtTipoUsuarioID.Text    := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger, True);
     edtInsLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
     edtUpdLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');

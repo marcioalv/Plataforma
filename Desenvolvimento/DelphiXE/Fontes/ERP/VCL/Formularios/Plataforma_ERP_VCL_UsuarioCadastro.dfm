@@ -4,7 +4,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Usu'#225'rio'
-  ClientHeight = 406
+  ClientHeight = 370
   ClientWidth = 577
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,6 +13,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   Font.Name = 'Tahoma'
   Font.Style = []
   KeyPreview = True
+  Menu = mnuFormulario
   OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
@@ -54,7 +55,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object imgBackground: TImage
     Left = 0
-    Top = 305
+    Top = 265
     Width = 105
     Height = 105
     Center = True
@@ -62,7 +63,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnCancelar: TBitBtn
     Left = 488
-    Top = 360
+    Top = 320
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -78,7 +79,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnAlterar: TBitBtn
     Left = 328
-    Top = 360
+    Top = 320
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -94,7 +95,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnGravar: TBitBtn
     Left = 328
-    Top = 360
+    Top = 320
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -112,20 +113,16 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     Left = 48
     Top = 16
     Width = 514
-    Height = 329
+    Height = 289
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabCadastro
+    ActivePage = tabAuditoria
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -349,8 +346,6 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Top = 144
         Width = 353
         Height = 26
-        Cursor = crHandPoint
-        Hint = 'Clique para exibir o cadastro da licen'#231'a!'
         TabStop = False
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET
@@ -361,9 +356,10 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         ParentFont = False
         ParentShowHint = False
         ReadOnly = True
-        ShowHint = True
+        ShowHint = False
         TabOrder = 4
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
+        OnClick = edtTipoUsuarioDescricaoClick
       end
       object edtTipoUsuarioID: TEdit
         Left = 360
@@ -407,10 +403,6 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 128
@@ -494,7 +486,6 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Top = 144
         Width = 185
         Height = 26
-        Hint = 'Clique para exibir informa'#231#245'es sobre a data de cria'#231#227'o!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -506,7 +497,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         ParentFont = False
         ParentShowHint = False
         ReadOnly = True
-        ShowHint = True
+        ShowHint = False
         TabOrder = 5
         Text = '99/99/9999 99:99:99.999'
         OnClick = edtInsLocalDtHrClick
@@ -516,7 +507,6 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Top = 144
         Width = 185
         Height = 26
-        Hint = 'Clique para exibir informa'#231#245'es sobre a data da '#250'ltima altera'#231#227'o!'
         TabStop = False
         Alignment = taCenter
         Color = clInactiveBorder
@@ -551,7 +541,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
       end
       object btnLog: TButton
         Left = 16
-        Top = 208
+        Top = 200
         Width = 113
         Height = 33
         Cursor = crHandPoint
@@ -588,8 +578,6 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Top = 88
         Width = 385
         Height = 26
-        Cursor = crHandPoint
-        Hint = 'Clique para exibir o cadastro da base de dados!'
         TabStop = False
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET
@@ -600,7 +588,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         ParentFont = False
         ParentShowHint = False
         ReadOnly = True
-        ShowHint = True
+        ShowHint = False
         TabOrder = 2
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
         OnClick = edtBaseDescricaoClick
@@ -629,8 +617,6 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Top = 32
         Width = 473
         Height = 26
-        Cursor = crHandPoint
-        Hint = 'Clique para exibir o cadastro da licen'#231'a!'
         TabStop = False
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET
@@ -641,7 +627,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         ParentFont = False
         ParentShowHint = False
         ReadOnly = True
-        ShowHint = True
+        ShowHint = False
         TabOrder = 0
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
         OnClick = edtLicencaDescricaoClick
@@ -669,7 +655,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnExcluir: TBitBtn
     Left = 248
-    Top = 360
+    Top = 320
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -685,7 +671,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnMinimizar: TBitBtn
     Left = 408
-    Top = 360
+    Top = 320
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -701,7 +687,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnFechar: TBitBtn
     Left = 488
-    Top = 360
+    Top = 320
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -717,7 +703,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnNovo: TBitBtn
     Left = 168
-    Top = 360
+    Top = 320
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -733,7 +719,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnAtualizar: TBitBtn
     Left = 48
-    Top = 360
+    Top = 320
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -746,5 +732,16 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     ParentFont = False
     TabOrder = 8
     OnClick = btnAtualizarClick
+  end
+  object mnuFormulario: TMainMenu
+    Left = 284
+    Top = 56
+    object mniCadastro: TMenuItem
+      Caption = 'Cadastro'
+      object mniCadastroTipoUsuario: TMenuItem
+        Caption = 'Cadastro de tipos de usu'#225'rio'
+        OnClick = mniCadastroTipoUsuarioClick
+      end
+    end
   end
 end
