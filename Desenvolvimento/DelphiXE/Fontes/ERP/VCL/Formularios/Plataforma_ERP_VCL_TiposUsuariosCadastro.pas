@@ -115,6 +115,7 @@ type
     procedure FormularioCancelar;
     procedure FormularioExcluir;
     procedure FormularioCodigoSugerir;
+    function  LogDadosGerar(argTipoUsuarioID: Integer = 0): string;
   public
     pubDadosAtualizados: Boolean;
     pubLicencaID       : Integer;
@@ -1238,14 +1239,7 @@ begin
   //
   // Log dados.
   //
-  locTipoUsuarioLogLogDados := '';
-  LogDadosIntegerDescrever('Licença',       locLicencaID,     locTipoUsuarioLogLogDados);
-  LogDadosIntegerDescrever('Base',          locBaseID,        locTipoUsuarioLogLogDados);
-  LogDadosIntegerDescrever('TipoUsuarioID', locTipoUsuarioID, locTipoUsuarioLogLogDados);
-  LogDadosStringDescrever ('Código',        locCodigo,        locTipoUsuarioLogLogDados);
-  LogDadosStringDescrever ('Descrição',     locDescricao,     locTipoUsuarioLogLogDados);
-  LogDadosBooleanDescrever('Bloqueado',     locBloqueado,     locTipoUsuarioLogLogDados);
-  LogDadosBooleanDescrever('Ativo',         locAtivo,         locTipoUsuarioLogLogDados);
+  locTipoUsuarioLogLogDados := LogDadosGerar(locTipoUsuarioID);
 
   //
   // Determina o próximo sequencial da tabela tipo_usuario_log.
@@ -1448,14 +1442,7 @@ begin
   //
   // Log dados.
   //
-  locTipoUsuarioLogLogDados := '';
-  LogDadosIntegerDescrever('Licença',       locLicencaID,         locTipoUsuarioLogLogDados);
-  LogDadosIntegerDescrever('Base',          locBaseID,            locTipoUsuarioLogLogDados);
-  LogDadosIntegerDescrever('TipoUsuarioID', locTipoUsuarioID,     locTipoUsuarioLogLogDados);
-  LogDadosStringDescrever ('Código',        edtCodigo.Text,       locTipoUsuarioLogLogDados);
-  LogDadosStringDescrever ('Descrição',     edtDescricao.Text,    locTipoUsuarioLogLogDados);
-  LogDadosBooleanDescrever('Bloqueado',     chkBloqueado.Checked, locTipoUsuarioLogLogDados);
-  LogDadosBooleanDescrever('Ativo',         chkAtivo.Checked,     locTipoUsuarioLogLogDados);
+  locTipoUsuarioLogLogDados := LogDadosGerar;
 
   //
   // Confirma gravação com o usuário.
@@ -1776,6 +1763,28 @@ begin
   FreeAndNil(locADOConnection);
 
   VCLCursorTrocar;
+end;
+
+//
+// Função para gerar a string de log dos dados.
+//
+function TPlataformaERPVCLTiposUsuariosCadastro.LogDadosGerar(argTipoUsuarioID: Integer = 0): string;
+var
+  locTipoUsuarioID: Integer;
+begin
+  if argTipoUsuarioID <= 0 then
+    locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text)
+  else
+    locTipoUsuarioID := argTipoUsuarioID;
+
+  Result := '';
+  LogDadosStringDescrever ('Licença',                edtLicencaID.Text,    Result);
+  LogDadosStringDescrever ('Base',                   edtBaseID.Text,       Result);
+  LogDadosIntegerDescrever('ID do tipo de usuário',  locTipoUsuarioID,     Result);
+  LogDadosStringDescrever ('Código',                 edtCodigo.Text,       Result);
+  LogDadosStringDescrever ('Descrição',              edtDescricao.Text,    Result);
+  LogDadosBooleanDescrever('Bloqueado',              chkBloqueado.Checked, Result);
+  LogDadosBooleanDescrever('Ativo',                  chkAtivo.Checked,     Result);
 end;
 
 end.

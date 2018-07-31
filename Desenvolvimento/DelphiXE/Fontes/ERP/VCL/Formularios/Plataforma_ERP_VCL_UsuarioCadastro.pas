@@ -293,7 +293,13 @@ end;
 procedure TPlataformaERPVCLUsuarioCadastro.edtTipoUsuarioCodigoExit(Sender: TObject);
 begin
   if not VCLEditSair(edtTipoUsuarioCodigo) then Exit;
-  Plataforma_ERP_VCL_TipoUsuarioValidar(edtLicencaID, edtTipoUsuarioBaseID, edtTipoUsuarioID, edtTipoUsuarioCodigo, edtTipoUsuarioDescricao);
+  
+  Plataforma_ERP_VCL_TipoUsuarioValidar((edtUsuarioID.Text = STR_NOVO),
+                                        edtLicencaID,
+                                        edtTipoUsuarioBaseID,
+                                        edtTipoUsuarioID,
+                                        edtTipoUsuarioCodigo,
+                                        edtTipoUsuarioDescricao);
 end;
 
 procedure TPlataformaERPVCLUsuarioCadastro.imgTipoUsuarioSelecionarClick(Sender: TObject);
@@ -941,8 +947,8 @@ begin
   locUsuarioID         := StringIntegerConverter(edtUsuarioID.Text);
   locCodigo            := StringTrim(edtCodigo.Text);
   locNome              := StringTrim(edtNome.Text);
-  locTipoUsuarioBaseID := 1;
-  locTipoUsuarioID     := 1;
+  locTipoUsuarioBaseID := StringIntegerConverter(edtTipoUsuarioBaseID.Text);
+  locTipoUsuarioID     := StringIntegerConverter(edtTipoUsuarioID.Text);
   locBloqueado         := chkBloqueado.Checked;
   locAtivo             := chkAtivo.Checked;
   locLogUsuarioBaseID  := gloUsuarioBaseID;
@@ -965,6 +971,13 @@ begin
   begin
     VCLConsistenciaExibir('O nome do usuário deve ser informado!');
     VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtNome);
+    Exit;
+  end;
+
+  if (locTipoUsuarioBaseID = 0) or (locTipoUsuarioBaseID = 0) then
+  begin
+    VCLConsistenciaExibir('O tipo do usuário deve ser informado!');
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtTipoUsuarioCodigo);
     Exit;
   end;
 
@@ -1845,7 +1858,7 @@ begin
 end;
 
 //
-//
+// Função para gerar a string de log dos dados.
 //
 function TPlataformaERPVCLUsuarioCadastro.LogDadosGerar(argUsuarioID: Integer = 0): string;
 var
@@ -1859,7 +1872,7 @@ begin
   Result := '';
   LogDadosStringDescrever ('Licença',                edtLicencaID.Text,            Result);
   LogDadosStringDescrever ('Base',                   edtBaseID.Text,               Result);
-  LogDadosIntegerDescrever('UsuarioID',              locUsuarioID,                 Result);
+  LogDadosIntegerDescrever('ID do usuário',          locUsuarioID,                 Result);
   LogDadosStringDescrever ('Código',                 edtCodigo.Text,               Result);
   LogDadosStringDescrever ('Nome',                   edtNome.Text,                 Result);
   LogDadosStringDescrever ('Tipo usuário base',      edtTipoUsuarioBaseID.Text,    Result);

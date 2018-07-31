@@ -15,6 +15,7 @@ ALTER TABLE [numerador_licenca] DROP CONSTRAINT [numerador_licenca_fk_upd_usuari
 -- Apaga tabelas.
 --
 IF OBJECT_ID('usuario_log')       IS NOT NULL DROP TABLE [usuario_log]
+IF OBJECT_ID('usuario_senha')     IS NOT NULL DROP TABLE [usuario_senha]
 IF OBJECT_ID('usuario')           IS NOT NULL DROP TABLE [usuario]
 IF OBJECT_ID('tipo_usuario_log')  IS NOT NULL DROP TABLE [tipo_usuario_log]
 IF OBJECT_ID('tipo_usuario')      IS NOT NULL DROP TABLE [tipo_usuario]
@@ -265,6 +266,21 @@ CREATE TABLE [dbo].[usuario] (
   CONSTRAINT [usuario_fk_tipo_usuario] FOREIGN KEY ([licenca_id], [tipo_usuario_base_id], [tipo_usuario_id]) REFERENCES [tipo_usuario] ([licenca_id], [base_id], [tipo_usuario_id])
 )
 GO
+
+--
+-- 
+--
+CREATE TABLE [dbo].[usuario_senha] (
+  [licenca_id]          INT                                       NOT NULL,
+  [base_id]             SMALLINT                                  NOT NULL,
+  [usuario_id]          INT                                       NOT NULL,
+  [usuario_senha_sq]    INT                                       NOT NULL,
+  [senha]               VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+
+  CONSTRAINT [usuario_senha_pk] PRIMARY KEY CLUSTERED ([licenca_id], [base_id], [usuario_id], [usuario_senha_sq]),
+
+  CONSTRAINT [usuario_senha_fk_usuario] FOREIGN KEY ([licenca_id], [base_id], [usuario_id]) REFERENCES [usuario] ([licenca_id], [base_id], [usuario_id])
+)
 
 --
 -- Log dos registros de usuário.

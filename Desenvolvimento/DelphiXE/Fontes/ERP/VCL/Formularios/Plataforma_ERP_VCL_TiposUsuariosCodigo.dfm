@@ -4,8 +4,8 @@ object PlataformaERPVCLTiposUsuariosCodigo: TPlataformaERPVCLTiposUsuariosCodigo
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Sele'#231#227'o de tipo de usu'#225'rio por c'#243'digo'
-  ClientHeight = 257
-  ClientWidth = 618
+  ClientHeight = 259
+  ClientWidth = 753
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,6 +15,7 @@ object PlataformaERPVCLTiposUsuariosCodigo: TPlataformaERPVCLTiposUsuariosCodigo
   KeyPreview = True
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
@@ -22,7 +23,7 @@ object PlataformaERPVCLTiposUsuariosCodigo: TPlataformaERPVCLTiposUsuariosCodigo
   TextHeight = 13
   object imgFormulario: TImage
     Left = 8
-    Top = 8
+    Top = 16
     Width = 32
     Height = 32
     AutoSize = True
@@ -74,43 +75,49 @@ object PlataformaERPVCLTiposUsuariosCodigo: TPlataformaERPVCLTiposUsuariosCodigo
   end
   object imgBackground: TImage
     Left = 0
-    Top = 152
+    Top = 128
     Width = 105
     Height = 105
     Center = True
     Stretch = True
   end
   object btnConfirmar: TBitBtn
-    Left = 376
-    Top = 216
-    Width = 73
+    Left = 472
+    Top = 208
+    Width = 105
     Height = 33
     Cursor = crHandPoint
     Caption = 'Confirmar'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 0
+    TabOrder = 1
     OnClick = btnConfirmarClick
   end
   object btnFechar: TBitBtn
-    Left = 536
-    Top = 216
+    Left = 664
+    Top = 208
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Caption = 'Fechar'
-    TabOrder = 1
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 3
     OnClick = btnFecharClick
   end
   object panFormulario: TPanel
     Left = 48
-    Top = 8
-    Width = 561
-    Height = 201
+    Top = 16
+    Width = 689
+    Height = 177
     Margins.Left = 48
     Margins.Top = 8
     Margins.Right = 8
@@ -121,13 +128,13 @@ object PlataformaERPVCLTiposUsuariosCodigo: TPlataformaERPVCLTiposUsuariosCodigo
     Color = clWindow
     ParentBackground = False
     ShowCaption = False
-    TabOrder = 2
+    TabOrder = 0
     object lvwLista: TListView
       AlignWithMargins = True
       Left = 8
       Top = 8
-      Width = 541
-      Height = 181
+      Width = 669
+      Height = 157
       Cursor = crHandPoint
       Margins.Left = 8
       Margins.Top = 8
@@ -139,36 +146,38 @@ object PlataformaERPVCLTiposUsuariosCodigo: TPlataformaERPVCLTiposUsuariosCodigo
           Width = 0
         end
         item
+          Caption = 'Licenca ID'
+          Width = 0
+        end
+        item
           Caption = 'Base ID'
           Width = 0
         end
         item
           Caption = 'Base'
-          Width = 150
-        end
-        item
-          Caption = 'Licenca ID'
-          Width = 0
+          Width = 175
         end
         item
           Caption = 'ID'
           Width = 0
         end
         item
+          Alignment = taCenter
           Caption = 'C'#243'digo'
+          Width = 100
         end
         item
           Caption = 'Descri'#231#227'o'
-          Width = 250
+          Width = 275
         end
         item
           Alignment = taCenter
           Caption = 'Bloqueado'
-          Width = 70
+          Width = 85
         end>
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = []
       ReadOnly = True
@@ -183,13 +192,19 @@ object PlataformaERPVCLTiposUsuariosCodigo: TPlataformaERPVCLTiposUsuariosCodigo
     end
   end
   object btnMinimizar: TBitBtn
-    Left = 456
-    Top = 216
+    Left = 584
+    Top = 208
     Width = 73
     Height = 33
     Cursor = crHandPoint
     Caption = 'Minimizar'
-    TabOrder = 3
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
     OnClick = btnMinimizarClick
   end
 end

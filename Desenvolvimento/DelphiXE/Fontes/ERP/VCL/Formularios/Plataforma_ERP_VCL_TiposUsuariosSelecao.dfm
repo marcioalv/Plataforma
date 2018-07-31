@@ -4,8 +4,8 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Localizar tipo de usu'#225'rio'
-  ClientHeight = 369
-  ClientWidth = 586
+  ClientHeight = 385
+  ClientWidth = 593
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,7 +22,7 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
   TextHeight = 13
   object imgFormulario: TImage
     Left = 8
-    Top = 8
+    Top = 16
     Width = 32
     Height = 32
     AutoSize = True
@@ -74,7 +74,7 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
   end
   object imgBackground: TImage
     Left = 0
-    Top = 265
+    Top = 273
     Width = 105
     Height = 105
     Center = True
@@ -82,7 +82,7 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
   end
   object btnConfirmar: TBitBtn
     Left = 232
-    Top = 328
+    Top = 344
     Width = 105
     Height = 33
     Cursor = crHandPoint
@@ -98,7 +98,7 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
   end
   object btnFechar: TBitBtn
     Left = 504
-    Top = 328
+    Top = 344
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -109,12 +109,12 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 4
     OnClick = btnFecharClick
   end
   object panFormulario: TPanel
     Left = 48
-    Top = 8
+    Top = 16
     Width = 529
     Height = 313
     Margins.Left = 48
@@ -131,9 +131,9 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
     object lvwLista: TListView
       AlignWithMargins = True
       Left = 8
-      Top = 8
+      Top = 36
       Width = 509
-      Height = 293
+      Height = 265
       Cursor = crHandPoint
       Margins.Left = 8
       Margins.Top = 8
@@ -145,15 +145,15 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
           Width = 0
         end
         item
+          Caption = 'Licenca ID'
+          Width = 0
+        end
+        item
           Caption = 'Base ID'
           Width = 0
         end
         item
           Caption = 'Base'
-          Width = 0
-        end
-        item
-          Caption = 'Licenca ID'
           Width = 0
         end
         item
@@ -163,7 +163,7 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
         item
           Alignment = taCenter
           Caption = 'C'#243'digo'
-          Width = 100
+          Width = 175
         end
         item
           Caption = 'Descri'#231#227'o'
@@ -172,7 +172,7 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
         item
           Alignment = taCenter
           Caption = 'Bloqueado'
-          Width = 80
+          Width = 0
         end>
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -184,11 +184,32 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
       ParentFont = False
       TabOrder = 0
       ViewStyle = vsReport
+      OnCustomDrawItem = lvwListaCustomDrawItem
+      OnCustomDrawSubItem = lvwListaCustomDrawSubItem
+      OnDblClick = lvwListaDblClick
+      OnKeyPress = lvwListaKeyPress
+      ExplicitTop = 8
+      ExplicitHeight = 293
+    end
+    object pbaProgresso: TProgressBar
+      AlignWithMargins = True
+      Left = 8
+      Top = 8
+      Width = 509
+      Height = 17
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Align = alTop
+      TabOrder = 1
+      ExplicitLeft = 16
+      ExplicitTop = 48
+      ExplicitWidth = 150
     end
   end
   object btnMinimizar: TBitBtn
     Left = 424
-    Top = 328
+    Top = 344
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -200,10 +221,11 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
     Font.Style = []
     ParentFont = False
     TabOrder = 3
+    OnClick = btnMinimizarClick
   end
   object btnAtualizar: TBitBtn
     Left = 344
-    Top = 328
+    Top = 344
     Width = 73
     Height = 33
     Cursor = crHandPoint
@@ -214,6 +236,7 @@ object PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelec
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 2
+    OnClick = btnAtualizarClick
   end
 end
