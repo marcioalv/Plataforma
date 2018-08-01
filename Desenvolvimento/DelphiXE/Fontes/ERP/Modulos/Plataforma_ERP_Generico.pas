@@ -28,6 +28,7 @@ const
 
 const
   ERRO_MENSAGEM_TENTE_NOVAMENTE       : string = 'Por favor tente novamente agora!';
+  ERRO_MENSAGEM_CONSISTENCIA_EXCLUSAO : string = 'Você deve alterar lá primeiro, antes de excluir o cadastro aqui!';
   
   ERRO_MENSAGEM_BD_CONEXAO_ABRIR      : string = 'Ocorreu algum problema ao tentar estabelecer uma conexão com o banco de dados da aplicação!';
   ERRO_MENSAGEM_BD_TRANSACAO_INICIAR  : string = 'Ocorreu algum problema ao tentar iniciar uma transação com o banco de dados da aplicação!';

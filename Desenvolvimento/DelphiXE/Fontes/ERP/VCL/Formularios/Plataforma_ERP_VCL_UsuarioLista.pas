@@ -35,18 +35,24 @@ type
   TPlataformaERPVCLUsuarioLista = class(TForm)
     imgFormulario: TImage;
     panFormulario: TPanel;
-    btnAtualizar: TBitBtn;
     lvwLista: TListView;
-    btnFechar: TBitBtn;
-    btnMinimizar: TBitBtn;
-    btnSelecionar: TBitBtn;
-    btnNovo: TBitBtn;
     pbaProgresso: TProgressBar;
-    btnLocalizar: TBitBtn;
     lblListaQtde: TLabel;
     lblListaFiltros: TLabel;
     imgBackground: TImage;
+    btnFechar: TBitBtn;
+    btnAtualizar: TBitBtn;
+    btnMinimizar: TBitBtn;
+    btnSelecionar: TBitBtn;
+    btnNovo: TBitBtn;
+    btnLocalizar: TBitBtn;
     mnuFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
+    mniSelecionar: TMenuItem;
+    mniNovo: TMenuItem;
+    mniAtualizar: TMenuItem;
+    mniLocalizar: TMenuItem;
     mniCadastro: TMenuItem;
     mniCadastroTipoUsuario: TMenuItem;
     procedure FormCreate(Sender: TObject);
@@ -66,6 +72,12 @@ type
     procedure lvwListaColumnClick(Sender: TObject; Column: TListColumn);
     procedure lvwListaCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
     procedure mniCadastroTipoUsuarioClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
+    procedure mniSelecionarClick(Sender: TObject);
+    procedure mniNovoClick(Sender: TObject);
+    procedure mniAtualizarClick(Sender: TObject);
+    procedure mniLocalizarClick(Sender: TObject);
   private
     priListViewIndiceColuna   : Integer;
     priListViewOrdemAscendente: Boolean;
@@ -180,6 +192,8 @@ begin
 
   lblListaFiltros.Left := (lvwLista.Left + lvwLista.Width) - lblListaFiltros.Width;
   lblListaFiltros.Top  := (lvwLista.Top + lvwLista.Height) + 8;
+
+  lvwLista.Refresh;
 end;
 
 //
@@ -191,11 +205,41 @@ begin
 end;
 
 //
-// Evento de click na opção de menu "cadastro de tipos de usuários".
+// Evento de click nas opções de menu.
 //
 procedure TPlataformaERPVCLUsuarioLista.mniCadastroTipoUsuarioClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_TipoUsuarioListaExibir;
+end;
+
+procedure TPlataformaERPVCLUsuarioLista.mniAtualizarClick(Sender: TObject);
+begin
+  FormularioAtualizar(VCL_NENHUM_INDICE);
+end;
+
+procedure TPlataformaERPVCLUsuarioLista.mniLocalizarClick(Sender: TObject);
+begin
+  FormularioLocalizar;
+end;
+
+procedure TPlataformaERPVCLUsuarioLista.mniNovoClick(Sender: TObject);
+begin
+  FormularioCadastroExibir(True);
+end;
+
+procedure TPlataformaERPVCLUsuarioLista.mniSelecionarClick(Sender: TObject);
+begin
+  FormularioCadastroExibir(False);
+end;
+
+procedure TPlataformaERPVCLUsuarioLista.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLUsuarioLista.mniFecharClick(Sender: TObject);
+begin
+  Close;
 end;
 
 //
@@ -288,6 +332,11 @@ begin
   btnAtualizar.Visible  := (btnAtualizar.Visible)  and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_ATUALIZAR'));
   btnNovo.Visible       := (btnNovo.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_NOVO'));
   btnSelecionar.Visible := (btnSelecionar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_SELECIONAR'));
+
+  mniLocalizar.Visible  := btnLocalizar.Visible;
+  mniAtualizar.Visible  := btnAtualizar.Visible;
+  mniNovo.Visible       := btnNovo.Visible;
+  mniSelecionar.Visible := btnSelecionar.Visible;
 end;
 
 //

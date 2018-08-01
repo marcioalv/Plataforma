@@ -29,7 +29,7 @@ uses
   Vcl.Buttons,
   Vcl.Imaging.pngimage,
   Vcl.ComCtrls,
-  Vcl.Mask;
+  Vcl.Mask, Vcl.Menus;
 
 type
   TPlataformaERPVCLTiposUsuariosFiltro = class(TForm)
@@ -68,6 +68,11 @@ type
     imgInsDtHrFinal: TImage;
     imgUpdDtHrFinal: TImage;
     imgBackground: TImage;
+    mniFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
+    mniLimpar: TMenuItem;
+    mniLocalizar: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -116,6 +121,10 @@ type
     procedure imgInsDtHrFinalClick(Sender: TObject);
     procedure imgUpdDtHrInicialClick(Sender: TObject);
     procedure imgUpdDtHrFinalClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
+    procedure mniLimparClick(Sender: TObject);
+    procedure mniLocalizarClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioLimpar;
@@ -230,6 +239,29 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosFiltro.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Eventos de click nas opções do menu.
+//
+procedure TPlataformaERPVCLTiposUsuariosFiltro.mniLocalizarClick(Sender: TObject);
+begin
+  FormularioLocalizar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosFiltro.mniLimparClick(Sender: TObject);
+begin
+  FormularioLimpar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosFiltro.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosFiltro.mniFecharClick(Sender: TObject);
+begin
+  Close;
 end;
 
 //

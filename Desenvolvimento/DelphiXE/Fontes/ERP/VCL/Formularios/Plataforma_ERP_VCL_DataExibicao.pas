@@ -28,7 +28,7 @@ uses
   Vcl.ComCtrls,
   Vcl.Buttons,
   Vcl.Imaging.pngimage,
-  Vcl.ExtCtrls, Vcl.Grids, Vcl.Samples.Calendar;
+  Vcl.ExtCtrls, Vcl.Grids, Vcl.Samples.Calendar, Vcl.Menus;
 
 type
   TPlataformaERPVCLDataExibicao = class(TForm)
@@ -61,11 +61,16 @@ type
     lblMesSeparador: TLabel;
     lblAnoSeparador: TLabel;
     imgBackground: TImage;
+    mnuFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioAtualizar(argData: TDateTime);
@@ -120,6 +125,19 @@ end;
 procedure TPlataformaERPVCLDataExibicao.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Eventos de click nas opções do menu.
+//
+procedure TPlataformaERPVCLDataExibicao.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLDataExibicao.mniFecharClick(Sender: TObject);
+begin
+  Close;
 end;
 
 //

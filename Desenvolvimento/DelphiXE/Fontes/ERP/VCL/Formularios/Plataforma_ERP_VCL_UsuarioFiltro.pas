@@ -29,15 +29,11 @@ uses
   Vcl.Buttons,
   Vcl.Imaging.pngimage,
   Vcl.ComCtrls,
-  Vcl.Mask;
+  Vcl.Mask, Vcl.Menus;
 
 type
   TPlataformaERPVCLUsuarioFiltro = class(TForm)
     imgFormulario: TImage;
-    btnLocalizar: TBitBtn;
-    btnFechar: TBitBtn;
-    btnLimpar: TBitBtn;
-    btnMinimizar: TBitBtn;
     pagFormulario: TPageControl;
     tabCadastro: TTabSheet;
     tabAuditoria: TTabSheet;
@@ -68,6 +64,15 @@ type
     imgInsDtHrFinal: TImage;
     imgUpdDtHrFinal: TImage;
     imgBackground: TImage;
+    btnLocalizar: TBitBtn;
+    btnFechar: TBitBtn;
+    btnLimpar: TBitBtn;
+    btnMinimizar: TBitBtn;
+    mniFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
+    mniLimpar: TMenuItem;
+    mniLocalizar: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -116,6 +121,10 @@ type
     procedure imgInsDtHrFinalClick(Sender: TObject);
     procedure imgUpdDtHrInicialClick(Sender: TObject);
     procedure imgUpdDtHrFinalClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
+    procedure mniLimparClick(Sender: TObject);
+    procedure mniLocalizarClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioLimpar;
@@ -230,6 +239,29 @@ end;
 procedure TPlataformaERPVCLUsuarioFiltro.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Eventos de pressionamento de teclas no formulário.
+//
+procedure TPlataformaERPVCLUsuarioFiltro.mniLocalizarClick(Sender: TObject);
+begin
+  FormularioLocalizar;
+end;
+
+procedure TPlataformaERPVCLUsuarioFiltro.mniLimparClick(Sender: TObject);
+begin
+  FormularioLimpar;
+end;
+
+procedure TPlataformaERPVCLUsuarioFiltro.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLUsuarioFiltro.mniFecharClick(Sender: TObject);
+begin
+  Close;
 end;
 
 //

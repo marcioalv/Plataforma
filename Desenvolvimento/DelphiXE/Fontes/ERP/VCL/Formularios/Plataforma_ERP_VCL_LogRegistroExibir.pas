@@ -26,12 +26,11 @@ uses
   Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
-  Vcl.StdCtrls, Vcl.ComCtrls;
+  Vcl.StdCtrls, Vcl.ComCtrls, Vcl.Menus, Vcl.Buttons;
 
 type
   TPlataformaERPVCLLogRegistroExibir = class(TForm)
     imgFormulario: TImage;
-    btnFechar: TButton;
     pagFormulario: TPageControl;
     tabRegistro: TTabSheet;
     tabDados: TTabSheet;
@@ -58,8 +57,12 @@ type
     edtRegistroAcaoID: TEdit;
     edtUsuarioID: TEdit;
     edtUsuarioBaseID: TEdit;
-    btnMinimizar: TButton;
     imgBackground: TImage;
+    btnFechar: TBitBtn;
+    btnMinimizar: TBitBtn;
+    mnuFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -68,6 +71,8 @@ type
     procedure edtLogServerDtHrClick(Sender: TObject);
     procedure edtLogBaseDescricaoClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
   public
@@ -190,6 +195,19 @@ begin
 end;
 
 //
+// Eventos de click nas opções do menu.
+//
+procedure TPlataformaERPVCLLogRegistroExibir.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLLogRegistroExibir.mniFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+//
 // Evento de click no componente "base".
 //
 procedure TPlataformaERPVCLLogRegistroExibir.edtLogBaseDescricaoClick(Sender: TObject);
@@ -256,7 +274,7 @@ begin
 
   VCLEditClickControlar(edtLogBaseDescricao, False);
   VCLEditClickControlar(edtLogLocalDtHr,     False);
-  VCLEditClickControlar(edtLogServerDtHr,    False);  
+  VCLEditClickControlar(edtLogServerDtHr,    False);
 end;
 
 end.

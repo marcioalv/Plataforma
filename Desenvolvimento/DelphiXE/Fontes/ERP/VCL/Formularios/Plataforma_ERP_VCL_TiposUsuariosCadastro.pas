@@ -50,7 +50,6 @@ type
     edtUpdLocalDtHr: TEdit;
     lblUpdContador: TLabel;
     edtUpdContador: TEdit;
-    btnLog: TButton;
     btnExcluir: TBitBtn;
     btnGravar: TBitBtn;
     btnMinimizar: TBitBtn;
@@ -70,6 +69,16 @@ type
     edtCodigoCadastrado: TEdit;
     btnAtualizar: TBitBtn;
     imgBackground: TImage;
+    mnuFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
+    mniAlterar: TMenuItem;
+    mniExcluir: TMenuItem;
+    mniNovo: TMenuItem;
+    mniAtualizar: TMenuItem;
+    mniCancelar: TMenuItem;
+    mniGravar: TMenuItem;
+    btnLog: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -100,10 +109,19 @@ type
     procedure edtInsLocalDtHrClick(Sender: TObject);
     procedure edtUpdLocalDtHrClick(Sender: TObject);
     procedure btnAtualizarClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniCancelarClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
+    procedure mniGravarClick(Sender: TObject);
+    procedure mniAlterarClick(Sender: TObject);
+    procedure mniExcluirClick(Sender: TObject);
+    procedure mniNovoClick(Sender: TObject);
+    procedure mniAtualizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
     procedure FormularioLogExibir;
+    procedure FormularioAtualizar;
     procedure FormularioNovo;
 
     procedure FormularioPopular(argLicencaID    : Integer;
@@ -211,6 +229,49 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Eventos de click nas opções do menu.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.mniAtualizarClick(Sender: TObject);
+begin
+  FormularioAtualizar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.mniNovoClick(Sender: TObject);
+begin
+  FormularioNovo;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.mniExcluirClick(Sender: TObject);
+begin
+  FormularioExcluir;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.mniAlterarClick(Sender: TObject);
+begin
+  FormularioAlterar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.mniGravarClick(Sender: TObject);
+begin
+  FormularioGravar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.mniCancelarClick(Sender: TObject);
+begin
+  FormularioCancelar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosCadastro.mniFecharClick(Sender: TObject);
+begin
+  Close;
 end;
 
 //
@@ -340,17 +401,7 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnAtualizarClick(Sender: TObject);
 begin
-  //
-  // Popula componentes com as informações do cadastro.
-  //
-  FormularioPopular(StringIntegerConverter(edtLicencaID.Text),
-                    StringIntegerConverter(edtBaseID.Text),
-                    StringIntegerConverter(edtTipoUsuarioID.Text));
-
-  //
-  // Controla a exibição dos componentes.
-  //
-  FormularioControlar(False);
+  FormularioAtualizar;
 end;
 
 //
@@ -500,6 +551,18 @@ begin
   btnAlterar.Visible   := (btnAlterar.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_CADASTRO_ALTERAR'));
 
   //
+  // Itens do menu.
+  //
+  mniAtualizar.Visible := btnAtualizar.Visible;
+  mniNovo.Visible      := btnNovo.Visible;
+  mniExcluir.Visible   := btnExcluir.Visible;
+  mniAlterar.Visible   := btnAlterar.Visible;
+  mniGravar.Visible    := btnGravar.Visible;
+  mniMinimizar.Visible := btnMinimizar.Visible;
+  mniCancelar.Visible  := btnCancelar.Visible;
+  mniFechar.Visible    := btnFechar.Visible;
+
+  //
   // Ajusta o título do formulário.
   //
   Self.Caption     := 'Tipo de usuário';
@@ -511,7 +574,7 @@ begin
 end;
 
 //
-// FormularioLogExibir.
+// Procedimento para carregar e exibir o log de alterações do registro.
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioLogExibir;
 const
@@ -645,7 +708,25 @@ begin
 end;
 
 //
-// FormularioNovo.
+// Procedimento para atualizar os dados populados nos componentes do formulário.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioAtualizar;
+begin
+  //
+  // Popula componentes com as informações do cadastro.
+  //
+  FormularioPopular(StringIntegerConverter(edtLicencaID.Text),
+                    StringIntegerConverter(edtBaseID.Text),
+                    StringIntegerConverter(edtTipoUsuarioID.Text));
+
+  //
+  // Controla a exibição dos componentes.
+  //
+  FormularioControlar(False);
+end;
+
+//
+// Procedimento para iniciar a digitação de dados de um novo cadastro.
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioNovo;
 begin
@@ -1425,7 +1506,7 @@ begin
 end;
 
 //
-// FormularioExcluir.
+// Procedimento para excluir os dados deste cadastro.
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.FormularioExcluir;
 const
@@ -1436,16 +1517,16 @@ var
   locADOQuery              : TADOQuery;
   locLogMensagem           : string;
   locLicencaID             : Integer;
-  locBaseID                : Integer;
+  locTipoUsuarioBaseID     : Integer;
   locTipoUsuarioID         : Integer;
   locTipoUsuarioLogLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
-  locBaseID        := StringIntegerConverter(edtBaseID.Text);
-  locTipoUsuarioID := StringIntegerConverter(edtTipoUsuarioID.Text);
+  locLicencaID         := StringIntegerConverter(edtLicencaID.Text);
+  locTipoUsuarioBaseID := StringIntegerConverter(edtBaseID.Text);
+  locTipoUsuarioID     := StringIntegerConverter(edtTipoUsuarioID.Text);
 
   //
   // Log dados.
@@ -1482,6 +1563,60 @@ begin
   end;
 
   //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Verifica se existem registros na tabela de usuário que impediriam a exclusão.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT TOP 1                                                   ');
+  locADOQuery.SQL.Add('  [usuario].[nome]                                             ');
+  locADOQuery.SQL.Add('FROM                                                           ');
+  locADOQuery.SQL.Add('  [usuario] WITH (NOLOCK)                                      ');
+  locADOQuery.SQL.Add('WHERE                                                          ');
+  locADOQuery.SQL.Add('  [usuario].[licenca_id]           = :licenca_id           AND ');
+  locADOQuery.SQL.Add('  [usuario].[tipo_usuario_base_id] = :tipo_usuario_base_id AND ');
+  locADOQuery.SQL.Add('  [usuario].[tipo_usuario_id]      = :tipo_usuario_id          ');
+
+  locADOQuery.Parameters.ParamByName('licenca_id').Value           := locLicencaID;
+  locADOQuery.Parameters.ParamByName('tipo_usuario_base_id').Value := locTipoUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value      := locTipoUsuarioID;
+
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum problema ao executar a query para verificar se o tipo de usuário existe para algum outro cadastro!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, ERRO_MENSAGEM_TENTE_NOVAMENTE, locExcecao.Message);
+      Exit
+    end;
+  end;
+
+  if locADOQuery.RecordCount > 0 then
+  begin
+    locLogMensagem := 'Esse tipo de usuário existe no cadastro de usuário de "' + locADOQuery.FieldByName('nome').AsString + '"!';
+    
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);
+
+    VCLConsistenciaExibir(ERRO_MENSAGEM, locLogMensagem, ERRO_MENSAGEM_CONSISTENCIA_EXCLUSAO);
+    Exit;
+  end;
+
+  //
   // Inicia transação com o banco de dados.
   //
   try
@@ -1501,13 +1636,6 @@ begin
   end;  
 
   //
-  // Query.
-  //
-  locADOQuery                := TADOQuery.Create(Self);
-  locADOQuery.Connection     := locADOConnection;
-  locADOQuery.CommandTimeout := gloTimeOutNormal;
-
-  //
   // Deleta registro da tabela tipo_usuario_log.
   //
   locADOQuery.Close;
@@ -1520,7 +1648,7 @@ begin
   locADOQuery.SQL.Add('  [tipo_usuario_log].[tipo_usuario_id] = :tipo_usuario_id ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
-  locADOQuery.Parameters.ParamByName('base_id').Value         := locBaseID;
+  locADOQuery.Parameters.ParamByName('base_id').Value         := locTipoUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value := locTipoUsuarioID;
 
   try
@@ -1553,7 +1681,7 @@ begin
   locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id] = :tipo_usuario_id ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
-  locADOQuery.Parameters.ParamByName('base_id').Value         := locBaseID;
+  locADOQuery.Parameters.ParamByName('base_id').Value         := locTipoUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value := locTipoUsuarioID;
 
   try

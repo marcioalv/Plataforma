@@ -19,7 +19,7 @@ uses
   Vcl.Imaging.pngimage,
   Vcl.ExtCtrls,
   Vcl.Grids,
-  Vcl.Samples.Calendar;
+  Vcl.Samples.Calendar, Vcl.Menus;
 
 type
   TPlataformaERPVCLDataSelecao = class(TForm)
@@ -36,6 +36,10 @@ type
     lblHoje: TLabel;
     btnSelecionar: TBitBtn;
     imgBackground: TImage;
+    mnuFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
+    mniSelecionar: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);

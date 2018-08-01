@@ -28,17 +28,21 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls, Vcl.Buttons, Vcl.Menus;
 
 type
   TPlataformaERPVCLLogRegistroLista = class(TForm)
     imgFormulario: TImage;
     panFormulario: TPanel;
-    btnFechar: TButton;
     lvwLista: TListView;
-    btnSelecionar: TButton;
-    btnMinimizar: TButton;
     imgBackground: TImage;
+    btnFechar: TBitBtn;
+    btnMinimizar: TBitBtn;
+    btnSelecionar: TBitBtn;
+    mnuFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
+    mniSelecionar: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -50,6 +54,9 @@ type
     procedure lvwListaDblClick(Sender: TObject);
     procedure lvwListaKeyPress(Sender: TObject; var Key: Char);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure mniMinimizarClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniSelecionarClick(Sender: TObject);
   private
     procedure FormularioAtualizar;
     procedure FormularioSelecionar;
@@ -134,6 +141,24 @@ begin
   // Para preservar a memória do sistema o ADOQuery precisa ser destruído.
   //
   FreeAndNil(pubADOQuery);
+end;
+
+//
+// Evento de click nas opções do menu.
+//
+procedure TPlataformaERPVCLLogRegistroLista.mniSelecionarClick(Sender: TObject);
+begin
+  FormularioSelecionar;
+end;
+
+procedure TPlataformaERPVCLLogRegistroLista.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLLogRegistroLista.mniFecharClick(Sender: TObject);
+begin
+  Close;
 end;
 
 //

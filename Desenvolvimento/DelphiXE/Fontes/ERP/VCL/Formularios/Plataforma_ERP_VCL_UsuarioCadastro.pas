@@ -50,14 +50,6 @@ type
     edtUpdLocalDtHr: TEdit;
     lblUpdContador: TLabel;
     edtUpdContador: TEdit;
-    btnLog: TButton;
-    btnExcluir: TBitBtn;
-    btnGravar: TBitBtn;
-    btnMinimizar: TBitBtn;
-    btnFechar: TBitBtn;
-    btnCancelar: TBitBtn;
-    btnAlterar: TBitBtn;
-    btnNovo: TBitBtn;
     lblUsuarioID: TLabel;
     edtUsuarioID: TEdit;
     lblBase: TLabel;
@@ -68,7 +60,6 @@ type
     edtLicencaID: TEdit;
     lblCodigoCadastrado: TLabel;
     edtCodigoCadastrado: TEdit;
-    btnAtualizar: TBitBtn;
     imgBackground: TImage;
     lblTipoUsuario: TLabel;
     edtTipoUsuarioCodigo: TEdit;
@@ -76,7 +67,24 @@ type
     edtTipoUsuarioID: TEdit;
     imgTipoUsuarioSelecionar: TImage;
     edtTipoUsuarioBaseID: TEdit;
+    btnGravar: TBitBtn;
+    btnExcluir: TBitBtn;
+    btnCancelar: TBitBtn;
+    btnMinimizar: TBitBtn;
+    btnAlterar: TBitBtn;
+    btnFechar: TBitBtn;
+    btnNovo: TBitBtn;
+    btnAtualizar: TBitBtn;
+    btnLog: TBitBtn;
     mnuFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniCancelar: TMenuItem;
+    mniMinimizar: TMenuItem;
+    mniGravar: TMenuItem;
+    mniAlterar: TMenuItem;
+    mniExcluir: TMenuItem;
+    mniNovo: TMenuItem;
+    mniAtualizar: TMenuItem;
     mniCadastro: TMenuItem;
     mniCadastroTipoUsuario: TMenuItem;
     procedure FormCreate(Sender: TObject);
@@ -116,10 +124,19 @@ type
     procedure imgTipoUsuarioSelecionarClick(Sender: TObject);
     procedure edtTipoUsuarioDescricaoClick(Sender: TObject);
     procedure mniCadastroTipoUsuarioClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniCancelarClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
+    procedure mniGravarClick(Sender: TObject);
+    procedure mniAlterarClick(Sender: TObject);
+    procedure mniExcluirClick(Sender: TObject);
+    procedure mniNovoClick(Sender: TObject);
+    procedure mniAtualizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
     procedure FormularioLogExibir;
+    procedure FormularioAtualizar;
     procedure FormularioNovo;
 
     procedure FormularioPopular(argLicencaID: Integer;
@@ -232,11 +249,52 @@ begin
 end;
 
 //
-// Evento de click na opção de menu "cadastro de tipos de usuários".
+// Evento de click nas opções do menu.
 //
 procedure TPlataformaERPVCLUsuarioCadastro.mniCadastroTipoUsuarioClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_TipoUsuarioListaExibir;
+end;
+
+
+procedure TPlataformaERPVCLUsuarioCadastro.mniAtualizarClick(Sender: TObject);
+begin
+  FormularioAtualizar;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.mniNovoClick(Sender: TObject);
+begin
+  FormularioNovo;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.mniExcluirClick(Sender: TObject);
+begin
+  FormularioExcluir;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.mniAlterarClick(Sender: TObject);
+begin
+  FormularioAlterar;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.mniGravarClick(Sender: TObject);
+begin
+  FormularioGravar;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.mniCancelarClick(Sender: TObject);
+begin
+  FormularioCancelar;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.mniFecharClick(Sender: TObject);
+begin
+  Close;
 end;
 
 //
@@ -408,17 +466,7 @@ end;
 //
 procedure TPlataformaERPVCLUsuarioCadastro.btnAtualizarClick(Sender: TObject);
 begin
-  //
-  // Popula componentes com as informações do cadastro.
-  //
-  FormularioPopular(StringIntegerConverter(edtLicencaID.Text),
-                    StringIntegerConverter(edtBaseID.Text),
-                    StringIntegerConverter(edtUsuarioID.Text));
-
-  //
-  // Controla a exibição dos componentes.
-  //
-  FormularioControlar(False);
+  FormularioAtualizar;
 end;
 
 //
@@ -579,6 +627,18 @@ begin
   btnAlterar.Visible   := (btnAlterar.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ALTERAR'));
 
   //
+  // Itens do menu.
+  //
+  mniAtualizar.Visible := btnAtualizar.Visible;
+  mniNovo.Visible      := btnNovo.Visible;
+  mniExcluir.Visible   := btnExcluir.Visible;
+  mniAlterar.Visible   := btnAlterar.Visible;
+  mniGravar.Visible    := btnGravar.Visible;
+  mniMinimizar.Visible := btnMinimizar.Visible;
+  mniCancelar.Visible  := btnCancelar.Visible;
+  mniFechar.Visible    := btnFechar.Visible;
+
+  //
   // Ajusta o título do formulário.
   //
   Self.Caption     := 'Usuário';
@@ -590,7 +650,7 @@ begin
 end;
 
 //
-// FormularioLogExibir.
+// Procedimento para carregar e exibir o log de alterações do registro.
 //
 procedure TPlataformaERPVCLUsuarioCadastro.FormularioLogExibir;
 const
@@ -724,7 +784,25 @@ begin
 end;
 
 //
-// FormularioNovo.
+// Procedimento para atualizar os dados populados nos componentes do formulário.
+//
+procedure TPlataformaERPVCLUsuarioCadastro.FormularioAtualizar;
+begin
+  //
+  // Popula componentes com as informações do cadastro.
+  //
+  FormularioPopular(StringIntegerConverter(edtLicencaID.Text),
+                    StringIntegerConverter(edtBaseID.Text),
+                    StringIntegerConverter(edtUsuarioID.Text));
+
+  //
+  // Controla a exibição dos componentes.
+  //
+  FormularioControlar(False);
+end;
+
+//
+// Procedimento para iniciar a digitação de dados de um novo cadastro.
 //
 procedure TPlataformaERPVCLUsuarioCadastro.FormularioNovo;
 begin
@@ -1537,7 +1615,7 @@ begin
 end;
 
 //
-// FormularioExcluir.
+// Procedimento para excluir os dados deste cadastro.
 //
 procedure TPlataformaERPVCLUsuarioCadastro.FormularioExcluir;
 const
@@ -1548,16 +1626,16 @@ var
   locADOQuery          : TADOQuery;
   locLogMensagem       : string;
   locLicencaID         : Integer;
-  locBaseID            : Integer;
+  locUsuarioBaseID     : Integer;
   locUsuarioID         : Integer;
   locUsuarioLogLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locLicencaID := StringIntegerConverter(edtLicencaID.Text);
-  locBaseID    := StringIntegerConverter(edtBaseID.Text);
-  locUsuarioID := StringIntegerConverter(edtUsuarioID.Text);
+  locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
+  locUsuarioBaseID := StringIntegerConverter(edtBaseID.Text);
+  locUsuarioID     := StringIntegerConverter(edtUsuarioID.Text);
 
   //
   // Log dados.
@@ -1632,7 +1710,7 @@ begin
   locADOQuery.SQL.Add('  [usuario_log].[usuario_id] = :usuario_id     ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
-  locADOQuery.Parameters.ParamByName('base_id').Value    := locBaseID;
+  locADOQuery.Parameters.ParamByName('base_id').Value    := locUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('usuario_id').Value := locUsuarioID;
 
   try
@@ -1665,7 +1743,7 @@ begin
   locADOQuery.SQL.Add('  [usuario].[usuario_id] = :usuario_id      ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
-  locADOQuery.Parameters.ParamByName('base_id').Value    := locBaseID;
+  locADOQuery.Parameters.ParamByName('base_id').Value    := locUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('usuario_id').Value := locUsuarioID;
 
   try

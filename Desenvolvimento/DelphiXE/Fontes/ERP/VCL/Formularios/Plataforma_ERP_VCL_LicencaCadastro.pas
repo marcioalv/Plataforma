@@ -29,7 +29,7 @@ uses
   Vcl.Buttons,
   Vcl.ComCtrls,
   Vcl.Imaging.pngimage,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, Vcl.Menus;
 
 type
   TPlataformaERPVCLLicencaCadastro = class(TForm)
@@ -54,6 +54,9 @@ type
     btnMinimizar: TBitBtn;
     btnFechar: TBitBtn;
     imgBackground: TImage;
+    mnuFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -61,6 +64,8 @@ type
     procedure btnFecharClick(Sender: TObject);
     procedure edtInsLocalDtHrClick(Sender: TObject);
     procedure edtUpdLocalDtHrClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -140,6 +145,19 @@ end;
 procedure TPlataformaERPVCLLicencaCadastro.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Eventos de click nas opções do menu.
+//
+procedure TPlataformaERPVCLLicencaCadastro.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLLicencaCadastro.mniFecharClick(Sender: TObject);
+begin
+  Close;
 end;
 
 //
