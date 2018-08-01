@@ -70,21 +70,21 @@ procedure Plataforma_ERP_VCL_TipoUsuarioExibir(argLicencaID        : Integer;
 //
 // Plataforma_ERP_VCL_TipoUsuarioValidar.
 //
-procedure Plataforma_ERP_VCL_TipoUsuarioValidar(argNovo                : Boolean;
-                                                argLicencaID           : TEdit;
-                                                argTipoUsuarioBaseID   : TEdit;
-                                                argTipoUsuarioID       : TEdit;
-                                                argTipoUsuarioCodigo   : TEdit;
-                                                argTipoUsuarioDescricao: TEdit);
+function Plataforma_ERP_VCL_TipoUsuarioValidar(argNovo                : Boolean;
+                                               argLicencaID           : TEdit;
+                                               argTipoUsuarioBaseID   : TEdit;
+                                               argTipoUsuarioID       : TEdit;
+                                               argTipoUsuarioCodigo   : TEdit;
+                                                argTipoUsuarioDescricao: TEdit): Boolean;
 
 //
 // Plataforma_ERP_VCL_TipoUsuarioSelecionar.
 //
-procedure Plataforma_ERP_VCL_TipoUsuarioSelecionar(argLicencaID           : TEdit;
-                                                   argTipoUsuarioBaseID   : TEdit;
-                                                   argTipoUsuarioID       : TEdit;
-                                                   argTipoUsuarioCodigo   : TEdit;
-                                                   argTipoUsuarioDescricao: TEdit);
+function Plataforma_ERP_VCL_TipoUsuarioSelecionar(argLicencaID           : TEdit;
+                                                  argTipoUsuarioBaseID   : TEdit;
+                                                  argTipoUsuarioID       : TEdit;
+                                                  argTipoUsuarioCodigo   : TEdit;
+                                                  argTipoUsuarioDescricao: TEdit): Boolean;
 
 implementation
 
@@ -237,12 +237,12 @@ end;
 //
 // Procedimento para validar um tipo de usuário.
 //
-procedure Plataforma_ERP_VCL_TipoUsuarioValidar(argNovo                : Boolean;
-                                                argLicencaID           : TEdit;
-                                                argTipoUsuarioBaseID   : TEdit;
-                                                argTipoUsuarioID       : TEdit;
-                                                argTipoUsuarioCodigo   : TEdit;
-                                                argTipoUsuarioDescricao: TEdit);
+function Plataforma_ERP_VCL_TipoUsuarioValidar(argNovo                : Boolean;
+                                               argLicencaID           : TEdit;
+                                               argTipoUsuarioBaseID   : TEdit;
+                                               argTipoUsuarioID       : TEdit;
+                                               argTipoUsuarioCodigo   : TEdit;
+                                               argTipoUsuarioDescricao: TEdit): Boolean;
 const
   PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_TipoUsuarioValidar';
   ERRO_MENSAGEM    : string = 'Impossível validar o tipo de usuário!';
@@ -258,6 +258,11 @@ var
   locTipoUsuarioDescricao: string;
   locFormulario          : TPlataformaERPVCLTiposUsuariosCodigo;
 begin
+  //
+  // Retorno padrão.
+  //
+  Result := False;
+
   //
   // Carrega variáveis.
   //
@@ -275,6 +280,7 @@ begin
     argTipoUsuarioBaseID.Text    := '';
     argTipoUsuarioID.Text        := '';
     argTipoUsuarioDescricao.Text := '';
+    Result := True;
     Exit;
   end;
 
@@ -333,6 +339,12 @@ begin
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
   locADOQuery.Parameters.ParamByName('codigo').Value     := locTipoUsuarioCodigo;
+
+  if locTipoUsuarioBaseID > 0 then
+  begin
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[base_id] = :base_id ');
+    locADOQuery.Parameters.ParamByName('base_id').Value := locTipoUsuarioBaseID;
+  end;  
 
   if argNovo then
   begin   
@@ -434,16 +446,18 @@ begin
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
   VCLCursorTrocar;
+
+  Result := True;
 end;
 
 //
 // Procedimento para selecionar um tipo de usuário.
 //
-procedure Plataforma_ERP_VCL_TipoUsuarioSelecionar(argLicencaID           : TEdit;
-                                                   argTipoUsuarioBaseID   : TEdit;
-                                                   argTipoUsuarioID       : TEdit;
-                                                   argTipoUsuarioCodigo   : TEdit;
-                                                   argTipoUsuarioDescricao: TEdit);
+function Plataforma_ERP_VCL_TipoUsuarioSelecionar(argLicencaID           : TEdit;
+                                                  argTipoUsuarioBaseID   : TEdit;
+                                                  argTipoUsuarioID       : TEdit;
+                                                  argTipoUsuarioCodigo   : TEdit;
+                                                  argTipoUsuarioDescricao: TEdit): Boolean;
 var
   locFormulario          : TPlataformaERPVCLTiposUsuariosSelecao;
   locClicouFechar        : Boolean;
@@ -452,6 +466,8 @@ var
   locTipoUsuarioCodigo   : string;
   locTipoUsuarioDescricao: string;
 begin
+  Result := False;
+
   locTipoUsuarioBaseID    := StringIntegerConverter(argTipoUsuarioBaseID.Text);
   locTipoUsuarioID        := StringIntegerConverter(argTipoUsuarioID.Text);
   locTipoUsuarioCodigo    := StringTrim(argTipoUsuarioCodigo.Text);
@@ -481,6 +497,7 @@ begin
     argTipoUsuarioID.Text        := IntegerStringConverter(locTipoUsuarioID);
     argTipoUsuarioCodigo.Text    := locTipoUsuarioCodigo;
     argTipoUsuarioDescricao.Text := locTipoUsuarioDescricao;
+    Result := False;
   end;
 end;
 

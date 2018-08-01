@@ -29,12 +29,12 @@ uses
   Vcl.ExtCtrls,
   Vcl.Buttons,
   Vcl.Imaging.pngimage,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls, Vcl.Menus;
 
 type
   TPlataformaERPVCLTiposUsuariosSelecao = class(TForm)
     imgFormulario: TImage;
-    btnConfirmar: TBitBtn;
+    btnSelecionar: TBitBtn;
     btnFechar: TBitBtn;
     panFormulario: TPanel;
     btnMinimizar: TBitBtn;
@@ -42,10 +42,15 @@ type
     lvwLista: TListView;
     btnAtualizar: TBitBtn;
     pbaProgresso: TProgressBar;
+    mnuFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
+    mniAtualizar: TMenuItem;
+    mniSelecionar: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnSelecionarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnAtualizarClick(Sender: TObject);
@@ -53,9 +58,13 @@ type
     procedure lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure lvwListaDblClick(Sender: TObject);
     procedure lvwListaKeyPress(Sender: TObject; var Key: Char);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
+    procedure mniAtualizarClick(Sender: TObject);
+    procedure mniSelecionarClick(Sender: TObject);
   private
     procedure FormularioAtualizar;
-    procedure FormularioConfirmar;
+    procedure FormularioSelecionar;
   public
     pubClicouFechar     : Boolean;
     pubNovo             : Boolean;
@@ -130,6 +139,29 @@ begin
   if Key = ESC then Close;
 end;
 
+// 
+// Eventos de click nas opções do menu.
+//
+procedure TPlataformaERPVCLTiposUsuariosSelecao.mniSelecionarClick(Sender: TObject);
+begin
+  FormularioSelecionar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosSelecao.mniAtualizarClick(Sender: TObject);
+begin
+  FormularioAtualizar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosSelecao.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLTiposUsuariosSelecao.mniFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
 //
 // Eventos do componente listview.
 //
@@ -145,7 +177,7 @@ end;
 
 procedure TPlataformaERPVCLTiposUsuariosSelecao.lvwListaDblClick(Sender: TObject);
 begin
-  FormularioConfirmar;
+  FormularioSelecionar;
 end;
 
 procedure TPlataformaERPVCLTiposUsuariosSelecao.lvwListaKeyPress(Sender: TObject; var Key: Char);
@@ -156,9 +188,9 @@ end;
 //
 // Evento de click no botão "Confirmar".
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.btnConfirmarClick(Sender: TObject);
+procedure TPlataformaERPVCLTiposUsuariosSelecao.btnSelecionarClick(Sender: TObject);
 begin
-  FormularioConfirmar;
+  FormularioSelecionar;
 end;
 
 //
@@ -356,9 +388,9 @@ begin
 end;
 
 //
-// Procedimento para confirmar os parâmetros do formulário.
+// Procedimento para selecionar uma das linhas da lista.
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.FormularioConfirmar;
+procedure TPlataformaERPVCLTiposUsuariosSelecao.FormularioSelecionar;
 var
   locIndice: Integer;
 begin

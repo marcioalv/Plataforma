@@ -365,17 +365,17 @@ procedure TPlataformaERPVCLUsuarioCadastro.edtTipoUsuarioCodigoExit(Sender: TObj
 begin
   if not VCLEditSair(edtTipoUsuarioCodigo) then Exit;
   
-  Plataforma_ERP_VCL_TipoUsuarioValidar((edtUsuarioID.Text = STR_NOVO),
-                                        edtLicencaID,
-                                        edtTipoUsuarioBaseID,
-                                        edtTipoUsuarioID,
-                                        edtTipoUsuarioCodigo,
-                                        edtTipoUsuarioDescricao);
+  if not Plataforma_ERP_VCL_TipoUsuarioValidar((edtUsuarioID.Text = STR_NOVO),
+                                                edtLicencaID,
+                                                edtTipoUsuarioBaseID,
+                                                edtTipoUsuarioID,
+                                                edtTipoUsuarioCodigo,
+                                                edtTipoUsuarioDescricao) then Exit;
 end;
 
 procedure TPlataformaERPVCLUsuarioCadastro.imgTipoUsuarioSelecionarClick(Sender: TObject);
 begin
-  Plataforma_ERP_VCL_TipoUsuarioSelecionar(edtLicencaID, edtTipoUsuarioBaseID, edtTipoUsuarioID, edtTipoUsuarioCodigo, edtTipoUsuarioDescricao);
+  if not Plataforma_ERP_VCL_TipoUsuarioSelecionar(edtLicencaID, edtTipoUsuarioBaseID, edtTipoUsuarioID, edtTipoUsuarioCodigo, edtTipoUsuarioDescricao) then Exit;
 end;
 
 procedure TPlataformaERPVCLUsuarioCadastro.edtTipoUsuarioDescricaoClick(Sender: TObject);
