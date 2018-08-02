@@ -42,8 +42,6 @@ type
     edtCodigo: TEdit;
     lblNome: TLabel;
     edtNome: TEdit;
-    chkBloqueado: TCheckBox;
-    chkAtivo: TCheckBox;
     lblInsDtHt: TLabel;
     edtInsLocalDtHr: TEdit;
     lblUpdDtHr: TLabel;
@@ -87,6 +85,13 @@ type
     mniAtualizar: TMenuItem;
     mniCadastro: TMenuItem;
     mniCadastroTipoUsuario: TMenuItem;
+    gbxOpcoes: TGroupBox;
+    chkBloqueado: TCheckBox;
+    chkAtivo: TCheckBox;
+    chkAutomato: TCheckBox;
+    chkAdministrador: TCheckBox;
+    Label1: TLabel;
+    edtLogon: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -132,6 +137,15 @@ type
     procedure mniExcluirClick(Sender: TObject);
     procedure mniNovoClick(Sender: TObject);
     procedure mniAtualizarClick(Sender: TObject);
+    procedure edtLogonEnter(Sender: TObject);
+    procedure edtLogonExit(Sender: TObject);
+    procedure edtLogonKeyPress(Sender: TObject; var Key: Char);
+    procedure chkAutomatoEnter(Sender: TObject);
+    procedure chkAutomatoExit(Sender: TObject);
+    procedure chkAutomatoKeyPress(Sender: TObject; var Key: Char);
+    procedure chkAdministradorEnter(Sender: TObject);
+    procedure chkAdministradorExit(Sender: TObject);
+    procedure chkAdministradorKeyPress(Sender: TObject; var Key: Char);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -386,6 +400,60 @@ begin
 end;
 
 //
+// Eventos do componente "logon".
+//
+procedure TPlataformaERPVCLUsuarioCadastro.edtLogonEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtLogon) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.edtLogonKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.edtLogonExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtLogon) then Exit;
+end;
+
+//
+// Eventos do componente "autômato".
+//
+procedure TPlataformaERPVCLUsuarioCadastro.chkAutomatoEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkAutomato) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.chkAutomatoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.chkAutomatoExit(Sender: TObject);
+begin
+  if not VCLCheckBoxSair(chkAutomato) then Exit;
+end;
+
+//
+// Eventos do componente "administrador".
+//
+procedure TPlataformaERPVCLUsuarioCadastro.chkAdministradorEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkAdministrador) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.chkAdministradorKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.chkAdministradorExit(Sender: TObject);
+begin
+  if not VCLCheckBoxSair(chkAdministrador) then Exit;
+end;
+
+//
 // Eventos do componente "bloqueado".
 //
 procedure TPlataformaERPVCLUsuarioCadastro.chkBloqueadoEnter(Sender: TObject);
@@ -543,6 +611,9 @@ begin
   VCLEditLimpar    (edtTipoUsuarioID);
   VCLEditLimpar    (edtTipoUsuarioCodigo);
   VCLEditLimpar    (edtTipoUsuarioDescricao);
+  VCLEditLimpar    (edtLogon);
+  VCLCheckBoxLimpar(chkAutomato);
+  VCLCheckBoxLimpar(chkAdministrador);
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
 
@@ -575,11 +646,11 @@ begin
   //
   // Controla os componentes do formulário.
   //
-  VCLEditControlar    (edtCodigo,            argEditar);
-  VCLEditControlar    (edtNome,              argEditar);
-  VCLEditControlar    (edtTipoUsuarioCodigo, argEditar);
-  VCLCheckBoxControlar(chkBloqueado,         argEditar);
-  VCLCheckBoxControlar(chkAtivo,             argEditar);
+  VCLEditControlar(edtCodigo,            argEditar);
+  VCLEditControlar(edtNome,              argEditar);
+  VCLEditControlar(edtTipoUsuarioCodigo, argEditar);
+  VCLEditControlar(edtLogon,             argEditar);
+  gbxOpcoes.Enabled := argEditar;
 
   //
   // Exibe o último código cadastrado somente se for um novo cadastro.
@@ -903,6 +974,9 @@ begin
   locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id] AS [tipo_usuario_id],                       ');
   locADOQuery.SQL.Add('  [tipo_usuario].[codigo]          AS [tipo_usuario_codigo],                   ');
   locADOQuery.SQL.Add('  [tipo_usuario].[descricao]       AS [tipo_usuario_descricao],                ');
+  locADOQuery.SQL.Add('  [usuario].[logon],                                                           ');
+  locADOQuery.SQL.Add('  [usuario].[automato],                                                        ');
+  locADOQuery.SQL.Add('  [usuario].[administrador],                                                   ');
   locADOQuery.SQL.Add('  [usuario].[bloqueado],                                                       ');
   locADOQuery.SQL.Add('  [usuario].[ativo],                                                           ');
   locADOQuery.SQL.Add('  [usuario].[ins_local_dt_hr],                                                 ');
@@ -962,8 +1036,12 @@ begin
     edtTipoUsuarioCodigo.Text    := locADOQuery.FieldByName('tipo_usuario_codigo').AsString;
     edtTipoUsuarioDescricao.Text := locADOQuery.FieldByName('tipo_usuario_descricao').AsString;
 
-    chkBloqueado.Checked := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
-    chkAtivo.Checked     := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
+    edtLogon.Text := locADOQuery.FieldByName('logon').AsString;
+    
+    chkAutomato.Checked      := StringBooleanConverter(locADOQuery.FieldByName('automato').AsString);
+    chkAdministrador.Checked := StringBooleanConverter(locADOQuery.FieldByName('administrador').AsString);
+    chkBloqueado.Checked     := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
+    chkAtivo.Checked         := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
 
     edtLicencaID.Text        := locADOQuery.FieldByName('licenca_id').AsString;
     edtLicencaDescricao.Text := locADOQuery.FieldByName('licenca_descricao').AsString;
@@ -1027,6 +1105,9 @@ var
   locNome                  : string;
   locTipoUsuarioBaseID     : Integer;
   locTipoUsuarioID         : Integer;
+  locLogon                 : string;
+  locAutomato              : Boolean;
+  locAdministrador         : Boolean;
   locBloqueado             : Boolean;
   locAtivo                 : Boolean;
   locInsLocalDtHr          : TDateTime;
@@ -1055,6 +1136,9 @@ begin
   locNome              := StringTrim(edtNome.Text);
   locTipoUsuarioBaseID := StringIntegerConverter(edtTipoUsuarioBaseID.Text);
   locTipoUsuarioID     := StringIntegerConverter(edtTipoUsuarioID.Text);
+  locLogon             := StringTrim(edtLogon.Text);
+  locAutomato          := chkAutomato.Checked;
+  locAdministrador     := chkAdministrador.Checked;
   locBloqueado         := chkBloqueado.Checked;
   locAtivo             := chkAtivo.Checked;
   locLogUsuarioBaseID  := gloUsuarioBaseID;
@@ -1314,6 +1398,9 @@ begin
     locADOQuery.SQL.Add('  [tipo_usuario_base_id], ');
     locADOQuery.SQL.Add('  [tipo_usuario_id],      ');
     locADOQuery.SQL.Add('  [nome],                 ');
+    locADOQuery.SQL.Add('  [logon],                ');
+    locADOQuery.SQL.Add('  [automato],             ');
+    locADOQuery.SQL.Add('  [administrador],        ');
     locADOQuery.SQL.Add('  [bloqueado],            ');
     locADOQuery.SQL.Add('  [ativo],                ');
     locADOQuery.SQL.Add('  [ins_local_dt_hr],      ');
@@ -1330,6 +1417,9 @@ begin
     locADOQuery.SQL.Add('  :tipo_usuario_base_id,  '); // tipo_usuario_base_id.
     locADOQuery.SQL.Add('  :tipo_usuario_id,       '); // tipo_usuario_id.
     locADOQuery.SQL.Add('  :nome,                  '); // nome.
+    locADOQuery.SQL.Add('  :logon,                 '); // logon.
+    locADOQuery.SQL.Add('  :automato,              '); // automato.
+    locADOQuery.SQL.Add('  :administrador,         '); // administrador.
     locADOQuery.SQL.Add('  :bloqueado,             '); // bloqueado.
     locADOQuery.SQL.Add('  :ativo,                 '); // ativo.
     locADOQuery.SQL.Add('  :local_dt_hr,           '); // ins_local_dt_hr.
@@ -1351,6 +1441,9 @@ begin
     locADOQuery.SQL.Add('  [tipo_usuario_base_id] = :tipo_usuario_base_id, ');
     locADOQuery.SQL.Add('  [tipo_usuario_id]      = :tipo_usuario_id,      ');        
     locADOQuery.SQL.Add('  [nome]                 = :nome,                 ');
+    locADOQuery.SQL.Add('  [logon]                = :logon,                ');
+    locADOQuery.SQL.Add('  [automato]             = :automato,             ');
+    locADOQuery.SQL.Add('  [administrador]        = :administrador,        ');
     locADOQuery.SQL.Add('  [bloqueado]            = :bloqueado,            ');
     locADOQuery.SQL.Add('  [ativo]                = :ativo,                ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]      = :local_dt_hr,          ');
@@ -1372,6 +1465,9 @@ begin
   locADOQuery.Parameters.ParamByName('tipo_usuario_base_id').Value := locTipoUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value      := locTipoUsuarioID;
   locADOQuery.Parameters.ParamByName('nome').Value                 := locNome;
+  locADOQuery.Parameters.ParamByName('logon').Value                := locLogon;
+  locADOQuery.Parameters.ParamByName('automato').Value             := BooleanStringConverter(locAutomato);
+  locADOQuery.Parameters.ParamByName('administrador').Value        := BooleanStringConverter(locAdministrador);
   locADOQuery.Parameters.ParamByName('bloqueado').Value            := BooleanStringConverter(locBloqueado);
   locADOQuery.Parameters.ParamByName('ativo').Value                := BooleanStringConverter(locAtivo);
   locADOQuery.Parameters.ParamByName('local_dt_hr').Value          := Now;
@@ -1985,6 +2081,9 @@ begin
   LogDadosStringDescrever ('Tipo usuário ID',        edtTipoUsuarioID.Text,        Result);
   LogDadosStringDescrever ('Tipo usuário código',    edtTipoUsuarioCodigo.Text,    Result);
   LogDadosStringDescrever ('Tipo usuário descrição', edtTipoUsuarioDescricao.Text, Result);
+  LogDadosStringDescrever ('logon',                  edtLogon.Text,                Result);
+  LogDadosBooleanDescrever('automato',               chkAutomato.Checked,          Result);
+  LogDadosBooleanDescrever('administrador',          chkAdministrador.Checked,     Result);  
   LogDadosBooleanDescrever('Bloqueado',              chkBloqueado.Checked,         Result);
   LogDadosBooleanDescrever('Ativo',                  chkAtivo.Checked,             Result);
 end;

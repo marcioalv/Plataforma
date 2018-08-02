@@ -42,8 +42,6 @@ type
     edtCodigo: TEdit;
     lblDescricao: TLabel;
     edtDescricao: TEdit;
-    chkBloqueado: TCheckBox;
-    chkAtivo: TCheckBox;
     lblInsDtHt: TLabel;
     edtInsLocalDtHr: TEdit;
     lblUpdDtHr: TLabel;
@@ -79,6 +77,9 @@ type
     mniCancelar: TMenuItem;
     mniGravar: TMenuItem;
     btnLog: TBitBtn;
+    gbxOpcoes: TGroupBox;
+    chkBloqueado: TCheckBox;
+    chkAtivo: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -506,10 +507,9 @@ begin
   //
   // Controla os componentes do formulário.
   //
-  VCLEditControlar    (edtCodigo,    argEditar);
-  VCLEditControlar    (edtDescricao, argEditar);
-  VCLCheckBoxControlar(chkBloqueado, argEditar);
-  VCLCheckBoxControlar(chkAtivo,     argEditar);
+  VCLEditControlar(edtCodigo,    argEditar);
+  VCLEditControlar(edtDescricao, argEditar);
+  gbxOpcoes.Enabled := argEditar;
 
   //
   // Exibe o último código cadastrado somente se for um novo cadastro.

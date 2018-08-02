@@ -4,7 +4,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Usu'#225'rio'
-  ClientHeight = 385
+  ClientHeight = 409
   ClientWidth = 577
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -65,7 +65,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     Left = 48
     Top = 16
     Width = 514
-    Height = 289
+    Height = 313
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
@@ -171,6 +171,19 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000}
         OnClick = imgTipoUsuarioSelecionarClick
       end
+      object Label1: TLabel
+        Left = 16
+        Top = 184
+        Width = 38
+        Height = 14
+        Caption = 'Logon:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
       object edtCodigo: TEdit
         Left = 16
         Top = 32
@@ -209,46 +222,6 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         OnExit = edtNomeExit
         OnKeyDown = edtNomeKeyDown
         OnKeyPress = edtNomeKeyPress
-      end
-      object chkBloqueado: TCheckBox
-        Left = 16
-        Top = 192
-        Width = 73
-        Height = 17
-        Cursor = crHandPoint
-        Caption = 'Bloqueado'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ParentShowHint = False
-        ShowHint = False
-        TabOrder = 6
-        OnEnter = chkBloqueadoEnter
-        OnExit = chkBloqueadoExit
-        OnKeyPress = chkBloqueadoKeyPress
-      end
-      object chkAtivo: TCheckBox
-        Left = 16
-        Top = 216
-        Width = 49
-        Height = 17
-        Cursor = crHandPoint
-        Caption = 'Ativo'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ParentShowHint = False
-        ShowHint = False
-        TabOrder = 7
-        OnEnter = chkAtivoEnter
-        OnExit = chkAtivoExit
-        OnKeyPress = chkAtivoKeyPress
       end
       object edtCodigoCadastrado: TEdit
         Left = 344
@@ -347,14 +320,123 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 8
+        TabOrder = 6
         Text = '999.999'
         Visible = False
+      end
+      object gbxOpcoes: TGroupBox
+        Left = 280
+        Top = 200
+        Width = 209
+        Height = 73
+        TabOrder = 8
+        object chkBloqueado: TCheckBox
+          Left = 120
+          Top = 16
+          Width = 73
+          Height = 17
+          Cursor = crHandPoint
+          Caption = 'Bloqueado'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = False
+          TabOrder = 2
+          OnEnter = chkBloqueadoEnter
+          OnExit = chkBloqueadoExit
+          OnKeyPress = chkBloqueadoKeyPress
+        end
+        object chkAtivo: TCheckBox
+          Left = 120
+          Top = 40
+          Width = 49
+          Height = 17
+          Cursor = crHandPoint
+          Caption = 'Ativo'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = False
+          TabOrder = 3
+          OnEnter = chkAtivoEnter
+          OnExit = chkAtivoExit
+          OnKeyPress = chkAtivoKeyPress
+        end
+        object chkAutomato: TCheckBox
+          Left = 16
+          Top = 16
+          Width = 73
+          Height = 17
+          Cursor = crHandPoint
+          Caption = 'Aut'#244'mato'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = False
+          TabOrder = 0
+          OnEnter = chkAutomatoEnter
+          OnExit = chkAutomatoExit
+          OnKeyPress = chkAutomatoKeyPress
+        end
+        object chkAdministrador: TCheckBox
+          Left = 16
+          Top = 40
+          Width = 97
+          Height = 17
+          Cursor = crHandPoint
+          Caption = 'Administrador'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = False
+          TabOrder = 1
+          OnEnter = chkAdministradorEnter
+          OnExit = chkAdministradorExit
+          OnKeyPress = chkAdministradorKeyPress
+        end
+      end
+      object edtLogon: TEdit
+        Left = 16
+        Top = 200
+        Width = 241
+        Height = 26
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 100
+        ParentFont = False
+        TabOrder = 7
+        Text = 'Xxxxxxxxxx Wwwwwwwwww'
+        OnEnter = edtLogonEnter
+        OnExit = edtLogonExit
+        OnKeyPress = edtLogonKeyPress
       end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 128
@@ -589,7 +671,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
       end
       object btnLog: TBitBtn
         Left = 16
-        Top = 190
+        Top = 208
         Width = 169
         Height = 45
         Cursor = crHandPoint
@@ -668,7 +750,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnGravar: TBitBtn
     Left = 400
-    Top = 320
+    Top = 344
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -749,7 +831,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnExcluir: TBitBtn
     Left = 344
-    Top = 320
+    Top = 344
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -823,7 +905,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnCancelar: TBitBtn
     Left = 512
-    Top = 320
+    Top = 344
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -904,7 +986,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnMinimizar: TBitBtn
     Left = 456
-    Top = 320
+    Top = 344
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -977,7 +1059,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnAlterar: TBitBtn
     Left = 400
-    Top = 320
+    Top = 344
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -1058,7 +1140,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnFechar: TBitBtn
     Left = 512
-    Top = 320
+    Top = 344
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -1121,7 +1203,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnNovo: TBitBtn
     Left = 288
-    Top = 320
+    Top = 344
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -1194,7 +1276,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
   end
   object btnAtualizar: TBitBtn
     Left = 232
-    Top = 320
+    Top = 344
     Width = 49
     Height = 49
     Cursor = crHandPoint

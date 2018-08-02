@@ -7,9 +7,9 @@ GO
 --
 -- Apaga foreign keys.
 --
-ALTER TABLE [tipo_usuario_log]  DROP CONSTRAINT [tipo_usuario_log_fk_log_usuario]
-ALTER TABLE [numerador_licenca] DROP CONSTRAINT [numerador_licenca_fk_ins_usuario]
-ALTER TABLE [numerador_licenca] DROP CONSTRAINT [numerador_licenca_fk_upd_usuario]
+IF OBJECT_ID('tipo_usuario_log_fk_log_usuario')  IS NOT NULL ALTER TABLE [tipo_usuario_log]  DROP CONSTRAINT [tipo_usuario_log_fk_log_usuario]
+IF OBJECT_ID('numerador_licenca_fk_ins_usuario') IS NOT NULL ALTER TABLE [numerador_licenca] DROP CONSTRAINT [numerador_licenca_fk_ins_usuario]
+IF OBJECT_ID('numerador_licenca_fk_upd_usuario') IS NOT NULL ALTER TABLE [numerador_licenca] DROP CONSTRAINT [numerador_licenca_fk_upd_usuario]
 
 --
 -- Apaga tabelas.
@@ -245,8 +245,11 @@ CREATE TABLE [dbo].[usuario] (
   [usuario_id]           INT                                       NOT NULL,
   [codigo]               VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [nome]                 VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [logon]                VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [tipo_usuario_base_id] SMALLINT                                  NOT NULL,
   [tipo_usuario_id]      TINYINT                                   NOT NULL,
+  [automato]             CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [administrador]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]                CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ins_local_dt_hr]      DATETIME                                  NOT NULL,
@@ -258,8 +261,10 @@ CREATE TABLE [dbo].[usuario] (
   CONSTRAINT [usuario_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [base_id], [usuario_id]),
   CONSTRAINT [usuario_ix_codigo] UNIQUE                ([licenca_id], [codigo],  [base_id]),
 
-  CONSTRAINT [usuario_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
-  CONSTRAINT [usuario_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
+  CONSTRAINT [usuario_ck_automato]      CHECK ([automato]      IN ('S', 'N')),
+  CONSTRAINT [usuario_ck_administrador] CHECK ([administrador] IN ('S', 'N')),
+  CONSTRAINT [usuario_ck_bloqueado]     CHECK ([bloqueado]     IN ('S', 'N')),
+  CONSTRAINT [usuario_ck_ativo]         CHECK ([ativo]         IN ('S', 'N')),
 
   CONSTRAINT [usuario_fk_base]         FOREIGN KEY ([base_id])                                               REFERENCES [base]         ([base_id]),
   CONSTRAINT [usuario_fk_licenca]      FOREIGN KEY ([licenca_id])                                            REFERENCES [licenca]      ([licenca_id]),
@@ -379,21 +384,21 @@ INSERT INTO [licenca] VALUES (1, 'ABC.123.DEF.456', 'Licença central', 'N', 'S',
 -- Tipos de usuário padrões.
 --
 INSERT INTO [tipo_usuario]      VALUES (1, 1, 1, '01', 'Administrador da aplicação', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [tipo_usuario_log]  VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, 'ws049', 'chokito', 1, 1, 'Registro criado na instalação!', '')
+INSERT INTO [tipo_usuario_log]  VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
-INSERT INTO [tipo_usuario]      VALUES (1, 2, 1, '01', 'Outra base', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [tipo_usuario_log]  VALUES (1, 2, 1, 1, 1, GETDATE(), GETDATE(), 1, 'ws049', 'chokito', 1, 1, 'Registro criado na instalação!', '')
+INSERT INTO [tipo_usuario]      VALUES (1, 1, 2, '02', 'Consultor da aplicação', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [tipo_usuario_log]  VALUES (1, 1, 2, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
-INSERT INTO [tipo_usuario]      VALUES (1, 1, 2, '02', 'Gestor da aplicação', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [tipo_usuario_log]  VALUES (1, 1, 2, 1, 1, GETDATE(), GETDATE(), 1, 'ws049', 'chokito', 1, 1, 'Registro criado na instalação!', '')
+INSERT INTO [tipo_usuario]      VALUES (1, 1, 3, '03', 'Gestor da aplicação', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [tipo_usuario_log]  VALUES (1, 1, 3, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
-INSERT INTO [numerador_licenca] VALUES (1, 1, 'tipo_usuario_id', 2, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+INSERT INTO [numerador_licenca] VALUES (1, 1, 'tipo_usuario_id', 3, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
 
 --
 -- Usuário.
 --
-INSERT INTO [usuario]     VALUES (1, 1, 1, '000.001', 'Administrador do sistema', 2, 1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [usuario_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, 'ws049', 'chokito', 1, 1, 'Registro criado na instalação!', '')
+INSERT INTO [usuario]     VALUES (1, 1, 1, '000.001', 'Administrador do sistema', 'administrador', 1, 1, 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [usuario_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
 INSERT INTO [numerador_licenca] VALUES (1, 1, 'usuario_id', 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
 
