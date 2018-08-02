@@ -248,6 +248,8 @@ CREATE TABLE [dbo].[usuario] (
   [logon]                VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [tipo_usuario_base_id] SMALLINT                                  NOT NULL,
   [tipo_usuario_id]      TINYINT                                   NOT NULL,
+  [senha]                VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [trocar_senha]         CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [automato]             CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [administrador]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
@@ -397,7 +399,7 @@ INSERT INTO [numerador_licenca] VALUES (1, 1, 'tipo_usuario_id', 3, 'N', 'S', GE
 --
 -- Usuário.
 --
-INSERT INTO [usuario]     VALUES (1, 1, 1, '000.001', 'Administrador do sistema', 'administrador', 1, 1, 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [usuario]     VALUES (1, 1, 1, '000.001', 'Administrador do sistema', 'administrador', 1, 1, '', 'N', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [usuario_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
 INSERT INTO [numerador_licenca] VALUES (1, 1, 'usuario_id', 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
