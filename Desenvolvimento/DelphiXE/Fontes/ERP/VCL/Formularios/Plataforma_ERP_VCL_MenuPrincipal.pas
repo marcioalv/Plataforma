@@ -45,6 +45,8 @@ type
     mniTiposUsuarios: TMenuItem;
     Image1: TImage;
     mniUsuarios: TMenuItem;
+    mnuConfiguracoes: TMenuItem;
+    Resoluodetela1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);

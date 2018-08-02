@@ -38,6 +38,12 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     Top = 80
     object mniAplicacao: TMenuItem
       Caption = '&Aplica'#231#227'o'
+      object mnuConfiguracoes: TMenuItem
+        Caption = 'Configura'#231#245'es'
+        object Resoluodetela1: TMenuItem
+          Caption = 'Resolu'#231#227'o de tela'
+        end
+      end
       object mniLogUsoAplicacao: TMenuItem
         Caption = 'Log de uso'
         object mniLogUsoLocal: TMenuItem
