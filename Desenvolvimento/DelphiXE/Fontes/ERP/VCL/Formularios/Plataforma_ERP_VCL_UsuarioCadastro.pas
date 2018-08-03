@@ -92,6 +92,8 @@ type
     chkAdministrador: TCheckBox;
     Label1: TLabel;
     edtLogon: TEdit;
+    TabSheet1: TTabSheet;
+    BitBtn2: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);

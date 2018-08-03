@@ -40,8 +40,12 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
       Caption = '&Aplica'#231#227'o'
       object mnuConfiguracoes: TMenuItem
         Caption = 'Configura'#231#245'es'
-        object Resoluodetela1: TMenuItem
+        object mniResolucaoTela: TMenuItem
           Caption = 'Resolu'#231#227'o de tela'
+          object mni1250x700: TMenuItem
+            Caption = '1.250 x 700'
+            OnClick = mni1250x700Click
+          end
         end
       end
       object mniLogUsoAplicacao: TMenuItem

@@ -46,13 +46,15 @@ type
     Image1: TImage;
     mniUsuarios: TMenuItem;
     mnuConfiguracoes: TMenuItem;
-    Resoluodetela1: TMenuItem;
+    mniResolucaoTela: TMenuItem;
+    mni1250x700: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
     procedure mniTiposUsuariosClick(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure mniUsuariosClick(Sender: TObject);
+    procedure mni1250x700Click(Sender: TObject);
   private
     procedure Inicializar;
     procedure FormularioTituloDeterminar;
@@ -91,6 +93,17 @@ end;
 procedure TPlataformaERPVCLMenuPrincipal.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Evento de click na opção de menu "resolução 1.024 x 768".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mni1250x700Click(Sender: TObject);
+begin
+  Self.WindowState := wsNormal;
+  Self.Width       := 1250;
+  Self.Height      :=  700;
+  Self.Top         :=   10;
 end;
 
 //
