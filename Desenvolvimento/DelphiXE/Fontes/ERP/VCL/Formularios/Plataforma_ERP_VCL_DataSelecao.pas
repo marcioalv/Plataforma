@@ -19,7 +19,8 @@ uses
   Vcl.Imaging.pngimage,
   Vcl.ExtCtrls,
   Vcl.Grids,
-  Vcl.Samples.Calendar, Vcl.Menus;
+  Vcl.Samples.Calendar,
+  Vcl.Menus;
 
 type
   TPlataformaERPVCLDataSelecao = class(TForm)

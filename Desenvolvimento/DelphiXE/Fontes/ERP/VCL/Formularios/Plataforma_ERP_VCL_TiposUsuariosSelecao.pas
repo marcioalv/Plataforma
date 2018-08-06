@@ -93,13 +93,13 @@ const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_TiposUsuariosLocalizar';
 
 const
-  LVW_LISTA_LICENCA_ID     : Integer = 0;
-  LVW_LISTA_BASE_ID        : Integer = 1;
-  LVW_LISTA_BASE_DESCRICAO : Integer = 2;
-  LVW_LISTA_TIPO_USUARIO_ID: Integer = 3;
-  LVW_LISTA_CODIGO         : Integer = 4;
-  LVW_LISTA_DESCRICAO      : Integer = 5;
-  LVW_LISTA_BLOQUEADO      : Integer = 6;
+  LVW_LISTA_LICENCA_ID                  : Integer = 0;
+  LVW_LISTA_TIPO_USUARIO_BASE_ID        : Integer = 1;
+  LVW_LISTA_TIPO_USUARIO_BASE_DESCRICAO : Integer = 2;
+  LVW_LISTA_TIPO_USUARIO_ID             : Integer = 3;
+  LVW_LISTA_CODIGO                      : Integer = 4;
+  LVW_LISTA_DESCRICAO                   : Integer = 5;
+  LVW_LISTA_BLOQUEADO                   : Integer = 6;
 
 //
 // Evento de criação do formulário.
@@ -278,23 +278,23 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                      ');
-  locADOQuery.SQL.Add('  [licenca].[licenca_id]           AS [licenca_id],         ');
-  locADOQuery.SQL.Add('  [base].[base_id]                 AS [base_id],            ');
-  locADOQuery.SQL.Add('  [base].[descricao]               AS [base_descricao],     ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id] AS [tipo_usuario_id],    ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[codigo]          AS [codigo],             ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[descricao]       AS [descricao],          ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado]       AS [bloqueado]           ');
-  locADOQuery.SQL.Add('FROM                                                        ');
-  locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)                              ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                           ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario].[base_id]          ');
-  locADOQuery.SQL.Add('  INNER JOIN [licenca] WITH (NOLOCK)                        ');
-  locADOQuery.SQL.Add('    ON [licenca].[licenca_id] = [tipo_usuario].[licenca_id] ');
-  locADOQuery.SQL.Add('WHERE                                                       ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id] = :licenca_id AND             ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]      = ''S''                       ');
+  locADOQuery.SQL.Add('SELECT                                                               ');
+  locADOQuery.SQL.Add('  [licenca].[licenca_id]           AS [licenca_id],                  ');
+  locADOQuery.SQL.Add('  [base].[base_id]                 AS [tipo_usuario_base_id],        ');
+  locADOQuery.SQL.Add('  [base].[descricao]               AS [tipo_usuario_base_descricao], ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id] AS [tipo_usuario_id],             ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[codigo]          AS [codigo],                      ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[descricao]       AS [descricao],                   ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado]       AS [bloqueado]                    ');
+  locADOQuery.SQL.Add('FROM                                                                 ');
+  locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)                                       ');
+  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                    ');
+  locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario].[tipo_usuario_base_id]      ');
+  locADOQuery.SQL.Add('  INNER JOIN [licenca] WITH (NOLOCK)                                 ');
+  locADOQuery.SQL.Add('    ON [licenca].[licenca_id] = [tipo_usuario].[licenca_id]          ');
+  locADOQuery.SQL.Add('WHERE                                                                ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id] = :licenca_id AND                      ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]      = ''S''                                ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
 
@@ -349,14 +349,14 @@ begin
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('licenca_id').AsInteger));
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('base_id').AsInteger));
-      locListItem.SubItems.Add(locADOQuery.FieldByName('base_descricao').AsString);
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_base_id').AsInteger));
+      locListItem.SubItems.Add(locADOQuery.FieldByName('tipo_usuario_base_descricao').AsString);
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('descricao').AsString);
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
 
-      if (pubTipoUsuarioBaseID = locADOQuery.FieldByName('base_id').AsInteger) and
+      if (pubTipoUsuarioBaseID = locADOQuery.FieldByName('tipo_usuario_base_id').AsInteger) and
          (pubTipoUsuarioID     = locADOQuery.FieldByName('tipo_usuario_id').AsInteger) then
       begin
         locIndice := (lvwLista.Items.Count - 1);
@@ -399,7 +399,7 @@ begin
 
   pubClicouFechar      := False;
   pubLicencaID         := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
-  pubTipoUsuarioBaseID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_BASE_ID]);
+  pubTipoUsuarioBaseID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_BASE_ID]);
   pubTipoUsuarioID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_ID]);
   pubCodigo            := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
   pubDescricao         := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_DESCRICAO];

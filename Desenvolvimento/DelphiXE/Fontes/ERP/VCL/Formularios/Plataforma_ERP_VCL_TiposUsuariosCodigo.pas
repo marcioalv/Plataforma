@@ -1,3 +1,15 @@
+//
+// Arquivo..: Plataforma_ERP_VCL_TiposUsuariosCodigo.pas
+// Projeto..: ERP
+// Fonte....: Unit
+// Criação..: 31/Maio/2018
+// Autor....: Marcio Alves (marcioalv@yahoo.com.br)
+// Descrição: Formulário para visualizar tipos de usuário com o mesmo código.
+//
+// Histórico de alterações:
+//   Nenhuma alteração até o momento.
+//
+
 unit Plataforma_ERP_VCL_TiposUsuariosCodigo;
 
 interface
@@ -72,13 +84,13 @@ uses
   Plataforma_ERP_VCL_Generico;
 
 const
-  LVW_LISTA_LICENCA_ID     : Byte = 0;
-  LVW_LISTA_BASE_ID        : Byte = 1;
-  LVW_LISTA_BASE_TITULO    : Byte = 2;
-  LVW_LISTA_TIPO_USUARIO_ID: Byte = 3;
-  LVW_LISTA_CODIGO         : Byte = 4;
-  LVW_LISTA_DESCRICAO      : Byte = 5;
-  LVW_LISTA_BLOQUEADO      : Byte = 6;
+  LVW_LISTA_LICENCA_ID              : Byte = 0;
+  LVW_LISTA_TIPO_USUARIO_BASE_ID    : Byte = 1;
+  LVW_LISTA_TIPO_USUARIO_BASE_TITULO: Byte = 2;
+  LVW_LISTA_TIPO_USUARIO_ID         : Byte = 3;
+  LVW_LISTA_CODIGO                  : Byte = 4;
+  LVW_LISTA_DESCRICAO               : Byte = 5;
+  LVW_LISTA_BLOQUEADO               : Byte = 6;
 
 //
 // Evento de criação do formulário.
@@ -224,8 +236,8 @@ begin
     locListItem         := lvwLista.Items.Add;
     locListItem.Caption := '';
     locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('licenca_id').AsInteger));
-    locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('base_id').AsInteger));
-    locListItem.SubItems.Add(pubADOQuery.FieldByName('base_titulo').AsString);
+    locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('tipo_usuario_base_id').AsInteger));
+    locListItem.SubItems.Add(pubADOQuery.FieldByName('tipo_usuario_base_titulo').AsString);
     locListItem.SubItems.Add(IntegerStringConverter(pubADOQuery.FieldByName('tipo_usuario_id').AsInteger));
     locListItem.SubItems.Add(pubADOQuery.FieldByName('codigo').AsString);
     locListItem.SubItems.Add(pubADOQuery.FieldByName('descricao').AsString);
@@ -274,7 +286,7 @@ begin
 
   pubClicouFechar      := False;
   pubLicencaID         := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
-  pubTipoUsuarioBaseID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_BASE_ID]);
+  pubTipoUsuarioBaseID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_BASE_ID]);
   pubTipoUsuarioID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_ID]);
   pubCodigo            := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
   pubDescricao         := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_DESCRICAO];

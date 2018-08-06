@@ -43,7 +43,7 @@ procedure Plataforma_ERP_VCL_DataExibir(argData: TDateTime);
 //
 // Plataforma_ERP_VCL_LogRegistroExibir.
 //
-procedure Plataforma_ERP_VCL_LogRegistroExibir(argIdentificador: string; argADOQuery: TADOQuery);
+procedure Plataforma_ERP_VCL_LogRegistroExibir(argIdentificador: string; var argADOQuery: TADOQuery);
 
 //
 // Plataforma_ERP_VCL_BaseCadastroExibir.
@@ -75,7 +75,7 @@ function Plataforma_ERP_VCL_TipoUsuarioValidar(argNovo                : Boolean;
                                                argTipoUsuarioBaseID   : TEdit;
                                                argTipoUsuarioID       : TEdit;
                                                argTipoUsuarioCodigo   : TEdit;
-                                                argTipoUsuarioDescricao: TEdit): Boolean;
+                                               argTipoUsuarioDescricao: TEdit): Boolean;
 
 //
 // Plataforma_ERP_VCL_TipoUsuarioSelecionar.
@@ -159,7 +159,7 @@ end;
 //
 // Procedimento para exibir o formulário de lista de logs de um registro.
 //
-procedure Plataforma_ERP_VCL_LogRegistroExibir(argIdentificador: string; argADOQuery: TADOQuery);
+procedure Plataforma_ERP_VCL_LogRegistroExibir(argIdentificador: string; var argADOQuery: TADOQuery);
 var
   locFormulario: TPlataformaERPVCLLogRegistroLista;
 begin
@@ -319,31 +319,31 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                             ');
-  locADOQuery.SQL.Add('  [base].[base_id],                                ');
-  locADOQuery.SQL.Add('  [base].[descricao] AS [base_titulo],             ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id],                     ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id],                ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[codigo],                         ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[descricao],                      ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado],                      ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]                           ');
-  locADOQuery.SQL.Add('FROM                                               ');
-  locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)                     ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                  ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario].[base_id] ');
-  locADOQuery.SQL.Add('WHERE                                              ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id] = :licenca_id AND    ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[codigo]     = :codigo     AND    ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]      = ''S''              ');
+  locADOQuery.SQL.Add('SELECT                                                          ');
+  locADOQuery.SQL.Add('  [base].[base_id]   AS [tipo_usuario_base_id],                 ');
+  locADOQuery.SQL.Add('  [base].[descricao] AS [tipo_usuario_base_titulo],             ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id],                                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id],                             ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[codigo],                                      ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[descricao],                                   ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado],                                   ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]                                        ');
+  locADOQuery.SQL.Add('FROM                                                            ');
+  locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)                                  ');
+  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                               ');
+  locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario].[tipo_usuario_base_id] ');
+  locADOQuery.SQL.Add('WHERE                                                           ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id] = :licenca_id AND                 ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[codigo]     = :codigo     AND                 ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]      = ''S''                           ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
   locADOQuery.Parameters.ParamByName('codigo').Value     := locTipoUsuarioCodigo;
 
   if locTipoUsuarioBaseID > 0 then
   begin
-    locADOQuery.SQL.Add(' AND [tipo_usuario].[base_id] = :base_id ');
-    locADOQuery.Parameters.ParamByName('base_id').Value := locTipoUsuarioBaseID;
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[tipo_usuario_base_id] = :tipo_usuario_base_id ');
+    locADOQuery.Parameters.ParamByName('tipo_usuario_base_id').Value := locTipoUsuarioBaseID;
   end;  
 
   if argNovo then
@@ -392,7 +392,7 @@ begin
   //
   if locADOQuery.RecordCount = 1 then
   begin
-    argTipoUsuarioBaseID.Text    := IntegerStringConverter(locADOQuery.FieldByName('base_id').AsInteger);
+    argTipoUsuarioBaseID.Text    := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_base_id').AsInteger);
     argTipoUsuarioID.Text        := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger);
     argTipoUsuarioCodigo.Text    := locADOQuery.FieldByName('codigo').AsString;
     argTipoUsuarioDescricao.Text := locADOQuery.FieldByName('descricao').AsString;

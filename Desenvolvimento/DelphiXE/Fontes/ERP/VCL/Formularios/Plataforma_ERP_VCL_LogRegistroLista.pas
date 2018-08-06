@@ -140,7 +140,7 @@ begin
   //
   // Para preservar a memória do sistema o ADOQuery precisa ser destruído.
   //
-  FreeAndNil(pubADOQuery);
+  //FreeAndNil(pubADOQuery);
 end;
 
 //

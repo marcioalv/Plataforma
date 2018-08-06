@@ -183,27 +183,27 @@ procedure Plataforma_ERP_ADO_LogOcorrenciaInserir(argRegistroAcao: Byte;
 const
   PROCEDIMENTO_NOME: string = 'Plataforma_ERP_ADO_LogOcorrenciaIn  serir';
 var
-  locLogMensagem    : string;
-  locADOConnection  : TADOConnection;
-  locADOQuery       : TADOQuery;
-  locBaseID         : Integer;
-  locLicencaID      : Integer;
-  locHostName       : string;
-  locUserName       : string;
-  locUsuarioBaseID  : Integer;
-  locUsuarioID      : Integer;
-  locLogOcorrenciaID: LongInt;
-  locRegistroAcaoID : Integer;
+  locLogMensagem        : string;
+  locADOConnection      : TADOConnection;
+  locADOQuery           : TADOQuery;
+  locLicencaID          : Integer;
+  locHostName           : string;
+  locUserName           : string;
+  locUsuarioBaseID      : Integer;
+  locUsuarioID          : Integer;
+  locLogOcorrenciaBaseID: Integer;
+  locLogOcorrenciaID    : LongInt;
+  locRegistroAcaoID     : Integer;
 begin
   //
   // Carrega variáveis locais.
   //
-  locBaseID        := gloBaseID;
-  locLicencaID     := gloLicencaID;
-  locHostName      := HostNameRecuperar;
-  locUserName      := UserNameRecuperar;
-  locUsuarioBaseID := gloUsuarioBaseID;
-  locUsuarioID     := gloUsuarioID;
+  locLogOcorrenciaBaseID := gloBaseID;
+  locLicencaID           := gloLicencaID;
+  locHostName            := HostNameRecuperar;
+  locUserName            := UserNameRecuperar;
+  locUsuarioBaseID       := gloUsuarioBaseID;
+  locUsuarioID           := gloUsuarioID;
 
   //
   // Conexão ao banco de dados.
@@ -257,9 +257,9 @@ begin
   locADOQuery.SQL.Add('FROM                                                               ');
   locADOQuery.SQL.Add('  [log_ocorrencia] WITH (NOLOCK)                                   ');
   locADOQuery.SQL.Add('WHERE                                                              ');
-  locADOQuery.SQL.Add('  [log_ocorrencia].[base_id] = :base_id                            ');
+  locADOQuery.SQL.Add('  [log_ocorrencia].[log_ocorrencia_base_id] = :base_id             ');
 
-  locADOQuery.Parameters.ParamByName('base_id').Value := locBaseID;
+  locADOQuery.Parameters.ParamByName('base_id').Value := locLogOcorrenciaBaseID;
 
   try
     locADOQuery.Open;
@@ -313,7 +313,7 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('INSERT INTO [log_ocorrencia] (');
-  locADOQuery.SQL.Add(' base_id,                     ');
+  locADOQuery.SQL.Add(' log_ocorrencia_base_id,      ');
   locADOQuery.SQL.Add(' log_ocorrencia_id,           ');
   locADOQuery.SQL.Add(' log_licenca_id,              ');
   locADOQuery.SQL.Add(' log_local_dt_hr,             ');
@@ -328,7 +328,7 @@ begin
   locADOQuery.SQL.Add(' dados                        ');
   locADOQuery.SQL.Add(')                             ');
   locADOQuery.SQL.Add('VALUES (                      ');
-  locADOQuery.SQL.Add(' :base_id,                    '); // base_id.
+  locADOQuery.SQL.Add(' :log_ocorrencia_base_id,     '); // log_ocorrencia_base_id.
   locADOQuery.SQL.Add(' :log_ocorrencia_id,          '); // log_ocorrencia_id.
   locADOQuery.SQL.Add(' :log_licenca_id,             '); // log_licenca_id.
   locADOQuery.SQL.Add(' :log_local_dt_hr,            '); // log_local_dt_hr.
@@ -343,18 +343,18 @@ begin
   locADOQuery.SQL.Add(' :dados                       '); // dados.
   locADOQuery.SQL.Add(')                             ');
 
-  locADOQuery.Parameters.ParamByName('base_id').Value             := locBaseID;
-  locADOQuery.Parameters.ParamByName('log_ocorrencia_id').Value   := locLogOcorrenciaID;
-  locADOQuery.Parameters.ParamByName('log_licenca_id').Value      := locLicencaID;
-  locADOQuery.Parameters.ParamByName('log_local_dt_hr').Value     := Now;
-  locADOQuery.Parameters.ParamByName('registro_acao_id').Value    := locRegistroAcaoID;
-  locADOQuery.Parameters.ParamByName('host_name').Value           := locHostName;
-  locADOQuery.Parameters.ParamByName('user_name').Value           := locUserName;
-  locADOQuery.Parameters.ParamByName('log_usuario_base_id').Value := locUsuarioBaseID;
-  locADOQuery.Parameters.ParamByName('log_usuario_id').Value      := locUsuarioID;
-  locADOQuery.Parameters.ParamByName('id').Value                  := argID;
-  locADOQuery.Parameters.ParamByName('mensagem').Value            := argMensagem;
-  locADOQuery.Parameters.ParamByName('dados').Value               := argDados;
+  locADOQuery.Parameters.ParamByName('log_ocorrencia_base_id').Value := locLogOcorrenciaBaseID;
+  locADOQuery.Parameters.ParamByName('log_ocorrencia_id').Value      := locLogOcorrenciaID;
+  locADOQuery.Parameters.ParamByName('log_licenca_id').Value         := locLicencaID;
+  locADOQuery.Parameters.ParamByName('log_local_dt_hr').Value        := Now;
+  locADOQuery.Parameters.ParamByName('registro_acao_id').Value       := locRegistroAcaoID;
+  locADOQuery.Parameters.ParamByName('host_name').Value              := locHostName;
+  locADOQuery.Parameters.ParamByName('user_name').Value              := locUserName;
+  locADOQuery.Parameters.ParamByName('log_usuario_base_id').Value    := locUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('log_usuario_id').Value         := locUsuarioID;
+  locADOQuery.Parameters.ParamByName('id').Value                     := argID;
+  locADOQuery.Parameters.ParamByName('mensagem').Value               := argMensagem;
+  locADOQuery.Parameters.ParamByName('dados').Value                  := argDados;
 
   try
     locADOQuery.ExecSQL;

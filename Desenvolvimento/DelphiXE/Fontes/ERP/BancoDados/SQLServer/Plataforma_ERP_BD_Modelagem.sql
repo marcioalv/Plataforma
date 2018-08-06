@@ -31,26 +31,26 @@ GO
 -- Log de ocorrências.
 --
 CREATE TABLE [dbo].[log_ocorrencia] (
-  [base_id]             SMALLINT                                  NOT NULL,
-  [log_ocorrencia_id]   BIGINT                                    NOT NULL,
-  [log_licenca_id]      INT                                       NOT NULL,
-  [log_local_dt_hr]     DATETIME                                  NOT NULL,
-  [log_server_dt_hr]    DATETIME                                  NOT NULL,
-  [registro_acao_id]    TINYINT                                   NOT NULL,
-  [host_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
-  [user_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
-  [log_usuario_base_id] SMALLINT                                  NOT NULL,
-  [log_usuario_id]      INT                                       NOT NULL,
-  [id]                  INT                                       NOT NULL,
-  [mensagem]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [dados]               VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [log_ocorrencia_base_id] SMALLINT                                  NOT NULL,
+  [log_ocorrencia_id]      BIGINT                                    NOT NULL,
+  [log_licenca_id]         INT                                       NOT NULL,
+  [log_local_dt_hr]        DATETIME                                  NOT NULL,
+  [log_server_dt_hr]       DATETIME                                  NOT NULL,
+  [registro_acao_id]       TINYINT                                   NOT NULL,
+  [host_name]              VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [user_name]              VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [log_usuario_base_id]    SMALLINT                                  NOT NULL,
+  [log_usuario_id]         INT                                       NOT NULL,
+  [id]                     INT                                       NOT NULL,
+  [mensagem]               VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [dados]                  VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
  
-  CONSTRAINT [log_ocorrencia_pk] PRIMARY KEY CLUSTERED ([base_id], [log_ocorrencia_id]),
+  CONSTRAINT [log_ocorrencia_pk] PRIMARY KEY CLUSTERED ([log_ocorrencia_base_id], [log_ocorrencia_id]),
 )
 GO
-CREATE INDEX [log_ocorrencia_ix_log_local_dt_hr] ON [log_ocorrencia] ([log_local_dt_hr], [log_usuario_base_id], [log_usuario_id], [base_id], [log_ocorrencia_id])
+CREATE INDEX [log_ocorrencia_ix_log_local_dt_hr] ON [log_ocorrencia] ([log_local_dt_hr], [log_usuario_base_id], [log_usuario_id], [log_ocorrencia_base_id], [log_ocorrencia_id])
 GO
-CREATE INDEX [log_ocorrencia_ix_log_usuario] ON [log_ocorrencia] ([log_usuario_base_id], [log_usuario_id], [log_local_dt_hr], [base_id], [log_ocorrencia_id])
+CREATE INDEX [log_ocorrencia_ix_log_usuario] ON [log_ocorrencia] ([log_usuario_base_id], [log_usuario_id], [log_local_dt_hr], [log_ocorrencia_base_id], [log_ocorrencia_id])
 GO
 
 --
@@ -185,27 +185,27 @@ GO
 -- Tipos de usuário.
 --
 CREATE TABLE [dbo].[tipo_usuario] (
-  [licenca_id]       INT                                       NOT NULL,
-  [base_id]          SMALLINT                                  NOT NULL,
-  [tipo_usuario_id]  TINYINT                                   NOT NULL,
-  [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [descricao]        VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ins_local_dt_hr]  DATETIME                                  NOT NULL,
-  [ins_server_dt_hr] DATETIME                                  NOT NULL,
-  [upd_local_dt_hr]  DATETIME                                  NULL,
-  [upd_server_dt_hr] DATETIME                                  NULL,
-  [upd_contador]     INT                                       NOT NULL,
+  [licenca_id]           INT                                       NOT NULL,
+  [tipo_usuario_base_id] SMALLINT                                  NOT NULL,
+  [tipo_usuario_id]      TINYINT                                   NOT NULL,
+  [codigo]               VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]            VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]                CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]      DATETIME                                  NOT NULL,
+  [ins_server_dt_hr]     DATETIME                                  NOT NULL,
+  [upd_local_dt_hr]      DATETIME                                  NULL,
+  [upd_server_dt_hr]     DATETIME                                  NULL,
+  [upd_contador]         INT                                       NOT NULL,
  
-  CONSTRAINT [tipo_usuario_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [base_id], [tipo_usuario_id]),
-  CONSTRAINT [tipo_usuario_ix_codigo] UNIQUE                ([licenca_id], [codigo],  [base_id]),
+  CONSTRAINT [tipo_usuario_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [tipo_usuario_base_id], [tipo_usuario_id]),
+  CONSTRAINT [tipo_usuario_ix_codigo] UNIQUE                ([licenca_id], [codigo],  [tipo_usuario_base_id]),
 
   CONSTRAINT [tipo_usuario_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
   CONSTRAINT [tipo_usuario_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
 
-  CONSTRAINT [tipo_usuario_fk_base]    FOREIGN KEY ([base_id])    REFERENCES [base]    ([base_id]),
-  CONSTRAINT [tipo_usuario_fk_licenca] FOREIGN KEY ([licenca_id]) REFERENCES [licenca] ([licenca_id])
+  CONSTRAINT [tipo_usuario_fk_base]    FOREIGN KEY ([tipo_usuario_base_id]) REFERENCES [base]    ([base_id]),
+  CONSTRAINT [tipo_usuario_fk_licenca] FOREIGN KEY ([licenca_id])           REFERENCES [licenca] ([licenca_id])
 )
 GO
 
@@ -213,26 +213,26 @@ GO
 -- Log dos registros de tipos de usuário.
 --
 CREATE TABLE [dbo].[tipo_usuario_log] (
-  [licenca_id]          INT                                       NOT NULL,
-  [base_id]             SMALLINT                                  NOT NULL,
-  [tipo_usuario_id]     TINYINT                                   NOT NULL,
-  [tipo_usuario_log_sq] INT                                       NOT NULL,
-  [log_base_id]         SMALLINT                                  NOT NULL,
-  [log_local_dt_hr]     DATETIME                                  NOT NULL,
-  [log_server_dt_hr]    DATETIME                                  NOT NULL,
-  [registro_acao_id]    TINYINT                                   NOT NULL,
-  [host_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
-  [user_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
-  [log_usuario_base_id] SMALLINT                                  NOT NULL,
-  [log_usuario_id]      INT                                       NOT NULL,
-  [mensagem]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [dados]               VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [licenca_id]           INT                                       NOT NULL,
+  [tipo_usuario_base_id] SMALLINT                                  NOT NULL,
+  [tipo_usuario_id]      TINYINT                                   NOT NULL,
+  [tipo_usuario_log_sq]  INT                                       NOT NULL,
+  [log_base_id]          SMALLINT                                  NOT NULL,
+  [log_local_dt_hr]      DATETIME                                  NOT NULL,
+  [log_server_dt_hr]     DATETIME                                  NOT NULL,
+  [registro_acao_id]     TINYINT                                   NOT NULL,
+  [host_name]            VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [user_name]            VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [log_usuario_base_id]  SMALLINT                                  NOT NULL,
+  [log_usuario_id]       INT                                       NOT NULL,
+  [mensagem]             VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [dados]                VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
  
-  CONSTRAINT [tipo_usuario_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [base_id], [tipo_usuario_id], [tipo_usuario_log_sq]),
+  CONSTRAINT [tipo_usuario_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [tipo_usuario_base_id], [tipo_usuario_id], [tipo_usuario_log_sq]),
 
-  CONSTRAINT [tipo_usuario_log_fk_tipo_usuario]  FOREIGN KEY ([licenca_id], [base_id], [tipo_usuario_id])            REFERENCES [tipo_usuario]  ([licenca_id], [base_id], [tipo_usuario_id]),
-  CONSTRAINT [tipo_usuario_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
-  CONSTRAINT [tipo_usuario_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
+  CONSTRAINT [tipo_usuario_log_fk_tipo_usuario]  FOREIGN KEY ([licenca_id], [tipo_usuario_base_id], [tipo_usuario_id]) REFERENCES [tipo_usuario]  ([licenca_id], [tipo_usuario_base_id], [tipo_usuario_id]),
+  CONSTRAINT [tipo_usuario_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                           REFERENCES [base]          ([base_id]),
+  CONSTRAINT [tipo_usuario_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                      REFERENCES [registro_acao] ([registro_acao_id]),
 )
 GO
 
@@ -241,7 +241,7 @@ GO
 --
 CREATE TABLE [dbo].[usuario] (
   [licenca_id]           INT                                       NOT NULL,
-  [base_id]              SMALLINT                                  NOT NULL,
+  [usuario_base_id]      SMALLINT                                  NOT NULL,
   [usuario_id]           INT                                       NOT NULL,
   [codigo]               VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [nome]                 VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
@@ -260,17 +260,15 @@ CREATE TABLE [dbo].[usuario] (
   [upd_server_dt_hr]     DATETIME                                  NULL,
   [upd_contador]         INT                                       NOT NULL,
  
-  CONSTRAINT [usuario_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [base_id], [usuario_id]),
-  CONSTRAINT [usuario_ix_codigo] UNIQUE                ([licenca_id], [codigo],  [base_id]),
+  CONSTRAINT [usuario_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [usuario_base_id], [usuario_id]),
+  CONSTRAINT [usuario_ix_codigo] UNIQUE                ([licenca_id], [codigo],          [usuario_base_id]),
 
   CONSTRAINT [usuario_ck_automato]      CHECK ([automato]      IN ('S', 'N')),
   CONSTRAINT [usuario_ck_administrador] CHECK ([administrador] IN ('S', 'N')),
   CONSTRAINT [usuario_ck_bloqueado]     CHECK ([bloqueado]     IN ('S', 'N')),
   CONSTRAINT [usuario_ck_ativo]         CHECK ([ativo]         IN ('S', 'N')),
 
-  CONSTRAINT [usuario_fk_base]         FOREIGN KEY ([base_id])                                               REFERENCES [base]         ([base_id]),
-  CONSTRAINT [usuario_fk_licenca]      FOREIGN KEY ([licenca_id])                                            REFERENCES [licenca]      ([licenca_id]),
-  CONSTRAINT [usuario_fk_tipo_usuario] FOREIGN KEY ([licenca_id], [tipo_usuario_base_id], [tipo_usuario_id]) REFERENCES [tipo_usuario] ([licenca_id], [base_id], [tipo_usuario_id])
+  CONSTRAINT [usuario_fk_tipo_usuario] FOREIGN KEY ([licenca_id], [tipo_usuario_base_id], [tipo_usuario_id]) REFERENCES [tipo_usuario] ([licenca_id], [tipo_usuario_base_id], [tipo_usuario_id])
 )
 GO
 
@@ -279,14 +277,14 @@ GO
 --
 CREATE TABLE [dbo].[usuario_senha] (
   [licenca_id]          INT                                       NOT NULL,
-  [base_id]             SMALLINT                                  NOT NULL,
+  [usuario_base_id]     SMALLINT                                  NOT NULL,
   [usuario_id]          INT                                       NOT NULL,
   [usuario_senha_sq]    INT                                       NOT NULL,
   [senha]               VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
 
-  CONSTRAINT [usuario_senha_pk] PRIMARY KEY CLUSTERED ([licenca_id], [base_id], [usuario_id], [usuario_senha_sq]),
+  CONSTRAINT [usuario_senha_pk] PRIMARY KEY CLUSTERED ([licenca_id], [usuario_base_id], [usuario_id], [usuario_senha_sq]),
 
-  CONSTRAINT [usuario_senha_fk_usuario] FOREIGN KEY ([licenca_id], [base_id], [usuario_id]) REFERENCES [usuario] ([licenca_id], [base_id], [usuario_id])
+  CONSTRAINT [usuario_senha_fk_usuario] FOREIGN KEY ([licenca_id], [usuario_base_id], [usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id])
 )
 
 --
@@ -294,7 +292,7 @@ CREATE TABLE [dbo].[usuario_senha] (
 --
 CREATE TABLE [dbo].[usuario_log] (
   [licenca_id]          INT                                       NOT NULL,
-  [base_id]             SMALLINT                                  NOT NULL,
+  [usuario_base_id]     SMALLINT                                  NOT NULL,
   [usuario_id]          INT                                       NOT NULL,
   [usuario_log_sq]      INT                                       NOT NULL,
   [log_base_id]         SMALLINT                                  NOT NULL,
@@ -308,12 +306,12 @@ CREATE TABLE [dbo].[usuario_log] (
   [mensagem]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [dados]               VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
  
-  CONSTRAINT [usuario_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [base_id], [usuario_id], [usuario_log_sq]),
+  CONSTRAINT [usuario_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [usuario_base_id], [usuario_id], [usuario_log_sq]),
 
-  CONSTRAINT [usuario_log_fk_usuario]       FOREIGN KEY ([licenca_id], [base_id], [usuario_id])                 REFERENCES [usuario]       ([licenca_id], [base_id], [usuario_id]),
+  CONSTRAINT [usuario_log_fk_usuario]       FOREIGN KEY ([licenca_id], [usuario_base_id], [usuario_id])         REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id]),
   CONSTRAINT [usuario_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
   CONSTRAINT [usuario_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
-  CONSTRAINT [usuario_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [base_id], [usuario_id])
+  CONSTRAINT [usuario_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
 )
 GO
 
@@ -407,7 +405,7 @@ INSERT INTO [numerador_licenca] VALUES (1, 1, 'usuario_id', 1, 'N', 'S', GETDATE
 --
 -- Chave estrangeira do tipo de usuário para o usuário.
 --
-ALTER TABLE [tipo_usuario_log]  ADD CONSTRAINT [tipo_usuario_log_fk_log_usuario]  FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario] ([licenca_id], [base_id], [usuario_id])
-ALTER TABLE [numerador_licenca] ADD CONSTRAINT [numerador_licenca_fk_ins_usuario] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario] ([licenca_id], [base_id], [usuario_id])
-ALTER TABLE [numerador_licenca] ADD CONSTRAINT [numerador_licenca_fk_upd_usuario] FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario] ([licenca_id], [base_id], [usuario_id])
+ALTER TABLE [tipo_usuario_log]  ADD CONSTRAINT [tipo_usuario_log_fk_log_usuario]  FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id])
+ALTER TABLE [numerador_licenca] ADD CONSTRAINT [numerador_licenca_fk_ins_usuario] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id])
+ALTER TABLE [numerador_licenca] ADD CONSTRAINT [numerador_licenca_fk_upd_usuario] FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id])
 

@@ -71,14 +71,10 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = TabSheet1
+    ActivePage = tabAuditoria
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -175,7 +171,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000}
         OnClick = imgTipoUsuarioSelecionarClick
       end
-      object Label1: TLabel
+      object lblLogon: TLabel
         Left = 16
         Top = 184
         Width = 38
@@ -434,17 +430,9 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         OnKeyPress = edtLogonKeyPress
       end
     end
-    object TabSheet1: TTabSheet
-      Caption = 'Acesso'
-      ImageIndex = 2
-    end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 128
@@ -497,7 +485,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Font.Style = []
         ParentFont = False
       end
-      object lblBase: TLabel
+      object lblUsuarioBase: TLabel
         Left = 16
         Top = 72
         Width = 29
@@ -599,7 +587,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         TabOrder = 4
         Text = '9.999'
       end
-      object edtBaseDescricao: TEdit
+      object edtUsuarioBaseDescricao: TEdit
         Left = 16
         Top = 88
         Width = 385
@@ -617,9 +605,9 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         ShowHint = False
         TabOrder = 2
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
-        OnClick = edtBaseDescricaoClick
+        OnClick = edtUsuarioBaseDescricaoClick
       end
-      object edtBaseID: TEdit
+      object edtUsuarioBaseID: TEdit
         Left = 280
         Top = 88
         Width = 65
@@ -1355,7 +1343,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     TabOrder = 8
     OnClick = btnAtualizarClick
   end
-  object BitBtn2: TBitBtn
+  object btnSenha: TBitBtn
     Left = 49
     Top = 340
     Width = 49
@@ -1435,7 +1423,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     ParentShowHint = False
     ShowHint = True
     TabOrder = 9
-    OnClick = btnFecharClick
+    OnClick = btnSenhaClick
   end
   object mnuFormulario: TMainMenu
     BiDiMode = bdRightToLeft
@@ -1473,6 +1461,10 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     object mniAtualizar: TMenuItem
       Caption = 'Atualizar'
       OnClick = mniAtualizarClick
+    end
+    object mniSenha: TMenuItem
+      Caption = 'Senha'
+      OnClick = mniSenhaClick
     end
     object mniCadastro: TMenuItem
       Caption = 'Cadastro'

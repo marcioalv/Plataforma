@@ -485,8 +485,10 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitTop = 32
-      ExplicitHeight = 221
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -639,7 +641,6 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitHeight = 221
       object lblInsDtHt: TLabel
         Left = 16
         Top = 112
@@ -692,7 +693,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         Font.Style = []
         ParentFont = False
       end
-      object lblBase: TLabel
+      object lblTipoUsuarioBase: TLabel
         Left = 16
         Top = 64
         Width = 29
@@ -794,7 +795,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         TabOrder = 4
         Text = '9.999'
       end
-      object edtBaseDescricao: TEdit
+      object edtTipoUsuarioBaseDescricao: TEdit
         Left = 16
         Top = 80
         Width = 345
@@ -812,9 +813,9 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         ShowHint = False
         TabOrder = 2
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
-        OnClick = edtBaseDescricaoClick
+        OnClick = edtTipoUsuarioBaseDescricaoClick
       end
-      object edtBaseID: TEdit
+      object edtTipoUsuarioBaseID: TEdit
         Left = 232
         Top = 80
         Width = 65
