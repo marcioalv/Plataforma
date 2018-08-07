@@ -919,31 +919,31 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioGravar';
   ERRO_MENSAGEM    : string = 'Impossível gravar dados do tipo de usuário!';
 var
-  locADOConnection         : TADOConnection;
-  locADOQuery              : TADOQuery;
-  locLogMensagem           : string;
+  locADOConnection      : TADOConnection;
+  locADOQuery           : TADOQuery;
+  locLogMensagem        : string;
 
-  locInsert                : Boolean;
-  locRegistroAcao          : Byte;
-  locRegistroAcaoID        : Integer;
-  locTipoUsuarioLogSq      : Integer;
-  locTipoUsuarioLogMsg     : string;
-  locTipoUsuarioLogLogDados: string;
+  locInsert             : Boolean;
+  locRegistroAcao       : Byte;
+  locRegistroAcaoID     : Integer;
+  locTipoUsuarioLogSq   : Integer;
+  locTipoUsuarioLogMsg  : string;
+  locTipoUsuarioLogDados: string;
 
-  locLicencaID             : Integer;
-  locTipoUsuarioBaseID     : Integer;
-  locTipoUsuarioID         : Integer;
-  locCodigo                : string;
-  locDescricao             : string;
-  locBloqueado             : Boolean;
-  locAtivo                 : Boolean;
-  locInsLocalDtHr          : TDateTime;
-  locUpdLocalDtHr          : TDateTime;
-  locUsuarioBaseID         : Integer;
-  locUsuarioID             : Integer;
-  locUpdContador           : Integer;
-  locHostName              : string;
-  locUserName              : string;
+  locLicencaID          : Integer;
+  locTipoUsuarioBaseID  : Integer;
+  locTipoUsuarioID      : Integer;
+  locCodigo             : string;
+  locDescricao          : string;
+  locBloqueado          : Boolean;
+  locAtivo              : Boolean;
+  locInsLocalDtHr       : TDateTime;
+  locUpdLocalDtHr       : TDateTime;
+  locUsuarioBaseID      : Integer;
+  locUsuarioID          : Integer;
+  locUpdContador        : Integer;
+  locHostName           : string;
+  locUserName           : string;
 begin
   //
   // Determina se será um insert ou update.
@@ -1328,7 +1328,7 @@ begin
   //
   // Log dados.
   //
-  locTipoUsuarioLogLogDados := LogDadosGerar(locTipoUsuarioID);
+  locTipoUsuarioLogDados := LogDadosGerar(locTipoUsuarioID);
 
   //
   // Determina o próximo sequencial da tabela tipo_usuario_log.
@@ -1374,7 +1374,9 @@ begin
     locTipoUsuarioLogSq := locADOQuery.FieldByName('Sequencial').AsInteger + 1;
   end; 
 
-  // Monta SQL para inserir dados na tabela.
+  //
+  // Monta SQL para inserir dados na tabela de log.
+  //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('INSERT INTO [tipo_usuario_log] (');
@@ -1422,7 +1424,7 @@ begin
   locADOQuery.Parameters.ParamByName('log_usuario_base_id').Value  := locUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('log_usuario_id').Value       := locUsuarioID;
   locADOQuery.Parameters.ParamByName('mensagem').Value             := locTipoUsuarioLogMsg;
-  locADOQuery.Parameters.ParamByName('dados').Value                := locTipoUsuarioLogLogDados;
+  locADOQuery.Parameters.ParamByName('dados').Value                := locTipoUsuarioLogDados;
 
   try
     locADOQuery.ExecSQL;
@@ -1434,7 +1436,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [tipo_usuario_log]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir/atualizar o registro na tabela [tipo_usuario_log]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit
@@ -1491,7 +1493,7 @@ begin
   // Grava log de ocorrência.
   //  
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locTipoUsuarioID, locTipoUsuarioLogMsg, locTipoUsuarioLogLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locTipoUsuarioID, locTipoUsuarioLogMsg, locTipoUsuarioLogDados);
   except
     on locExcecao: Exception do
     begin

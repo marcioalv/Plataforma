@@ -43,17 +43,19 @@ type
     edtSenha: TEdit;
     edtSenhaConf: TEdit;
     lblSenhaConf: TLabel;
-    tswTrocarSenha: TToggleSwitch;
-    lblTrocarSenha: TLabel;
+    tswSenhaTrocar: TToggleSwitch;
+    lblSenhaTrocar: TLabel;
     imgSenhaErrada: TImage;
     imgSenhaCorreta: TImage;
-    chkExigirSenha: TCheckBox;
+    chkSenhaExigir: TCheckBox;
+    edtUpdContador: TEdit;
+    lblUpdContador: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
-    procedure tswTrocarSenhaEnter(Sender: TObject);
-    procedure tswTrocarSenhaExit(Sender: TObject);
-    procedure tswTrocarSenhaClick(Sender: TObject);
+    procedure tswSenhaTrocarEnter(Sender: TObject);
+    procedure tswSenhaTrocarExit(Sender: TObject);
+    procedure tswSenhaTrocarClick(Sender: TObject);
     procedure edtSenhaEnter(Sender: TObject);
     procedure edtSenhaExit(Sender: TObject);
     procedure edtSenhaKeyPress(Sender: TObject; var Key: Char);
@@ -66,21 +68,30 @@ type
     procedure chkSenhaExibirClick(Sender: TObject);
     procedure edtSenhaKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure edtSenhaConfKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure chkExigirSenhaEnter(Sender: TObject);
-    procedure chkExigirSenhaExit(Sender: TObject);
-    procedure chkExigirSenhaKeyPress(Sender: TObject; var Key: Char);
-    procedure chkExigirSenhaClick(Sender: TObject);
+    procedure chkSenhaExigirEnter(Sender: TObject);
+    procedure chkSenhaExigirExit(Sender: TObject);
+    procedure chkSenhaExigirKeyPress(Sender: TObject; var Key: Char);
+    procedure chkSenhaExigirClick(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnMinimizarClick(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
+    procedure mniConfirmarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar;
+    
+    procedure FormularioPopular(argLicencaID    : Integer;
+                                argUsuarioBaseID: Integer;
+                                argUsuarioID    : Integer);
+
     procedure FormularioConfirmar;
   public
     pubClicouFechar : Boolean;
-    pubIDLicenca    : Integer;
+    pubLicencaID    : Integer;
     pubUsuarioBaseID: Integer;
     pubUsuarioID    : Integer;
-    pubExigirSenha  : Boolean;
-    pubTrocarSenha  : Boolean;
   end;
 
 var
@@ -105,12 +116,10 @@ begin
   //
   // Inicializa variáveis públicas.
   //
-  pubClicouFechar  := False;
-  pubIDLicenca     := 0;
+  pubClicouFechar  := True;
+  pubLicencaID     := 0;
   pubUsuarioBaseID := 0;
   pubUsuarioID     := 0;
-  pubExigirSenha   := False;
-  pubTrocarSenha   := False;
 end;
 
 //
@@ -131,16 +140,23 @@ begin
   //
   // Carrega informações passadas por parâmetro para o formulário.
   //
-  if (pubIDLicenca <> 0) and (pubUsuarioBaseID <> 0) and (pubUsuarioID <> 0) then
+  if (pubLicencaID <> 0) and (pubUsuarioBaseID <> 0) and (pubUsuarioID <> 0) then
   begin
-    chkExigirSenha.Checked := pubExigirSenha;
-    VCLToggleSwitchLigar(tswTrocarSenha, pubTrocarSenha);
+    FormularioPopular(pubLicencaID, pubUsuarioBaseID, pubUsuarioID);
   end;
 
   //
   // Controlar exibição dos componentes.
   //
   FormularioControlar;
+
+  //
+  // Foco no componente apropriado.
+  //
+  if not chkSenhaExigir.Checked then
+    chkSenhaExigir.SetFocus
+  else
+    edtSenha.SetFocus;
 end;
 
 //
@@ -152,24 +168,42 @@ begin
 end;
 
 //
-// Eventos do componente "exigir senha?"
+// Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLUsuarioSenha.chkExigirSenhaEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenha.mniConfirmarClick(Sender: TObject);
 begin
-  if not VCLCheckBoxEntrar(chkExigirSenha) then Exit;
+  FormularioConfirmar;
 end;
 
-procedure TPlataformaERPVCLUsuarioSenha.chkExigirSenhaKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioSenha.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.mniFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+//
+// Eventos do componente "exigir senha?"
+//
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaExigirEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkSenhaExigir) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaExigirKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLUsuarioSenha.chkExigirSenhaExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaExigirExit(Sender: TObject);
 begin
-  if not VCLCheckBoxSair(chkExigirSenha) then Exit;
+  if not VCLCheckBoxSair(chkSenhaExigir) then Exit;
 end;
 
-procedure TPlataformaERPVCLUsuarioSenha.chkExigirSenhaClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaExigirClick(Sender: TObject);
 begin
   FormularioControlar;
 end;
@@ -177,19 +211,19 @@ end;
 //
 // Eventos do componente "trocar senha?"
 //
-procedure TPlataformaERPVCLUsuarioSenha.tswTrocarSenhaEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenha.tswSenhaTrocarEnter(Sender: TObject);
 begin
-  if not VCLToggleSwitchEntrar(tswTrocarSenha) then Exit;
+  if not VCLToggleSwitchEntrar(tswSenhaTrocar) then Exit;
 end;
 
-procedure TPlataformaERPVCLUsuarioSenha.tswTrocarSenhaClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenha.tswSenhaTrocarClick(Sender: TObject);
 begin
-  VCLToggleSwitchValidar(tswTrocarSenha);
+  VCLToggleSwitchValidar(tswSenhaTrocar);
 end;
 
-procedure TPlataformaERPVCLUsuarioSenha.tswTrocarSenhaExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenha.tswSenhaTrocarExit(Sender: TObject);
 begin
-  if not VCLToggleSwitchSair(tswTrocarSenha) then Exit;
+  if not VCLToggleSwitchSair(tswSenhaTrocar) then Exit;
 end;
 
 //
@@ -264,12 +298,37 @@ begin
 end;
 
 //
+// Evento de click no botão "confirmar".
+//
+procedure TPlataformaERPVCLUsuarioSenha.btnConfirmarClick(Sender: TObject);
+begin
+  FormularioConfirmar;
+end;
+
+//
+// Evento de click no botão "minimizar".
+//
+procedure TPlataformaERPVCLUsuarioSenha.btnMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+//
+// Evento de click no botão "fechar".
+//
+procedure TPlataformaERPVCLUsuarioSenha.btnFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+//
 // Procedimento para limpar os componentes do formulário.
 //
 procedure TPlataformaERPVCLUsuarioSenha.FormularioLimpar;
 begin
-  VCLCheckBoxLimpar(chkExigirSenha);
-  VCLToggleSwitchLimpar(tswTrocarSenha);
+  VCLEditLimpar(edtUpdContador);
+  VCLCheckBoxLimpar(chkSenhaExigir);
+  VCLToggleSwitchLimpar(tswSenhaTrocar);
   VCLEditLimpar    (edtSenha);
   VCLEditLimpar    (edtSenhaConf);  
   VCLCheckBoxLimpar(chkSenhaExibir);
@@ -283,23 +342,23 @@ begin
   //
   // Exigir senha?
   //
-  if not chkExigirSenha.Checked then
+  if not chkSenhaExigir.Checked then
   begin
-    lblTrocarSenha.Font.Color := clGray;
-    tswTrocarSenha.Enabled    := False;    
-    lblSenha.Font.Color       := lblTrocarSenha.Font.Color;
+    lblSenhaTrocar.Font.Color := clGray;
+    tswSenhaTrocar.Enabled    := False;    
+    lblSenha.Font.Color       := lblSenhaTrocar.Font.Color;
     edtSenha.Enabled          := False;
-    lblSenhaConf.Font.Color   := lblTrocarSenha.Font.Color;    
+    lblSenhaConf.Font.Color   := lblSenhaTrocar.Font.Color;    
     edtSenhaConf.Enabled      := False;
     chkSenhaExibir.Enabled    := False;
   end
   else
   begin
-    lblTrocarSenha.Font.Color := clWindowText;
-    tswTrocarSenha.Enabled    := True;
-    lblSenha.Font.Color       := lblTrocarSenha.Font.Color;
+    lblSenhaTrocar.Font.Color := clWindowText;
+    tswSenhaTrocar.Enabled    := True;
+    lblSenha.Font.Color       := lblSenhaTrocar.Font.Color;
     edtSenha.Enabled          := True;    
-    lblSenhaConf.Font.Color   := lblTrocarSenha.Font.Color;
+    lblSenhaConf.Font.Color   := lblSenhaTrocar.Font.Color;
     edtSenhaConf.Enabled      := True;
     chkSenhaExibir.Enabled    := True;
   end;
@@ -338,6 +397,117 @@ begin
 end;
 
 //
+// Procedimento para popular os componentes com os dados de um cadastro.
+//
+procedure TPlataformaERPVCLUsuarioSenha.FormularioPopular(argLicencaID    : Integer;
+                                                          argUsuarioBaseID: Integer;
+                                                          argUsuarioID    : Integer);
+const
+  PROCEDIMENTO_NOME: string = 'FormularioPopular';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados sobre a senha do usuário!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+begin
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Limpa os componentes do formulário.
+  //
+  FormularioLimpar;
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(Self);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do usuário.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                               ');
+  locADOQuery.SQL.Add('  [usuario].[senha_exigir],                          ');
+  locADOQuery.SQL.Add('  [usuario].[senha_trocar],                          ');
+  locADOQuery.SQL.Add('  [usuario].[upd_contador]                           ');
+  locADOQuery.SQL.Add('FROM                                                 ');
+  locADOQuery.SQL.Add('  [usuario] WITH (NOLOCK)                            ');
+  locADOQuery.SQL.Add('WHERE                                                ');
+  locADOQuery.SQL.Add('  [usuario].[licenca_id]      = :licenca_id      AND ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_base_id] = :usuario_base_id AND ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_id]      = :usuario_id          ');
+                                                              
+  locADOQuery.Parameters.ParamByName('licenca_id').Value      := argLicencaID;
+  locADOQuery.Parameters.ParamByName('usuario_base_id').Value := argUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('usuario_id').Value      := argUsuarioID;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [usuario]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Registro encontrado.
+  //
+  if locADOQuery.RecordCount >= 0 then
+  begin
+    //
+    // Carrega componentes.
+    //
+    edtUpdContador.Text    := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
+    chkSenhaExigir.Checked := StringBooleanConverter(locADOQuery.FieldByName('senha_exigir').AsString);
+    VCLToggleSwitchLigar(tswSenhaTrocar, StringBooleanConverter(locADOQuery.FieldByName('senha_trocar').AsString));
+  end; 
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+end;
+
+//
 // Procedimento para confirmar.
 //
 procedure TPlataformaERPVCLUsuarioSenha.FormularioConfirmar;
@@ -345,33 +515,106 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioConfirmar';
   ERRO_MENSAGEM    : string = 'Impossível confirmar informações sobre a senha do usuário!';
 var
-  locADOConnection: TADOConnection;
-  locADOQuery     : TADOQuery;
-  locLogMensagem  : string;
+  locADOConnection   : TADOConnection;
+  locADOQuery        : TADOQuery;
+  locLogMensagem     : string;
 
-  locLicencaID    : Integer;
-  locUsuarioBaseID: Integer;
-  locUsuarioID    : Integer;
-
-  locUpdContador  : Integer;
+  locLicencaID       : Integer;
+  locUsuarioBaseID   : Integer;
+  locUsuarioID       : Integer;
+                     
+  locSenhaExigir     : Boolean;
+  locSenhaTrocar     : Boolean;
+  locSenhaAlterada   : Boolean;
+  locSenha           : string;
+  locSenhaConf       : string;
+                     
+  locUpdContador     : Integer;
+                     
+  locRegistroAcao    : Byte;
+  locRegistroAcaoID  : Integer;
+  locUsuarioLogSq    : Integer;
+  locUsuarioLogMsg   : string;
+  locUsuarioLogDados : string;
+  locHostName        : string;
+  locUserName        : string;
+  locLogUsuarioBaseID: Integer;
+  locLogUsuarioID    : Integer;
 begin
-{
   //
   // Carrega variáveis com o conteúdo dos componentes.
-  //
-  locLicencaID     := 1;
-  locUsuarioBaseID := 1;
-  locUsuarioID     := 1;
+  //                 9
+  locLicencaID        := 1;
+  locUsuarioBaseID    := 1;
+  locUsuarioID        := 1;
+
+  locSenhaExigir      := chkSenhaExigir.Checked;
+  locSenhaTrocar      := VCLToggleSwitchRecuperar(tswSenhaTrocar);
+  locSenha            := edtSenha.Text;
+  locSenhaConf        := edtSenhaConf.Text;
+
+  locSenhaAlterada    := False;
+  if (locSenha <> '') or (locSenhaConf <> '') then locSenhaAlterada := True;
+
+  locUpdContador      := StringIntegerConverter(edtUpdContador.Text);
+
+  locHostName         := HostNameRecuperar;
+  locUserName         := UserNameRecuperar;
+  locLogUsuarioBaseID := gloBaseID;
+  locLogUsuarioID     := gloUsuarioID;
 
   //
   // Consiste as informações.
   //
+  if not locSenhaExigir then
+  begin
+    locSenhaTrocar := False;
+    locSenha       := '';
+    locSenhaConf   := '';
+  end
+  else
+  begin
+    if locSenhaAlterada then
+    begin
+      //
+      // A senha não pode ser em branco.
+      //
+      if (StringTrim(locSenha) = '') and (StringTrim(locSenhaConf) = '') then
+      begin
+        VCLConsistenciaExibir('Uma senha deve obrigatoriamente ser informada!');
+        edtSenha.SetFocus;
+        Exit;
+      end;
 
+      //
+      // A digitação da confirmação da senha deve conferir.
+      //
+      if locSenha <> locSenhaConf then
+      begin
+        VCLConsistenciaExibir('A confirmação da senha não confere com a primeira digitação!');
+        edtSenha.SetFocus;
+        Exit;
+      end;
+    end;
+  end;
 
   //
   // Confirma gravação com o usuário.
   //
-  if not VCLQuestionamentoExibir('Deseja realmente realizar estas alterações na senha do usuário?') then Exit;
+  if not VCLQuestionamentoExibir('Deseja realmente atualizar estas configurações de senha do usuário?') then Exit;
+
+  //
+  // Log de dados.
+  //
+  locUsuarioLogDados := '';
+  LogDadosBooleanDescrever('Exigir senha',   locSenhaExigir,   locUsuarioLogDados);
+  LogDadosBooleanDescrever('Trocar senha',   locSenhaTrocar,   locUsuarioLogDados);
+  LogDadosBooleanDescrever('Senha alterada', locSenhaAlterada, locUsuarioLogDados);
+
+  if locSenhaAlterada then
+  begin
+    LogDadosStringDescrever('Senha', locSenha, locUsuarioLogDados);
+  end;
 
   //
   // Troca cursor.
@@ -408,18 +651,18 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                     ');
-  locADOQuery.SQL.Add('  [usuario].[upd_contador]                 ');
-  locADOQuery.SQL.Add('FROM                                       ');
-  locADOQuery.SQL.Add('  [usuario] WITH (NOLOCK)                  ');
-  locADOQuery.SQL.Add('WHERE                                      ');
-  locADOQuery.SQL.Add('  [usuario].[licenca_id] = :licenca_id AND ');
-  locADOQuery.SQL.Add('  [usuario].[base_id]    = :base_id    AND ');
-  locADOQuery.SQL.Add('  [usuario].[usuario_id] = :usuario_id     ');
+  locADOQuery.SQL.Add('SELECT                                               ');
+  locADOQuery.SQL.Add('  [usuario].[upd_contador]                           ');
+  locADOQuery.SQL.Add('FROM                                                 ');
+  locADOQuery.SQL.Add('  [usuario] WITH (NOLOCK)                            ');
+  locADOQuery.SQL.Add('WHERE                                                ');
+  locADOQuery.SQL.Add('  [usuario].[licenca_id]      = :licenca_id      AND ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_base_id] = :usuario_base_id AND ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_id]      = :usuario_id          ');
 
-  locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
-  locADOQuery.Parameters.ParamByName('base_id').Value    := locUsuarioBaseID;
-  locADOQuery.Parameters.ParamByName('usuario_id').Value := locUsuarioID;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
+  locADOQuery.Parameters.ParamByName('usuario_base_id').Value := locUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('usuario_id').Value      := locUsuarioID;
 
   try
     locADOQuery.Open;
@@ -455,16 +698,8 @@ begin
   //
   // Determina o ID da ação e a mensagem para o log do registro.
   //
-  if locInsert then
-  begin
-    locRegistroAcao  := REGISTRO_ACAO_CRIACAO;
-    locUsuarioLogMsg := MENSAGEM_REGISTRO_ACAO_CRIADO;
-  end
-  else
-  begin
-    locRegistroAcao  := REGISTRO_ACAO_ALTERACAO;
-    locUsuarioLogMsg := MENSAGEM_REGISTRO_ACAO_ALTERADO;
-  end;
+  locRegistroAcao  := REGISTRO_ACAO_ALTERACAO;
+  locUsuarioLogMsg := 'Configurações de senha atualizadas!';
 
   try
     locRegistroAcaoID := Plataforma_ERP_RegistroAcaoIDDeterminar(locADOConnection, locRegistroAcao);
@@ -500,126 +735,49 @@ begin
     end;
   end;  
 
-  // 
-  // Determina o próximo ID do usuário.
-  //
-  if locInsert then
-  begin
-    try
-      locUsuarioID := Plataforma_ERP_ADO_NumeradorLicencaDeterminar(locADOConnection,
-                                                                    locLicencaID,
-                                                                    locBaseID,
-                                                                    NUMERADOR_USUARIO_ID,
-                                                                    locLogUsuarioBaseID,
-                                                                    locLogUsuarioID);
-    except
-      on locExcecao: Exception do
-      begin
-        locADOConnection.RollbackTrans;
-        locADOQuery.Close;
-        FreeAndNil(locADOQuery);
-        locADOConnection.Close;
-        FreeAndNil(locADOConnection);
-        locLogMensagem := 'Impossível determinar o próximo numerador para o usuário!';
-        Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
-        VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
-        Exit
-      end;
-    end;
-  end;
-
   //
   // Grava dados na tabela usuario.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
 
-  if locInsert then
+  //
+  // Atualiza dados.
+  //
+  locADOQuery.SQL.Add('UPDATE                                    ');
+  locADOQuery.SQL.Add('  [usuario]                               ');
+  locADOQuery.SQL.Add('SET                                       ');
+  locADOQuery.SQL.Add('  [senha_exigir]     = :senha_exigir,     ');
+  locADOQuery.SQL.Add('  [senha_trocar]     = :senha_trocar,     ');
+
+  if locSenhaAlterada then
   begin
-    //
-    // Insere dados.
-    //
-    locADOQuery.SQL.Add('INSERT INTO [usuario] (   ');
-    locADOQuery.SQL.Add('  [licenca_id],           ');
-    locADOQuery.SQL.Add('  [base_id],              ');
-    locADOQuery.SQL.Add('  [usuario_id],           ');
-    locADOQuery.SQL.Add('  [codigo],               ');
-    locADOQuery.SQL.Add('  [tipo_usuario_base_id], ');
-    locADOQuery.SQL.Add('  [tipo_usuario_id],      ');
-    locADOQuery.SQL.Add('  [nome],                 ');
-    locADOQuery.SQL.Add('  [logon],                ');
-    locADOQuery.SQL.Add('  [automato],             ');
-    locADOQuery.SQL.Add('  [administrador],        ');
-    locADOQuery.SQL.Add('  [bloqueado],            ');
-    locADOQuery.SQL.Add('  [ativo],                ');
-    locADOQuery.SQL.Add('  [ins_local_dt_hr],      ');
-    locADOQuery.SQL.Add('  [ins_server_dt_hr],     ');
-    locADOQuery.SQL.Add('  [upd_local_dt_hr],      ');
-    locADOQuery.SQL.Add('  [upd_server_dt_hr],     ');
-    locADOQuery.SQL.Add('  [upd_contador]          ');  
-    locADOQuery.SQL.Add(')                         ');
-    locADOQuery.SQL.Add('VALUES (                  ');
-    locADOQuery.SQL.Add('  :licenca_id,            '); // licenca_id.
-    locADOQuery.SQL.Add('  :base_id,               '); // base_id.
-    locADOQuery.SQL.Add('  :usuario_id,            '); // usuario_id.
-    locADOQuery.SQL.Add('  :codigo,                '); // codigo.
-    locADOQuery.SQL.Add('  :tipo_usuario_base_id,  '); // tipo_usuario_base_id.
-    locADOQuery.SQL.Add('  :tipo_usuario_id,       '); // tipo_usuario_id.
-    locADOQuery.SQL.Add('  :nome,                  '); // nome.
-    locADOQuery.SQL.Add('  :logon,                 '); // logon.
-    locADOQuery.SQL.Add('  :automato,              '); // automato.
-    locADOQuery.SQL.Add('  :administrador,         '); // administrador.
-    locADOQuery.SQL.Add('  :bloqueado,             '); // bloqueado.
-    locADOQuery.SQL.Add('  :ativo,                 '); // ativo.
-    locADOQuery.SQL.Add('  :local_dt_hr,           '); // ins_local_dt_hr.
-    locADOQuery.SQL.Add('  GETDATE(),              '); // ins_server_dt_hr.
-    locADOQuery.SQL.Add('  NULL,                   '); // upd_local_dt_hr.
-    locADOQuery.SQL.Add('  NULL,                   '); // upd_server_dt_hr.
-    locADOQuery.SQL.Add('  0                       '); // upd_contador.
-    locADOQuery.SQL.Add(')                         ');
-  end
-  else
-  begin
-    //
-    // Atualiza dados.
-    //
-    locADOQuery.SQL.Add('UPDATE                                            ');
-    locADOQuery.SQL.Add('  [usuario]                                       ');
-    locADOQuery.SQL.Add('SET                                               ');
-    locADOQuery.SQL.Add('  [codigo]               = :codigo,               ');
-    locADOQuery.SQL.Add('  [tipo_usuario_base_id] = :tipo_usuario_base_id, ');
-    locADOQuery.SQL.Add('  [tipo_usuario_id]      = :tipo_usuario_id,      ');        
-    locADOQuery.SQL.Add('  [nome]                 = :nome,                 ');
-    locADOQuery.SQL.Add('  [logon]                = :logon,                ');
-    locADOQuery.SQL.Add('  [automato]             = :automato,             ');
-    locADOQuery.SQL.Add('  [administrador]        = :administrador,        ');
-    locADOQuery.SQL.Add('  [bloqueado]            = :bloqueado,            ');
-    locADOQuery.SQL.Add('  [ativo]                = :ativo,                ');
-    locADOQuery.SQL.Add('  [upd_local_dt_hr]      = :local_dt_hr,          ');
-    locADOQuery.SQL.Add('  [upd_server_dt_hr]     = GETDATE(),             ');
-    locADOQuery.SQL.Add('  [upd_contador]         = [upd_contador] + 1     ');
-    locADOQuery.SQL.Add('WHERE                                             ');
-    locADOQuery.SQL.Add('  [licenca_id] = :licenca_id AND                  ');
-    locADOQuery.SQL.Add('  [base_id]    = :base_id    AND                  ');
-    locADOQuery.SQL.Add('  [usuario_id] = :usuario_id                      ');
+    locADOQuery.SQL.Add('[senha] = :senha, ');
   end;
+  
+  locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,      ');
+  locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),         ');
+  locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1 ');
+  locADOQuery.SQL.Add('WHERE                                     ');
+  locADOQuery.SQL.Add('  [licenca_id]      = :licenca_id      AND ');
+  locADOQuery.SQL.Add('  [usuario_base_id] = :usuario_base_id AND ');
+  locADOQuery.SQL.Add('  [usuario_id]      = :usuario_id          ');
 
   //
   // Parâmetros.
   //
-  locADOQuery.Parameters.ParamByName('licenca_id').Value           := locLicencaID;
-  locADOQuery.Parameters.ParamByName('base_id').Value              := locBaseID;
-  locADOQuery.Parameters.ParamByName('usuario_id').Value           := locUsuarioID;
-  locADOQuery.Parameters.ParamByName('codigo').Value               := locCodigo;
-  locADOQuery.Parameters.ParamByName('tipo_usuario_base_id').Value := locTipoUsuarioBaseID;
-  locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value      := locTipoUsuarioID;
-  locADOQuery.Parameters.ParamByName('nome').Value                 := locNome;
-  locADOQuery.Parameters.ParamByName('logon').Value                := locLogon;
-  locADOQuery.Parameters.ParamByName('automato').Value             := BooleanStringConverter(locAutomato);
-  locADOQuery.Parameters.ParamByName('administrador').Value        := BooleanStringConverter(locAdministrador);
-  locADOQuery.Parameters.ParamByName('bloqueado').Value            := BooleanStringConverter(locBloqueado);
-  locADOQuery.Parameters.ParamByName('ativo').Value                := BooleanStringConverter(locAtivo);
-  locADOQuery.Parameters.ParamByName('local_dt_hr').Value          := Now;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
+  locADOQuery.Parameters.ParamByName('usuario_base_id').Value := locUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('usuario_id').Value      := locUsuarioID;
+  locADOQuery.Parameters.ParamByName('senha_exigir').Value    := BooleanStringConverter(locSenhaExigir);
+  locADOQuery.Parameters.ParamByName('senha_trocar').Value    := BooleanStringConverter(locSenhaTrocar);
+
+  if locSenhaAlterada then
+  begin
+    locADOQuery.Parameters.ParamByName('senha').Value  := locSenha;
+  end;
+
+  locADOQuery.Parameters.ParamByName('local_dt_hr').Value := Now;
 
   try
     locADOQuery.ExecSQL;
@@ -631,7 +789,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [usuario]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para atualizar o registro na tabela [usuario]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit
@@ -643,20 +801,18 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                     ');
-  locADOQuery.SQL.Add('  [usuario].[ins_local_dt_hr],             ');
-  locADOQuery.SQL.Add('  [usuario].[upd_local_dt_hr],             ');
-  locADOQuery.SQL.Add('  [usuario].[upd_contador]                 ');
-  locADOQuery.SQL.Add('FROM                                       ');
-  locADOQuery.SQL.Add('  [usuario]                                ');
-  locADOQuery.SQL.Add('WHERE                                      ');
-  locADOQuery.SQL.Add('  [usuario].[licenca_id] = :licenca_id AND ');
-  locADOQuery.SQL.Add('  [usuario].[base_id]    = :base_id    AND ');
-  locADOQuery.SQL.Add('  [usuario].[usuario_id] = :usuario_id     ');
+  locADOQuery.SQL.Add('SELECT                                               ');
+  locADOQuery.SQL.Add('  [usuario].[upd_contador]                           ');
+  locADOQuery.SQL.Add('FROM                                                 ');
+  locADOQuery.SQL.Add('  [usuario]                                          ');
+  locADOQuery.SQL.Add('WHERE                                                ');
+  locADOQuery.SQL.Add('  [usuario].[licenca_id]      = :licenca_id      AND ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_base_id] = :usuario_base_id AND ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_id]      = :usuario_id          ');
 
-  locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
-  locADOQuery.Parameters.ParamByName('base_id').Value    := locBaseID;
-  locADOQuery.Parameters.ParamByName('usuario_id').Value := locUsuarioID;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
+  locADOQuery.Parameters.ParamByName('usuario_base_id').Value := locUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('usuario_id').Value      := locUsuarioID;
 
   try
     locADOQuery.Open;
@@ -675,32 +831,25 @@ begin
     end;   
   end;
 
-  locInsLocalDtHr := locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime;
-  locUpdLocalDtHr := locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime;
   locUpdContador  := locADOQuery.FieldByName('upd_contador').AsInteger;
-
-  //
-  // Log dados.
-  //
-  locUsuarioLogLogDados := LogDadosGerar(locUsuarioID);
   
   //
   // Determina o próximo sequencial da tabela usuario_log.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                              ');
-  locADOQuery.SQL.Add('  MAX([usuario_log].[usuario_log_sq]) AS Sequencial ');
-  locADOQuery.SQL.Add('FROM                                                ');
-  locADOQuery.SQL.Add('  [usuario_log]                                     ');
-  locADOQuery.SQL.Add('WHERE                                               ');
-  locADOQuery.SQL.Add('  [usuario_log].[licenca_id] = :licenca_id AND      ');
-  locADOQuery.SQL.Add('  [usuario_log].[base_id]    = :base_id    AND      ');
-  locADOQuery.SQL.Add('  [usuario_log].[usuario_id] = :usuario_id          ');
+  locADOQuery.SQL.Add('SELECT                                                   ');
+  locADOQuery.SQL.Add('  MAX([usuario_log].[usuario_log_sq]) AS Sequencial      ');
+  locADOQuery.SQL.Add('FROM                                                     ');
+  locADOQuery.SQL.Add('  [usuario_log]                                          ');
+  locADOQuery.SQL.Add('WHERE                                                    ');
+  locADOQuery.SQL.Add('  [usuario_log].[licenca_id]      = :licenca_id      AND ');
+  locADOQuery.SQL.Add('  [usuario_log].[usuario_base_id] = :usuario_base_id AND ');
+  locADOQuery.SQL.Add('  [usuario_log].[usuario_id]      = :usuario_id          ');
 
-  locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
-  locADOQuery.Parameters.ParamByName('base_id').Value    := locBaseID;
-  locADOQuery.Parameters.ParamByName('usuario_id').Value := locUsuarioID;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
+  locADOQuery.Parameters.ParamByName('usuario_base_id').Value := locUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('usuario_id').Value      := locUsuarioID;
 
   try
     locADOQuery.Open;
@@ -728,12 +877,14 @@ begin
     locUsuarioLogSq := locADOQuery.FieldByName('Sequencial').AsInteger + 1;
   end; 
 
-  // Monta SQL para inserir dados na tabela.
+  //
+  // Monta SQL para inserir dados na tabela de log.
+  //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('INSERT INTO [usuario_log] (');
   locADOQuery.SQL.Add('  [licenca_id],            ');
-  locADOQuery.SQL.Add('  [base_id],               ');
+  locADOQuery.SQL.Add('  [usuario_base_id],       ');
   locADOQuery.SQL.Add('  [usuario_id],            ');
   locADOQuery.SQL.Add('  [usuario_log_sq],        ');
   locADOQuery.SQL.Add('  [log_base_id],           ');
@@ -749,7 +900,7 @@ begin
   locADOQuery.SQL.Add(')                          ');
   locADOQuery.SQL.Add('VALUES (                   ');
   locADOQuery.SQL.Add('  :licenca_id,             '); // licenca_id.
-  locADOQuery.SQL.Add('  :base_id,                '); // base_id.
+  locADOQuery.SQL.Add('  :usuario_base_id,        '); // usuario_base_id.
   locADOQuery.SQL.Add('  :usuario_id,             '); // usuario_id.
   locADOQuery.SQL.Add('  :usuario_log_sq,         '); // usuario_log_sq.
   locADOQuery.SQL.Add('  :log_base_id,            '); // log_base_id.
@@ -765,7 +916,7 @@ begin
   locADOQuery.SQL.Add(')                          ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value          := locLicencaID;
-  locADOQuery.Parameters.ParamByName('base_id').Value             := locBaseID;
+  locADOQuery.Parameters.ParamByName('usuario_base_id').Value     := locUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('usuario_id').Value          := locUsuarioID;
   locADOQuery.Parameters.ParamByName('usuario_log_sq').Value      := locUsuarioLogSq;
   locADOQuery.Parameters.ParamByName('log_base_id').Value         := gloBaseID;
@@ -776,7 +927,7 @@ begin
   locADOQuery.Parameters.ParamByName('log_usuario_base_id').Value := locLogUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('log_usuario_id').Value      := locLogUsuarioID;
   locADOQuery.Parameters.ParamByName('mensagem').Value            := locUsuarioLogMsg;
-  locADOQuery.Parameters.ParamByName('dados').Value               := locUsuarioLogLogDados;
+  locADOQuery.Parameters.ParamByName('dados').Value               := locUsuarioLogDados;
 
   try
     locADOQuery.ExecSQL;
@@ -818,20 +969,7 @@ begin
   //
   // Atualiza componentes que sofreram alteração com a gravação.
   //
-  edtUsuarioID.Text    := IntegerStringConverter(locUsuarioID);
-  edtInsLocalDtHr.Text := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
-  edtUpdLocalDtHr.Text := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
-  edtUpdContador.Text  := IntegerStringConverter(locUpdContador);
-
-  //
-  // Componentes desligados para edição.
-  //
-  FormularioControlar(False);
-
-  //
-  // Indica que os dados foram atualizados.
-  //
-  pubDadosAtualizados := True;
+  edtUpdContador.Text := IntegerStringConverter(locUpdContador);
 
   //
   // Finaliza.
@@ -845,7 +983,7 @@ begin
   // Grava log de ocorrência.
   //  
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locUsuarioID, locUsuarioLogMsg, locUsuarioLogLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locUsuarioID, locUsuarioLogMsg, locUsuarioLogDados);
   except
     on locExcecao: Exception do
     begin
@@ -854,10 +992,15 @@ begin
   end;
 
   //
-  // Usuário gravado!
+  // Configurações de senha atualizadas!
   //
-  VCLInformacaoExibir('Usuário gravado com sucesso!');
-}  
+  VCLInformacaoExibir('Configurações de senha atualizadas com sucesso!');
+
+  //
+  // Retorna.
+  //
+  pubClicouFechar := False;
+  Close;
 end;
 
 end.

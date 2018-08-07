@@ -878,12 +878,31 @@ end;
 //
 procedure TPlataformaERPVCLUsuarioCadastro.FormularioSenha;
 var
-  locFormulario: TPlataformaERPVCLUsuarioSenha;
+  locFormulario   : TPlataformaERPVCLUsuarioSenha;
+  locLicencaID    : Integer;
+  locUsuarioBaseID: Integer;
+  locUsuarioID    : Integer;
+  locClicouFechar : Boolean;
 begin
+  locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
+  locUsuarioBaseID := StringIntegerConverter(edtUsuarioBaseID.Text);
+  locUsuarioID     := StringIntegerConverter(edtUsuarioID.Text);
+
   locFormulario := TPlataformaERPVCLUsuarioSenha.Create(Self);
+  locFormulario.pubLicencaID     := locLicencaID;
+  locFormulario.pubUsuarioBaseID := locUsuarioBaseID;
+  locFormulario.pubUsuarioID     := locUsuarioID;
   locFormulario.ShowModal;
+
+  locClicouFechar := locFormulario.pubClicouFechar;
+
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    FormularioPopular(locLicencaID, locUsuarioBaseID, locUsuarioID);
+  end;
 end;
 
 //
@@ -1119,36 +1138,36 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioGravar';
   ERRO_MENSAGEM    : string = 'Impossível gravar dados do usuário!';
 var
-  locADOConnection     : TADOConnection;
-  locADOQuery          : TADOQuery;
-  locLogMensagem       : string;
+  locADOConnection    : TADOConnection;
+  locADOQuery         : TADOQuery;
+  locLogMensagem      : string;
 
-  locInsert            : Boolean;
-  locRegistroAcao      : Byte;
-  locRegistroAcaoID    : Integer;
-  locUsuarioLogSq      : Integer;
-  locUsuarioLogMsg     : string;
-  locUsuarioLogLogDados: string;
+  locInsert           : Boolean;
+  locRegistroAcao     : Byte;
+  locRegistroAcaoID   : Integer;
+  locUsuarioLogSq     : Integer;
+  locUsuarioLogMsg    : string;
+  locUsuarioLogDados  : string;
 
-  locLicencaID         : Integer;
-  locUsuarioBaseID     : Integer;
-  locUsuarioID         : Integer;
-  locCodigo            : string;
-  locNome              : string;
-  locTipoUsuarioBaseID : Integer;
-  locTipoUsuarioID     : Integer;
-  locLogon             : string;
-  locAutomato          : Boolean;
-  locAdministrador     : Boolean;
-  locBloqueado         : Boolean;
-  locAtivo             : Boolean;
-  locInsLocalDtHr      : TDateTime;
-  locUpdLocalDtHr      : TDateTime;
-  locLogUsuarioBaseID  : Integer;
-  locLogUsuarioID      : Integer;
-  locUpdContador       : Integer;
-  locHostName          : string;
-  locUserName          : string;
+  locLicencaID        : Integer;
+  locUsuarioBaseID    : Integer;
+  locUsuarioID        : Integer;
+  locCodigo           : string;
+  locNome             : string;
+  locTipoUsuarioBaseID: Integer;
+  locTipoUsuarioID    : Integer;
+  locLogon            : string;
+  locAutomato         : Boolean;
+  locAdministrador    : Boolean;
+  locBloqueado        : Boolean;
+  locAtivo            : Boolean;
+  locInsLocalDtHr     : TDateTime;
+  locUpdLocalDtHr     : TDateTime;
+  locLogUsuarioBaseID : Integer;
+  locLogUsuarioID     : Integer;
+  locUpdContador      : Integer;
+  locHostName         : string;
+  locUserName         : string;
 begin
   //
   // Determina se será um insert ou update.
@@ -1431,8 +1450,9 @@ begin
     locADOQuery.SQL.Add('  [logon],                ');
     locADOQuery.SQL.Add('  [tipo_usuario_base_id], ');
     locADOQuery.SQL.Add('  [tipo_usuario_id],      ');
+    locADOQuery.SQL.Add('  [senha_exigir],         ');
+    locADOQuery.SQL.Add('  [senha_trocar],         ');
     locADOQuery.SQL.Add('  [senha],                ');
-    locADOQuery.SQL.Add('  [trocar_senha],         ');
     locADOQuery.SQL.Add('  [automato],             ');
     locADOQuery.SQL.Add('  [administrador],        ');
     locADOQuery.SQL.Add('  [bloqueado],            ');
@@ -1452,8 +1472,9 @@ begin
     locADOQuery.SQL.Add('  :logon,                 '); // logon.
     locADOQuery.SQL.Add('  :tipo_usuario_base_id,  '); // tipo_usuario_base_id.
     locADOQuery.SQL.Add('  :tipo_usuario_id,       '); // tipo_usuario_id.
+    locADOQuery.SQL.Add('  ''S'',                  '); // senha_exigir.
+    locADOQuery.SQL.Add('  ''N'',                  '); // senha_trocar.
     locADOQuery.SQL.Add('  '''',                   '); // senha.
-    locADOQuery.SQL.Add('  ''N'',                  '); // trocar_senha.
     locADOQuery.SQL.Add('  :automato,              '); // automato.
     locADOQuery.SQL.Add('  :administrador,         '); // administrador.
     locADOQuery.SQL.Add('  :bloqueado,             '); // bloqueado.
@@ -1569,7 +1590,7 @@ begin
   //
   // Log dados.
   //
-  locUsuarioLogLogDados := LogDadosGerar(locUsuarioID);
+  locUsuarioLogDados := LogDadosGerar(locUsuarioID);
   
   //
   // Determina o próximo sequencial da tabela usuario_log.
@@ -1615,7 +1636,9 @@ begin
     locUsuarioLogSq := locADOQuery.FieldByName('Sequencial').AsInteger + 1;
   end; 
 
-  // Monta SQL para inserir dados na tabela.
+  //
+  // Monta SQL para inserir dados na tabela de log.
+  //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('INSERT INTO [usuario_log] (');
@@ -1663,7 +1686,7 @@ begin
   locADOQuery.Parameters.ParamByName('log_usuario_base_id').Value := locLogUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('log_usuario_id').Value      := locLogUsuarioID;
   locADOQuery.Parameters.ParamByName('mensagem').Value            := locUsuarioLogMsg;
-  locADOQuery.Parameters.ParamByName('dados').Value               := locUsuarioLogLogDados;
+  locADOQuery.Parameters.ParamByName('dados').Value               := locUsuarioLogDados;
 
   try
     locADOQuery.ExecSQL;
@@ -1675,7 +1698,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [usuario_log]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir/atualizar o registro na tabela [usuario_log]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit
@@ -1732,7 +1755,7 @@ begin
   // Grava log de ocorrência.
   //  
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locUsuarioID, locUsuarioLogMsg, locUsuarioLogLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locUsuarioID, locUsuarioLogMsg, locUsuarioLogDados);
   except
     on locExcecao: Exception do
     begin

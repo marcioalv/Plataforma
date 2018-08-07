@@ -115,6 +115,7 @@ procedure VCLEditClickControlar(argComponente: TEdit; argLigar: Boolean);
 procedure VCLEditSelecaoControlar(argComponente: TEdit; argImage: TImage; argLigar: Boolean);
 
 procedure VCLToggleSwitchLigar(argComponente: TToggleSwitch; argLigar: Boolean);
+function  VCLToggleSwitchRecuperar(argComponente: TToggleSwitch): Boolean;
 
 //
 // Entrada/Saída componentes.
@@ -950,6 +951,17 @@ begin
   end;
 
   argComponente.ThumbColor := argComponente.FrameColor;
+end;
+
+//
+// VCLToggleSwitchRecuperar.
+//
+function  VCLToggleSwitchRecuperar(argComponente: TToggleSwitch): Boolean;
+begin
+  if argComponente.State = tssOn then
+    Result := True
+  else
+    Result := False;
 end;
 
 //

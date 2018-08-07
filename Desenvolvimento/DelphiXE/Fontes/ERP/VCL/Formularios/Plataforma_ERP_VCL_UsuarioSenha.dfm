@@ -126,6 +126,7 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
     ParentShowHint = False
     ShowHint = True
     TabOrder = 2
+    OnClick = btnFecharClick
   end
   object btnMinimizar: TBitBtn
     Left = 320
@@ -198,6 +199,7 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
     ParentShowHint = False
     ShowHint = True
     TabOrder = 3
+    OnClick = btnMinimizarClick
   end
   object panFormulario: TPanel
     Left = 48
@@ -237,7 +239,7 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       Font.Style = []
       ParentFont = False
     end
-    object lblTrocarSenha: TLabel
+    object lblSenhaTrocar: TLabel
       Left = 48
       Top = 64
       Width = 236
@@ -255,7 +257,9 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       Top = 248
       Width = 32
       Height = 32
+      Hint = 'Senhas n'#227'o conferem!'
       AutoSize = True
+      ParentShowHint = False
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
         00200806000000737A7AF4000000017352474200AECE1CE90000000467414D41
@@ -284,13 +288,16 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
         E3104CA71CCD0D2323A97C752EBA1798FF91909E3AC9B78D9CFF52369AE6DC47
         B9023EAC0BC7DF2C56DFF2EB86761F3F010DA656300E833B970000000049454E
         44AE426082}
+      ShowHint = True
     end
     object imgSenhaCorreta: TImage
       Left = 48
       Top = 248
       Width = 32
       Height = 32
+      Hint = 'Senhas conferem!'
       AutoSize = True
+      ParentShowHint = False
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
         00200806000000737A7AF4000000017352474200AECE1CE90000000467414D41
@@ -318,12 +325,22 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
         7DCCB1E84F74B173637056E176282DD54D0510F7C2C5563B97E05E665A3B8572
         BF10D9B5818A93DF529539FD5EC0FF91B621A50428B61D58C012224434C0F36E
         76FB83E98ACBC06E68F2F8092D4E4D30A5485BE50000000049454E44AE426082}
+      ShowHint = True
+    end
+    object lblUpdContador: TLabel
+      Left = 288
+      Top = 8
+      Width = 68
+      Height = 13
+      Caption = 'UpdContador:'
+      Visible = False
     end
     object chkSenhaExibir: TCheckBox
       Left = 268
       Top = 248
       Width = 89
       Height = 17
+      Cursor = crHandPoint
       Caption = 'Exibir senha'
       Color = cl3DDkShadow
       Font.Charset = DEFAULT_CHARSET
@@ -377,7 +394,7 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       OnKeyPress = edtSenhaConfKeyPress
       OnKeyUp = edtSenhaConfKeyUp
     end
-    object tswTrocarSenha: TToggleSwitch
+    object tswSenhaTrocar: TToggleSwitch
       Left = 64
       Top = 88
       Width = 102
@@ -386,11 +403,11 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       StateCaptions.CaptionOn = 'Ligado'
       StateCaptions.CaptionOff = 'Desligado'
       TabOrder = 1
-      OnClick = tswTrocarSenhaClick
-      OnEnter = tswTrocarSenhaEnter
-      OnExit = tswTrocarSenhaExit
+      OnClick = tswSenhaTrocarClick
+      OnEnter = tswSenhaTrocarEnter
+      OnExit = tswSenhaTrocarExit
     end
-    object chkExigirSenha: TCheckBox
+    object chkSenhaExigir: TCheckBox
       Left = 24
       Top = 24
       Width = 97
@@ -404,10 +421,19 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      OnClick = chkExigirSenhaClick
-      OnEnter = chkExigirSenhaEnter
-      OnExit = chkExigirSenhaExit
-      OnKeyPress = chkExigirSenhaKeyPress
+      OnClick = chkSenhaExigirClick
+      OnEnter = chkSenhaExigirEnter
+      OnExit = chkSenhaExigirExit
+      OnKeyPress = chkSenhaExigirKeyPress
+    end
+    object edtUpdContador: TEdit
+      Left = 288
+      Top = 24
+      Width = 73
+      Height = 21
+      TabOrder = 5
+      Text = 'edtUpdContador'
+      Visible = False
     end
   end
   object btnConfirmar: TBitBtn
@@ -472,20 +498,24 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
     ParentShowHint = False
     ShowHint = True
     TabOrder = 1
+    OnClick = btnConfirmarClick
   end
   object mnuFormulario: TMainMenu
     BiDiMode = bdRightToLeft
     ParentBiDiMode = False
-    Left = 312
-    Top = 64
+    Left = 144
+    Top = 344
     object mniFechar: TMenuItem
       Caption = 'Fechar'
+      OnClick = mniFecharClick
     end
     object mniMinimizar: TMenuItem
       Caption = 'Minimizar'
+      OnClick = mniMinimizarClick
     end
     object mniConfirmar: TMenuItem
       Caption = 'Confirmar'
+      OnClick = mniConfirmarClick
     end
   end
 end
