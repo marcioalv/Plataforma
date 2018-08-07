@@ -28,7 +28,8 @@ uses
   Vcl.Buttons,
   Vcl.Controls,
   Vcl.ExtCtrls,
-  Vcl.Mask;
+  Vcl.Mask,
+  Vcl.WinXCtrls;
 
 const
   VCL_DIGITACAO_LIVRE           : Byte = 0;
@@ -99,6 +100,7 @@ procedure VCLRadioButtonLimpar(argComponente: TRadioButton);
 procedure VCLCheckBoxLimpar(argComponente: TCheckBox);
 procedure VCLMemoLimpar(argComponente: TMemo);
 procedure VCLProgressBarLimpar(argComponente: TProgressBar);
+procedure VCLToggleSwitchLimpar(argComponente: TToggleSwitch);
 
 //
 // Controlar componentes.
@@ -111,6 +113,8 @@ procedure VCLMemoControlar(argComponente: TMemo; argLigar: Boolean);
 
 procedure VCLEditClickControlar(argComponente: TEdit; argLigar: Boolean);
 procedure VCLEditSelecaoControlar(argComponente: TEdit; argImage: TImage; argLigar: Boolean);
+
+procedure VCLToggleSwitchLigar(argComponente: TToggleSwitch; argLigar: Boolean);
 
 //
 // Entrada/Saída componentes.
@@ -129,6 +133,9 @@ function VCLComboBoxSair(argComponente: TComboBox): Boolean;
 
 function VCLCheckBoxEntrar(argComponente: TCheckBox): Boolean;
 function VCLCheckBoxSair(argComponente: TCheckBox): Boolean;
+
+function VCLToggleSwitchEntrar(argComponente: TToggleSwitch): Boolean;
+function VCLToggleSwitchSair(argComponente: TToggleSwitch): Boolean;
 
 //
 // Cargas específicas.
@@ -149,6 +156,8 @@ function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = Tr
 function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
 
 function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True) : Boolean;
+
+procedure VCLToggleSwitchValidar(argComponente: TToggleSwitch);
 
 //
 // Específicos para combobox.
@@ -450,6 +459,14 @@ begin
   argComponente.Max      := 0;
   argComponente.Position := 0;
   argComponente.Visible  := False;
+end;
+
+//
+// VCLToggleSwitchLimpar.
+//
+procedure VCLToggleSwitchLimpar(argComponente: TToggleSwitch);
+begin
+  VCLToggleSwitchLigar(argComponente, False);
 end;
 
 //
@@ -847,6 +864,30 @@ begin
 end;
 
 //
+// VCLToggleSwitchEntrar.
+//
+function VCLToggleSwitchEntrar(argComponente: TToggleSwitch): Boolean;
+begin
+  Result := False;
+  if argComponente.ReadOnly then Exit;
+  argComponente.Color := RGB(230, 242, 255);
+  if not argComponente.Enabled then Exit;
+  Result := True;  
+end;
+
+//
+// VCLToggleSwitchSair.
+//
+function VCLToggleSwitchSair(argComponente: TToggleSwitch): Boolean;
+begin
+  Result := False;
+  if argComponente.ReadOnly then Exit;
+  argComponente.Color := clWindow;
+  if not argComponente.Enabled then Exit;
+  Result := True; 
+end;
+
+//
 // VCLEditClickControlar.
 //
 procedure VCLEditClickControlar(argComponente: TEdit; argLigar: Boolean);
@@ -883,6 +924,32 @@ begin
   end;
 
   argImage.Visible := argLigar;
+end;
+
+//
+// VCLToggleSwitchLigar.
+//
+procedure VCLToggleSwitchLigar(argComponente: TToggleSwitch; argLigar: Boolean);
+begin
+  // RGB(192, 57, 43) --> Vermelho.
+  // RGB(22, 160, 133) --> Verde.
+
+  if not argLigar then
+  begin
+    argComponente.State      := tssOff;
+    argComponente.FrameColor := RGB(100, 100, 100);
+    argComponente.Font.Color := clWindowText;
+    argComponente.Font.Style := [];
+  end
+  else
+  begin
+    argComponente.State      := tssOn;
+    argComponente.FrameColor := RGB(60, 118, 179);
+    argComponente.Font.Color := argComponente.FrameColor;
+    argComponente.Font.Style := [];
+  end;
+
+  argComponente.ThumbColor := argComponente.FrameColor;
 end;
 
 //
@@ -1105,6 +1172,21 @@ begin
   end;
   
   Result := True;
+end;
+
+//
+// VCLToggleSwitchValidar.
+//
+procedure VCLToggleSwitchValidar(argComponente: TToggleSwitch);
+var
+  locLigar: Boolean;
+begin
+  if argComponente.State = tssOff then
+    locLigar := False
+  else
+    locLigar := True;
+
+  VCLToggleSwitchLigar(argComponente, locLigar);  
 end;
 
 //

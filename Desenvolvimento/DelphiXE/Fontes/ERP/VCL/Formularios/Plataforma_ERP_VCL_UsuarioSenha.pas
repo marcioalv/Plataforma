@@ -32,7 +32,7 @@ type
     imgBackground: TImage;
     btnFechar: TBitBtn;
     btnMinimizar: TBitBtn;
-    Panel1: TPanel;
+    panFormulario: TPanel;
     btnConfirmar: TBitBtn;
     mnuFormulario: TMainMenu;
     mniFechar: TMenuItem;
@@ -40,20 +40,47 @@ type
     mniConfirmar: TMenuItem;
     chkSenhaExibir: TCheckBox;
     lblSenha: TLabel;
-    Edit1: TEdit;
-    Edit2: TEdit;
-    Label1: TLabel;
-    ToggleSwitch1: TToggleSwitch;
-    Label2: TLabel;
+    edtSenha: TEdit;
+    edtSenhaConf: TEdit;
+    lblSenhaConf: TLabel;
+    tswTrocarSenha: TToggleSwitch;
+    lblTrocarSenha: TLabel;
     imgSenhaErrada: TImage;
     imgSenhaCorreta: TImage;
+    chkExigirSenha: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
+    procedure tswTrocarSenhaEnter(Sender: TObject);
+    procedure tswTrocarSenhaExit(Sender: TObject);
+    procedure tswTrocarSenhaClick(Sender: TObject);
+    procedure edtSenhaEnter(Sender: TObject);
+    procedure edtSenhaExit(Sender: TObject);
+    procedure edtSenhaKeyPress(Sender: TObject; var Key: Char);
+    procedure edtSenhaConfEnter(Sender: TObject);
+    procedure edtSenhaConfExit(Sender: TObject);
+    procedure edtSenhaConfKeyPress(Sender: TObject; var Key: Char);
+    procedure chkSenhaExibirEnter(Sender: TObject);
+    procedure chkSenhaExibirExit(Sender: TObject);
+    procedure chkSenhaExibirKeyPress(Sender: TObject; var Key: Char);
+    procedure chkSenhaExibirClick(Sender: TObject);
+    procedure edtSenhaKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtSenhaConfKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure chkExigirSenhaEnter(Sender: TObject);
+    procedure chkExigirSenhaExit(Sender: TObject);
+    procedure chkExigirSenhaKeyPress(Sender: TObject; var Key: Char);
+    procedure chkExigirSenhaClick(Sender: TObject);
   private
+    procedure FormularioLimpar;
+    procedure FormularioControlar;
     procedure FormularioConfirmar;
   public
-    { Public declarations }
+    pubClicouFechar : Boolean;
+    pubIDLicenca    : Integer;
+    pubUsuarioBaseID: Integer;
+    pubUsuarioID    : Integer;
+    pubExigirSenha  : Boolean;
+    pubTrocarSenha  : Boolean;
   end;
 
 var
@@ -75,7 +102,15 @@ uses
 //
 procedure TPlataformaERPVCLUsuarioSenha.FormCreate(Sender: TObject);
 begin
-  Exit;
+  //
+  // Inicializa variáveis públicas.
+  //
+  pubClicouFechar  := False;
+  pubIDLicenca     := 0;
+  pubUsuarioBaseID := 0;
+  pubUsuarioID     := 0;
+  pubExigirSenha   := False;
+  pubTrocarSenha   := False;
 end;
 
 //
@@ -87,6 +122,25 @@ begin
   // Background do formulário.
   //
   Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+
+  //
+  // Limpa componentes do formulário.
+  //
+  FormularioLimpar;
+
+  //
+  // Carrega informações passadas por parâmetro para o formulário.
+  //
+  if (pubIDLicenca <> 0) and (pubUsuarioBaseID <> 0) and (pubUsuarioID <> 0) then
+  begin
+    chkExigirSenha.Checked := pubExigirSenha;
+    VCLToggleSwitchLigar(tswTrocarSenha, pubTrocarSenha);
+  end;
+
+  //
+  // Controlar exibição dos componentes.
+  //
+  FormularioControlar;
 end;
 
 //
@@ -95,6 +149,192 @@ end;
 procedure TPlataformaERPVCLUsuarioSenha.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Eventos do componente "exigir senha?"
+//
+procedure TPlataformaERPVCLUsuarioSenha.chkExigirSenhaEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkExigirSenha) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.chkExigirSenhaKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.chkExigirSenhaExit(Sender: TObject);
+begin
+  if not VCLCheckBoxSair(chkExigirSenha) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.chkExigirSenhaClick(Sender: TObject);
+begin
+  FormularioControlar;
+end;
+
+//
+// Eventos do componente "trocar senha?"
+//
+procedure TPlataformaERPVCLUsuarioSenha.tswTrocarSenhaEnter(Sender: TObject);
+begin
+  if not VCLToggleSwitchEntrar(tswTrocarSenha) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.tswTrocarSenhaClick(Sender: TObject);
+begin
+  VCLToggleSwitchValidar(tswTrocarSenha);
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.tswTrocarSenhaExit(Sender: TObject);
+begin
+  if not VCLToggleSwitchSair(tswTrocarSenha) then Exit;
+end;
+
+//
+// Eventos do componente "senha".
+//
+procedure TPlataformaERPVCLUsuarioSenha.edtSenhaEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtSenha) then exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.edtSenhaKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.edtSenhaKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  FormularioControlar;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.edtSenhaExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtSenha) then exit;
+  FormularioControlar;
+end;
+
+//
+// Eventos do componente "Confirmação senha".
+//
+procedure TPlataformaERPVCLUsuarioSenha.edtSenhaConfEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtSenhaConf) then exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.edtSenhaConfKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.edtSenhaConfKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  FormularioControlar;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.edtSenhaConfExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtSenhaConf) then exit;
+  FormularioControlar;  
+end;
+
+//
+// Eventos do componente "exibir senha?"
+//
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaExibirEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkSenhaExibir) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaExibirKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaExibirClick(Sender: TObject);
+begin
+  FormularioControlar;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaExibirExit(Sender: TObject);
+begin
+  if not VCLCheckBoxSair(chkSenhaExibir) then Exit;
+end;
+
+//
+// Procedimento para limpar os componentes do formulário.
+//
+procedure TPlataformaERPVCLUsuarioSenha.FormularioLimpar;
+begin
+  VCLCheckBoxLimpar(chkExigirSenha);
+  VCLToggleSwitchLimpar(tswTrocarSenha);
+  VCLEditLimpar    (edtSenha);
+  VCLEditLimpar    (edtSenhaConf);  
+  VCLCheckBoxLimpar(chkSenhaExibir);
+end;
+
+//
+// Procedimento para controlar os componentes da tela.
+//
+procedure TPlataformaERPVCLUsuarioSenha.FormularioControlar;
+begin
+  //
+  // Exigir senha?
+  //
+  if not chkExigirSenha.Checked then
+  begin
+    lblTrocarSenha.Font.Color := clGray;
+    tswTrocarSenha.Enabled    := False;    
+    lblSenha.Font.Color       := lblTrocarSenha.Font.Color;
+    edtSenha.Enabled          := False;
+    lblSenhaConf.Font.Color   := lblTrocarSenha.Font.Color;    
+    edtSenhaConf.Enabled      := False;
+    chkSenhaExibir.Enabled    := False;
+  end
+  else
+  begin
+    lblTrocarSenha.Font.Color := clWindowText;
+    tswTrocarSenha.Enabled    := True;
+    lblSenha.Font.Color       := lblTrocarSenha.Font.Color;
+    edtSenha.Enabled          := True;    
+    lblSenhaConf.Font.Color   := lblTrocarSenha.Font.Color;
+    edtSenhaConf.Enabled      := True;
+    chkSenhaExibir.Enabled    := True;
+  end;
+
+  //
+  // Senhas conferem?
+  //
+  imgSenhaErrada.Visible  := False;
+  imgSenhaCorreta.Visible := False;
+  
+  if (edtSenha.Text <> '') or (edtSenhaConf.Text <> '') then
+  begin
+    if edtSenha.Text <> edtSenhaConf.Text then
+    begin
+      imgSenhaErrada.Visible := True;
+    end
+    else
+    begin
+      imgSenhaCorreta.Visible := True;
+    end;
+  end;
+
+  //
+  // Exibir caracteres da senha?
+  //
+  if not chkSenhaExibir.Checked then
+  begin
+    edtSenha.PasswordChar     := '*';
+    edtSenhaConf.PasswordChar := '*';
+  end
+  else
+  begin
+    edtSenha.PasswordChar     := #0;
+    edtSenhaConf.PasswordChar := #0;
+  end;
 end;
 
 //
