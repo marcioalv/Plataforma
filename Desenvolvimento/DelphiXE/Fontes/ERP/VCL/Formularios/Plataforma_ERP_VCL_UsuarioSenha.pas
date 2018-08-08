@@ -614,10 +614,10 @@ var
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
-  //                 9
-  locLicencaID        := 1;
-  locUsuarioBaseID    := 1;
-  locUsuarioID        := 1;
+  //
+  locLicencaID        := pubLicencaID;
+  locUsuarioBaseID    := pubUsuarioBaseID;
+  locUsuarioID        := pubUsuarioID;
 
   locSenhaExigir      := chkSenhaExigir.Checked;
   locSenhaTrocar      := VCLToggleSwitchRecuperar(tswSenhaTrocar);

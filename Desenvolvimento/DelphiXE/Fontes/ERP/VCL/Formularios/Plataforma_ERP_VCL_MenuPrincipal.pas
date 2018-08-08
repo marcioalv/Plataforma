@@ -48,6 +48,7 @@ type
     mnuConfiguracoes: TMenuItem;
     mniResolucaoTela: TMenuItem;
     mni1250x700: TMenuItem;
+    timInicializacao: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
@@ -55,8 +56,9 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure mniUsuariosClick(Sender: TObject);
     procedure mni1250x700Click(Sender: TObject);
+    procedure timInicializacaoTimer(Sender: TObject);
   private
-    procedure Inicializar;
+    procedure FormularioInicializar;
     procedure FormularioTituloDeterminar;
     procedure FormularioMenuConstruir;
   public
@@ -75,7 +77,10 @@ implementation
 //
 procedure TPlataformaERPVCLMenuPrincipal.FormCreate(Sender: TObject);
 begin
-  Inicializar;
+  //
+  // Desliga o timer de inicialização para ele ser ligado somente depois do FormShow.
+  //
+  timInicializacao.Enabled := False;
 end;
 
 //
@@ -83,8 +88,16 @@ end;
 //
 procedure TPlataformaERPVCLMenuPrincipal.FormShow(Sender: TObject);
 begin
+  //
+  // Ajusta formulário com perfil de visualização antes da inicialização.
+  //
   FormularioTituloDeterminar;
   FormularioMenuConstruir;
+
+  //
+  // Liga timer de inicialização.
+  //
+  timInicializacao.Enabled := True;
 end;
 
 //
@@ -94,6 +107,19 @@ procedure TPlataformaERPVCLMenuPrincipal.FormKeyPress(Sender: TObject; var Key: 
 begin
   if Key = ESC then Close;
 end;
+
+//
+// Evento de timer para a inicialização da aplicação.
+//
+procedure TPlataformaERPVCLMenuPrincipal.timInicializacaoTimer(Sender: TObject);
+begin
+  timInicializacao.Enabled := False;
+  FormularioInicializar;
+end;
+
+{--------------------------------------------------------------------------------------------------}
+{ ITENS DE MENU                                                                                    }
+{--------------------------------------------------------------------------------------------------}
 
 //
 // Evento de click na opção de menu "resolução 1.024 x 768".
@@ -145,10 +171,30 @@ begin
   FreeAndNil(locFormulario);
 end;
 
+{--------------------------------------------------------------------------------------------------}
+{ PROCEDIMENTOS E FUNÇÕES                                                                          }
+{--------------------------------------------------------------------------------------------------}
+
+//
+// Procedimento para determinar o título apropriado do formulário.
+//
+procedure TPlataformaERPVCLMenuPrincipal.FormularioTituloDeterminar;
+begin
+  Caption := 'Plataforma ERP';
+end;
+
+//
+// Procedimento para construir o menu e seus itens.
+//
+procedure TPlataformaERPVCLMenuPrincipal.FormularioMenuConstruir;
+begin
+  mniTiposUsuarios.Visible := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
+end;
+
 //
 // Procedimento para inicializar a aplicação de ERP.
 //
-procedure TPlataformaERPVCLMenuPrincipal.Inicializar;
+procedure TPlataformaERPVCLMenuPrincipal.FormularioInicializar;
 begin
   // Determina o path onde a aplicação está rodando.
   gloAppPath := PathExtrair(Application.ExeName);
@@ -176,24 +222,10 @@ begin
   gloLicencaCodigo    := 'ABC.123.DEF.456';
   gloLicencaDescricao := 'Licença central';
 
-  // Autentica usuário.
-  PlataformaERPUsuarioInicializar;
-end;
-
-//
-// Procedimento para determinar o título apropriado do formulário.
-//
-procedure TPlataformaERPVCLMenuPrincipal.FormularioTituloDeterminar;
-begin
-  Caption := 'Plataforma ERP';
-end;
-
-//
-// FormularioMenuConstruir.
-//
-procedure TPlataformaERPVCLMenuPrincipal.FormularioMenuConstruir;
-begin
-  mniTiposUsuarios.Visible := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
+  //
+  // Logon do usuário.
+  //
+  if not PlataformaERPUsuarioInicializar then Close;
 end;
 
 end.

@@ -20,13 +20,17 @@ uses
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
   System.SysUtils,
-  Winapi.Windows;
+  Winapi.Windows,
+  Vcl.Forms;
 
 procedure PlataformaERPHashCodInicializar;
 procedure PlataformaERPLogInicializar;
 function PlataformaERPUsuarioInicializar: Boolean;
 
 implementation
+
+uses
+  Plataforma_ERP_VCL_UsuarioLogon;
 
 //
 // Procedimento para inicializar o hashcode da aplicação.
@@ -60,19 +64,37 @@ end;
 // Função para inicializar o usuário da aplicação.
 //
 function PlataformaERPUsuarioInicializar: Boolean;
+var
+  locFormulario  : TPlataformaERPVCLUsuarioLogon;
+  locClicouFechar: Boolean;
 begin
+  //
+  // Usuário não autenticado.
+  //
+  Result := False;
+
+  //
   // Inicializa usuário.
+  //
   gloUsuarioBaseID  := 0;
   gloUsuarioID      := 0;
   gloUsuarioLogon   := '';
   gloUsuarioNome    := '';
   gloUsuarioRotinas := nil;
 
-  // Usuário autenticado.
-  gloUsuarioBaseID := 1;
-  gloUsuarioID     := 1;
-  gloUsuarioLogon  := 'administrador';
-  gloUsuarioNome   := 'Administrador do Sistema';
+  //
+  // Exibe formulário de logon.
+  //
+  locFormulario := TPlataformaERPVCLUsuarioLogon.Create(nil);
+  locFormulario.ShowModal;
+  locClicouFechar := locFormulario.pubClicouFechar;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  //
+  // Usuário clicou em fechar no formulário de logon.
+  //
+  if locClicouFechar then Exit;
 
   // Lista de rotinas.
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
@@ -81,7 +103,7 @@ begin
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
   gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA_LOCALIZAR';
 
-    SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
   gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA_ATUALIZAR';
 
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);

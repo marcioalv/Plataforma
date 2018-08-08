@@ -68,4 +68,11 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
       end
     end
   end
+  object timInicializacao: TTimer
+    Enabled = False
+    Interval = 125
+    OnTimer = timInicializacaoTimer
+    Left = 216
+    Top = 200
+  end
 end

@@ -1,0 +1,331 @@
+//
+// Arquivo..: Plataforma_ERP_VCL_UsuarioLogon.pas
+// Projeto..: ERP
+// Fonte....: Formulário VCL
+// Criação..: 31/Maio/2018
+// Autor....: Marcio Alves (marcioalv@yahoo.com.br)
+// Descrição: Formulário VCL com o logon do usuário à aplicação.
+//
+// Histórico de alterações:
+//   Nenhuma alteração até o momento.
+//
+
+unit Plataforma_ERP_VCL_UsuarioLogon;
+
+interface
+
+uses
+  Data.Win.ADODB,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Imaging.pngimage,
+  Vcl.Buttons;
+
+type
+  TPlataformaERPVCLUsuarioLogon = class(TForm)
+    imgUsuario: TImage;
+    edtUsuario: TEdit;
+    edtSenha: TEdit;
+    btnFechar: TBitBtn;
+    btnConfirmar: TBitBtn;
+    imgSenha: TImage;
+    shaUsuario: TShape;
+    shaSenha: TShape;
+    imgFormulario: TImage;
+    shaBackground: TShape;
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormShow(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure edtUsuarioEnter(Sender: TObject);
+    procedure edtUsuarioExit(Sender: TObject);
+    procedure edtUsuarioKeyPress(Sender: TObject; var Key: Char);
+    procedure edtSenhaEnter(Sender: TObject);
+    procedure edtSenhaExit(Sender: TObject);
+    procedure edtSenhaKeyPress(Sender: TObject; var Key: Char);
+  private
+    procedure FormularioLimpar;
+    procedure FormularioConfirmar;
+  public
+    pubClicouFechar: Boolean;
+  end;
+
+var
+  PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Plataforma_Framework_Util,
+  Plataforma_Framework_VCL,
+  Plataforma_ERP_Global,
+  Plataforma_ERP_Generico;
+
+const
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_UsuarioLogon.pas';
+
+//
+// Evento de criação do formulário.
+//
+procedure TPlataformaERPVCLUsuarioLogon.FormCreate(Sender: TObject);
+begin
+  //
+  // Inicializa variáveis públicas.
+  //
+  pubClicouFechar := True;
+
+  //
+  // Ajusta cores de background de alguns componentes.
+  //
+  shaBackground.Brush.Color := RGB(78, 169, 164);
+  shaBackground.Pen.Color := RGB(78, 169, 164);
+end;
+
+//
+// Evento de exibição do formulário.
+//
+procedure TPlataformaERPVCLUsuarioLogon.FormShow(Sender: TObject);
+begin
+  FormularioLimpar;
+end;
+
+//
+// Evento de pressionamento de teclas no formulário.
+//
+procedure TPlataformaERPVCLUsuarioLogon.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = ESC then Close;
+end;
+
+//
+// Eventos do componente "usuário".
+//
+procedure TPlataformaERPVCLUsuarioLogon.edtUsuarioEnter(Sender: TObject);
+begin
+  //if not VCLEditEntrar(edtUsuario) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioLogon.edtUsuarioKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLUsuarioLogon.edtUsuarioExit(Sender: TObject);
+begin
+  //if not VCLEditSair(edtUsuario) then Exit;
+end;
+
+//
+// Eventos do componente "senha".
+//
+procedure TPlataformaERPVCLUsuarioLogon.edtSenhaEnter(Sender: TObject);
+begin
+  //if not VCLEditEntrar(edtSenha) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioLogon.edtSenhaKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
+end;
+
+procedure TPlataformaERPVCLUsuarioLogon.edtSenhaExit(Sender: TObject);
+begin
+  //if not VCLEditSair(edtSenha) then Exit;
+end;
+
+//
+// Eventos de click nos botões.
+//
+procedure TPlataformaERPVCLUsuarioLogon.btnConfirmarClick(Sender: TObject);
+begin
+  FormularioConfirmar;
+end;
+
+procedure TPlataformaERPVCLUsuarioLogon.btnFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+//
+// Procedimento para limpar os componentes do formulário.
+//
+procedure TPlataformaERPVCLUsuarioLogon.FormularioLimpar;
+begin
+   VCLEditLimpar(edtUsuario);
+   VCLEditLimpar(edtSenha);
+end;
+
+//
+// Procedimento para autenticar o usuário.
+//
+procedure TPlataformaERPVCLUsuarioLogon.FormularioConfirmar;
+const
+  PROCEDIMENTO_NOME: string = 'FormularioConfirmar';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados do usuário!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locLicencaID    : Integer;
+  locLogon        : string;
+  locSenha        : string;
+begin
+  //
+  // Carrega variáveis.
+  //
+  locLicencaID := gloLicencaID;
+  locLogon     := StringTrim(edtUsuario.Text);
+  locSenha     := StringTrim(edtSenha.Text);
+
+  //
+  // Consistências.
+  //
+  if locLogon = '' then
+  begin
+    VCLConsistenciaExibir('O logon do usuário deve ser informado!');
+    edtUsuario.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(Self);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do usuário.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                                ');
+  locADOQuery.SQL.Add('  [usuario].[licenca_id],                             ');
+  locADOQuery.SQL.Add('  [base].[base_id]   AS [usuario_base_id],            ');
+  locADOQuery.SQL.Add('  [base].[descricao] AS [usuario_base_descricao],     ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_id],                             ');
+  locADOQuery.SQL.Add('  [usuario].[codigo],                                 ');
+  locADOQuery.SQL.Add('  [usuario].[nome],                                   ');
+  locADOQuery.SQL.Add('  [usuario].[logon],                                  ');
+  locADOQuery.SQL.Add('  [usuario].[senha_exigir],                           ');
+  locADOQuery.SQL.Add('  [usuario].[senha_trocar],                           ');
+  locADOQuery.SQL.Add('  [usuario].[senha]                                   ');
+  locADOQuery.SQL.Add('FROM                                                  ');
+  locADOQuery.SQL.Add('  [usuario] WITH (NOLOCK)                             ');
+  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                     ');
+  locADOQuery.SQL.Add('    ON [base].[base_id] = [usuario].[usuario_base_id] ');
+  locADOQuery.SQL.Add('WHERE                                                 ');
+  locADOQuery.SQL.Add('  [usuario].[licenca_id] = :licenca_id AND            ');
+  locADOQuery.SQL.Add('  [usuario].[logon]      = :logon                     ');
+                                                              
+  locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
+  locADOQuery.Parameters.ParamByName('logon').Value      := locLogon;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [usuario]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // O logon informado não existe.
+  //
+  if locADOQuery.RecordCount <= 0 then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);
+    VCLConsistenciaExibir('O logon informado para o usuário não existe!');
+    edtUsuario.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Confere as senhas.
+  //
+  if locSenha <> locADOQuery.FieldByName('senha').AsString then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);
+    VCLConsistenciaExibir('A senha informado não confere!');
+    edtSenha.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Autentica usuário.
+  //
+  gloUsuarioBaseID := locADOQuery.FieldByName('usuario_base_id').AsInteger;
+  gloUsuarioID     := locADOQuery.FieldByName('usuario_id').AsInteger;
+  gloUsuarioLogon  := locADOQuery.FieldByName('logon').AsString;
+  gloUsuarioNome   := locADOQuery.FieldByName('nome').AsString;
+  
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+
+  //
+  // Retorna.
+  //
+  pubClicouFechar := False;
+  Close;
+end;
+
+end.
+
