@@ -94,6 +94,7 @@ type
     edtLogon: TEdit;
     btnSenha: TBitBtn;
     mniSenha: TMenuItem;
+    mniLog: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -150,6 +151,7 @@ type
     procedure chkAdministradorKeyPress(Sender: TObject; var Key: Char);
     procedure mniSenhaClick(Sender: TObject);
     procedure btnSenhaClick(Sender: TObject);
+    procedure mniLogClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -275,6 +277,11 @@ end;
 procedure TPlataformaERPVCLUsuarioCadastro.mniCadastroTipoUsuarioClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_TipoUsuarioListaExibir;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.mniLogClick(Sender: TObject);
+begin
+  FormularioLogExibir;
 end;
 
 procedure TPlataformaERPVCLUsuarioCadastro.mniSenhaClick(Sender: TObject);
@@ -692,17 +699,18 @@ begin
   VCLEditSelecaoControlar(edtTipoUsuarioDescricao, imgTipoUsuarioSelecionar, argEditar);
 
   //
-  // Controla os botões do formulário.
+  // Controla os itens de menu do formulário.
   //
-  btnLog.Visible       := (not argEditar) and (locDadosPopulados);
-  btnAtualizar.Visible := (not argEditar) and (locDadosPopulados);
-  btnNovo.Visible      := (not argEditar);
-  btnExcluir.Visible   := (not argEditar) and (locDadosPopulados);
-  btnAlterar.Visible   := (not argEditar) and (locDadosPopulados);
-  btnGravar.Visible    := argEditar;
-  btnCancelar.Visible  := argEditar;
-  btnMinimizar.Visible := True;
-  btnFechar.Visible    := (not argEditar);
+  mniLog.Visible       := (mniLog.Enabled)       and (not argEditar) and (locDadosPopulados);
+  mniSenha.Visible     := (mniSenha.Enabled)     and (not argEditar) and (locDadosPopulados);
+  mniAtualizar.Visible := (mniAtualizar.Enabled) and (not argEditar) and (locDadosPopulados);
+  mniNovo.Visible      := (mniNovo.Enabled)      and (not argEditar);
+  mniExcluir.Visible   := (mniExcluir.Enabled)   and (not argEditar) and (locDadosPopulados);
+  mniAlterar.Visible   := (mniAlterar.Enabled)   and (not argEditar) and (locDadosPopulados);
+  mniGravar.Visible    := (mniGravar.Enabled)    and argEditar;
+  mniCancelar.Visible  := (mniCancelar.Enabled)  and argEditar;
+  mniMinimizar.Visible := (mniMinimizar.Enabled);
+  mniFechar.Visible    := (mniFechar.Enabled)    and (not argEditar);
 
   //
   // Permissões de acesso por usuário.
@@ -710,23 +718,33 @@ begin
   tabCadastro.TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_CADASTRO');
   tabAuditoria.TabVisible := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_AUDITORIA');
       
-  btnLog.Visible       := (btnLog.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_LOG'));
-  btnAtualizar.Visible := (btnAtualizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ATUALIZAR'));
-  btnNovo.Visible      := (btnNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_NOVO'));
-  btnExcluir.Visible   := (btnExcluir.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_EXCLUIR'));
-  btnAlterar.Visible   := (btnAlterar.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ALTERAR'));
+  mniLog.Visible       := (mniLog.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_LOG'));
+  mniSenha.Visible     := (mniSenha.Visible)     and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_SENHA'));
+  mniAtualizar.Visible := (mniAtualizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ATUALIZAR'));
+  mniNovo.Visible      := (mniNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_NOVO'));
+  mniExcluir.Visible   := (mniExcluir.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_EXCLUIR'));
+  mniAlterar.Visible   := (mniAlterar.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ALTERAR'));
 
   //
-  // Itens do menu.
+  // Itens do menu de cadastro.
   //
-  mniAtualizar.Visible := btnAtualizar.Visible;
-  mniNovo.Visible      := btnNovo.Visible;
-  mniExcluir.Visible   := btnExcluir.Visible;
-  mniAlterar.Visible   := btnAlterar.Visible;
-  mniGravar.Visible    := btnGravar.Visible;
-  mniMinimizar.Visible := btnMinimizar.Visible;
-  mniCancelar.Visible  := btnCancelar.Visible;
-  mniFechar.Visible    := btnFechar.Visible;
+  mniCadastroTipoUsuario.Visible := (mniCadastroTipoUsuario.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA'));
+
+  mniCadastro.Visible  := mniCadastro.Visible and mniCadastroTipoUsuario.Visible;
+
+  //
+  // Botões.
+  //
+  btnLog.Visible       := (btnLog.Enabled)       and (mniLog.Visible);
+  btnSenha.Visible     := (btnSenha.Enabled)     and (mniSenha.Visible);
+  btnAtualizar.Visible := (btnAtualizar.Enabled) and (mniAtualizar.Visible);
+  btnNovo.Visible      := (btnNovo.Enabled)      and (mniNovo.Visible);
+  btnExcluir.Visible   := (btnExcluir.Enabled)   and (mniExcluir.Visible);
+  btnAlterar.Visible   := (btnAlterar.Enabled)   and (mniAlterar.Visible);
+  btnGravar.Visible    := (btnGravar.Enabled)    and (mniGravar.Visible);
+  btnMinimizar.Visible := (btnMinimizar.Enabled) and (mniMinimizar.Visible);
+  btnCancelar.Visible  := (btnCancelar.Enabled)  and (mniCancelar.Visible);
+  btnFechar.Visible    := (btnFechar.Enabled)    and (mniFechar.Visible);
 
   //
   // Ajusta o título do formulário.

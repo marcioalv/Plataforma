@@ -830,12 +830,13 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     OnClick = btnGravarClick
   end
   object btnExcluir: TBitBtn
-    Left = 344
-    Top = 344
+    Left = 0
+    Top = 120
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Excluir'
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -1202,7 +1203,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     OnClick = btnFecharClick
   end
   object btnNovo: TBitBtn
-    Left = 288
+    Left = 344
     Top = 344
     Width = 49
     Height = 49
@@ -1275,12 +1276,13 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     OnClick = btnNovoClick
   end
   object btnAtualizar: TBitBtn
-    Left = 232
-    Top = 344
+    Left = 0
+    Top = 64
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Atualizar'
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -1353,7 +1355,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     Width = 49
     Height = 49
     Cursor = crHandPoint
-    Hint = 'Fechar'
+    Hint = 'Senha'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -1469,6 +1471,10 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     object mniSenha: TMenuItem
       Caption = 'Senha'
       OnClick = mniSenhaClick
+    end
+    object mniLog: TMenuItem
+      Caption = 'Log'
+      OnClick = mniLogClick
     end
     object mniCadastro: TMenuItem
       Caption = 'Cadastro'

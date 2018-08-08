@@ -75,7 +75,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   end
   object imgBackground: TImage
     Left = 0
-    Top = 225
+    Top = 249
     Width = 105
     Height = 105
     Center = True
@@ -163,12 +163,13 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     OnClick = btnGravarClick
   end
   object btnExcluir: TBitBtn
-    Left = 304
-    Top = 288
+    Left = 0
+    Top = 112
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Excluir'
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -1016,7 +1017,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     OnClick = btnFecharClick
   end
   object btnNovo: TBitBtn
-    Left = 248
+    Left = 304
     Top = 288
     Width = 49
     Height = 49
@@ -1089,12 +1090,13 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     OnClick = btnNovoClick
   end
   object btnAtualizar: TBitBtn
-    Left = 192
-    Top = 288
+    Left = 0
+    Top = 56
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Atualizar'
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -1164,8 +1166,8 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
   object mnuFormulario: TMainMenu
     BiDiMode = bdRightToLeft
     ParentBiDiMode = False
-    Left = 256
-    Top = 48
+    Left = 32
+    Top = 288
     object mniFechar: TMenuItem
       Caption = 'Fechar'
       OnClick = mniFecharClick
@@ -1197,6 +1199,10 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     object mniAtualizar: TMenuItem
       Caption = 'Atualizar'
       OnClick = mniAtualizarClick
+    end
+    object mniLog: TMenuItem
+      Caption = 'Log'
+      OnClick = mniLogClick
     end
   end
 end

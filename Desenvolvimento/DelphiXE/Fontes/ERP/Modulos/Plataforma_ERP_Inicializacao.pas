@@ -160,6 +160,9 @@ begin
   gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_USUARIO_CADASTRO_LOG';
 
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_USUARIO_CADASTRO_SENHA';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
   gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_USUARIO_CADASTRO_ATUALIZAR';
 
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);

@@ -177,7 +177,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 504
+      Left = 488
       Top = 464
       Width = 80
       Height = 13
@@ -280,13 +280,14 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     end
   end
   object btnAtualizar: TBitBtn
-    Left = 440
-    Top = 416
+    Left = 0
+    Top = 64
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Atualizar'
     Anchors = [akRight, akBottom]
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -428,13 +429,14 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     OnClick = btnMinimizarClick
   end
   object btnSelecionar: TBitBtn
-    Left = 552
-    Top = 416
+    Left = 0
+    Top = 120
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Selecionar'
     Anchors = [akRight, akBottom]
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -494,7 +496,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     OnClick = btnSelecionarClick
   end
   object btnNovo: TBitBtn
-    Left = 496
+    Left = 552
     Top = 416
     Width = 49
     Height = 49
@@ -568,7 +570,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
     OnClick = btnNovoClick
   end
   object btnLocalizar: TBitBtn
-    Left = 384
+    Left = 496
     Top = 416
     Width = 49
     Height = 49

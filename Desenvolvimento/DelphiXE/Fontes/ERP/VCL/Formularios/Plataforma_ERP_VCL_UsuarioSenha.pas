@@ -50,6 +50,7 @@ type
     chkSenhaExigir: TCheckBox;
     edtUpdContador: TEdit;
     lblUpdContador: TLabel;
+    chkSenhaInformar: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
@@ -78,6 +79,10 @@ type
     procedure mniFecharClick(Sender: TObject);
     procedure mniMinimizarClick(Sender: TObject);
     procedure mniConfirmarClick(Sender: TObject);
+    procedure chkSenhaInformarEnter(Sender: TObject);
+    procedure chkSenhaInformarExit(Sender: TObject);
+    procedure chkSenhaInformarKeyPress(Sender: TObject; var Key: Char);
+    procedure chkSenhaInformarClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar;
@@ -154,9 +159,20 @@ begin
   // Foco no componente apropriado.
   //
   if not chkSenhaExigir.Checked then
-    chkSenhaExigir.SetFocus
+  begin
+    chkSenhaExigir.SetFocus;
+  end
   else
-    edtSenha.SetFocus;
+  begin
+    if not chkSenhaInformar.Checked then
+    begin
+      btnFechar.SetFocus;
+    end
+    else
+    begin
+      edtSenha.SetFocus;
+    end;
+  end;
 end;
 
 //
@@ -224,6 +240,34 @@ end;
 procedure TPlataformaERPVCLUsuarioSenha.tswSenhaTrocarExit(Sender: TObject);
 begin
   if not VCLToggleSwitchSair(tswSenhaTrocar) then Exit;
+end;
+
+//
+// Eventos do componente "informar nova senha".
+//
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaInformarEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkSenhaInformar) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaInformarKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaInformarExit(Sender: TObject);
+begin
+  if not VCLCheckBoxSair(chkSenhaInformar) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenha.chkSenhaInformarClick(Sender: TObject);
+begin
+  FormularioControlar;
+
+  if chkSenhaInformar.Checked then
+  begin
+    edtSenha.SetFocus;
+  end;
 end;
 
 //
@@ -329,6 +373,7 @@ begin
   VCLEditLimpar(edtUpdContador);
   VCLCheckBoxLimpar(chkSenhaExigir);
   VCLToggleSwitchLimpar(tswSenhaTrocar);
+  VCLCheckBoxLimpar(chkSenhaInformar);
   VCLEditLimpar    (edtSenha);
   VCLEditLimpar    (edtSenhaConf);  
   VCLCheckBoxLimpar(chkSenhaExibir);
@@ -345,7 +390,10 @@ begin
   if not chkSenhaExigir.Checked then
   begin
     lblSenhaTrocar.Font.Color := clGray;
-    tswSenhaTrocar.Enabled    := False;    
+    tswSenhaTrocar.Enabled    := False;
+
+    chkSenhaInformar.Enabled  := False;
+    
     lblSenha.Font.Color       := lblSenhaTrocar.Font.Color;
     edtSenha.Enabled          := False;
     lblSenhaConf.Font.Color   := lblSenhaTrocar.Font.Color;    
@@ -356,6 +404,9 @@ begin
   begin
     lblSenhaTrocar.Font.Color := clWindowText;
     tswSenhaTrocar.Enabled    := True;
+
+    chkSenhaInformar.Enabled  := True;
+
     lblSenha.Font.Color       := lblSenhaTrocar.Font.Color;
     edtSenha.Enabled          := True;    
     lblSenhaConf.Font.Color   := lblSenhaTrocar.Font.Color;
@@ -363,6 +414,26 @@ begin
     chkSenhaExibir.Enabled    := True;
   end;
 
+  //
+  // Informar nova senha.
+  //
+  if (not chkSenhaExigir.Checked) or (not chkSenhaInformar.Checked) then
+  begin
+    lblSenha.Font.Color       := lblSenhaTrocar.Font.Color;
+    edtSenha.Enabled          := False;
+    lblSenhaConf.Font.Color   := lblSenhaTrocar.Font.Color;    
+    edtSenhaConf.Enabled      := False;
+    chkSenhaExibir.Enabled    := False;
+  end
+  else
+  begin
+    lblSenha.Font.Color       := lblSenhaTrocar.Font.Color;
+    edtSenha.Enabled          := True;    
+    lblSenhaConf.Font.Color   := lblSenhaTrocar.Font.Color;
+    edtSenhaConf.Enabled      := True;
+    chkSenhaExibir.Enabled    := True;
+  end;
+  
   //
   // Senhas conferem?
   //
@@ -525,7 +596,7 @@ var
                      
   locSenhaExigir     : Boolean;
   locSenhaTrocar     : Boolean;
-  locSenhaAlterada   : Boolean;
+  locSenhaInformar   : Boolean;
   locSenha           : string;
   locSenhaConf       : string;
                      
@@ -552,9 +623,7 @@ begin
   locSenhaTrocar      := VCLToggleSwitchRecuperar(tswSenhaTrocar);
   locSenha            := edtSenha.Text;
   locSenhaConf        := edtSenhaConf.Text;
-
-  locSenhaAlterada    := False;
-  if (locSenha <> '') or (locSenhaConf <> '') then locSenhaAlterada := True;
+  locSenhaInformar    := chkSenhaInformar.Checked;
 
   locUpdContador      := StringIntegerConverter(edtUpdContador.Text);
 
@@ -574,7 +643,7 @@ begin
   end
   else
   begin
-    if locSenhaAlterada then
+    if locSenhaInformar then
     begin
       //
       // A senha não pode ser em branco.
@@ -607,11 +676,11 @@ begin
   // Log de dados.
   //
   locUsuarioLogDados := '';
-  LogDadosBooleanDescrever('Exigir senha',   locSenhaExigir,   locUsuarioLogDados);
-  LogDadosBooleanDescrever('Trocar senha',   locSenhaTrocar,   locUsuarioLogDados);
-  LogDadosBooleanDescrever('Senha alterada', locSenhaAlterada, locUsuarioLogDados);
+  LogDadosBooleanDescrever('Exigir senha',        locSenhaExigir,   locUsuarioLogDados);
+  LogDadosBooleanDescrever('Trocar senha',        locSenhaTrocar,   locUsuarioLogDados);
+  LogDadosBooleanDescrever('Informar nova senha', locSenhaInformar, locUsuarioLogDados);
 
-  if locSenhaAlterada then
+  if locSenhaInformar then
   begin
     LogDadosStringDescrever('Senha', locSenha, locUsuarioLogDados);
   end;
@@ -750,7 +819,7 @@ begin
   locADOQuery.SQL.Add('  [senha_exigir]     = :senha_exigir,     ');
   locADOQuery.SQL.Add('  [senha_trocar]     = :senha_trocar,     ');
 
-  if locSenhaAlterada then
+  if locSenhaInformar then
   begin
     locADOQuery.SQL.Add('[senha] = :senha, ');
   end;
@@ -772,7 +841,7 @@ begin
   locADOQuery.Parameters.ParamByName('senha_exigir').Value    := BooleanStringConverter(locSenhaExigir);
   locADOQuery.Parameters.ParamByName('senha_trocar').Value    := BooleanStringConverter(locSenhaTrocar);
 
-  if locSenhaAlterada then
+  if locSenhaInformar then
   begin
     locADOQuery.Parameters.ParamByName('senha').Value  := locSenha;
   end;

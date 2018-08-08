@@ -321,15 +321,25 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormularioControlar;
 begin
-  btnLocalizar.Visible  := (btnLocalizar.Visible)  and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_LOCALIZAR'));
-  btnAtualizar.Visible  := (btnAtualizar.Visible)  and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_ATUALIZAR'));
-  btnNovo.Visible       := (btnNovo.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_NOVO'));
-  btnSelecionar.Visible := (btnSelecionar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_SELECIONAR'));
+  //
+  // Menu - Ações.
+  //
+  mniLocalizar.Visible  := (mniLocalizar.Enabled)  and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_LOCALIZAR'));
+  mniAtualizar.Visible  := (mniAtualizar.Enabled)  and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_ATUALIZAR'));
+  mniNovo.Visible       := (mniNovo.Enabled)       and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_NOVO'));
+  mniSelecionar.Visible := (mniSelecionar.Enabled) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA_SELECIONAR'));
+  mniMinimizar.Visible  := (mniMinimizar.Enabled);
+  mniFechar.Visible     := (mniFechar.Enabled);
 
-  mniLocalizar.Visible  := btnLocalizar.Visible;
-  mniAtualizar.Visible  := btnAtualizar.Visible;
-  mniNovo.Visible       := btnNovo.Visible;
-  mniSelecionar.Visible := btnSelecionar.Visible;
+  //
+  // Botões.
+  //
+  btnLocalizar.Visible  := (btnLocalizar.Enabled)  and (mniLocalizar.Visible);
+  btnAtualizar.Visible  := (btnAtualizar.Enabled)  and (mniAtualizar.Visible);
+  btnNovo.Visible       := (btnNovo.Enabled)       and (mniNovo.Visible);
+  btnSelecionar.Visible := (btnSelecionar.Enabled) and (mniSelecionar.Visible);
+  btnMinimizar.Visible  := (btnMinimizar.Enabled);
+  btnFechar.Visible     := (btnFechar.Enabled);
 end;
 
 //

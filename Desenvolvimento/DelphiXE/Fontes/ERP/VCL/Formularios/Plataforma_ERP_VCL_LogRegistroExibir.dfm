@@ -74,7 +74,7 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     Width = 513
     Height = 481
     Cursor = crHandPoint
-    ActivePage = tabRegistro
+    ActivePage = tabDados
     TabOrder = 0
     object tabRegistro: TTabSheet
       Caption = 'Registro'
@@ -432,10 +432,6 @@ object PlataformaERPVCLLogRegistroExibir: TPlataformaERPVCLLogRegistroExibir
     object tabDados: TTabSheet
       Caption = 'Dados'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object memDados: TMemo
         Left = 8
         Top = 8

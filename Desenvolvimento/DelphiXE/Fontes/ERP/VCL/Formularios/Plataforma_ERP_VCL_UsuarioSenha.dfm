@@ -4,8 +4,8 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Senhas de usu'#225'rio'
-  ClientHeight = 409
-  ClientWidth = 441
+  ClientHeight = 425
+  ClientWidth = 465
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -59,15 +59,15 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
   end
   object imgBackground: TImage
     Left = 0
-    Top = 296
+    Top = 320
     Width = 105
     Height = 105
     Center = True
     Stretch = True
   end
   object btnFechar: TBitBtn
-    Left = 376
-    Top = 344
+    Left = 400
+    Top = 360
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -129,8 +129,8 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
     OnClick = btnFecharClick
   end
   object btnMinimizar: TBitBtn
-    Left = 320
-    Top = 344
+    Left = 344
+    Top = 360
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -204,8 +204,8 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
   object panFormulario: TPanel
     Left = 48
     Top = 16
-    Width = 377
-    Height = 313
+    Width = 401
+    Height = 329
     BevelKind = bkTile
     BevelOuter = bvNone
     Caption = 'panFormulario'
@@ -214,8 +214,8 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
     ShowCaption = False
     TabOrder = 0
     object lblSenha: TLabel
-      Left = 48
-      Top = 136
+      Left = 72
+      Top = 168
       Width = 38
       Height = 14
       Caption = 'Senha:'
@@ -227,8 +227,8 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       ParentFont = False
     end
     object lblSenhaConf: TLabel
-      Left = 48
-      Top = 192
+      Left = 72
+      Top = 224
       Width = 106
       Height = 14
       Caption = 'Confirma'#231#227'o senha:'
@@ -242,9 +242,9 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
     object lblSenhaTrocar: TLabel
       Left = 48
       Top = 64
-      Width = 236
+      Width = 240
       Height = 14
-      Caption = 'Trocar senha no pr'#243'ximo acesso do usu'#225'rio'
+      Caption = 'Trocar senha no pr'#243'ximo acesso do usu'#225'rio:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -253,8 +253,8 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       ParentFont = False
     end
     object imgSenhaErrada: TImage
-      Left = 48
-      Top = 248
+      Left = 72
+      Top = 280
       Width = 32
       Height = 32
       Hint = 'Senhas n'#227'o conferem!'
@@ -291,8 +291,8 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       ShowHint = True
     end
     object imgSenhaCorreta: TImage
-      Left = 48
-      Top = 248
+      Left = 72
+      Top = 280
       Width = 32
       Height = 32
       Hint = 'Senhas conferem!'
@@ -336,11 +336,12 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       Visible = False
     end
     object chkSenhaExibir: TCheckBox
-      Left = 268
-      Top = 248
+      Left = 292
+      Top = 280
       Width = 89
       Height = 17
       Cursor = crHandPoint
+      TabStop = False
       Caption = 'Exibir senha'
       Color = cl3DDkShadow
       Font.Charset = DEFAULT_CHARSET
@@ -350,34 +351,15 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       Font.Style = []
       ParentColor = False
       ParentFont = False
-      TabOrder = 4
+      TabOrder = 5
       OnClick = chkSenhaExibirClick
       OnEnter = chkSenhaExibirEnter
       OnExit = chkSenhaExibirExit
       OnKeyPress = chkSenhaExibirKeyPress
     end
     object edtSenha: TEdit
-      Left = 48
-      Top = 152
-      Width = 297
-      Height = 26
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -15
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      PasswordChar = '*'
-      TabOrder = 2
-      Text = '**********'
-      OnEnter = edtSenhaEnter
-      OnExit = edtSenhaExit
-      OnKeyPress = edtSenhaKeyPress
-      OnKeyUp = edtSenhaKeyUp
-    end
-    object edtSenhaConf: TEdit
-      Left = 48
-      Top = 208
+      Left = 72
+      Top = 184
       Width = 297
       Height = 26
       Font.Charset = DEFAULT_CHARSET
@@ -388,6 +370,25 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       ParentFont = False
       PasswordChar = '*'
       TabOrder = 3
+      Text = '**********'
+      OnEnter = edtSenhaEnter
+      OnExit = edtSenhaExit
+      OnKeyPress = edtSenhaKeyPress
+      OnKeyUp = edtSenhaKeyUp
+    end
+    object edtSenhaConf: TEdit
+      Left = 72
+      Top = 240
+      Width = 297
+      Height = 26
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      PasswordChar = '*'
+      TabOrder = 4
       Text = '**********'
       OnEnter = edtSenhaConfEnter
       OnExit = edtSenhaConfExit
@@ -413,7 +414,7 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       Width = 97
       Height = 17
       Cursor = crHandPoint
-      Caption = 'Exigir senha'
+      Caption = 'Exigir senha:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -431,14 +432,33 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       Top = 24
       Width = 73
       Height = 21
-      TabOrder = 5
+      TabOrder = 6
       Text = 'edtUpdContador'
       Visible = False
     end
+    object chkSenhaInformar: TCheckBox
+      Left = 48
+      Top = 136
+      Width = 193
+      Height = 17
+      Cursor = crHandPoint
+      Caption = 'Informar uma nova senha:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      OnClick = chkSenhaInformarClick
+      OnEnter = chkSenhaInformarEnter
+      OnExit = chkSenhaInformarExit
+      OnKeyPress = chkSenhaInformarKeyPress
+    end
   end
   object btnConfirmar: TBitBtn
-    Left = 264
-    Top = 344
+    Left = 288
+    Top = 360
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -503,8 +523,8 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
   object mnuFormulario: TMainMenu
     BiDiMode = bdRightToLeft
     ParentBiDiMode = False
-    Left = 144
-    Top = 344
+    Left = 152
+    Top = 336
     object mniFechar: TMenuItem
       Caption = 'Fechar'
       OnClick = mniFecharClick
