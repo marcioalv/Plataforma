@@ -181,6 +181,7 @@ var
   locLicencaID    : Integer;
   locLogon        : string;
   locSenha        : string;
+  locQtdeAtivo    : Integer;
 begin
   //
   // Carrega variáveis.
@@ -244,7 +245,9 @@ begin
   locADOQuery.SQL.Add('  [usuario].[logon],                                  ');
   locADOQuery.SQL.Add('  [usuario].[senha_exigir],                           ');
   locADOQuery.SQL.Add('  [usuario].[senha_trocar],                           ');
-  locADOQuery.SQL.Add('  [usuario].[senha]                                   ');
+  locADOQuery.SQL.Add('  [usuario].[senha],                                  ');
+  locADOQuery.SQL.Add('  [usuario].[bloqueado],                              ');
+  locADOQuery.SQL.Add('  [usuario].[ativo]                                   ');
   locADOQuery.SQL.Add('FROM                                                  ');
   locADOQuery.SQL.Add('  [usuario] WITH (NOLOCK)                             ');
   locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                     ');
@@ -284,7 +287,94 @@ begin
     FreeAndNil(locADOQuery);
     locADOConnection.Close;
     FreeAndNil(locADOConnection);
-    VCLConsistenciaExibir('O logon informado para o usuário não existe!');
+    VCLConsistenciaExibir('O logon "' + locLogon + '" não existe no cadastro de usuários da aplicação!');
+    edtUsuario.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Se houver um único usuário localizado.
+  //
+  if locADOQuery.RecordCount = 1 then
+  begin
+    //
+    // Se o usuário estiver inativo.
+    //
+    if not StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString) then
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      VCLConsistenciaExibir('O usuário "' + locLogon + '" não está ativo!');
+      edtUsuario.SetFocus;
+      Exit;
+    end;
+  end
+  else
+  begin
+    //
+    // Se houver mais de um usuário determina quantos ativos.
+    //
+    locQtdeAtivo := 0;
+    while not locADOQuery.EOF do
+    begin
+      if StringBooleanConverter(locADOQuery.FieldByName('Ativo').AsString) then Inc(locQtdeAtivo);
+      locADOQuery.Next;
+    end;
+
+    //
+    // Se não houver nenhum usuário ativo então cancela acesso.
+    //
+    if locQtdeAtivo <= 0 then
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      VCLConsistenciaExibir('O usuário "' + locLogon + '" está bloqueado!');
+      edtUsuario.SetFocus;
+      Exit;      
+    end;
+
+    //
+    // Existe mais de usuário com o mesmo logon e ativo então cancela.
+    //
+    if locQtdeAtivo > 1 then
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      VCLConsistenciaExibir('Existem vários usuários ativos com o logon "' + locLogon + '" e portanto não é possível determinar sua identidade!');
+      edtUsuario.SetFocus;
+      Exit;      
+    end;
+
+    //
+    // Existem vários usuários com o mesmo logon mas somente um ativo.
+    // Localiza esse usuário novamente para continuar a autenticação.
+    //
+    locADOQuery.First;
+    locADOQuery.Last;
+    
+    while not locADOQuery.EOF do
+    begin
+      if StringBooleanConverter(locADOQuery.FieldByName('Ativo').AsString) then break;
+      locADOQuery.Next;
+    end;
+  end;
+
+  //
+  // Se o usuário estiver bloqueado.
+  //
+  if StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString) then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);
+    VCLConsistenciaExibir('O usuário "' + locLogon + '" está bloqueado!');
     edtUsuario.SetFocus;
     Exit;
   end;
@@ -298,7 +388,7 @@ begin
     FreeAndNil(locADOQuery);
     locADOConnection.Close;
     FreeAndNil(locADOConnection);
-    VCLConsistenciaExibir('A senha informado não confere!');
+    VCLConsistenciaExibir('A senha informada não confere!');
     edtSenha.SetFocus;
     Exit;
   end;

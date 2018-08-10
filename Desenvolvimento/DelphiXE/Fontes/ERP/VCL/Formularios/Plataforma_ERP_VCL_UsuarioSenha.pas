@@ -664,6 +664,11 @@ begin
         edtSenha.SetFocus;
         Exit;
       end;
+    end
+    else
+    begin
+      locSenha     := '';
+      locSenhaConf := '';
     end;
   end;
 
@@ -679,11 +684,7 @@ begin
   LogDadosBooleanDescrever('Exigir senha',        locSenhaExigir,   locUsuarioLogDados);
   LogDadosBooleanDescrever('Trocar senha',        locSenhaTrocar,   locUsuarioLogDados);
   LogDadosBooleanDescrever('Informar nova senha', locSenhaInformar, locUsuarioLogDados);
-
-  if locSenhaInformar then
-  begin
-    LogDadosStringDescrever('Senha', locSenha, locUsuarioLogDados);
-  end;
+  LogDadosStringDescrever ('Senha',               locSenha,         locUsuarioLogDados);
 
   //
   // Troca cursor.
