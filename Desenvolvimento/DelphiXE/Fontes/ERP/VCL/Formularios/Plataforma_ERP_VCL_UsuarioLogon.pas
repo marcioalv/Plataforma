@@ -28,7 +28,7 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
-  Vcl.Buttons;
+  Vcl.Buttons, Vcl.Menus;
 
 type
   TPlataformaERPVCLUsuarioLogon = class(TForm)
@@ -38,10 +38,17 @@ type
     btnFechar: TBitBtn;
     btnConfirmar: TBitBtn;
     imgSenha: TImage;
-    shaUsuario: TShape;
-    shaSenha: TShape;
     imgFormulario: TImage;
-    shaBackground: TShape;
+    Image1: TImage;
+    mnuFormulario: TMainMenu;
+    mniConfiguracoes: TMenuItem;
+    mniPrecisoAjuda: TMenuItem;
+    mniAcessar: TMenuItem;
+    mniFechar: TMenuItem;
+    mniEsqueciSenha: TMenuItem;
+    mniNaoSeiLogon: TMenuItem;
+    mniConexaoBaseDados: TMenuItem;
+    mniLicencaAplicacao: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
@@ -53,9 +60,13 @@ type
     procedure edtSenhaEnter(Sender: TObject);
     procedure edtSenhaExit(Sender: TObject);
     procedure edtSenhaKeyPress(Sender: TObject; var Key: Char);
+    procedure mniAcessarClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
   private
+    priTentativas: Integer;
     procedure FormularioLimpar;
     procedure FormularioConfirmar;
+    procedure TentativasAcessoValidar;
   public
     pubClicouFechar: Boolean;
   end;
@@ -82,15 +93,14 @@ const
 procedure TPlataformaERPVCLUsuarioLogon.FormCreate(Sender: TObject);
 begin
   //
+  // Inicializa as variáveis privadas.
+  //
+  priTentativas := 0;
+  
+  //
   // Inicializa variáveis públicas.
   //
   pubClicouFechar := True;
-
-  //
-  // Ajusta cores de background de alguns componentes.
-  //
-  shaBackground.Brush.Color := RGB(78, 169, 164);
-  shaBackground.Pen.Color := RGB(78, 169, 164);
 end;
 
 //
@@ -110,11 +120,24 @@ begin
 end;
 
 //
+// Eventos de click nos itens do menu.
+//
+procedure TPlataformaERPVCLUsuarioLogon.mniAcessarClick(Sender: TObject);
+begin
+  FormularioConfirmar;
+end;
+
+procedure TPlataformaERPVCLUsuarioLogon.mniFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+//
 // Eventos do componente "usuário".
 //
 procedure TPlataformaERPVCLUsuarioLogon.edtUsuarioEnter(Sender: TObject);
 begin
-  //if not VCLEditEntrar(edtUsuario) then Exit;
+  if not VCLEditEntrar(edtUsuario) then Exit;
 end;
 
 procedure TPlataformaERPVCLUsuarioLogon.edtUsuarioKeyPress(Sender: TObject; var Key: Char);
@@ -124,7 +147,7 @@ end;
 
 procedure TPlataformaERPVCLUsuarioLogon.edtUsuarioExit(Sender: TObject);
 begin
-  //if not VCLEditSair(edtUsuario) then Exit;
+  if not VCLEditSair(edtUsuario) then Exit;
 end;
 
 //
@@ -132,7 +155,7 @@ end;
 //
 procedure TPlataformaERPVCLUsuarioLogon.edtSenhaEnter(Sender: TObject);
 begin
-  //if not VCLEditEntrar(edtSenha) then Exit;
+  if not VCLEditEntrar(edtSenha) then Exit;
 end;
 
 procedure TPlataformaERPVCLUsuarioLogon.edtSenhaKeyPress(Sender: TObject; var Key: Char);
@@ -142,7 +165,7 @@ end;
 
 procedure TPlataformaERPVCLUsuarioLogon.edtSenhaExit(Sender: TObject);
 begin
-  //if not VCLEditSair(edtSenha) then Exit;
+  if not VCLEditSair(edtSenha) then Exit;
 end;
 
 //
@@ -279,6 +302,11 @@ begin
   end;
 
   //
+  // Incrementa tentativa de acesso.
+  //
+  Inc(priTentativas);
+
+  //
   // O logon informado não existe.
   //
   if locADOQuery.RecordCount <= 0 then
@@ -288,6 +316,7 @@ begin
     locADOConnection.Close;
     FreeAndNil(locADOConnection);
     VCLConsistenciaExibir('O logon "' + locLogon + '" não existe no cadastro de usuários da aplicação!');
+    TentativasAcessoValidar;
     edtUsuario.SetFocus;
     Exit;
   end;
@@ -307,6 +336,7 @@ begin
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
       VCLConsistenciaExibir('O usuário "' + locLogon + '" não está ativo!');
+      TentativasAcessoValidar;
       edtUsuario.SetFocus;
       Exit;
     end;
@@ -333,6 +363,7 @@ begin
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
       VCLConsistenciaExibir('O usuário "' + locLogon + '" está bloqueado!');
+      TentativasAcessoValidar;
       edtUsuario.SetFocus;
       Exit;      
     end;
@@ -347,6 +378,7 @@ begin
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
       VCLConsistenciaExibir('Existem vários usuários ativos com o logon "' + locLogon + '" e portanto não é possível determinar sua identidade!');
+      TentativasAcessoValidar;
       edtUsuario.SetFocus;
       Exit;      
     end;
@@ -375,6 +407,7 @@ begin
     locADOConnection.Close;
     FreeAndNil(locADOConnection);
     VCLConsistenciaExibir('O usuário "' + locLogon + '" está bloqueado!');
+    TentativasAcessoValidar;
     edtUsuario.SetFocus;
     Exit;
   end;
@@ -389,6 +422,7 @@ begin
     locADOConnection.Close;
     FreeAndNil(locADOConnection);
     VCLConsistenciaExibir('A senha informada não confere!');
+    TentativasAcessoValidar;
     edtSenha.SetFocus;
     Exit;
   end;
@@ -415,6 +449,18 @@ begin
   //
   pubClicouFechar := False;
   Close;
+end;
+
+//
+// Procedimento para validar as tentativas de acesso.
+//
+procedure TPlataformaERPVCLUsuarioLogon.TentativasAcessoValidar;
+begin
+  if priTentativas >= 3 then
+  begin
+    VCLConsistenciaExibir('Foram realizadas 3 tentativas de acesso fracassadas!', 'Por segurança o aplicativo será encerrado!');
+    Close;
+  end;
 end;
 
 end.
