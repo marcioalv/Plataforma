@@ -15,27 +15,29 @@ unit Plataforma_ERP_Inicializacao;
 interface
 
 uses
-  Plataforma_Framework_Util,
-  Plataforma_Framework_Log,
-  Plataforma_ERP_Global,
-  Plataforma_ERP_Generico,
   System.SysUtils,
   Winapi.Windows,
   Vcl.Forms;
 
-procedure PlataformaERPHashCodInicializar;
-procedure PlataformaERPLogInicializar;
-function PlataformaERPUsuarioInicializar: Boolean;
+procedure Plataforma_ERP_HashCodInicializar;
+procedure Plataforma_ERP_LogInicializar;
+function  Plataforma_ERP_UsuarioInicializar: Boolean;
+function  Plataforma_ERP_UsuarioSenhaTrocaVerificar: Boolean;
 
 implementation
 
 uses
-  Plataforma_ERP_VCL_UsuarioLogon;
+  Plataforma_Framework_Util,
+  Plataforma_Framework_Log,
+  Plataforma_ERP_Global,
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_UsuarioLogon,
+  Plataforma_ERP_VCL_UsuarioSenhaTrocar;
 
 //
 // Procedimento para inicializar o hashcode da aplicação.
 //
-procedure PlataformaERPHashCodInicializar;
+procedure Plataforma_ERP_HashCodInicializar;
 var
   locMomento  : string;
   locDrive    : string;
@@ -51,7 +53,7 @@ end;
 //
 // Procedimento para iniciar o mecanismo de log da aplicação.
 //
-procedure PlataformaERPLogInicializar;
+procedure Plataforma_ERP_LogInicializar;
 begin
   gloLocalLog          := TPlataformaFrameworkLog.Create;
   gloLocalLog.FilePath := gloAppPath + '\Log';
@@ -63,7 +65,7 @@ end;
 //
 // Função para inicializar o usuário da aplicação.
 //
-function PlataformaERPUsuarioInicializar: Boolean;
+function Plataforma_ERP_UsuarioInicializar: Boolean;
 var
   locFormulario  : TPlataformaERPVCLUsuarioLogon;
   locClicouFechar: Boolean;
@@ -96,6 +98,11 @@ begin
   //
   if locClicouFechar then Exit;
 
+  //
+  // Usuário deve trocar a senha?
+  //
+  if not Plataforma_ERP_UsuarioSenhaTrocaVerificar then Exit;
+  
   //
   // Lista de rotinas.
   //
@@ -202,6 +209,24 @@ begin
 
   // Usuário autenticado.
   Result := True;
+end;
+
+//
+// Função para verificar e executar a troca de senha do usuário se for o caso.
+//
+function Plataforma_ERP_UsuarioSenhaTrocaVerificar: Boolean;
+var
+  locFormulario: TPlataformaERPVCLUsuarioSenhaTrocar;
+begin
+  Result := False;
+
+  locFormulario := TPlataformaERPVCLUsuarioSenhaTrocar.Create(nil);
+  locFormulario.ShowModal;
+
+  Result := (not locFormulario.pubClicouFechar);
+
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 end.

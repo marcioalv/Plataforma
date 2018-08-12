@@ -24,11 +24,18 @@ uses
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.Grids, Vcl.Samples.Calendar, Vcl.ExtCtrls, Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.WinXCtrls;
+  Vcl.Dialogs,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  Vcl.Grids,
+  Vcl.ExtCtrls,
+  Vcl.Buttons,
+  Vcl.Imaging.pngimage,
+  Vcl.WinXCtrls;
 
 type
   TPlataformaERPVCLUsuarioSenha = class(TForm)
-    Image1: TImage;
+    imgFormulario: TImage;
     imgBackground: TImage;
     btnFechar: TBitBtn;
     btnMinimizar: TBitBtn;

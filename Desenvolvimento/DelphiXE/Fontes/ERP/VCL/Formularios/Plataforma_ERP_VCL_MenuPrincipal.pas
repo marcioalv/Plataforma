@@ -213,10 +213,10 @@ begin
   gloAppPath := PathExtrair(Application.ExeName);
 
   // Gera o hashcode de execução da aplicação.
-  PlataformaERPHashCodInicializar;
+  Plataforma_ERP_HashCodInicializar;
  
   // Inicializa o log local da aplicação.
-  PlataformaERPLogInicializar;
+  Plataforma_ERP_LogInicializar;
 
   // Define os parâmetros de conexão ao banco de dados.
   gloConexaoADOString := 'Provider=SQLOLEDB.1;Persist Security Info=True;Trusted_Connection=True;Data Source=LocalHost\SQLExpress;User ID=sa;Password=abc123;Initial Catalog=PlataformaERP;Connection Timeout=10;';
@@ -238,7 +238,7 @@ begin
   //
   // Logon do usuário.
   //
-  if not PlataformaERPUsuarioInicializar then Close;
+  if not Plataforma_ERP_UsuarioInicializar then Close;
 
   //
   // Ajusta itens de menu.

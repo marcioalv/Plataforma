@@ -35,7 +35,8 @@ uses
   Plataforma_ERP_VCL_UsuarioFiltro in '..\Formularios\Plataforma_ERP_VCL_UsuarioFiltro.pas' {PlataformaERPVCLUsuarioFiltro},
   Plataforma_ERP_VCL_UsuarioCadastro in '..\Formularios\Plataforma_ERP_VCL_UsuarioCadastro.pas' {PlataformaERPVCLUsuarioCadastro},
   Plataforma_ERP_VCL_UsuarioSenha in '..\Formularios\Plataforma_ERP_VCL_UsuarioSenha.pas' {PlataformaERPVCLUsuarioSenha},
-  Plataforma_ERP_VCL_UsuarioLogon in '..\Formularios\Plataforma_ERP_VCL_UsuarioLogon.pas' {PlataformaERPVCLUsuarioLogon};
+  Plataforma_ERP_VCL_UsuarioLogon in '..\Formularios\Plataforma_ERP_VCL_UsuarioLogon.pas' {PlataformaERPVCLUsuarioLogon},
+  Plataforma_ERP_VCL_UsuarioSenhaTrocar in '..\Formularios\Plataforma_ERP_VCL_UsuarioSenhaTrocar.pas' {PlataformaERPVCLUsuarioSenhaTrocar};
 
 {$R *.res}
 
