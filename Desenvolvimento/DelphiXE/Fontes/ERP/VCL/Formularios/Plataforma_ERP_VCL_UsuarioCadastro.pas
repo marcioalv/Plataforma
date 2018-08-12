@@ -66,13 +66,11 @@ type
     imgTipoUsuarioSelecionar: TImage;
     edtTipoUsuarioBaseID: TEdit;
     btnGravar: TBitBtn;
-    btnExcluir: TBitBtn;
     btnCancelar: TBitBtn;
     btnMinimizar: TBitBtn;
     btnAlterar: TBitBtn;
     btnFechar: TBitBtn;
     btnNovo: TBitBtn;
-    btnAtualizar: TBitBtn;
     btnLog: TBitBtn;
     mnuFormulario: TMainMenu;
     mniFechar: TMenuItem;
@@ -116,7 +114,6 @@ type
     procedure chkAtivoExit(Sender: TObject);
     procedure chkAtivoKeyPress(Sender: TObject; var Key: Char);
     procedure btnLogClick(Sender: TObject);
-    procedure btnExcluirClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
@@ -124,7 +121,6 @@ type
     procedure edtUsuarioBaseDescricaoClick(Sender: TObject);
     procedure edtInsLocalDtHrClick(Sender: TObject);
     procedure edtUpdLocalDtHrClick(Sender: TObject);
-    procedure btnAtualizarClick(Sender: TObject);
     procedure edtTipoUsuarioCodigoEnter(Sender: TObject);
     procedure edtTipoUsuarioCodigoExit(Sender: TObject);
     procedure edtTipoUsuarioCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -556,27 +552,11 @@ begin
 end;
 
 //
-// Evento de click no botão "atualizar".
-//
-procedure TPlataformaERPVCLUsuarioCadastro.btnAtualizarClick(Sender: TObject);
-begin
-  FormularioAtualizar;
-end;
-
-//
 // Evento de click no botão "novo".
 //
 procedure TPlataformaERPVCLUsuarioCadastro.btnNovoClick(Sender: TObject);
 begin
   FormularioNovo;
-end;
-
-//
-// Evento de click no botão "excluir".
-//
-procedure TPlataformaERPVCLUsuarioCadastro.btnExcluirClick(Sender: TObject);
-begin
-  FormularioExcluir;
 end;
 
 //
@@ -737,9 +717,7 @@ begin
   //
   btnLog.Visible       := (btnLog.Enabled)       and (mniLog.Visible);
   btnSenha.Visible     := (btnSenha.Enabled)     and (mniSenha.Visible);
-  btnAtualizar.Visible := (btnAtualizar.Enabled) and (mniAtualizar.Visible);
   btnNovo.Visible      := (btnNovo.Enabled)      and (mniNovo.Visible);
-  btnExcluir.Visible   := (btnExcluir.Enabled)   and (mniExcluir.Visible);
   btnAlterar.Visible   := (btnAlterar.Enabled)   and (mniAlterar.Visible);
   btnGravar.Visible    := (btnGravar.Enabled)    and (mniGravar.Visible);
   btnMinimizar.Visible := (btnMinimizar.Enabled) and (mniMinimizar.Visible);

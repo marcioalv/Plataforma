@@ -40,7 +40,6 @@ type
     btnMinimizar: TBitBtn;
     imgBackground: TImage;
     lvwLista: TListView;
-    btnAtualizar: TBitBtn;
     pbaProgresso: TProgressBar;
     mnuFormulario: TMainMenu;
     mniFechar: TMenuItem;
@@ -53,7 +52,6 @@ type
     procedure btnSelecionarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
-    procedure btnAtualizarClick(Sender: TObject);
     procedure lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure lvwListaDblClick(Sender: TObject);
@@ -191,14 +189,6 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosSelecao.btnSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
-end;
-
-//
-// Evento de click no botão "atualizar".
-//
-procedure TPlataformaERPVCLTiposUsuariosSelecao.btnAtualizarClick(Sender: TObject);
-begin
-  FormularioAtualizar;
 end;
 
 //

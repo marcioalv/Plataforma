@@ -354,10 +354,6 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -898,25 +894,25 @@ object PlataformaERPVCLTiposUsuariosFiltro: TPlataformaERPVCLTiposUsuariosFiltro
     end
   end
   object mniFormulario: TMainMenu
-    BiDiMode = bdRightToLeft
+    BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     Left = 128
     Top = 248
-    object mniFechar: TMenuItem
-      Caption = 'Fechar'
-      OnClick = mniFecharClick
-    end
-    object mniMinimizar: TMenuItem
-      Caption = 'Minimizar'
-      OnClick = mniMinimizarClick
+    object mniLocalizar: TMenuItem
+      Caption = 'Localizar'
+      OnClick = mniLocalizarClick
     end
     object mniLimpar: TMenuItem
       Caption = 'Limpar'
       OnClick = mniLimparClick
     end
-    object mniLocalizar: TMenuItem
-      Caption = 'Localizar'
-      OnClick = mniLocalizarClick
+    object mniMinimizar: TMenuItem
+      Caption = 'Minimizar'
+      OnClick = mniMinimizarClick
+    end
+    object mniFechar: TMenuItem
+      Caption = 'Fechar'
+      OnClick = mniFecharClick
     end
   end
 end

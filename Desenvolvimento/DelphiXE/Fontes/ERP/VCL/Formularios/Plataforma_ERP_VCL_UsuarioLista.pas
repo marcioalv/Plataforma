@@ -41,9 +41,7 @@ type
     lblListaFiltros: TLabel;
     imgBackground: TImage;
     btnFechar: TBitBtn;
-    btnAtualizar: TBitBtn;
     btnMinimizar: TBitBtn;
-    btnSelecionar: TBitBtn;
     btnNovo: TBitBtn;
     btnLocalizar: TBitBtn;
     mnuFormulario: TMainMenu;
@@ -63,8 +61,6 @@ type
     procedure lvwListaDblClick(Sender: TObject);
     procedure lvwListaKeyPress(Sender: TObject; var Key: Char);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure btnAtualizarClick(Sender: TObject);
-    procedure btnSelecionarClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
@@ -284,27 +280,11 @@ begin
 end;
 
 //
-// Evento de click no botão "atualizar".
-//
-procedure TPlataformaERPVCLUsuarioLista.btnAtualizarClick(Sender: TObject);
-begin
-  FormularioAtualizar(VCL_NENHUM_INDICE);
-end;
-
-//
 // Evento de click no botão "novo".
 //
 procedure TPlataformaERPVCLUsuarioLista.btnNovoClick(Sender: TObject);
 begin
   FormularioCadastroExibir(True);
-end;
-
-//
-// Evento de click no botão "selecionar".
-//
-procedure TPlataformaERPVCLUsuarioLista.btnSelecionarClick(Sender: TObject);
-begin
-  FormularioCadastroExibir(False);
 end;
 
 //
@@ -349,9 +329,7 @@ begin
   // Botões.
   //
   btnLocalizar.Visible  := (btnLocalizar.Enabled)  and (mniLocalizar.Visible);
-  btnAtualizar.Visible  := (btnAtualizar.Enabled)  and (mniAtualizar.Visible);
   btnNovo.Visible       := (btnNovo.Enabled)       and (mniNovo.Visible);
-  btnSelecionar.Visible := (btnSelecionar.Enabled) and (mniSelecionar.Visible);
   btnMinimizar.Visible  := (btnMinimizar.Enabled);
   btnFechar.Visible     := (btnFechar.Enabled);
 end;

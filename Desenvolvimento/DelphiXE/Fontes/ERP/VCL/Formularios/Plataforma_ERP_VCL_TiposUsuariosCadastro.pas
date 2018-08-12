@@ -48,7 +48,6 @@ type
     edtUpdLocalDtHr: TEdit;
     lblUpdContador: TLabel;
     edtUpdContador: TEdit;
-    btnExcluir: TBitBtn;
     btnGravar: TBitBtn;
     btnMinimizar: TBitBtn;
     btnFechar: TBitBtn;
@@ -65,7 +64,6 @@ type
     edtLicencaID: TEdit;
     lblCodigoCadastrado: TLabel;
     edtCodigoCadastrado: TEdit;
-    btnAtualizar: TBitBtn;
     imgBackground: TImage;
     mnuFormulario: TMainMenu;
     mniFechar: TMenuItem;
@@ -102,7 +100,6 @@ type
     procedure chkAtivoExit(Sender: TObject);
     procedure chkAtivoKeyPress(Sender: TObject; var Key: Char);
     procedure btnLogClick(Sender: TObject);
-    procedure btnExcluirClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
@@ -110,7 +107,6 @@ type
     procedure edtTipoUsuarioBaseDescricaoClick(Sender: TObject);
     procedure edtInsLocalDtHrClick(Sender: TObject);
     procedure edtUpdLocalDtHrClick(Sender: TObject);
-    procedure btnAtualizarClick(Sender: TObject);
     procedure mniFecharClick(Sender: TObject);
     procedure mniCancelarClick(Sender: TObject);
     procedure mniMinimizarClick(Sender: TObject);
@@ -405,27 +401,11 @@ begin
 end;
 
 //
-// Evento de click no botão "atualizar".
-//
-procedure TPlataformaERPVCLTiposUsuariosCadastro.btnAtualizarClick(Sender: TObject);
-begin
-  FormularioAtualizar;
-end;
-
-//
 // Evento de click no botão "novo".
 //
 procedure TPlataformaERPVCLTiposUsuariosCadastro.btnNovoClick(Sender: TObject);
 begin
   FormularioNovo;
-end;
-
-//
-// Evento de click no botão "excluir".
-//
-procedure TPlataformaERPVCLTiposUsuariosCadastro.btnExcluirClick(Sender: TObject);
-begin
-  FormularioExcluir;
 end;
 
 //
@@ -561,9 +541,7 @@ begin
   // Botões.
   //
   btnLog.Visible       := (btnLog.Enabled)       and (mniLog.Visible);
-  btnAtualizar.Visible := (btnAtualizar.Enabled) and (mniAtualizar.Visible);
   btnNovo.Visible      := (btnNovo.Enabled)      and (mniNovo.Visible);
-  btnExcluir.Visible   := (btnExcluir.Enabled)   and (mniExcluir.Visible);
   btnAlterar.Visible   := (btnAlterar.Enabled)   and (mniAlterar.Visible);
   btnGravar.Visible    := (btnGravar.Enabled)    and (mniGravar.Visible);
   btnMinimizar.Visible := (btnMinimizar.Enabled) and (mniMinimizar.Visible);

@@ -874,25 +874,25 @@ object PlataformaERPVCLUsuarioFiltro: TPlataformaERPVCLUsuarioFiltro
     OnClick = btnMinimizarClick
   end
   object mniFormulario: TMainMenu
-    BiDiMode = bdRightToLeft
+    BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     Left = 128
     Top = 248
-    object mniFechar: TMenuItem
-      Caption = 'Fechar'
-      OnClick = mniFecharClick
-    end
-    object mniMinimizar: TMenuItem
-      Caption = 'Minimizar'
-      OnClick = mniMinimizarClick
+    object mniLocalizar: TMenuItem
+      Caption = 'Localizar'
+      OnClick = mniLocalizarClick
     end
     object mniLimpar: TMenuItem
       Caption = 'Limpar'
       OnClick = mniLimparClick
     end
-    object mniLocalizar: TMenuItem
-      Caption = 'Localizar'
-      OnClick = mniLocalizarClick
+    object mniMinimizar: TMenuItem
+      Caption = 'Minimizar'
+      OnClick = mniMinimizarClick
+    end
+    object mniFechar: TMenuItem
+      Caption = 'Fechar'
+      OnClick = mniFecharClick
     end
   end
 end

@@ -38,7 +38,7 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     Top = 80
     object mniAplicacao: TMenuItem
       Caption = '&Aplica'#231#227'o'
-      object mnuConfiguracoes: TMenuItem
+      object mniConfiguracoes: TMenuItem
         Caption = 'Configura'#231#245'es'
         object mniResolucaoTela: TMenuItem
           Caption = 'Resolu'#231#227'o de tela'
@@ -48,21 +48,21 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
           end
         end
       end
-      object mniLogUsoAplicacao: TMenuItem
-        Caption = 'Log de uso'
+      object mniLogsAplicacao: TMenuItem
+        Caption = 'Logs aplica'#231#227'o'
         object mniLogUsoLocal: TMenuItem
           Caption = 'Log detalhado local do computador'
           OnClick = mniLogUsoLocalClick
         end
       end
-      object Controledeacesso1: TMenuItem
-        Caption = 'Controle de acesso'
+      object mniControleAcesso: TMenuItem
+        Caption = 'Controle acesso'
         object mniUsuarios: TMenuItem
           Caption = 'Usu'#225'rios'
           OnClick = mniUsuariosClick
         end
         object mniTiposUsuarios: TMenuItem
-          Caption = 'Tipos de usu'#225'rios'
+          Caption = 'Tipos usu'#225'rios'
           OnClick = mniTiposUsuariosClick
         end
       end

@@ -39,13 +39,13 @@ type
   TPlataformaERPVCLMenuPrincipal = class(TForm)
     mnuFormulario: TMainMenu;
     mniAplicacao: TMenuItem;
-    mniLogUsoAplicacao: TMenuItem;
+    mniLogsAplicacao: TMenuItem;
     mniLogUsoLocal: TMenuItem;
-    Controledeacesso1: TMenuItem;
+    mniControleAcesso: TMenuItem;
     mniTiposUsuarios: TMenuItem;
     Image1: TImage;
     mniUsuarios: TMenuItem;
-    mnuConfiguracoes: TMenuItem;
+    mniConfiguracoes: TMenuItem;
     mniResolucaoTela: TMenuItem;
     mni1250x700: TMenuItem;
     timInicializacao: TTimer;
@@ -188,7 +188,20 @@ end;
 //
 procedure TPlataformaERPVCLMenuPrincipal.FormularioMenuConstruir;
 begin
-  mniTiposUsuarios.Visible := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
+  //
+  // Controle de acesso.
+  //
+  mniTiposUsuarios.Visible  := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
+  mniUsuarios.Visible       := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA');
+  mniControleAcesso.Visible := (mniUsuarios.Visible) or
+                               (mniTiposUsuarios.Visible);
+
+  //
+  // Aplicação.
+  //
+  mniAplicacao.Visible := (mniConfiguracoes.Visible) or
+                          (mniLogsAplicacao.Visible) or
+                          (mniControleAcesso.Visible);
 end;
 
 //
@@ -226,6 +239,11 @@ begin
   // Logon do usuário.
   //
   if not PlataformaERPUsuarioInicializar then Close;
+
+  //
+  // Ajusta itens de menu.
+  //
+  FormularioMenuConstruir;
 end;
 
 end.

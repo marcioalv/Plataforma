@@ -361,21 +361,21 @@ object PlataformaERPVCLTiposUsuariosCodigo: TPlataformaERPVCLTiposUsuariosCodigo
     OnClick = btnMinimizarClick
   end
   object mnuFormulario: TMainMenu
-    BiDiMode = bdRightToLeft
+    BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     Left = 176
     Top = 105
-    object mniFechar: TMenuItem
-      Caption = 'Fechar'
-      OnClick = mniFecharClick
+    object mniSelecionar: TMenuItem
+      Caption = 'Selecionar'
+      OnClick = mniSelecionarClick
     end
     object mniMinimizar: TMenuItem
       Caption = 'Minimizar'
       OnClick = mniMinimizarClick
     end
-    object mniSelecionar: TMenuItem
-      Caption = 'Selecionar'
-      OnClick = mniSelecionarClick
+    object mniFechar: TMenuItem
+      Caption = 'Fechar'
+      OnClick = mniFecharClick
     end
   end
 end

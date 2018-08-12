@@ -521,21 +521,21 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
     OnClick = btnConfirmarClick
   end
   object mnuFormulario: TMainMenu
-    BiDiMode = bdRightToLeft
+    BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     Left = 152
     Top = 336
-    object mniFechar: TMenuItem
-      Caption = 'Fechar'
-      OnClick = mniFecharClick
+    object mniConfirmar: TMenuItem
+      Caption = 'Confirmar'
+      OnClick = mniConfirmarClick
     end
     object mniMinimizar: TMenuItem
       Caption = 'Minimizar'
       OnClick = mniMinimizarClick
     end
-    object mniConfirmar: TMenuItem
-      Caption = 'Confirmar'
-      OnClick = mniConfirmarClick
+    object mniFechar: TMenuItem
+      Caption = 'Fechar'
+      OnClick = mniFecharClick
     end
   end
 end
