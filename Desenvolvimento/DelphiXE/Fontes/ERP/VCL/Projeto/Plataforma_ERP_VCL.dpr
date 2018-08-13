@@ -36,7 +36,10 @@ uses
   Plataforma_ERP_VCL_UsuarioCadastro in '..\Formularios\Plataforma_ERP_VCL_UsuarioCadastro.pas' {PlataformaERPVCLUsuarioCadastro},
   Plataforma_ERP_VCL_UsuarioSenha in '..\Formularios\Plataforma_ERP_VCL_UsuarioSenha.pas' {PlataformaERPVCLUsuarioSenha},
   Plataforma_ERP_VCL_UsuarioLogon in '..\Formularios\Plataforma_ERP_VCL_UsuarioLogon.pas' {PlataformaERPVCLUsuarioLogon},
-  Plataforma_ERP_VCL_UsuarioSenhaTrocar in '..\Formularios\Plataforma_ERP_VCL_UsuarioSenhaTrocar.pas' {PlataformaERPVCLUsuarioSenhaTrocar};
+  Plataforma_ERP_VCL_UsuarioSenhaTrocar in '..\Formularios\Plataforma_ERP_VCL_UsuarioSenhaTrocar.pas' {PlataformaERPVCLUsuarioSenhaTrocar},
+  Plataforma_ERP_VCL_PerfilUsuarioLista in '..\Formularios\Plataforma_ERP_VCL_PerfilUsuarioLista.pas' {PlataformaERPVCLPerfilUsuarioLista},
+  Plataforma_ERP_VCL_PerfilUsuarioFiltro in '..\Formularios\Plataforma_ERP_VCL_PerfilUsuarioFiltro.pas' {PlataformaERPVCLPerfilUsuarioFiltro},
+  Plataforma_ERP_VCL_PerfilUsuarioCadastro in '..\Formularios\Plataforma_ERP_VCL_PerfilUsuarioCadastro.pas' {PlataformaERPVCLPerfilUsuarioCadastro};
 
 {$R *.res}
 
@@ -44,5 +47,8 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
+  Application.CreateForm(TPlataformaERPVCLPerfilUsuarioLista, PlataformaERPVCLPerfilUsuarioLista);
+  Application.CreateForm(TPlataformaERPVCLPerfilUsuarioFiltro, PlataformaERPVCLPerfilUsuarioFiltro);
+  Application.CreateForm(TPlataformaERPVCLPerfilUsuarioCadastro, PlataformaERPVCLPerfilUsuarioCadastro);
   Application.Run;
 end.

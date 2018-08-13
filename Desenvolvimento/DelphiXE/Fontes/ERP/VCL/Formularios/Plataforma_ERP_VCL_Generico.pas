@@ -226,9 +226,9 @@ var
   locFormulario: TPlataformaERPVCLTiposUsuariosCadastro;
 begin
   locFormulario := TPlataformaERPVCLTiposUsuariosCadastro.Create(nil);
-  locFormulario.pubLicencaID     := argLicencaID;
-  locFormulario.pubBaseID        := argTipoUsuarioBaseID;
-  locFormulario.pubTipoUsuarioID := argTipoUsuarioID;
+  locFormulario.pubLicencaID         := argLicencaID;
+  locFormulario.pubTipoUsuarioBaseID := argTipoUsuarioBaseID;
+  locFormulario.pubTipoUsuarioID     := argTipoUsuarioID;
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

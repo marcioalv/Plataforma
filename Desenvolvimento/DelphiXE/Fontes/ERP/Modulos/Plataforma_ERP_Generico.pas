@@ -38,8 +38,9 @@ const
   MENSAGEM_REGISTRO_ACAO_ALTERADO     : string = 'Registro atualizado com sucesso!';
 
 const
-  NUMERADOR_TIPO_USUARIO_ID: string = 'tipo_usuario_id';
-  NUMERADOR_USUARIO_ID     : string = 'usuario_id';
+  NUMERADOR_PERFIL_USUARIO_ID: string = 'perfil_usuario_id';
+  NUMERADOR_TIPO_USUARIO_ID  : string = 'tipo_usuario_id';
+  NUMERADOR_USUARIO_ID       : string = 'usuario_id';
 
 //
 // PlataformaERPLogar.

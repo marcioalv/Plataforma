@@ -171,7 +171,7 @@ type
   public
     pubDadosAtualizados: Boolean;
     pubLicencaID       : Integer;
-    pubBaseID          : Integer;
+    pubUsuarioBaseID   : Integer;
     pubUsuarioID       : Integer;
   end;
 
@@ -206,7 +206,7 @@ begin
   //
   pubDadosAtualizados := False;
   pubLicencaID        := 0;
-  pubBaseID           := 0;
+  pubUsuarioBaseID    := 0;
   pubUsuarioID        := 0;
  
   //
@@ -242,7 +242,7 @@ begin
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
   //
-  if (pubLicencaID = 0) and (pubBaseID = 0) and (pubUsuarioID = 0) then
+  if (pubLicencaID = 0) and (pubUsuarioBaseID = 0) and (pubUsuarioID = 0) then
   begin
     FormularioNovo;
     Exit;
@@ -251,9 +251,9 @@ begin
   //
   // Se foi passada uma chave então popula formulário.
   //
-  if (pubLicencaID > 0) and (pubBaseID > 0) and (pubUsuarioID > 0) then
+  if (pubLicencaID > 0) and (pubUsuarioBaseID > 0) and (pubUsuarioID > 0) then
   begin
-    FormularioPopular(pubLicencaID, pubBaseID, pubUsuarioID);
+    FormularioPopular(pubLicencaID, pubUsuarioBaseID, pubUsuarioID);
     FormularioControlar(False);
     Exit;
   end;
@@ -1725,8 +1725,8 @@ begin
   // Atualiza componentes que sofreram alteração com a gravação.
   //
   edtUsuarioID.Text    := IntegerStringConverter(locUsuarioID);
-  edtInsLocalDtHr.Text := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
-  edtUpdLocalDtHr.Text := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
+  edtInsLocalDtHr.Text := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn');
+  edtUpdLocalDtHr.Text := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn');
   edtUpdContador.Text  := IntegerStringConverter(locUpdContador);
 
   //

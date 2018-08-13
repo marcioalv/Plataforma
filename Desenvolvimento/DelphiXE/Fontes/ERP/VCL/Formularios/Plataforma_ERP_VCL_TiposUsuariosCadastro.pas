@@ -135,9 +135,9 @@ type
     function  LogDadosGerar(argTipoUsuarioID: Integer = 0): string;
   public
     pubDadosAtualizados: Boolean;
-    pubLicencaID       : Integer;
-    pubBaseID          : Integer;
-    pubTipoUsuarioID   : Integer;
+    pubLicencaID        : Integer;
+    pubTipoUsuarioBaseID: Integer;
+    pubTipoUsuarioID    : Integer;
   end;
 
 var
@@ -168,10 +168,10 @@ begin
   //
   // Inicializa variáveis públicas.
   //
-  pubDadosAtualizados := False;
-  pubLicencaID        := 0;
-  pubBaseID           := 0;
-  pubTipoUsuarioID    := 0;
+  pubDadosAtualizados  := False;
+  pubLicencaID         := 0;
+  pubTipoUsuarioBaseID := 0;
+  pubTipoUsuarioID     := 0;
  
   //
   // Limpa os componentes do formulário.
@@ -205,7 +205,7 @@ begin
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
   //
-  if (pubLicencaID = 0) and (pubBaseID = 0) and (pubTipoUsuarioID = 0) then
+  if (pubLicencaID = 0) and (pubTipoUsuarioBaseID = 0) and (pubTipoUsuarioID = 0) then
   begin
     FormularioNovo;
     Exit;
@@ -214,9 +214,9 @@ begin
   //
   // Se foi passada uma chave então popula formulário.
   //
-  if (pubLicencaID > 0) and (pubBaseID > 0) and (pubTipoUsuarioID > 0) then
+  if (pubLicencaID > 0) and (pubTipoUsuarioBaseID > 0) and (pubTipoUsuarioID > 0) then
   begin
-    FormularioPopular(pubLicencaID, pubBaseID, pubTipoUsuarioID);
+    FormularioPopular(pubLicencaID, pubTipoUsuarioBaseID, pubTipoUsuarioID);
     FormularioControlar(False);
     Exit;
   end;
@@ -1210,7 +1210,7 @@ begin
     locADOQuery.SQL.Add('  :tipo_usuario_base_id,    '); // tipo_usuario_base_id.
     locADOQuery.SQL.Add('  :tipo_usuario_id,         '); // tipo_usuario_id.
     locADOQuery.SQL.Add('  :codigo,                  '); // codigo.
-    locADOQuery.SQL.Add('  :Descricao,               '); // descricao.
+    locADOQuery.SQL.Add('  :descricao,               '); // descricao.
     locADOQuery.SQL.Add('  :bloqueado,               '); // bloqueado.
     locADOQuery.SQL.Add('  :ativo,                   '); // ativo.
     locADOQuery.SQL.Add('  :local_dt_hr,             '); // ins_local_dt_hr.
@@ -1453,8 +1453,8 @@ begin
   // Atualiza componentes que sofreram alteração com a gravação.
   //
   edtTipoUsuarioID.Text := IntegerStringConverter(locTipoUsuarioID);
-  edtInsLocalDtHr.Text  := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
-  edtUpdLocalDtHr.Text  := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn:ss.zzz');
+  edtInsLocalDtHr.Text  := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn');
+  edtUpdLocalDtHr.Text  := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn');
   edtUpdContador.Text   := IntegerStringConverter(locUpdContador);
 
   //

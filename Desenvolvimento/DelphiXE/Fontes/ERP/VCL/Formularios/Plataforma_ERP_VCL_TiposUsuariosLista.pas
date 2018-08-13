@@ -665,35 +665,35 @@ end;
 //
 procedure TPlataformaERPVCLTiposUsuariosLista.FormularioCadastroExibir(argNovo: Boolean);
 var
-  locFormulario      : TPlataformaERPVCLTiposUsuariosCadastro;
-  locDadosAtualizados: Boolean;
-  locIndice          : Integer;
-  locBaseID          : Integer;
-  locLicencaID       : Integer;
-  locTipoUsuarioID   : Integer;
+  locFormulario       : TPlataformaERPVCLTiposUsuariosCadastro;
+  locDadosAtualizados : Boolean;
+  locIndice           : Integer;
+  locLicencaID        : Integer;
+  locTipoUsuarioBaseID: Integer;
+  locTipoUsuarioID    : Integer;
 begin
   if argNovo then
   begin
-    locIndice        := VCL_NENHUM_INDICE;
-    locLicencaID     := 0;
-    locBaseID        := 0;
-    locTipoUsuarioID := 0;
+    locIndice            := VCL_NENHUM_INDICE;
+    locLicencaID         := 0;
+    locTipoUsuarioBaseID := 0;
+    locTipoUsuarioID     := 0;
   end
   else
   begin  
     locIndice := VCLListViewIndiceItemRetornar(lvwLista);
     if locIndice <= VCL_NENHUM_INDICE then Exit;
 
-    locLicencaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
-    locBaseID        := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_BASE_ID]);
-    locTipoUsuarioID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_ID]);
+    locLicencaID         := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
+    locTipoUsuarioBaseID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_BASE_ID]);
+    locTipoUsuarioID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_TIPO_USUARIO_ID]);
   end;
 
   locFormulario := TPlataformaERPVCLTiposUsuariosCadastro.Create(Self);
 
-  locFormulario.pubLicencaID     := locLicencaID;
-  locFormulario.pubBaseID        := locBaseID;
-  locFormulario.pubTipoUsuarioID := locTipoUsuarioID;
+  locFormulario.pubLicencaID         := locLicencaID;
+  locFormulario.pubTipoUsuarioBaseID := locTipoUsuarioBaseID;
+  locFormulario.pubTipoUsuarioID     := locTipoUsuarioID;
   
   locFormulario.ShowModal;
 

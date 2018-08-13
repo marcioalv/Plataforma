@@ -15,14 +15,6 @@ unit Plataforma_ERP_VCL_MenuPrincipal;
 interface
 
 uses
-  Plataforma_Framework_Util,
-  Plataforma_Framework_VCL,
-  Plataforma_ERP_Global,
-  Plataforma_ERP_Generico,
-  Plataforma_ERP_Inicializacao,
-  Plataforma_ERP_VCL_LogLocalLista,
-  Plataforma_ERP_VCL_UsuarioLista,
-  Plataforma_ERP_VCL_TiposUsuariosLista,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -49,6 +41,7 @@ type
     mniResolucaoTela: TMenuItem;
     mni1250x700: TMenuItem;
     timInicializacao: TTimer;
+    mniPerfisUsuario: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
@@ -57,6 +50,7 @@ type
     procedure mniUsuariosClick(Sender: TObject);
     procedure mni1250x700Click(Sender: TObject);
     procedure timInicializacaoTimer(Sender: TObject);
+    procedure mniPerfisUsuarioClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioTituloDeterminar;
@@ -71,6 +65,17 @@ var
 implementation
 
 {$R *.dfm}
+
+uses
+  Plataforma_Framework_Util,
+  Plataforma_Framework_VCL,
+  Plataforma_ERP_Global,
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_Inicializacao,
+  Plataforma_ERP_VCL_LogLocalLista,
+  Plataforma_ERP_VCL_UsuarioLista,
+  Plataforma_ERP_VCL_PerfilUsuarioLista,
+  Plataforma_ERP_VCL_TiposUsuariosLista;
 
 //
 // Evento de criação do formulário.
@@ -145,6 +150,10 @@ begin
   FreeAndNil(locFormulario);
 end;
 
+{-------------------------------------------------------------------------------------------------}
+{ CONTROLE ACESSO                                                                                 }
+{-------------------------------------------------------------------------------------------------}
+
 //
 // Evento de click na opção "usuários".
 //
@@ -159,7 +168,20 @@ begin
 end;
 
 //
-// Evento de click na opção "tipos de usuários".
+// Evento de click na opção "perfis usuários".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniPerfisUsuarioClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLPerfilUsuarioLista;
+begin
+  locFormulario := TPlataformaERPVCLPerfilUsuarioLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "tipos usuários".
 //
 procedure TPlataformaERPVCLMenuPrincipal.mniTiposUsuariosClick(Sender: TObject);
 var
@@ -191,9 +213,11 @@ begin
   //
   // Controle de acesso.
   //
-  mniTiposUsuarios.Visible  := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
   mniUsuarios.Visible       := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA');
+  mniPerfisUsuario.Visible  := Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA');
+  mniTiposUsuarios.Visible  := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
   mniControleAcesso.Visible := (mniUsuarios.Visible) or
+                               (mniPerfisUsuario.Visible) or
                                (mniTiposUsuarios.Visible);
 
   //

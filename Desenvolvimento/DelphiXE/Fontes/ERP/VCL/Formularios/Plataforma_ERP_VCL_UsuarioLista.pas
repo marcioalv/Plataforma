@@ -682,32 +682,32 @@ var
   locFormulario      : TPlataformaERPVCLUsuarioCadastro;
   locDadosAtualizados: Boolean;
   locIndice          : Integer;
-  locBaseID          : Integer;
   locLicencaID       : Integer;
+  locUsuarioBaseID   : Integer;
   locUsuarioID       : Integer;
 begin
   if argNovo then
   begin
-    locIndice    := VCL_NENHUM_INDICE;
-    locLicencaID := 0;
-    locBaseID    := 0;
-    locUsuarioID := 0;
+    locIndice        := VCL_NENHUM_INDICE;
+    locLicencaID     := 0;
+    locUsuarioBaseID := 0;
+    locUsuarioID     := 0;
   end
   else
   begin  
     locIndice := VCLListViewIndiceItemRetornar(lvwLista);
     if locIndice <= VCL_NENHUM_INDICE then Exit;
 
-    locLicencaID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
-    locBaseID    := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_USUARIO_BASE_ID]);
-    locUsuarioID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_USUARIO_ID]);
+    locLicencaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
+    locUsuarioBaseID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_USUARIO_BASE_ID]);
+    locUsuarioID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_USUARIO_ID]);
   end;
 
   locFormulario := TPlataformaERPVCLUsuarioCadastro.Create(Self);
 
-  locFormulario.pubLicencaID := locLicencaID;
-  locFormulario.pubBaseID    := locBaseID;
-  locFormulario.pubUsuarioID := locUsuarioID;
+  locFormulario.pubLicencaID     := locLicencaID;
+  locFormulario.pubUsuarioBaseID := locUsuarioBaseID;
+  locFormulario.pubUsuarioID     := locUsuarioID;
   
   locFormulario.ShowModal;
 
