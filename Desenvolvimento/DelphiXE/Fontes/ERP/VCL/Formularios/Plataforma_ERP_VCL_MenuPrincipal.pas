@@ -42,6 +42,7 @@ type
     mni1250x700: TMenuItem;
     timInicializacao: TTimer;
     mniPerfisUsuario: TMenuItem;
+    mniRotinasAplicacao: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
@@ -51,6 +52,7 @@ type
     procedure mni1250x700Click(Sender: TObject);
     procedure timInicializacaoTimer(Sender: TObject);
     procedure mniPerfisUsuarioClick(Sender: TObject);
+    procedure mniRotinasAplicacaoClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioTituloDeterminar;
@@ -193,6 +195,14 @@ begin
   FreeAndNil(locFormulario);
 end;
 
+//
+// Evento de click na opção "rotinas aplicação".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniRotinasAplicacaoClick(Sender: TObject);
+begin
+  Exit;
+end;
+
 {--------------------------------------------------------------------------------------------------}
 { PROCEDIMENTOS E FUNÇÕES                                                                          }
 {--------------------------------------------------------------------------------------------------}
@@ -213,12 +223,15 @@ begin
   //
   // Controle de acesso.
   //
-  mniUsuarios.Visible       := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA');
-  mniPerfisUsuario.Visible  := Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA');
-  mniTiposUsuarios.Visible  := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
+  mniUsuarios.Visible         := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA');
+  mniPerfisUsuario.Visible    := Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA');
+  mniTiposUsuarios.Visible    := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
+  mniRotinasAplicacao.Visible := Plataforma_ERP_UsuarioRotina('ERP_ROTINA_APLICACAO_LISTA');
+
   mniControleAcesso.Visible := (mniUsuarios.Visible) or
                                (mniPerfisUsuario.Visible) or
-                               (mniTiposUsuarios.Visible);
+                               (mniTiposUsuarios.Visible) or
+                               (mniRotinasAplicacao.Visible);
 
   //
   // Aplicação.

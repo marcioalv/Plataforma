@@ -92,7 +92,7 @@ object PlataformaERPVCLUsuarioLista: TPlataformaERPVCLUsuarioLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 597
+      Left = 585
       Top = 424
       Width = 80
       Height = 13
@@ -492,8 +492,12 @@ object PlataformaERPVCLUsuarioLista: TPlataformaERPVCLUsuarioLista
     Top = 240
     object mniCadastro: TMenuItem
       Caption = 'Cadastro'
+      object mniCadastroPerfilUsuario: TMenuItem
+        Caption = 'Perfis de usu'#225'rio'
+        OnClick = mniCadastroPerfilUsuarioClick
+      end
       object mniCadastroTipoUsuario: TMenuItem
-        Caption = 'Cadastro de tipos de usu'#225'rio'
+        Caption = 'Tipos de usu'#225'rio'
         OnClick = mniCadastroTipoUsuarioClick
       end
     end

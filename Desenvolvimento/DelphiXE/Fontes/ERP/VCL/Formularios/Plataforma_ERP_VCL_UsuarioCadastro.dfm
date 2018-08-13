@@ -1289,8 +1289,12 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     Top = 320
     object mniCadastro: TMenuItem
       Caption = 'Cadastro'
+      object mniCadastroPerfilUsuario: TMenuItem
+        Caption = 'Perfis de usu'#225'rio'
+        OnClick = mniCadastroPerfilUsuarioClick
+      end
       object mniCadastroTipoUsuario: TMenuItem
-        Caption = 'Cadastro de tipos de usu'#225'rio'
+        Caption = 'Tipos de usu'#225'rio'
         OnClick = mniCadastroTipoUsuarioClick
       end
     end

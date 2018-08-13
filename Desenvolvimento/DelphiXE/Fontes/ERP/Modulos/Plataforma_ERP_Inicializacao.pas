@@ -110,6 +110,61 @@ begin
   //
   // Lista de rotinas.
   //
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_LISTA';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_LISTA_LOCALIZAR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_LISTA_ATUALIZAR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_LISTA_NOVO';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_LISTA_SELECIONAR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_FILTRO_CADASTRO'; 
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_FILTRO_AUDITORIA';  
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_CADASTRO';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_CADASTRO_ABA_CADASTRO';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_CADASTRO_ABA_AUDITORIA';  
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_CADASTRO_LOG';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_CADASTRO_ATUALIZAR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_CADASTRO_LOCALIZAR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_CADASTRO_NOVO';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_CADASTRO_EXCLUIR';
+
+  SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
+  gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_ROTINA_APLICACAO_CADASTRO_ALTERAR';
+
+
+
+
+
+
+  
   SetLength(gloUsuarioRotinas, Length(gloUsuarioRotinas) + 1);
   gloUsuarioRotinas[Length(gloUsuarioRotinas) - 1] := 'ERP_TIPO_USUARIO_LISTA';
 

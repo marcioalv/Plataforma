@@ -69,6 +69,10 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
           Caption = 'Tipos usu'#225'rios'
           OnClick = mniTiposUsuariosClick
         end
+        object mniRotinasAplicacao: TMenuItem
+          Caption = 'Rotinas aplica'#231#227'o'
+          OnClick = mniRotinasAplicacaoClick
+        end
       end
     end
   end

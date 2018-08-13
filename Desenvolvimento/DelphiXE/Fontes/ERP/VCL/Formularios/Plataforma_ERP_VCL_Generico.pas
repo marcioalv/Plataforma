@@ -56,6 +56,11 @@ procedure Plataforma_ERP_VCL_BaseCadastroExibir(argBaseID: Integer);
 procedure Plataforma_ERP_VCL_LicencaCadastroExibir(argLicencaID: Integer);
 
 //
+// Plataforma_ERP_VCL_PerfilUsuarioListaExibir.
+//
+procedure Plataforma_ERP_VCL_PerfilUsuarioListaExibir;
+
+//
 // Plataforma_ERP_VCL_TipoUsuarioListaExibir.
 //
 procedure Plataforma_ERP_VCL_TipoUsuarioListaExibir;
@@ -98,6 +103,7 @@ uses
   Plataforma_ERP_VCL_DataExibicao,
   Plataforma_ERP_VCL_BaseCadastro,
   Plataforma_ERP_VCL_LicencaCadastro,
+  Plataforma_ERP_VCL_PerfilUsuarioLista,
   Plataforma_ERP_VCL_TiposUsuariosLista,
   Plataforma_ERP_VCL_TiposUsuariosCadastro,
   Plataforma_ERP_VCL_TiposUsuariosCodigo,
@@ -198,6 +204,19 @@ begin
 
   locFormulario           := TPlataformaERPVCLBaseCadastro.Create(nil);
   locFormulario.pubBaseID := argBaseID;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir a lista de perfis de usuários cadastrados.
+//
+procedure Plataforma_ERP_VCL_PerfilUsuarioListaExibir;
+var
+  locFormulario: TPlataformaERPVCLPerfilUsuarioLista;
+begin
+  locFormulario := TPlataformaERPVCLPerfilUsuarioLista.Create(nil);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

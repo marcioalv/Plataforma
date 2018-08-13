@@ -53,6 +53,7 @@ type
     mniLocalizar: TMenuItem;
     mniCadastro: TMenuItem;
     mniCadastroTipoUsuario: TMenuItem;
+    mniCadastroPerfilUsuario: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -74,6 +75,7 @@ type
     procedure mniNovoClick(Sender: TObject);
     procedure mniAtualizarClick(Sender: TObject);
     procedure mniLocalizarClick(Sender: TObject);
+    procedure mniCadastroPerfilUsuarioClick(Sender: TObject);
   private
     priListViewIndiceColuna   : Integer;
     priListViewOrdemAscendente: Boolean;
@@ -203,6 +205,11 @@ end;
 //
 // Evento de click nas opções de menu.
 //
+procedure TPlataformaERPVCLUsuarioLista.mniCadastroPerfilUsuarioClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_PerfilUsuarioListaExibir;
+end;
+
 procedure TPlataformaERPVCLUsuarioLista.mniCadastroTipoUsuarioClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_TipoUsuarioListaExibir;
@@ -311,9 +318,12 @@ begin
   //
   // Menu - Cadastros.
   //
-  mniCadastroTipoUsuario.Visible := (mniCadastroTipoUsuario.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA'));
+  mniCadastroTipoUsuario.Visible   := (mniCadastroTipoUsuario.Enabled)   and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA'));
+  mniCadastroPerfilUsuario.Visible := (mniCadastroPerfilUsuario.Enabled) and (Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA'));
 
-  mniCadastro.Visible := (mniCadastro.Visible) and (mniCadastroTipoUsuario.Visible);
+  mniCadastro.Visible := (mniCadastro.Enabled)            and
+                         (mniCadastroTipoUsuario.Visible) and
+                         (mniCadastroPerfilUsuario.Visible);
 
   //
   // Menu - ações.

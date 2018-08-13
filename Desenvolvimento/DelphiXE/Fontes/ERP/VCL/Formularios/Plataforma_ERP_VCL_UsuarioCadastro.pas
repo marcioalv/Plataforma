@@ -93,6 +93,7 @@ type
     btnSenha: TBitBtn;
     mniSenha: TMenuItem;
     mniLog: TMenuItem;
+    mniCadastroPerfilUsuario: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -148,6 +149,7 @@ type
     procedure mniSenhaClick(Sender: TObject);
     procedure btnSenhaClick(Sender: TObject);
     procedure mniLogClick(Sender: TObject);
+    procedure mniCadastroPerfilUsuarioClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -270,6 +272,11 @@ end;
 //
 // Evento de click nas opções do menu.
 //
+procedure TPlataformaERPVCLUsuarioCadastro.mniCadastroPerfilUsuarioClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_PerfilUsuarioListaExibir;
+end;
+
 procedure TPlataformaERPVCLUsuarioCadastro.mniCadastroTipoUsuarioClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_TipoUsuarioListaExibir;
@@ -708,9 +715,12 @@ begin
   //
   // Itens do menu de cadastro.
   //
-  mniCadastroTipoUsuario.Visible := (mniCadastroTipoUsuario.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA'));
+  mniCadastroTipoUsuario.Visible   := (mniCadastroTipoUsuario.Enabled)   and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA'));
+  mniCadastroPerfilUsuario.Visible := (mniCadastroPerfilUsuario.Enabled) and (Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA'));
 
-  mniCadastro.Visible  := mniCadastro.Visible and mniCadastroTipoUsuario.Visible;
+  mniCadastro.Visible  := mniCadastro.Enabled            and
+                          mniCadastroTipoUsuario.Visible and
+                          mniCadastroPerfilUsuario.Visible;
 
   //
   // Botões.
