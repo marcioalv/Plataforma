@@ -28,7 +28,8 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
-  Vcl.Buttons, Vcl.Menus;
+  Vcl.Buttons,
+  Vcl.Menus;
 
 type
   TPlataformaERPVCLUsuarioLogon = class(TForm)
@@ -109,6 +110,9 @@ end;
 procedure TPlataformaERPVCLUsuarioLogon.FormShow(Sender: TObject);
 begin
   FormularioLimpar;
+
+  edtUsuario.Text := 'marcio.alves';
+  edtSenha.Text   := '123';
 end;
 
 //

@@ -1,11 +1,11 @@
-object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLista
+object PlataformaERPVCLNumeradorLicencaLista: TPlataformaERPVCLNumeradorLicencaLista
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'Lista de rotinas da aplica'#231#227'o'
-  ClientHeight = 537
-  ClientWidth = 825
+  Caption = 'Lista de numeradores por licen'#231'a'
+  ClientHeight = 482
+  ClientWidth = 725
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,8 +21,8 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   DesignSize = (
-    825
-    537)
+    725
+    482)
   PixelsPerInch = 96
   TextHeight = 13
   object imgBackground: TImage
@@ -42,30 +42,41 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
     Picture.Data = {
       0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
       00200806000000737A7AF4000000017352474200AECE1CE90000000467414D41
-      0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000002
-      424944415478DAED97316814411486DF9BCB2568E31536DA1814148B4B401B0B
-      D3480A315606314B406D0DA2A285B7627368CC9D289E2004ACC5443C14C14002
-      5A28164110CC295759D8A5914341CD79BB3BCF7F2F5788CCDE85BDDD15E15E31
-      FB6667DE7BDFCEFC3BEC328532E1AC75739A44CEA0F38D155DAC3CCC3D099389
-      8306864FDDC968A76E1E17358EE2B7E19D438A5DC862A7941AF6C45D354DF79C
-      BA537D9CFFBE21807D93D7B7B93AFD12EEDEB66B2034FB61FEF294EF0F59C56A
-      A7F9B07265F7CF1394CFEBB600D989E25566BA1650B4404A977D7FADB6F9E3A7
-      C5F3BF7C7FBF756B6B839D1DCD495A95107F30007BA432977BD30960060972E6
-      047AAA3267CFB67BCCAC557C8EA463C6E5167D7465DE5E080D20440BC45C0A2A
-      AEB437A059DD43D2C15800BAB51E400F203480902C42FD4FD73B5262E24DC902
-      E000C2A96737C7ADE257046D01D5EB46DA3B96F6589B8A798D7E4EF539F79979
-      3C160011F981F02526F1CC8FCB8C39A3B864BA0688CAFE6300A16534AF5A1117
-      D00C240A1020C265C574121A346AC053A2FA5C75175A38120F00490D10FE5790
-      F12D688A90640CAFECF628B6A08E76AD9525E3674F740BA2B22EB640DE63E2DB
-      D6D29E46DB9F30805184EF24256731E8988AA55C515AA91B001E8D0500F75671
-      0A3EA02011AEA73F8E0A3BA3D80214E55AAB3B882895E81644653D800D010C4D
-      14A6A1DC2B7100404D87F163B2D40160E610005E843DED024B8B7CF1DCF49E6A
-      F952EDCFFBC622D9C9C201D23C821F91506AFFDB50A4AEB47EB6F2C8FE6C18FB
-      B7F61B50CD8830F97E19340000000049454E44AE426082}
+      0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000003
+      9D4944415478DAED965D6C145514C7CFB933D3ED4A6983FD3026863621685232
+      4B8A04D034F1A19110B50FB5ADEEB68924189486C4074BD93610FA06BBD53E11
+      8B0FC41089696D1B350625BE6013B45163A26C81D840D0443E8A0FB594DA0F66
+      E61EFE035D6D77B7AD10290FEE3C6C66E69E7BEEEF9CF33F6796E9215F9C05C8
+      026401EC57E355A4E42B263696F564919B1C08AC06C0A10656EAA3A5EDE50DF0
+      563353F5A27624FB615782D4BE8587CBC462E2B543C2CEAC4901F25EE8DFB8AE
+      94FE7B00D621D2AA09004D8BA654F44BC2B49A4875795ACA45AB3F0DCB2B66A1
+      4A8BAC3E51D396EB59E700B1EA81033073E5934ED977C3E6A53FB0F2A8087D32
+      D413AD0D45E27D30ADCB088054FBA93A870D8FE1B0C717079011A4790531AFCC
+      0480F5B64477346E473A2EA12465707E34D1D3BAD38EC47CCD6D4D0310A201CF
+      316BCFF7378FFACF76385607E7DDD86CCE0310BA88FB9A446FCB596A6F57F670
+      F065383C8EB4E6A6008C9061ACB73CD633E25604F2570DCC8C8FAD574CDFC27D
+      CE7C0021ADD95D676835AD993F85C32F123DD1FD48D731186F9F0BA0895E7482
+      743A3049C7019D405A0FD8E17827D6DE9E0F7027ACDFF1D3459AAFA0DB2A60BF
+      0BBE836922C4C24F43DDD10D76247E1011B7E1D9CD71A5E896A26759F1977F03
+      10BD92E8D95B1C6A88EF405D8ECE96678D68234FB19C490758F84AC9807C86FA
+      D484C2B15EA4BDFE2EBCDEE0094F1B8ACF270190E68D00DD04D07700B36736CA
+      6D33411E0C4CD1784A0946413796E1EC32F851A91A3809C1BC8094FBF70DBE95
+      526A9DE3B89661A89FFF29816C4E74B73E0DD01840A3BE9D16D91AF0E807C7E4
+      B17411B6C6524F07FC18E00B52357011355F8BC5162C76F893EA4660AA24DF59
+      51CD22BD734A104E3C355914FAE5914652F4A1DF379E364B95E194B0A81FE701
+      F86225F92D79B026D5CC861E851E7EF5859DDE05CCCFE78CFF35E8E4050F0AF1
+      2988EB73443A80489F9B2B42B46AFD7860EA44C14CF0081AEF2CC03BD15A4720
+      AE5D0B690013F27B94EE193BDCF15EB295D3E70046A726D951786DEAEB9B4F58
+      C5AEB6F6E1EDEED4390067579596C6331FB70D94D7B7E79866EEEB003EEC7F4F
+      1602F0CBA43D1A364DBEE0B76066807B9F84138036FDFECF3C8892D1D329445F
+      85567D1FFBDFCCDC05F707907665CC80A82D2CEE75516A3819FDB20160FE7F43
+      4A6F87F0DAF16D786DAEEDBD01907C00F715506FC512A6FDB0CDF767FD523EEF
+      02341CB211DEBBF85CAAA536FCC7D704DA3CF2F0FF926501B200FF7B80DB082F
+      0EC1F84FB5D60000000049454E44AE426082}
   end
   object btnFechar: TBitBtn
-    Left = 760
-    Top = 472
+    Left = 664
+    Top = 416
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -131,8 +142,8 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
     AlignWithMargins = True
     Left = 48
     Top = 16
-    Width = 761
-    Height = 441
+    Width = 665
+    Height = 385
     Margins.Left = 48
     Margins.Top = 16
     Margins.Right = 16
@@ -145,23 +156,21 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
     ShowCaption = False
     TabOrder = 0
     DesignSize = (
-      757
-      437)
+      661
+      381)
     object lblListaQtde: TLabel
-      Left = 8
-      Top = 412
+      Left = 16
+      Top = 358
       Width = 142
       Height = 13
-      Anchors = [akLeft, akBottom]
       Caption = 'Foram localizados 9 registros!'
-      ExplicitTop = 464
     end
     object lblListaFiltros: TLabel
-      Left = 536
-      Top = 404
+      Left = 566
+      Top = 358
       Width = 80
       Height = 13
-      Anchors = [akRight, akBottom]
+      Anchors = [akTop, akRight]
       Caption = 'Filtros aplicados!'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
@@ -170,15 +179,13 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
       Font.Style = []
       ParentFont = False
       Visible = False
-      ExplicitLeft = 540
-      ExplicitTop = 456
     end
     object lvwLista: TListView
       AlignWithMargins = True
       Left = 8
       Top = 33
-      Width = 741
-      Height = 374
+      Width = 645
+      Height = 318
       Cursor = crHandPoint
       Margins.Left = 8
       Margins.Top = 8
@@ -191,21 +198,30 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
           Width = 0
         end
         item
+          Caption = 'Licenca ID'
+          Width = 0
+        end
+        item
+          Caption = 'Base ID'
+          Width = 0
+        end
+        item
+          Caption = 'Base'
+          Width = 0
+        end
+        item
           Alignment = taRightJustify
           Caption = 'ID'
           Width = 0
         end
         item
           Caption = 'C'#243'digo'
-          Width = 175
+          Width = 350
         end
         item
-          Caption = 'Descri'#231#227'o'
-          Width = 400
-        end
-        item
-          Caption = 'Chave'
-          Width = 0
+          Alignment = taRightJustify
+          Caption = 'ID atual'
+          Width = 125
         end
         item
           Alignment = taCenter
@@ -235,12 +251,14 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
+      ExplicitLeft = 0
+      ExplicitTop = 25
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True
       Left = 8
       Top = 8
-      Width = 741
+      Width = 645
       Height = 17
       Margins.Left = 8
       Margins.Top = 8
@@ -252,8 +270,8 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
     end
   end
   object btnMinimizar: TBitBtn
-    Left = 704
-    Top = 472
+    Left = 608
+    Top = 416
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -326,8 +344,8 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
     OnClick = btnMinimizarClick
   end
   object btnNovo: TBitBtn
-    Left = 648
-    Top = 472
+    Left = 552
+    Top = 416
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -400,8 +418,8 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
     OnClick = btnNovoClick
   end
   object btnLocalizar: TBitBtn
-    Left = 592
-    Top = 472
+    Left = 496
+    Top = 416
     Width = 49
     Height = 49
     Cursor = crHandPoint

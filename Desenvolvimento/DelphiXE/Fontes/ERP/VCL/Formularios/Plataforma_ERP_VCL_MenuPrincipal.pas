@@ -43,6 +43,10 @@ type
     timInicializacao: TTimer;
     mniPerfisUsuario: TMenuItem;
     mniRotinasAplicacao: TMenuItem;
+    mniInstalacao: TMenuItem;
+    mniNumeradores: TMenuItem;
+    mniNumeradorGlobal: TMenuItem;
+    mniNumeradorLicenca: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
@@ -53,6 +57,8 @@ type
     procedure timInicializacaoTimer(Sender: TObject);
     procedure mniPerfisUsuarioClick(Sender: TObject);
     procedure mniRotinasAplicacaoClick(Sender: TObject);
+    procedure mniNumeradorGlobalClick(Sender: TObject);
+    procedure mniNumeradorLicencaClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioTituloDeterminar;
@@ -78,7 +84,8 @@ uses
   Plataforma_ERP_VCL_UsuarioLista,
   Plataforma_ERP_VCL_PerfilUsuarioLista,
   Plataforma_ERP_VCL_TiposUsuariosLista,
-  Plataforma_ERP_VCL_RotinaAplicacaoLista;
+  Plataforma_ERP_VCL_RotinaAplicacaoLista,
+  Plataforma_ERP_VCL_NumeradorLicencaLista;
 
 //
 // Evento de criação do formulário.
@@ -204,6 +211,25 @@ var
   locFormulario: TPlataformaERPVCLRotinaAplicacaoLista;
 begin
   locFormulario := TPlataformaERPVCLRotinaAplicacaoLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+{-------------------------------------------------------------------------------------------------}
+{ INSTALAÇÃO                                                                                      }
+{-------------------------------------------------------------------------------------------------}
+
+procedure TPlataformaERPVCLMenuPrincipal.mniNumeradorGlobalClick(Sender: TObject);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLMenuPrincipal.mniNumeradorLicencaClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLNumeradorLicencaLista;
+begin
+  locFormulario := TPlataformaERPVCLNumeradorLicencaLista.Create(Self);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

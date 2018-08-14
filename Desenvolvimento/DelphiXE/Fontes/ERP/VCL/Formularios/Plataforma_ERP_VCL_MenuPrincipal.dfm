@@ -48,13 +48,6 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
           end
         end
       end
-      object mniLogsAplicacao: TMenuItem
-        Caption = 'Logs aplica'#231#227'o'
-        object mniLogUsoLocal: TMenuItem
-          Caption = 'Log detalhado local do computador'
-          OnClick = mniLogUsoLocalClick
-        end
-      end
       object mniControleAcesso: TMenuItem
         Caption = 'Controle acesso'
         object mniUsuarios: TMenuItem
@@ -72,6 +65,27 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
         object mniRotinasAplicacao: TMenuItem
           Caption = 'Rotinas aplica'#231#227'o'
           OnClick = mniRotinasAplicacaoClick
+        end
+      end
+      object mniInstalacao: TMenuItem
+        Caption = 'Instala'#231#227'o'
+        object mniNumeradores: TMenuItem
+          Caption = 'Numeradores'
+          object mniNumeradorGlobal: TMenuItem
+            Caption = 'Global'
+            OnClick = mniNumeradorGlobalClick
+          end
+          object mniNumeradorLicenca: TMenuItem
+            Caption = 'Licen'#231'a'
+            OnClick = mniNumeradorLicencaClick
+          end
+        end
+      end
+      object mniLogsAplicacao: TMenuItem
+        Caption = 'Logs'
+        object mniLogUsoLocal: TMenuItem
+          Caption = 'Log detalhado local do computador'
+          OnClick = mniLogUsoLocalClick
         end
       end
     end

@@ -227,6 +227,18 @@
             <Form>PlataformaERPVCLRotinaAplicacaoCadastro</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_NumeradorLicencaLista.pas">
+            <Form>PlataformaERPVCLNumeradorLicencaLista</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_NumeradorLicencaFiltro.pas">
+            <Form>PlataformaERPVCLNumeradorLicencaFiltro</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_NumeradorLicencaCadastro.pas">
+            <Form>PlataformaERPVCLNumeradorLicencaCadastro</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="..\..\..\..\..\Imagem\Background\Formulario\FORM_BACKGROUND_DEFAULT.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>FORM_BACKGROUND_DEFAULT</ResourceId>

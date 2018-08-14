@@ -171,14 +171,14 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       381)
     object lblListaQtde: TLabel
       Left = 16
-      Top = 464
+      Top = 358
       Width = 142
       Height = 13
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 480
-      Top = 464
+      Left = 460
+      Top = 361
       Width = 80
       Height = 13
       Anchors = [akTop, akRight]
@@ -190,7 +190,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Font.Style = []
       ParentFont = False
       Visible = False
-      ExplicitLeft = 617
+      ExplicitLeft = 464
     end
     object lvwLista: TListView
       AlignWithMargins = True
