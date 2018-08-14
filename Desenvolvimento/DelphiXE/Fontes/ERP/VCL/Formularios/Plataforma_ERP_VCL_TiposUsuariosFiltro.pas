@@ -29,7 +29,8 @@ uses
   Vcl.Buttons,
   Vcl.Imaging.pngimage,
   Vcl.ComCtrls,
-  Vcl.Mask, Vcl.Menus;
+  Vcl.Mask,
+  Vcl.Menus;
 
 type
   TPlataformaERPVCLTiposUsuariosFiltro = class(TForm)

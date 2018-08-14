@@ -1501,13 +1501,13 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioExcluir';
   ERRO_MENSAGEM    : string = 'Impossível excluir dados do perfil de usuário!';
 var
-  locADOConnection           : TADOConnection;
-  locADOQuery                : TADOQuery;
-  locLogMensagem             : string;
-  locLicencaID               : Integer;
-  locPerfilUsuarioBaseID     : Integer;
-  locPerfilUsuarioID         : Integer;
-  locPerfilUsuarioLogLogDados: string;
+  locADOConnection        : TADOConnection;
+  locADOQuery             : TADOQuery;
+  locLogMensagem          : string;
+  locLicencaID            : Integer;
+  locPerfilUsuarioBaseID  : Integer;
+  locPerfilUsuarioID      : Integer;
+  locPerfilUsuarioLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
@@ -1519,7 +1519,7 @@ begin
   //
   // Log dados.
   //
-  locPerfilUsuarioLogLogDados := LogDadosGerar;
+  locPerfilUsuarioLogDados := LogDadosGerar;
 
   //
   // Confirma gravação com o usuário.
@@ -1651,7 +1651,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela perfil_usuario_log!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela [perfil_usuario_log]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -1684,7 +1684,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela perfil_usuario_log!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela [perfil_usuario]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -1738,7 +1738,7 @@ begin
   // Log de ocorrência.
   //
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locPerfilUsuarioID, 'Registro excluído com sucesso!', locPerfilUsuarioLogLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locPerfilUsuarioID, 'Registro excluído com sucesso!', locPerfilUsuarioLogDados);
   except
   end;
   VCLInformacaoExibir('Perfil de usuário excluído com sucesso!');
@@ -1763,7 +1763,7 @@ begin
   //
   // Confirma com o usuário.
   //
-  if StringIntegerConverter(edtPerfilUsuarioID.Text) = 0 then
+  if locPerfilUsuarioID = 0 then
   begin
     if not VCLQuestionamentoExibir('Deseja realmente cancelar a digitação destes dados?') then Exit;
   end

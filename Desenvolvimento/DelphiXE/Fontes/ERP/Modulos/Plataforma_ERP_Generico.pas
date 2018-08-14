@@ -38,9 +38,10 @@ const
   MENSAGEM_REGISTRO_ACAO_ALTERADO     : string = 'Registro atualizado com sucesso!';
 
 const
-  NUMERADOR_PERFIL_USUARIO_ID: string = 'perfil_usuario_id';
-  NUMERADOR_TIPO_USUARIO_ID  : string = 'tipo_usuario_id';
-  NUMERADOR_USUARIO_ID       : string = 'usuario_id';
+  NUMERADOR_ROTINA_APLICACAO_ID: string = 'rotina_aplicacao_id';
+  NUMERADOR_PERFIL_USUARIO_ID  : string = 'perfil_usuario_id';
+  NUMERADOR_TIPO_USUARIO_ID    : string = 'tipo_usuario_id';
+  NUMERADOR_USUARIO_ID         : string = 'usuario_id';
 
 //
 // PlataformaERPLogar.
@@ -70,6 +71,12 @@ procedure Plataforma_ERP_ADO_LogOcorrenciaInserir(argRegistroAcao: Byte;
                                                   argID          : Integer;
                                                   argMensagem    : string;
                                                   argDados       : string);
+
+//
+// Plataforma_ERP_ADO_NumeradorDeterminar.
+//
+function Plataforma_ERP_ADO_NumeradorDeterminar(argADOConnection: TADOConnection;
+                                                argCodigo       : string): Integer;
 
 //
 // Plataforma_ERP_ADO_NumeradorLicencaDeterminar.
@@ -399,6 +406,143 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+end;
+
+//
+// Plataforma_ERP_ADO_NumeradorDeterminar.
+//
+function Plataforma_ERP_ADO_NumeradorDeterminar(argADOConnection: TADOConnection;
+                                                argCodigo       : string): Integer;
+const
+  FUNCAO_NOME: string = 'Plataforma_ERP_ADO_NumeradorDeterminar';
+var
+  locMsgErro : string;
+  locADOQuery: TADOQuery;
+begin
+  
+  // Instancia e configura o objeto de query ADO com o banco de dados.
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := argADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  // Monta SQL para consistir se o código informado é único.
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                           ');
+  locADOQuery.SQL.Add('  [numerador].[atual_id]         ');
+  locADOQuery.SQL.Add('FROM                             ');
+  locADOQuery.SQL.Add('  [numerador]                    ');
+  locADOQuery.SQL.Add('WHERE                            ');
+  locADOQuery.SQL.Add('  [numerador].[codigo] = :codigo ');
+
+  // Passa parâmetros.
+  locADOQuery.Parameters.ParamByName('codigo').Value := argCodigo;
+
+  // Executa query.
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locMsgErro := 'Ocorreu algum erro ao executar o comando SQL para consultar o ID atual na tabela [numerador]!';
+      Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, FONTE_NOME, FUNCAO_NOME);
+      raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
+    end;
+  end;
+
+  // Se nenhum registro existir com o código do numerador informado.
+  if locADOQuery.RecordCount <= 0 then
+  begin
+    // Insere numerador.
+    locADOQuery.Close;
+    locADOQuery.SQL.Clear;
+    locADOQuery.SQL.Add('INSERT INTO [numerador] ( ');
+    locADOQuery.SQL.Add('  [codigo],               ');
+    locADOQuery.SQL.Add('  [atual_id],             ');
+    locADOQuery.SQL.Add('  [bloqueado],            ');
+    locADOQuery.SQL.Add('  [ativo],                ');
+    locADOQuery.SQL.Add('  [ins_local_dt_hr],      ');
+    locADOQuery.SQL.Add('  [ins_server_dt_hr],     ');
+    locADOQuery.SQL.Add('  [upd_local_dt_hr],      ');
+    locADOQuery.SQL.Add('  [upd_server_dt_hr],     ');
+    locADOQuery.SQL.Add('  [upd_contador]          ');
+    locADOQuery.SQL.Add(')                         ');
+    locADOQuery.SQL.Add('VALUES (                  ');
+    locADOQuery.SQL.Add('  :codigo,                '); // codigo.
+    locADOQuery.SQL.Add('  :atual_id,              '); // atual_id.
+    locADOQuery.SQL.Add('  :bloqueado,             '); // bloqueado.
+    locADOQuery.SQL.Add('  :ativo,                 '); // ativo.
+    locADOQuery.SQL.Add('  :ins_local_dt_hr,       '); // ins_local_dt_hr.
+    locADOQuery.SQL.Add('  GETDATE(),              '); // ins_server_dt_hr.
+    locADOQuery.SQL.Add('  :upd_local_dt_hr,       '); // upd_local_dt_hr.
+    locADOQuery.SQL.Add('  :upd_server_dt_hr,      '); // upd_server_dt_hr.
+    locADOQuery.SQL.Add('  :upd_contador           '); // upd_contador.
+    locADOQuery.SQL.Add(')                         ');
+
+    locADOQuery.Parameters.ParamByName('codigo').Value          := argCodigo;
+    locADOQuery.Parameters.ParamByName('atual_id').Value        := 1;
+    locADOQuery.Parameters.ParamByName('bloqueado').Value       := 'N';
+    locADOQuery.Parameters.ParamByName('ativo').Value           := 'S';
+    locADOQuery.Parameters.ParamByName('ins_local_dt_hr').Value := Now;
+    locADOQuery.Parameters.ParamByName('upd_contador').Value    := 0;
+
+    try
+      locADOQuery.ExecSQL;
+    except
+      on locExcecao: Exception do
+      begin
+        locADOQuery.Close;
+        FreeAndNil(locADOQuery);
+        locMsgErro := 'Ocorreu algum erro ao inserir um registro na tabela [numerador]!';
+        Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, FONTE_NOME, FUNCAO_NOME);
+        raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
+      end;
+    end;
+
+    // Primeiro ID do numerador.
+    Result := 1;
+  end
+  else
+  begin
+    // ID do numerador atual.
+    Result := locADOQuery.FieldByName('atual_id').AsInteger + 1;
+
+    // Atualiza o numerador.
+    locADOQuery.Close;
+    locADOQuery.SQL.Clear;
+    locADOQuery.SQL.Add('UPDATE                                    ');
+    locADOQuery.SQL.Add('  [numerador_licenca]                     ');
+    locADOQuery.SQL.Add('SET                                       ');
+    locADOQuery.SQL.Add('  [atual_id]         = :atual_id,         ');
+    locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :upd_local_dt_hr,  ');
+    locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),         ');
+    locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1 ');
+    locADOQuery.SQL.Add('WHERE                                     ');
+    locADOQuery.SQL.Add('  [codigo] = :codigo                      ');
+
+    locADOQuery.Parameters.ParamByName('codigo').Value          := argCodigo;
+    locADOQuery.Parameters.ParamByName('atual_id').Value        := Result;
+    locADOQuery.Parameters.ParamByName('upd_local_dt_hr').Value := Now;
+
+    try
+      locADOQuery.ExecSQL;
+    except
+      on locExcecao: Exception do
+      begin
+        locADOQuery.Close;
+        FreeAndNil(locADOQuery);
+        locMsgErro := 'Ocorreu algum erro ao atualizar um registro na tabela [numerador]!';
+        Plataforma_ERP_Logar(True, locMsgErro, locExcecao.Message, FONTE_NOME, FUNCAO_NOME);
+        raise Exception.Create(StringConcatenar(locMsgErro, locExcecao.Message));
+      end;
+    end;    
+  end;  
+
+  // Finaliza objetos.
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
 end;
 
 //

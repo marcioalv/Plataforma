@@ -77,7 +77,8 @@ uses
   Plataforma_ERP_VCL_LogLocalLista,
   Plataforma_ERP_VCL_UsuarioLista,
   Plataforma_ERP_VCL_PerfilUsuarioLista,
-  Plataforma_ERP_VCL_TiposUsuariosLista;
+  Plataforma_ERP_VCL_TiposUsuariosLista,
+  Plataforma_ERP_VCL_RotinaAplicacaoLista;
 
 //
 // Evento de criação do formulário.
@@ -199,8 +200,13 @@ end;
 // Evento de click na opção "rotinas aplicação".
 //
 procedure TPlataformaERPVCLMenuPrincipal.mniRotinasAplicacaoClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLRotinaAplicacaoLista;
 begin
-  Exit;
+  locFormulario := TPlataformaERPVCLRotinaAplicacaoLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 {--------------------------------------------------------------------------------------------------}

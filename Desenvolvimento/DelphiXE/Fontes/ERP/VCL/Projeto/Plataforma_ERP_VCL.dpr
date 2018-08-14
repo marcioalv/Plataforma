@@ -39,7 +39,10 @@ uses
   Plataforma_ERP_VCL_UsuarioSenhaTrocar in '..\Formularios\Plataforma_ERP_VCL_UsuarioSenhaTrocar.pas' {PlataformaERPVCLUsuarioSenhaTrocar},
   Plataforma_ERP_VCL_PerfilUsuarioLista in '..\Formularios\Plataforma_ERP_VCL_PerfilUsuarioLista.pas' {PlataformaERPVCLPerfilUsuarioLista},
   Plataforma_ERP_VCL_PerfilUsuarioFiltro in '..\Formularios\Plataforma_ERP_VCL_PerfilUsuarioFiltro.pas' {PlataformaERPVCLPerfilUsuarioFiltro},
-  Plataforma_ERP_VCL_PerfilUsuarioCadastro in '..\Formularios\Plataforma_ERP_VCL_PerfilUsuarioCadastro.pas' {PlataformaERPVCLPerfilUsuarioCadastro};
+  Plataforma_ERP_VCL_PerfilUsuarioCadastro in '..\Formularios\Plataforma_ERP_VCL_PerfilUsuarioCadastro.pas' {PlataformaERPVCLPerfilUsuarioCadastro},
+  Plataforma_ERP_VCL_RotinaAplicacaoLista in '..\Formularios\Plataforma_ERP_VCL_RotinaAplicacaoLista.pas' {PlataformaERPVCLRotinaAplicacaoLista},
+  Plataforma_ERP_VCL_RotinaAplicacaoFiltro in '..\Formularios\Plataforma_ERP_VCL_RotinaAplicacaoFiltro.pas' {PlataformaERPVCLRotinaAplicacaoFiltro},
+  Plataforma_ERP_VCL_RotinaAplicacaoCadastro in '..\Formularios\Plataforma_ERP_VCL_RotinaAplicacaoCadastro.pas' {PlataformaERPVCLRotinaAplicacaoCadastro};
 
 {$R *.res}
 
@@ -50,5 +53,8 @@ begin
   Application.CreateForm(TPlataformaERPVCLPerfilUsuarioLista, PlataformaERPVCLPerfilUsuarioLista);
   Application.CreateForm(TPlataformaERPVCLPerfilUsuarioFiltro, PlataformaERPVCLPerfilUsuarioFiltro);
   Application.CreateForm(TPlataformaERPVCLPerfilUsuarioCadastro, PlataformaERPVCLPerfilUsuarioCadastro);
+  Application.CreateForm(TPlataformaERPVCLRotinaAplicacaoLista, PlataformaERPVCLRotinaAplicacaoLista);
+  Application.CreateForm(TPlataformaERPVCLRotinaAplicacaoFiltro, PlataformaERPVCLRotinaAplicacaoFiltro);
+  Application.CreateForm(TPlataformaERPVCLRotinaAplicacaoCadastro, PlataformaERPVCLRotinaAplicacaoCadastro);
   Application.Run;
 end.

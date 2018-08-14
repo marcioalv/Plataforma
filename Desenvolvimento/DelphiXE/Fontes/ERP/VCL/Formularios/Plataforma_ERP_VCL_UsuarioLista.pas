@@ -29,7 +29,8 @@ uses
   Vcl.Buttons,
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
-  Vcl.ComCtrls, Vcl.Menus;
+  Vcl.ComCtrls,
+  Vcl.Menus;
 
 type
   TPlataformaERPVCLUsuarioLista = class(TForm)

@@ -1501,13 +1501,13 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioExcluir';
   ERRO_MENSAGEM    : string = 'Impossível excluir dados do tipo de usuário!';
 var
-  locADOConnection         : TADOConnection;
-  locADOQuery              : TADOQuery;
-  locLogMensagem           : string;
-  locLicencaID             : Integer;
-  locTipoUsuarioBaseID     : Integer;
-  locTipoUsuarioID         : Integer;
-  locTipoUsuarioLogLogDados: string;
+  locADOConnection      : TADOConnection;
+  locADOQuery           : TADOQuery;
+  locLogMensagem        : string;
+  locLicencaID          : Integer;
+  locTipoUsuarioBaseID  : Integer;
+  locTipoUsuarioID      : Integer;
+  locTipoUsuarioLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
@@ -1519,7 +1519,7 @@ begin
   //
   // Log dados.
   //
-  locTipoUsuarioLogLogDados := LogDadosGerar;
+  locTipoUsuarioLogDados := LogDadosGerar;
 
   //
   // Confirma gravação com o usuário.
@@ -1649,7 +1649,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela tipo_usuario_log!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela [tipo_usuario_log]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -1661,7 +1661,7 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL              .Add('DELETE FROM                                           ');
+  locADOQuery.SQL.Add('DELETE FROM                                                         ');
   locADOQuery.SQL.Add('  [tipo_usuario]                                                    ');
   locADOQuery.SQL.Add('WHERE                                                               ');
   locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id]           = :licenca_id           AND ');
@@ -1682,7 +1682,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela tipo_usuario_log!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela [tipo_usuario]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -1736,7 +1736,7 @@ begin
   // Log de ocorrência.
   //
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locTipoUsuarioID, 'Registro excluído com sucesso!', locTipoUsuarioLogLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locTipoUsuarioID, 'Registro excluído com sucesso!', locTipoUsuarioLogDados);
   except
   end;
   VCLInformacaoExibir('Tipo de usuário excluído com sucesso!');
@@ -1761,7 +1761,7 @@ begin
   //
   // Confirma com o usuário.
   //
-  if StringIntegerConverter(edtTipoUsuarioID.Text) = 0 then
+  if locTipoUsuarioID = 0 then
   begin
     if not VCLQuestionamentoExibir('Deseja realmente cancelar a digitação destes dados?') then Exit;
   end
