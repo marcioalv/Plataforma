@@ -550,20 +550,20 @@ begin
   locADOQuery.SQL.Add('  [dados]                  ');
   locADOQuery.SQL.Add(')                          ');
   locADOQuery.SQL.Add('VALUES (                   ');
-  locADOQuery.SQL.Add('  :licenca_id,             '); // licenca_id.
-  locADOQuery.SQL.Add('  :usuario_base_id,        '); // usuario_base_id.
-  locADOQuery.SQL.Add('  :usuario_id,             '); // usuario_id.
-  locADOQuery.SQL.Add('  :usuario_log_sq,         '); // usuario_log_sq.
-  locADOQuery.SQL.Add('  :log_base_id,            '); // log_base_id.
-  locADOQuery.SQL.Add('  :log_local_dt_hr,        '); // log_local_dt_hr.
-  locADOQuery.SQL.Add('  GETDATE(),               '); // log_server_dt_hr.
-  locADOQuery.SQL.Add('  :registro_acao_id,       '); // registro_acao_id.
-  locADOQuery.SQL.Add('  :host_name,              '); // host_name.
-  locADOQuery.SQL.Add('  :user_name,              '); // user_name.
-  locADOQuery.SQL.Add('  :log_usuario_base_id,    '); // log_usuario_base_id.
-  locADOQuery.SQL.Add('  :log_usuario_id,         '); // log_usuario_id.
-  locADOQuery.SQL.Add('  :mensagem,               '); // mensagem.
-  locADOQuery.SQL.Add('  :dados                   '); // dados.
+  locADOQuery.SQL.Add('  :licenca_id,             '); // [licenca_id].
+  locADOQuery.SQL.Add('  :usuario_base_id,        '); // [usuario_base_id].
+  locADOQuery.SQL.Add('  :usuario_id,             '); // [usuario_id].
+  locADOQuery.SQL.Add('  :usuario_log_sq,         '); // [usuario_log_sq].
+  locADOQuery.SQL.Add('  :log_base_id,            '); // [log_base_id].
+  locADOQuery.SQL.Add('  :log_local_dt_hr,        '); // [log_local_dt_hr].
+  locADOQuery.SQL.Add('  GETDATE(),               '); // [log_server_dt_hr].
+  locADOQuery.SQL.Add('  :registro_acao_id,       '); // [registro_acao_id].
+  locADOQuery.SQL.Add('  :host_name,              '); // [host_name].
+  locADOQuery.SQL.Add('  :user_name,              '); // [user_name].
+  locADOQuery.SQL.Add('  :log_usuario_base_id,    '); // [log_usuario_base_id].
+  locADOQuery.SQL.Add('  :log_usuario_id,         '); // [log_usuario_id].
+  locADOQuery.SQL.Add('  :mensagem,               '); // [mensagem].
+  locADOQuery.SQL.Add('  :dados                   '); // [dados].
   locADOQuery.SQL.Add(')                          ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value          := locLicencaID;
@@ -629,7 +629,7 @@ begin
   // Grava log de ocorrência.
   //  
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locUsuarioID, locUsuarioLogMsg, locUsuarioLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locUsuarioID,  '', 'usuario', locUsuarioLogMsg, locUsuarioLogDados);
   except
     on locExcecao: Exception do
     begin

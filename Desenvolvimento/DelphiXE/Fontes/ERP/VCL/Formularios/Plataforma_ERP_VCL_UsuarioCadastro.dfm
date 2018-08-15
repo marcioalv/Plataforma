@@ -437,6 +437,10 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 128
@@ -1326,13 +1330,13 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
       Caption = 'Gravar'
       OnClick = mniGravarClick
     end
-    object mniCancelar: TMenuItem
-      Caption = 'Cancelar'
-      OnClick = mniCancelarClick
-    end
     object mniMinimizar: TMenuItem
       Caption = 'Minimizar'
       OnClick = mniMinimizarClick
+    end
+    object mniCancelar: TMenuItem
+      Caption = 'Cancelar'
+      OnClick = mniCancelarClick
     end
     object mniFechar: TMenuItem
       Caption = 'Fechar'

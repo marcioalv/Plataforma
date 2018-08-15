@@ -45,15 +45,17 @@ CREATE TABLE [dbo].[log_ocorrencia] (
   [log_usuario_base_id]    SMALLINT                                  NOT NULL,
   [log_usuario_id]         INT                                       NOT NULL,
   [id]                     INT                                       NOT NULL,
+  [codigo]                 VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [tabela]                 VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [mensagem]               VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [dados]                  VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
  
   CONSTRAINT [log_ocorrencia_pk] PRIMARY KEY CLUSTERED ([log_ocorrencia_base_id], [log_ocorrencia_id]),
 )
 GO
-CREATE INDEX [log_ocorrencia_ix_log_local_dt_hr] ON [log_ocorrencia] ([log_local_dt_hr], [log_usuario_base_id], [log_usuario_id], [log_ocorrencia_base_id], [log_ocorrencia_id])
+CREATE INDEX [log_ocorrencia_ix_log_local_dt_hr] ON [log_ocorrencia] ([log_local_dt_hr], [log_usuario_base_id], [log_usuario_id], [id], [codigo], [log_ocorrencia_base_id], [log_ocorrencia_id])
 GO
-CREATE INDEX [log_ocorrencia_ix_log_usuario] ON [log_ocorrencia] ([log_usuario_base_id], [log_usuario_id], [log_local_dt_hr], [log_ocorrencia_base_id], [log_ocorrencia_id])
+CREATE INDEX [log_ocorrencia_ix_log_usuario] ON [log_ocorrencia] ([log_usuario_base_id], [log_usuario_id], [log_local_dt_hr], [id], [codigo], [log_ocorrencia_base_id], [log_ocorrencia_id])
 GO
 
 --
@@ -399,83 +401,7 @@ INSERT INTO [numerador] VALUES ('registro_acao_id', 4, 'N', 'S', GETDATE(), GETD
 --
 -- Rotinas da aplicação.
 --
-INSERT INTO [rotina_aplicacao] VALUES (001, '01',                'Aplicativo ERP',       'ERP',                                         'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (002, '01.01',             'Módulo aplicação',     'ERP_APLICACAO',                               'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (003, '01.01.01',          'Controle de aceso',    'ERP_CONTROLE_ACESSO',                         'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-
-INSERT INTO [rotina_aplicacao] VALUES (004, '01.01.01.01',       'Rotinas da aplicação', 'ERP_ROTINA_APLICACAO',                        'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (005, '01.01.01.01.01',    'Lista',                'ERP_ROTINA_APLICACAO_LISTA',                  'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (006, '01.01.01.01.01.01', 'Localizar',            'ERP_ROTINA_APLICACAO_LISTA_LOCALIZAR',        'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (007, '01.01.01.01.01.02', 'Atualizar',            'ERP_ROTINA_APLICACAO_LISTA_ATUALIZAR',        'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (008, '01.01.01.01.01.03', 'Novo',                 'ERP_ROTINA_APLICACAO_LISTA_NOVO',             'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (009, '01.01.01.01.01.04', 'Selecionar',           'ERP_ROTINA_APLICACAO_LISTA_SELECIONAR',       'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (010, '01.01.01.01.01.05', 'Aba de cadastro',      'ERP_ROTINA_APLICACAO_FILTRO_CADASTRO',        'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (011, '01.01.01.01.01.06', 'Aba de auditoria',     'ERP_ROTINA_APLICACAO_FILTRO_AUDITORIA',       'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (012, '01.01.01.01.02',    'Cadastro',             'ERP_ROTINA_APLICACAO_CADASTRO',               'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (013, '01.01.01.01.02.01', 'Aba de cadastro',      'ERP_ROTINA_APLICACAO_CADASTRO_ABA_CADASTRO',  'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (014, '01.01.01.01.02.02', 'Aba de auditoria',     'ERP_ROTINA_APLICACAO_CADASTRO_ABA_AUDITORIA', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (015, '01.01.01.01.02.03', 'Atualizar',            'ERP_ROTINA_APLICACAO_CADASTRO_ATUALIZAR',     'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (016, '01.01.01.01.02.04', 'Localizar',            'ERP_ROTINA_APLICACAO_CADASTRO_LOCALIZAR',     'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (017, '01.01.01.01.02.05', 'Novo',                 'ERP_ROTINA_APLICACAO_CADASTRO_NOVO',          'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (018, '01.01.01.01.02.06', 'Excluir',              'ERP_ROTINA_APLICACAO_CADASTRO_EXCLUIR',       'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (019, '01.01.01.01.02.07', 'Alterar',              'ERP_ROTINA_APLICACAO_CADASTRO_ALTERAR',       'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-
-INSERT INTO [rotina_aplicacao] VALUES (020, '01.01.01.02',       'Perfis de usuário',    'ERP_PERFIL_USUARIO',                          'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (021, '01.01.01.02.01',    'Lista',                'ERP_PERFIL_USUARIO_LISTA',                    'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (022, '01.01.01.02.01.01', 'Localizar',            'ERP_PERFIL_USUARIO_LISTA_LOCALIZAR',          'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (023, '01.01.01.02.01.02', 'Atualizar',            'ERP_PERFIL_USUARIO_LISTA_ATUALIZAR',          'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (024, '01.01.01.02.01.03', 'Novo',                 'ERP_PERFIL_USUARIO_LISTA_NOVO',               'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (025, '01.01.01.02.01.04', 'Selecionar',           'ERP_PERFIL_USUARIO_LISTA_SELECIONAR',         'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (026, '01.01.01.02.01.05', 'Aba de cadastro',      'ERP_PERFIL_USUARIO_FILTRO_CADASTRO',          'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (027, '01.01.01.02.01.06', 'Aba de auditoria',     'ERP_PERFIL_USUARIO_FILTRO_AUDITORIA',         'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (028, '01.01.01.02.02',    'Cadastro',             'ERP_PERFIL_USUARIO_CADASTRO',                 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (029, '01.01.01.02.02.01', 'Aba de cadastro',      'ERP_PERFIL_USUARIO_CADASTRO_ABA_CADASTRO',    'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (030, '01.01.01.02.02.02', 'Aba de auditoria',     'ERP_PERFIL_USUARIO_CADASTRO_ABA_AUDITORIA',   'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (031, '01.01.01.02.02.03', 'Log',                  'ERP_PERFIL_USUARIO_CADASTRO_LOG',             'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (032, '01.01.01.02.02.04', 'Atualizar',            'ERP_PERFIL_USUARIO_CADASTRO_ATUALIZAR',       'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (033, '01.01.01.02.02.05', 'Localizar',            'ERP_PERFIL_USUARIO_CADASTRO_LOCALIZAR',       'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (034, '01.01.01.02.02.06', 'Novo',                 'ERP_PERFIL_USUARIO_CADASTRO_NOVO',            'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (035, '01.01.01.02.02.07', 'Excluir',              'ERP_PERFIL_USUARIO_CADASTRO_EXCLUIR',         'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (036, '01.01.01.02.02.08', 'Alterar',              'ERP_PERFIL_USUARIO_CADASTRO_ALTERAR',         'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-
-INSERT INTO [rotina_aplicacao] VALUES (037, '01.01.01.03',       'Tipos de usuário',     'ERP_TIPO_USUARIO',                            'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (038, '01.01.01.03.01',    'Lista',                'ERP_TIPO_USUARIO_LISTA',                      'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (039, '01.01.01.03.01.01', 'Localizar',            'ERP_TIPO_USUARIO_LISTA_LOCALIZAR',            'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (040, '01.01.01.03.01.02', 'Atualizar',            'ERP_TIPO_USUARIO_LISTA_ATUALIZAR',            'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (041, '01.01.01.03.01.03', 'Novo',                 'ERP_TIPO_USUARIO_LISTA_NOVO',                 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (042, '01.01.01.03.01.04', 'Selecionar',           'ERP_TIPO_USUARIO_LISTA_SELECIONAR',           'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (043, '01.01.01.03.01.05', 'Aba de cadastro',      'ERP_TIPO_USUARIO_FILTRO_CADASTRO',            'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (044, '01.01.01.03.01.06', 'Aba de auditoria',     'ERP_TIPO_USUARIO_FILTRO_AUDITORIA',           'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (045, '01.01.01.03.02',    'Cadastro',             'ERP_TIPO_USUARIO_CADASTRO',                   'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (046, '01.01.01.03.02.01', 'Aba de cadastro',      'ERP_TIPO_USUARIO_CADASTRO_ABA_CADASTRO',      'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (047, '01.01.01.03.02.02', 'Aba de auditoria',     'ERP_TIPO_USUARIO_CADASTRO_ABA_AUDITORIA',     'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (048, '01.01.01.03.02.03', 'Log',                  'ERP_TIPO_USUARIO_CADASTRO_LOG',               'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (049, '01.01.01.03.02.04', 'Atualizar',            'ERP_TIPO_USUARIO_CADASTRO_ATUALIZAR',         'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (050, '01.01.01.03.02.05', 'Localizar',            'ERP_TIPO_USUARIO_CADASTRO_LOCALIZAR',         'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (051, '01.01.01.03.02.06', 'Novo',                 'ERP_TIPO_USUARIO_CADASTRO_NOVO',              'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (052, '01.01.01.03.02.07', 'Excluir',              'ERP_TIPO_USUARIO_CADASTRO_EXCLUIR',           'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (053, '01.01.01.03.02.08', 'Alterar',              'ERP_TIPO_USUARIO_CADASTRO_ALTERAR',           'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-
-INSERT INTO [rotina_aplicacao] VALUES (054, '01.01.01.04',       'Usuários',             'ERP_USUARIO',                                 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (055, '01.01.01.04.01',    'Lista',                'ERP_USUARIO_LISTA',                           'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (056, '01.01.01.04.01.01', 'Localizar',            'ERP_USUARIO_LISTA_LOCALIZAR',                 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (057, '01.01.01.04.01.02', 'Atualizar',            'ERP_USUARIO_LISTA_ATUALIZAR',                 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (058, '01.01.01.04.01.03', 'Novo',                 'ERP_USUARIO_LISTA_NOVO',                      'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (059, '01.01.01.04.01.04', 'Selecionar',           'ERP_USUARIO_LISTA_SELECIONAR',                'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (060, '01.01.01.04.01.05', 'Aba de cadastro',      'ERP_USUARIO_FILTRO_CADASTRO',                 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (061, '01.01.01.04.01.06', 'Aba de auditoria',     'ERP_USUARIO_FILTRO_AUDITORIA',                'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (062, '01.01.01.04.02',    'Cadastro',             'ERP_USUARIO_CADASTRO',                        'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (063, '01.01.01.04.02.01', 'Aba de cadastro',      'ERP_USUARIO_CADASTRO_ABA_CADASTRO',           'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (064, '01.01.01.04.02.02', 'Aba de auditoria',     'ERP_USUARIO_CADASTRO_ABA_AUDITORIA',          'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (065, '01.01.01.04.02.03', 'Log',                  'ERP_USUARIO_CADASTRO_LOG',                    'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (066, '01.01.01.04.02.04', 'Senha',                'ERP_USUARIO_CADASTRO_SENHA',                  'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (067, '01.01.01.04.02.05', 'Atualizar',            'ERP_USUARIO_CADASTRO_ATUALIZAR',              'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (068, '01.01.01.04.02.06', 'Localizar',            'ERP_USUARIO_CADASTRO_LOCALIZAR',              'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (069, '01.01.01.04.02.07', 'Novo',                 'ERP_USUARIO_CADASTRO_NOVO',                   'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (070, '01.01.01.04.02.08', 'Excluir',              'ERP_USUARIO_CADASTRO_EXCLUIR',                'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [rotina_aplicacao] VALUES (071, '01.01.01.04.02.09', 'Alterar',              'ERP_USUARIO_CADASTRO_ALTERAR',                'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-
-INSERT INTO [numerador] VALUES ('rotina_aplicacao_id', 71, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+EXECUTE Plataforma_ERP_SQLServer_RotinaAplicacao_Inserir
 
 --
 -- Base padrão.

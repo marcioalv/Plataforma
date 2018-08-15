@@ -172,7 +172,7 @@ object PlataformaERPVCLPerfilUsuarioLista: TPlataformaERPVCLPerfilUsuarioLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 468
+      Left = 464
       Top = 359
       Width = 80
       Height = 13
@@ -206,10 +206,12 @@ object PlataformaERPVCLPerfilUsuarioLista: TPlataformaERPVCLPerfilUsuarioLista
         end
         item
           Caption = 'Licenca ID'
+          Tag = 1
           Width = 0
         end
         item
           Caption = 'Base ID'
+          Tag = 1
           Width = 0
         end
         item
@@ -219,6 +221,7 @@ object PlataformaERPVCLPerfilUsuarioLista: TPlataformaERPVCLPerfilUsuarioLista
         item
           Alignment = taRightJustify
           Caption = 'ID'
+          Tag = 1
           Width = 0
         end
         item

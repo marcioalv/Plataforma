@@ -69,6 +69,8 @@ procedure Plataforma_ERP_ADO_ConexaoAbrir(var argADOConnection: TADOConnection);
 //
 procedure Plataforma_ERP_ADO_LogOcorrenciaInserir(argRegistroAcao: Byte;
                                                   argID          : Integer;
+                                                  argCodigo      : string;
+                                                  argTabela      : string;
                                                   argMensagem    : string;
                                                   argDados       : string);
 
@@ -186,6 +188,8 @@ end;
 //
 procedure Plataforma_ERP_ADO_LogOcorrenciaInserir(argRegistroAcao: Byte;
                                                   argID          : Integer;
+                                                  argCodigo      : string;
+                                                  argTabela      : string;
                                                   argMensagem    : string;
                                                   argDados       : string);
 const
@@ -321,34 +325,38 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('INSERT INTO [log_ocorrencia] (');
-  locADOQuery.SQL.Add(' log_ocorrencia_base_id,      ');
-  locADOQuery.SQL.Add(' log_ocorrencia_id,           ');
-  locADOQuery.SQL.Add(' log_licenca_id,              ');
-  locADOQuery.SQL.Add(' log_local_dt_hr,             ');
-  locADOQuery.SQL.Add(' log_server_dt_hr,            ');
-  locADOQuery.SQL.Add(' registro_acao_id,            ');
-  locADOQuery.SQL.Add(' host_name,                   ');
-  locADOQuery.SQL.Add(' user_name,                   ');
-  locADOQuery.SQL.Add(' log_usuario_base_id,         ');
-  locADOQuery.SQL.Add(' log_usuario_id,              ');
-  locADOQuery.SQL.Add(' id,                          ');
-  locADOQuery.SQL.Add(' mensagem,                    ');
-  locADOQuery.SQL.Add(' dados                        ');
+  locADOQuery.SQL.Add(' [log_ocorrencia_base_id],    ');
+  locADOQuery.SQL.Add(' [log_ocorrencia_id],         ');
+  locADOQuery.SQL.Add(' [log_licenca_id],            ');
+  locADOQuery.SQL.Add(' [log_local_dt_hr],           ');
+  locADOQuery.SQL.Add(' [log_server_dt_hr],          ');
+  locADOQuery.SQL.Add(' [registro_acao_id],          ');
+  locADOQuery.SQL.Add(' [host_name],                 ');
+  locADOQuery.SQL.Add(' [user_name],                 ');
+  locADOQuery.SQL.Add(' [log_usuario_base_id],       ');
+  locADOQuery.SQL.Add(' [log_usuario_id],            ');
+  locADOQuery.SQL.Add(' [id],                        ');
+  locADOQuery.SQL.Add(' [codigo],                    ');
+  locADOQuery.SQL.Add(' [tabela],                    ');
+  locADOQuery.SQL.Add(' [mensagem],                  ');
+  locADOQuery.SQL.Add(' [dados]                      ');
   locADOQuery.SQL.Add(')                             ');
   locADOQuery.SQL.Add('VALUES (                      ');
-  locADOQuery.SQL.Add(' :log_ocorrencia_base_id,     '); // log_ocorrencia_base_id.
-  locADOQuery.SQL.Add(' :log_ocorrencia_id,          '); // log_ocorrencia_id.
-  locADOQuery.SQL.Add(' :log_licenca_id,             '); // log_licenca_id.
-  locADOQuery.SQL.Add(' :log_local_dt_hr,            '); // log_local_dt_hr.
-  locADOQuery.SQL.Add(' GETDATE(),                   '); // log_server_dt_hr.
-  locADOQuery.SQL.Add(' :registro_acao_id,           '); // registro_acao_id.
-  locADOQuery.SQL.Add(' :host_name,                  '); // host_name.
-  locADOQuery.SQL.Add(' :user_name,                  '); // user_name.
-  locADOQuery.SQL.Add(' :log_usuario_base_id,        '); // log_usuario_base_id.
-  locADOQuery.SQL.Add(' :log_usuario_id,             '); // log_usuario_id.
-  locADOQuery.SQL.Add(' :id,                         '); // id.
-  locADOQuery.SQL.Add(' :mensagem,                   '); // mensagem.
-  locADOQuery.SQL.Add(' :dados                       '); // dados.
+  locADOQuery.SQL.Add(' :log_ocorrencia_base_id,     '); // [log_ocorrencia_base_id].
+  locADOQuery.SQL.Add(' :log_ocorrencia_id,          '); // [log_ocorrencia_id].
+  locADOQuery.SQL.Add(' :log_licenca_id,             '); // [log_licenca_id].
+  locADOQuery.SQL.Add(' :log_local_dt_hr,            '); // [log_local_dt_hr].
+  locADOQuery.SQL.Add(' GETDATE(),                   '); // [log_server_dt_hr].
+  locADOQuery.SQL.Add(' :registro_acao_id,           '); // [registro_acao_id].
+  locADOQuery.SQL.Add(' :host_name,                  '); // [host_name].
+  locADOQuery.SQL.Add(' :user_name,                  '); // [user_name].
+  locADOQuery.SQL.Add(' :log_usuario_base_id,        '); // [log_usuario_base_id].
+  locADOQuery.SQL.Add(' :log_usuario_id,             '); // [log_usuario_id].
+  locADOQuery.SQL.Add(' :id,                         '); // [id].
+  locADOQuery.SQL.Add(' :codigo,                     '); // [codigo].
+  locADOQuery.SQL.Add(' :tabela,                     '); // [tabela].
+  locADOQuery.SQL.Add(' :mensagem,                   '); // [mensagem].
+  locADOQuery.SQL.Add(' :dados                       '); // [dados].
   locADOQuery.SQL.Add(')                             ');
 
   locADOQuery.Parameters.ParamByName('log_ocorrencia_base_id').Value := locLogOcorrenciaBaseID;
@@ -361,6 +369,8 @@ begin
   locADOQuery.Parameters.ParamByName('log_usuario_base_id').Value    := locUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('log_usuario_id').Value         := locUsuarioID;
   locADOQuery.Parameters.ParamByName('id').Value                     := argID;
+  locADOQuery.Parameters.ParamByName('codigo').Value                 := argCodigo;
+  locADOQuery.Parameters.ParamByName('tabela').Value                 := argTabela;
   locADOQuery.Parameters.ParamByName('mensagem').Value               := argMensagem;
   locADOQuery.Parameters.ParamByName('dados').Value                  := argDados;
 
@@ -470,15 +480,15 @@ begin
     locADOQuery.SQL.Add('  [upd_contador]          ');
     locADOQuery.SQL.Add(')                         ');
     locADOQuery.SQL.Add('VALUES (                  ');
-    locADOQuery.SQL.Add('  :codigo,                '); // codigo.
-    locADOQuery.SQL.Add('  :atual_id,              '); // atual_id.
-    locADOQuery.SQL.Add('  :bloqueado,             '); // bloqueado.
-    locADOQuery.SQL.Add('  :ativo,                 '); // ativo.
-    locADOQuery.SQL.Add('  :ins_local_dt_hr,       '); // ins_local_dt_hr.
-    locADOQuery.SQL.Add('  GETDATE(),              '); // ins_server_dt_hr.
-    locADOQuery.SQL.Add('  :upd_local_dt_hr,       '); // upd_local_dt_hr.
-    locADOQuery.SQL.Add('  :upd_server_dt_hr,      '); // upd_server_dt_hr.
-    locADOQuery.SQL.Add('  :upd_contador           '); // upd_contador.
+    locADOQuery.SQL.Add('  :codigo,                '); // [codigo].
+    locADOQuery.SQL.Add('  :atual_id,              '); // [atual_id].
+    locADOQuery.SQL.Add('  :bloqueado,             '); // [bloqueado].
+    locADOQuery.SQL.Add('  :ativo,                 '); // [ativo].
+    locADOQuery.SQL.Add('  :ins_local_dt_hr,       '); // [ins_local_dt_hr].
+    locADOQuery.SQL.Add('  GETDATE(),              '); // [ins_server_dt_hr].
+    locADOQuery.SQL.Add('  :upd_local_dt_hr,       '); // [upd_local_dt_hr].
+    locADOQuery.SQL.Add('  :upd_server_dt_hr,      '); // [upd_server_dt_hr].
+    locADOQuery.SQL.Add('  :upd_contador           '); // [upd_contador].
     locADOQuery.SQL.Add(')                         ');
 
     locADOQuery.Parameters.ParamByName('codigo').Value          := argCodigo;
@@ -621,21 +631,21 @@ begin
     locADOQuery.SQL.Add('  [upd_contador]                 ');
     locADOQuery.SQL.Add(')                                ');
     locADOQuery.SQL.Add('VALUES (                         ');
-    locADOQuery.SQL.Add('  :licenca_id,                   '); // licenca_id.
-    locADOQuery.SQL.Add('  :base_id,                      '); // base_id.
-    locADOQuery.SQL.Add('  :codigo,                       '); // codigo.
-    locADOQuery.SQL.Add('  :atual_id,                     '); // atual_id.
-    locADOQuery.SQL.Add('  :bloqueado,                    '); // bloqueado.
-    locADOQuery.SQL.Add('  :ativo,                        '); // ativo.
-    locADOQuery.SQL.Add('  :ins_local_dt_hr,              '); // ins_local_dt_hr.
-    locADOQuery.SQL.Add('  GETDATE(),                     '); // ins_server_dt_hr.
-    locADOQuery.SQL.Add('  :ins_usuario_base_id,          '); // ins_usuario_base_id.
-    locADOQuery.SQL.Add('  :ins_usuario_id,               '); // ins_usuario_id.
-    locADOQuery.SQL.Add('  :upd_local_dt_hr,              '); // upd_local_dt_hr.
-    locADOQuery.SQL.Add('  :upd_server_dt_hr,             '); // upd_server_dt_hr.
-    locADOQuery.SQL.Add('  :upd_usuario_base_id,          '); // upd_usuario_base_id.
-    locADOQuery.SQL.Add('  :upd_usuario_id,               '); // upd_usuario_id.
-    locADOQuery.SQL.Add('  :upd_contador                  '); // upd_contador.
+    locADOQuery.SQL.Add('  :licenca_id,                   '); // [licenca_id].
+    locADOQuery.SQL.Add('  :base_id,                      '); // [base_id].
+    locADOQuery.SQL.Add('  :codigo,                       '); // [codigo].
+    locADOQuery.SQL.Add('  :atual_id,                     '); // [atual_id].
+    locADOQuery.SQL.Add('  :bloqueado,                    '); // [bloqueado].
+    locADOQuery.SQL.Add('  :ativo,                        '); // [ativo].
+    locADOQuery.SQL.Add('  :ins_local_dt_hr,              '); // [ins_local_dt_hr].
+    locADOQuery.SQL.Add('  GETDATE(),                     '); // [ins_server_dt_hr].
+    locADOQuery.SQL.Add('  :ins_usuario_base_id,          '); // [ins_usuario_base_id].
+    locADOQuery.SQL.Add('  :ins_usuario_id,               '); // [ins_usuario_id].
+    locADOQuery.SQL.Add('  :upd_local_dt_hr,              '); // [upd_local_dt_hr].
+    locADOQuery.SQL.Add('  :upd_server_dt_hr,             '); // [upd_server_dt_hr].
+    locADOQuery.SQL.Add('  :upd_usuario_base_id,          '); // [upd_usuario_base_id].
+    locADOQuery.SQL.Add('  :upd_usuario_id,               '); // [upd_usuario_id].
+    locADOQuery.SQL.Add('  :upd_contador                  '); // [upd_contador].
     locADOQuery.SQL.Add(')                                ');
 
     locADOQuery.Parameters.ParamByName('licenca_id').Value          := argLicencaID;

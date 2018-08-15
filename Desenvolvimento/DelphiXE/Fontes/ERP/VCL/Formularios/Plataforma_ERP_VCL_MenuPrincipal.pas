@@ -263,14 +263,31 @@ begin
   mniControleAcesso.Visible := (mniUsuarios.Visible) or
                                (mniPerfisUsuario.Visible) or
                                (mniTiposUsuarios.Visible) or
-                               (mniRotinasAplicacao.Visible);
+                               (mniRotinasAplicacao.Visible); 
+
+  //
+  // Numeradores.
+  //
+  mniNumeradorGlobal.Visible  := Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_LISTA');
+  mniNumeradorLicenca.Visible := Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_LICENCA_LISTA');
+
+  mniNumeradores.Visible := (mniNumeradorGlobal.Visible) or
+                            (mniNumeradorLicenca.Visible);
+
+
+  //
+  // Instalação.
+  //
+  mniInstalacao.Visible := mniNumeradores.Visible;
+  
 
   //
   // Aplicação.
   //
-  mniAplicacao.Visible := (mniConfiguracoes.Visible) or
-                          (mniLogsAplicacao.Visible) or
-                          (mniControleAcesso.Visible);
+  mniAplicacao.Visible := (mniConfiguracoes.Visible)  or
+                          (mniControleAcesso.Visible) or
+                          (mniInstalacao.Visible)     or
+                          (mniLogsAplicacao.Visible);
 end;
 
 //

@@ -396,11 +396,10 @@ object PlataformaERPVCLNumeradorLicencaCadastro: TPlataformaERPVCLNumeradorLicen
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabAuditoria
+    ActivePage = tabCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitHeight = 229
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -513,11 +512,29 @@ object PlataformaERPVCLNumeradorLicencaCadastro: TPlataformaERPVCLNumeradorLicen
           OnKeyPress = chkAtivoKeyPress
         end
       end
+      object chkCadastroNovo: TCheckBox
+        Left = 360
+        Top = 8
+        Width = 97
+        Height = 17
+        Caption = 'Novo cadastro?'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        Visible = False
+      end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitHeight = 229
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 128
@@ -550,19 +567,6 @@ object PlataformaERPVCLNumeradorLicencaCadastro: TPlataformaERPVCLNumeradorLicen
         Width = 61
         Height = 14
         Caption = 'Altera'#231#245'es:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-      end
-      object lblTipoUsuarioID: TLabel
-        Left = 376
-        Top = 72
-        Width = 16
-        Height = 14
-        Caption = 'ID:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -613,7 +617,7 @@ object PlataformaERPVCLNumeradorLicencaCadastro: TPlataformaERPVCLNumeradorLicen
         ParentShowHint = False
         ReadOnly = True
         ShowHint = False
-        TabOrder = 5
+        TabOrder = 4
         Text = '99/99/9999 99:99'
         OnClick = edtInsLocalDtHrClick
       end
@@ -632,7 +636,7 @@ object PlataformaERPVCLNumeradorLicencaCadastro: TPlataformaERPVCLNumeradorLicen
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 6
+        TabOrder = 5
         Text = '99/99/9999 99:99'
         OnClick = edtUpdLocalDtHrClick
       end
@@ -651,31 +655,13 @@ object PlataformaERPVCLNumeradorLicencaCadastro: TPlataformaERPVCLNumeradorLicen
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 7
+        TabOrder = 6
         Text = '999.999'
-      end
-      object edtTipoUsuarioID: TEdit
-        Left = 376
-        Top = 88
-        Width = 73
-        Height = 26
-        TabStop = False
-        Alignment = taCenter
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 4
-        Text = '9.999'
       end
       object edtBaseDescricao: TEdit
         Left = 16
         Top = 88
-        Width = 345
+        Width = 433
         Height = 26
         TabStop = False
         Color = clInactiveBorder
@@ -693,7 +679,7 @@ object PlataformaERPVCLNumeradorLicencaCadastro: TPlataformaERPVCLNumeradorLicen
         OnClick = edtBaseDescricaoClick
       end
       object edtBaseID: TEdit
-        Left = 232
+        Left = 336
         Top = 88
         Width = 65
         Height = 26
@@ -732,7 +718,7 @@ object PlataformaERPVCLNumeradorLicencaCadastro: TPlataformaERPVCLNumeradorLicen
         OnClick = edtLicencaDescricaoClick
       end
       object edtLicencaID: TEdit
-        Left = 256
+        Left = 336
         Top = 32
         Width = 65
         Height = 26
@@ -913,13 +899,13 @@ object PlataformaERPVCLNumeradorLicencaCadastro: TPlataformaERPVCLNumeradorLicen
       Caption = 'Gravar'
       OnClick = mniGravarClick
     end
-    object mniCancelar: TMenuItem
-      Caption = 'Cancelar'
-      OnClick = mniCancelarClick
-    end
     object mniMinimizar: TMenuItem
       Caption = 'Minimizar'
       OnClick = mniMinimizarClick
+    end
+    object mniCancelar: TMenuItem
+      Caption = 'Cancelar'
+      OnClick = mniCancelarClick
     end
     object mniFechar: TMenuItem
       Caption = 'Fechar'

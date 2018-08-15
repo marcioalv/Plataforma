@@ -166,7 +166,7 @@ object PlataformaERPVCLNumeradorLicencaLista: TPlataformaERPVCLNumeradorLicencaL
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 566
+      Left = 558
       Top = 358
       Width = 80
       Height = 13
@@ -179,6 +179,7 @@ object PlataformaERPVCLNumeradorLicencaLista: TPlataformaERPVCLNumeradorLicencaL
       Font.Style = []
       ParentFont = False
       Visible = False
+      ExplicitLeft = 566
     end
     object lvwLista: TListView
       AlignWithMargins = True
@@ -199,19 +200,16 @@ object PlataformaERPVCLNumeradorLicencaLista: TPlataformaERPVCLNumeradorLicencaL
         end
         item
           Caption = 'Licenca ID'
+          Tag = 1
           Width = 0
         end
         item
           Caption = 'Base ID'
+          Tag = 1
           Width = 0
         end
         item
           Caption = 'Base'
-          Width = 0
-        end
-        item
-          Alignment = taRightJustify
-          Caption = 'ID'
           Width = 0
         end
         item
@@ -221,6 +219,7 @@ object PlataformaERPVCLNumeradorLicencaLista: TPlataformaERPVCLNumeradorLicencaL
         item
           Alignment = taRightJustify
           Caption = 'ID atual'
+          Tag = 1
           Width = 125
         end
         item
@@ -251,8 +250,6 @@ object PlataformaERPVCLNumeradorLicencaLista: TPlataformaERPVCLNumeradorLicencaL
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
-      ExplicitLeft = 0
-      ExplicitTop = 25
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True

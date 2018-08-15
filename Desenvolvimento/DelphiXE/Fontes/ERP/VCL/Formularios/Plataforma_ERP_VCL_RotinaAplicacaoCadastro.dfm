@@ -411,7 +411,10 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitWidth = 465
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -558,7 +561,10 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 465
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 80
@@ -850,13 +856,13 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
       Caption = 'Gravar'
       OnClick = mniGravarClick
     end
-    object mniCancelar: TMenuItem
-      Caption = 'Cancelar'
-      OnClick = mniCancelarClick
-    end
     object mniMinimizar: TMenuItem
       Caption = 'Minimizar'
       OnClick = mniMinimizarClick
+    end
+    object mniCancelar: TMenuItem
+      Caption = 'Cancelar'
+      OnClick = mniCancelarClick
     end
     object mniFechar: TMenuItem
       Caption = 'Fechar'

@@ -149,7 +149,7 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
       437)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 412
+      Top = 408
       Width = 142
       Height = 13
       Anchors = [akLeft, akBottom]
@@ -157,8 +157,8 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
       ExplicitTop = 464
     end
     object lblListaFiltros: TLabel
-      Left = 536
-      Top = 404
+      Left = 532
+      Top = 400
       Width = 80
       Height = 13
       Anchors = [akRight, akBottom]
@@ -193,6 +193,7 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
         item
           Alignment = taRightJustify
           Caption = 'ID'
+          Tag = 1
           Width = 0
         end
         item

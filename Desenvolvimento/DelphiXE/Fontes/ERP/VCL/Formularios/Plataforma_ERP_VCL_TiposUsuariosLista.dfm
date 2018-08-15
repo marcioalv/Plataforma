@@ -177,7 +177,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 460
+      Left = 456
       Top = 361
       Width = 80
       Height = 13
@@ -211,10 +211,12 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
         end
         item
           Caption = 'Licenca ID'
+          Tag = 1
           Width = 0
         end
         item
           Caption = 'Base ID'
+          Tag = 1
           Width = 0
         end
         item
@@ -224,6 +226,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
         item
           Alignment = taRightJustify
           Caption = 'ID'
+          Tag = 1
           Width = 0
         end
         item
@@ -263,6 +266,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
+      ExplicitTop = 41
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True
