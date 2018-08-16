@@ -440,13 +440,13 @@ begin
   // Monta SQL para consistir se o código informado é único.
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                 ');
-  locADOQuery.SQL.Add('  [numerador].[atual_id]               ');
-  locADOQuery.SQL.Add('FROM                                   ');
-  locADOQuery.SQL.Add('  [numerador]                          ');
-  locADOQuery.SQL.Add('WHERE                                  ');
-  locADOQuery.SQL.Add('  [numerador].[base_id] = :base_id AND ');
-  locADOQuery.SQL.Add('  [numerador].[codigo]  = :codigo      ');
+  locADOQuery.SQL.Add('SELECT                                     ');
+  locADOQuery.SQL.Add('  [numerador_base].[atual_id]               ');
+  locADOQuery.SQL.Add('FROM                                        ');
+  locADOQuery.SQL.Add('  [numerador_base]                          ');
+  locADOQuery.SQL.Add('WHERE                                       ');
+  locADOQuery.SQL.Add('  [numerador_base].[base_id] = :base_id AND ');
+  locADOQuery.SQL.Add('  [numerador_base].[codigo]  = :codigo      ');
 
   // Passa parâmetros.
   locADOQuery.Parameters.ParamByName('base_id').Value := argBaseID;
@@ -472,30 +472,30 @@ begin
     // Insere numerador.
     locADOQuery.Close;
     locADOQuery.SQL.Clear;
-    locADOQuery.SQL.Add('INSERT INTO [numerador] ( ');
-    locADOQuery.SQL.Add('  [base_id],              ');
-    locADOQuery.SQL.Add('  [codigo],               ');
-    locADOQuery.SQL.Add('  [atual_id],             ');
-    locADOQuery.SQL.Add('  [bloqueado],            ');
-    locADOQuery.SQL.Add('  [ativo],                ');
-    locADOQuery.SQL.Add('  [ins_local_dt_hr],      ');
-    locADOQuery.SQL.Add('  [ins_server_dt_hr],     ');
-    locADOQuery.SQL.Add('  [upd_local_dt_hr],      ');
-    locADOQuery.SQL.Add('  [upd_server_dt_hr],     ');
-    locADOQuery.SQL.Add('  [upd_contador]          ');
-    locADOQuery.SQL.Add(')                         ');
-    locADOQuery.SQL.Add('VALUES (                  ');
-    locADOQuery.SQL.Add('  :base_id,               '); // [base_id].
-    locADOQuery.SQL.Add('  :codigo,                '); // [codigo].
-    locADOQuery.SQL.Add('  :atual_id,              '); // [atual_id].
-    locADOQuery.SQL.Add('  :bloqueado,             '); // [bloqueado].
-    locADOQuery.SQL.Add('  :ativo,                 '); // [ativo].
-    locADOQuery.SQL.Add('  :ins_local_dt_hr,       '); // [ins_local_dt_hr].
-    locADOQuery.SQL.Add('  GETDATE(),              '); // [ins_server_dt_hr].
-    locADOQuery.SQL.Add('  :upd_local_dt_hr,       '); // [upd_local_dt_hr].
-    locADOQuery.SQL.Add('  :upd_server_dt_hr,      '); // [upd_server_dt_hr].
-    locADOQuery.SQL.Add('  :upd_contador           '); // [upd_contador].
-    locADOQuery.SQL.Add(')                         ');
+    locADOQuery.SQL.Add('INSERT INTO [numerador_base] ( ');
+    locADOQuery.SQL.Add('  [base_id],                   ');
+    locADOQuery.SQL.Add('  [codigo],                    ');
+    locADOQuery.SQL.Add('  [atual_id],                  ');
+    locADOQuery.SQL.Add('  [bloqueado],                 ');
+    locADOQuery.SQL.Add('  [ativo],                     ');
+    locADOQuery.SQL.Add('  [ins_local_dt_hr],           ');
+    locADOQuery.SQL.Add('  [ins_server_dt_hr],          ');
+    locADOQuery.SQL.Add('  [upd_local_dt_hr],           ');
+    locADOQuery.SQL.Add('  [upd_server_dt_hr],          ');
+    locADOQuery.SQL.Add('  [upd_contador]               ');
+    locADOQuery.SQL.Add(')                              ');
+    locADOQuery.SQL.Add('VALUES (                       ');
+    locADOQuery.SQL.Add('  :base_id,                    '); // [base_id].
+    locADOQuery.SQL.Add('  :codigo,                     '); // [codigo].
+    locADOQuery.SQL.Add('  :atual_id,                   '); // [atual_id].
+    locADOQuery.SQL.Add('  :bloqueado,                  '); // [bloqueado].
+    locADOQuery.SQL.Add('  :ativo,                      '); // [ativo].
+    locADOQuery.SQL.Add('  :ins_local_dt_hr,            '); // [ins_local_dt_hr].
+    locADOQuery.SQL.Add('  GETDATE(),                   '); // [ins_server_dt_hr].
+    locADOQuery.SQL.Add('  :upd_local_dt_hr,            '); // [upd_local_dt_hr].
+    locADOQuery.SQL.Add('  :upd_server_dt_hr,           '); // [upd_server_dt_hr].
+    locADOQuery.SQL.Add('  :upd_contador                '); // [upd_contador].
+    locADOQuery.SQL.Add(')                              ');
 
     locADOQuery.Parameters.ParamByName('base_id').Value         := argBaseID;
     locADOQuery.Parameters.ParamByName('codigo').Value          := argCodigo;
@@ -530,7 +530,7 @@ begin
     locADOQuery.Close;
     locADOQuery.SQL.Clear;
     locADOQuery.SQL.Add('UPDATE                                    ');
-    locADOQuery.SQL.Add('  [numerador_licenca]                     ');
+    locADOQuery.SQL.Add('  [numerador_base]                        ');
     locADOQuery.SQL.Add('SET                                       ');
     locADOQuery.SQL.Add('  [atual_id]         = :atual_id,         ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :upd_local_dt_hr,  ');

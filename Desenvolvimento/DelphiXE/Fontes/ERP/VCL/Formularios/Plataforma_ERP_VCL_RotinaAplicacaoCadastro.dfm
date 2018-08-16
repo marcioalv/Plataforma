@@ -385,7 +385,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabCadastro
+    ActivePage = tabAuditoria
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
@@ -618,7 +618,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ReadOnly = True
         ShowHint = False
         TabOrder = 3
-        Text = '99/99/9999 99:99'
+        Text = '99/99/9999 99:99:99'
         OnClick = edtInsLocalDtHrClick
       end
       object edtUpdLocalDtHr: TEdit
@@ -637,7 +637,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ParentFont = False
         ReadOnly = True
         TabOrder = 4
-        Text = '99/99/9999 99:99'
+        Text = '99/99/9999 99:99:99'
         OnClick = edtUpdLocalDtHrClick
       end
       object edtUpdContador: TEdit
@@ -694,6 +694,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ShowHint = False
         TabOrder = 1
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
+        OnClick = edtRotinaAplicacaoBaseDescricaoClick
       end
       object edtRotinaAplicacaoBaseID: TEdit
         Left = 312

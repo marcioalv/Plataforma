@@ -27,7 +27,7 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
   TextHeight = 13
   object imgBackground: TImage
     Left = 0
-    Top = 376
+    Top = 432
     Width = 105
     Height = 105
     Center = True
@@ -149,7 +149,7 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
       437)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 408
+      Top = 400
       Width = 142
       Height = 13
       Anchors = [akLeft, akBottom]
@@ -157,8 +157,8 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
       ExplicitTop = 464
     end
     object lblListaFiltros: TLabel
-      Left = 532
-      Top = 400
+      Left = 524
+      Top = 392
       Width = 80
       Height = 13
       Anchors = [akRight, akBottom]
@@ -188,6 +188,15 @@ object PlataformaERPVCLRotinaAplicacaoLista: TPlataformaERPVCLRotinaAplicacaoLis
       BorderStyle = bsNone
       Columns = <
         item
+          Width = 0
+        end
+        item
+          Caption = 'ID Base'
+          Tag = 1
+          Width = 0
+        end
+        item
+          Caption = 'Base'
           Width = 0
         end
         item
