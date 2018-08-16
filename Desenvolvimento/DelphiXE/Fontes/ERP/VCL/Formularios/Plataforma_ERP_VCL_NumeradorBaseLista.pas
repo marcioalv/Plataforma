@@ -4,7 +4,7 @@
 // Fonte....: Formulário VCL
 // Criação..: 15/Agosto/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário com a lista de numeradores cadastrados.
+// Descrição: Formulário com a lista de numeradores por base cadastrados.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
@@ -105,19 +105,18 @@ uses
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_Generico,
-  Plataforma_ERP_VCL_NumeradorLicencaFiltro,
-  Plataforma_ERP_VCL_NumeradorLicencaCadastro;
+  Plataforma_ERP_VCL_NumeradorBaseFiltro,
+  Plataforma_ERP_VCL_NumeradorBaseCadastro;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_NumeradorBaseLista.pas';
 
-  LVW_LISTA_LICENCA_ID    : Integer = 0;
-  LVW_LISTA_BASE_ID       : Integer = 1;
-  LVW_LISTA_BASE_DESCRICAO: Integer = 2;
-  LVW_LISTA_CODIGO        : Integer = 3;
-  LVW_LISTA_ATUAL_ID      : Integer = 4;
-  LVW_LISTA_BLOQUEADO     : Integer = 5;
-  LVW_LISTA_ATIVO         : Integer = 6;
+  LVW_LISTA_BASE_ID       : Integer = 0;
+  LVW_LISTA_BASE_DESCRICAO: Integer = 1;
+  LVW_LISTA_CODIGO        : Integer = 2;
+  LVW_LISTA_ATUAL_ID      : Integer = 3;
+  LVW_LISTA_BLOQUEADO     : Integer = 4;
+  LVW_LISTA_ATIVO         : Integer = 5;
 
 //
 // Evento de criação do formulário.
@@ -296,10 +295,10 @@ begin
   //
   // Menu - Ações.
   //
-  mniLocalizar.Visible  := (mniLocalizar.Enabled)  and (Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_LICENCA_LISTA_LOCALIZAR'));
-  mniAtualizar.Visible  := (mniAtualizar.Enabled)  and (Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_LICENCA_LISTA_ATUALIZAR'));
-  mniNovo.Visible       := (mniNovo.Enabled)       and (Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_LICENCA_LISTA_NOVO'));
-  mniSelecionar.Visible := (mniSelecionar.Enabled) and (Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_LICENCA_LISTA_SELECIONAR'));
+  mniLocalizar.Visible  := (mniLocalizar.Enabled)  and (Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_BASE_LISTA_LOCALIZAR'));
+  mniAtualizar.Visible  := (mniAtualizar.Enabled)  and (Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_BASE_LISTA_ATUALIZAR'));
+  mniNovo.Visible       := (mniNovo.Enabled)       and (Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_BASE_LISTA_NOVO'));
+  mniSelecionar.Visible := (mniSelecionar.Enabled) and (Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_BASE_LISTA_SELECIONAR'));
   mniMinimizar.Visible  := (mniMinimizar.Enabled);
   mniFechar.Visible     := (mniFechar.Enabled);
 
@@ -317,7 +316,7 @@ end;
 //
 procedure TPlataformaERPVCLNumeradorBaseLista.FormularioLocalizar;
 var
-  locFormulario    : TPlataformaERPVCLNumeradorLicencaFiltro;
+  locFormulario    : TPlataformaERPVCLNumeradorBaseFiltro;
   locClicouFechar  : Boolean;
   locCodigo        : string;
   locBloqueado     : string;
@@ -327,7 +326,7 @@ var
   locUpdDtHrInicial: TDateTime;
   locUpdDtHrFinal  : TDateTime;
 begin
-  locFormulario := TPlataformaERPVCLNumeradorLicencaFiltro.Create(Self);
+  locFormulario := TPlataformaERPVCLNumeradorBaseFiltro.Create(Self);
 
   locFormulario.pubCodigo         := priFiltroCodigo;
   locFormulario.pubBloqueado      := priFiltroBloqueado;
@@ -376,14 +375,14 @@ var
   locADOConnection : TADOConnection;
   locADOQuery      : TADOQuery;
   locLogMensagem   : string;
-  locLicencaID     : Integer;
+  locBaseID        : Integer;
   locListItem      : TListItem;
   locFiltros       : Boolean;
 begin
   //
-  // ID da licença.
+  // ID da base.
   //
-  locLicencaID := gloLicencaID;
+  locBaseID := gloBaseID;
 
   //
   // Troca cursor.
@@ -426,24 +425,21 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                           ');
-  locADOQuery.SQL.Add('  [licenca].[licenca_id]          AS [licenca_id],               ');
-  locADOQuery.SQL.Add('  [base].[base_id]                AS [base_id],                  ');
-  locADOQuery.SQL.Add('  [base].[descricao]              AS [base_descricao],           ');
-  locADOQuery.SQL.Add('  [numerador_licenca].[codigo]    AS [codigo],                   ');
-  locADOQuery.SQL.Add('  [numerador_licenca].[atual_id]  AS [atual_id],                 ');
-  locADOQuery.SQL.Add('  [numerador_licenca].[bloqueado] AS [bloqueado],                ');
-  locADOQuery.SQL.Add('  [numerador_licenca].[ativo]     AS [ativo]                     ');
-  locADOQuery.SQL.Add('FROM                                                             ');
-  locADOQuery.SQL.Add('  [numerador_licenca] WITH (NOLOCK)                              ');
-  locADOQuery.SQL.Add('  INNER JOIN [licenca] WITH (NOLOCK)                             ');
-  locADOQuery.SQL.Add('    ON [licenca].[licenca_id] = [numerador_licenca].[licenca_id] ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [numerador_licenca].[base_id]          ');
-  locADOQuery.SQL.Add('WHERE                                                            ');
-  locADOQuery.SQL.Add('  [numerador_licenca].[licenca_id] = :licenca_id                 ');
+  locADOQuery.SQL.Add('SELECT                                               ');
+  locADOQuery.SQL.Add('  [base].[base_id]             AS [base_id],         ');
+  locADOQuery.SQL.Add('  [base].[descricao]           AS [base_descricao],  ');
+  locADOQuery.SQL.Add('  [numerador_base].[codigo]    AS [codigo],          ');
+  locADOQuery.SQL.Add('  [numerador_base].[atual_id]  AS [atual_id],        ');
+  locADOQuery.SQL.Add('  [numerador_base].[bloqueado] AS [bloqueado],       ');
+  locADOQuery.SQL.Add('  [numerador_base].[ativo]     AS [ativo]            ');
+  locADOQuery.SQL.Add('FROM                                                 ');
+  locADOQuery.SQL.Add('  [numerador_base] WITH (NOLOCK)                     ');
+  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                    ');
+  locADOQuery.SQL.Add('    ON [base].[base_id] = [numerador_base].[base_id] ');
+  locADOQuery.SQL.Add('WHERE                                                ');
+  locADOQuery.SQL.Add('  [numerador_base].[base_id] = :base_id              ');
 
-  locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
+  locADOQuery.Parameters.ParamByName('base_id').Value := locBaseID;
 
   //
   // Filtros.
@@ -453,57 +449,57 @@ begin
   if priFiltroCodigo <> '' then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [numerador_licenca].[codigo] LIKE :codigo ');
+    locADOQuery.SQL.Add(' AND [numerador_base].[codigo] LIKE :codigo ');
     locADOQuery.Parameters.ParamByName('codigo').Value := StringLikeGerar(priFiltroCodigo);
   end;
 
   if (priFiltroBloqueado <> '') AND (priFiltroBloqueado <> FLAG_AMBOS) then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [numerador_licenca].[bloqueado] = :bloqueado ');
+    locADOQuery.SQL.Add(' AND [numerador_base].[bloqueado] = :bloqueado ');
     locADOQuery.Parameters.ParamByName('bloqueado').Value := priFiltroBloqueado;
   end;
 
   if (priFiltroAtivo <> '') AND (priFiltroAtivo <> FLAG_AMBOS) then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [numerador_licenca].[ativo] = :ativo ');
+    locADOQuery.SQL.Add(' AND [numerador_base].[ativo] = :ativo ');
     locADOQuery.Parameters.ParamByName('ativo').Value := priFiltroAtivo;
   end;
 
   if priFiltroInsDtHrInicial <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [numerador_licenca].[ins_local_dt_hr] >= :ins_local_dt_hr_inicial ');
+    locADOQuery.SQL.Add(' AND [numerador_base].[ins_local_dt_hr] >= :ins_local_dt_hr_inicial ');
     locADOQuery.Parameters.ParamByName('ins_local_dt_hr_inicial').Value := DateTimeHorarioInicial(priFiltroInsDtHrInicial);
   end;
 
   if priFiltroInsDtHrFinal <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [numerador_licenca].[ins_local_dt_hr] <= :ins_local_dt_hr_final ');
+    locADOQuery.SQL.Add(' AND [numerador_base].[ins_local_dt_hr] <= :ins_local_dt_hr_final ');
     locADOQuery.Parameters.ParamByName('ins_local_dt_hr_final').Value := DateTimeHorarioFinal(priFiltroInsDtHrFinal);
   end;
 
   if priFiltroUpdDtHrInicial <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [numerador_licenca].[upd_local_dt_hr] >= :upd_local_dt_hr_inicial ');
+    locADOQuery.SQL.Add(' AND [numerador_base].[upd_local_dt_hr] >= :upd_local_dt_hr_inicial ');
     locADOQuery.Parameters.ParamByName('upd_local_dt_hr_inicial').Value := DateTimeHorarioInicial(priFiltroUpdDtHrInicial);
   end;
 
   if priFiltroUpdDtHrFinal <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [numerador_licenca].[upd_local_dt_hr] <= :upd_local_dt_hr_final ');
+    locADOQuery.SQL.Add(' AND [numerador_base].[upd_local_dt_hr] <= :upd_local_dt_hr_final ');
     locADOQuery.Parameters.ParamByName('upd_local_dt_hr_final').Value := DateTimeHorarioFinal(priFiltroUpdDtHrFinal);
   end;
 
   //
   // Order by.
   //                                       
-  locADOQuery.SQL.Add('ORDER BY                           ');
-  locADOQuery.SQL.Add('  [numerador_licenca].[codigo] ASC ');
+  locADOQuery.SQL.Add('ORDER BY                        ');
+  locADOQuery.SQL.Add('  [numerador_base].[codigo] ASC ');
 
   try
     locADOQuery.Open;
@@ -514,7 +510,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar os registros na tabela [numerador_licenca]!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar os registros na tabela [numerador_base]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -541,7 +537,6 @@ begin
     
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('licenca_id').AsInteger));
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('base_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('base_descricao').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
@@ -589,17 +584,15 @@ end;
 //
 procedure TPlataformaERPVCLNumeradorBaseLista.FormularioCadastroExibir(argNovo: Boolean);
 var
-  locFormulario      : TPlataformaERPVCLNumeradorLicencaCadastro;
+  locFormulario      : TPlataformaERPVCLNumeradorBaseCadastro;
   locDadosAtualizados: Boolean;
   locIndice          : Integer;
-  locLicencaID       : Integer;
   locBaseID          : Integer;
   locCodigo          : string;
 begin
   if argNovo then
   begin
     locIndice    := VCL_NENHUM_INDICE;
-    locLicencaID := 0;
     locBaseID    := 0;
     locCodigo    := '';
   end
@@ -608,14 +601,12 @@ begin
     locIndice := VCLListViewIndiceItemRetornar(lvwLista);
     if locIndice <= VCL_NENHUM_INDICE then Exit;
 
-    locLicencaID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
     locBaseID    := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_BASE_ID]);
     locCodigo    := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
   end;
 
-  locFormulario := TPlataformaERPVCLNumeradorLicencaCadastro.Create(Self);
+  locFormulario := TPlataformaERPVCLNumeradorBaseCadastro.Create(Self);
 
-  locFormulario.pubLicencaID := locLicencaID;
   locFormulario.pubBaseID    := locBaseID;
   locFormulario.pubCodigo    := locCodigo;
   

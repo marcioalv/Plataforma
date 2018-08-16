@@ -25,7 +25,8 @@ uses
   Vcl.Forms,
   Vcl.Dialogs,
   Vcl.Menus,
-  Vcl.ExtCtrls, Vcl.StdCtrls;
+  Vcl.ExtCtrls,
+  Vcl.StdCtrls;
 
 type
   TPlataformaERPVCLMenuPrincipal = class(TForm)
@@ -45,7 +46,7 @@ type
     mniRotinasAplicacao: TMenuItem;
     mniInstalacao: TMenuItem;
     mniNumeradores: TMenuItem;
-    mniNumeradorGlobal: TMenuItem;
+    mniNumeradorBase: TMenuItem;
     mniNumeradorLicenca: TMenuItem;
     Panel1: TPanel;
     lblHostName: TLabel;
@@ -59,7 +60,7 @@ type
     procedure timInicializacaoTimer(Sender: TObject);
     procedure mniPerfisUsuarioClick(Sender: TObject);
     procedure mniRotinasAplicacaoClick(Sender: TObject);
-    procedure mniNumeradorGlobalClick(Sender: TObject);
+    procedure mniNumeradorBaseClick(Sender: TObject);
     procedure mniNumeradorLicencaClick(Sender: TObject);
   private
     procedure FormularioInicializar;
@@ -87,7 +88,8 @@ uses
   Plataforma_ERP_VCL_PerfilUsuarioLista,
   Plataforma_ERP_VCL_TiposUsuariosLista,
   Plataforma_ERP_VCL_RotinaAplicacaoLista,
-  Plataforma_ERP_VCL_NumeradorLicencaLista;
+  Plataforma_ERP_VCL_NumeradorLicencaLista,
+  Plataforma_ERP_VCL_NumeradorBaseLista;
 
 //
 // Evento de criação do formulário.
@@ -222,9 +224,14 @@ end;
 { INSTALAÇÃO                                                                                      }
 {-------------------------------------------------------------------------------------------------}
 
-procedure TPlataformaERPVCLMenuPrincipal.mniNumeradorGlobalClick(Sender: TObject);
+procedure TPlataformaERPVCLMenuPrincipal.mniNumeradorBaseClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLNumeradorBaseLista;
 begin
-  Exit;
+  locFormulario := TPlataformaERPVCLNumeradorBaseLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 procedure TPlataformaERPVCLMenuPrincipal.mniNumeradorLicencaClick(Sender: TObject);
@@ -271,10 +278,10 @@ begin
   //
   // Numeradores.
   //
-  mniNumeradorGlobal.Visible  := Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_LISTA');
+  mniNumeradorBase.Visible    := Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_BASE_LISTA');
   mniNumeradorLicenca.Visible := Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_LICENCA_LISTA');
 
-  mniNumeradores.Visible := (mniNumeradorGlobal.Visible) or
+  mniNumeradores.Visible := (mniNumeradorBase.Visible) or
                             (mniNumeradorLicenca.Visible);
 
 

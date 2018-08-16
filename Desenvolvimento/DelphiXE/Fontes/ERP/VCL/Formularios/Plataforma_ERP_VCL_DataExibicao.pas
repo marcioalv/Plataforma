@@ -28,7 +28,10 @@ uses
   Vcl.ComCtrls,
   Vcl.Buttons,
   Vcl.Imaging.pngimage,
-  Vcl.ExtCtrls, Vcl.Grids, Vcl.Samples.Calendar, Vcl.Menus;
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.Samples.Calendar,
+  Vcl.Menus;
 
 type
   TPlataformaERPVCLDataExibicao = class(TForm)
@@ -194,6 +197,44 @@ begin
   if edtFeriado.Text = '' then
   begin
     edtFeriado.Text := 'Nenhum feriado programado nesta data!';
+
+    lblFeriado.Visible := False;
+    edtFeriado.Visible := False;
+
+    lblDia.Top := lblDia.Top + 24;
+    edtDia.Top := edtDia.Top + 24;
+
+    lblMesSeparador.Top := lblMesSeparador.Top + 24;
+
+    lblMes.Top := lblMes.Top + 24;
+    edtMes.Top := edtMes.Top + 24;
+
+    lblAnoSeparador.Top := lblAnoSeparador.Top + 24;
+
+    lblAno.Top := lblAno.Top + 24;
+    edtAno.Top := edtAno.Top + 24;
+
+    lblDiaSemana.Top := lblDiaSemana.Top + 24;
+    edtDiaSemana.Top := edtDiaSemana.Top + 24;
+
+    lblHora.Top := lblHora.Top - 24;
+    edtHora.Top := edtHora.Top - 24;
+    
+    lblMinutoSeparador.Top := lblMinutoSeparador.Top - 24;
+    
+    lblMinuto.Top := lblMinuto.Top - 24;
+    edtMinuto.Top := edtMinuto.Top - 24;
+
+    lblSegundoSeparador.Top := lblSegundoSeparador.Top - 24;
+
+    lblSegundo.Top := lblSegundo.Top - 24;
+    edtSegundo.Top := edtSegundo.Top - 24;
+
+    lblMilesimos.Top := lblMilesimos.Top - 24;
+    edtMilesimos.Top := edtMilesimos.Top - 24;
+
+    lblPeriodo.Top := lblPeriodo.Top - 24;
+    edtPeriodo.Top := edtPeriodo.Top - 24;
   end;
 
   if (edtHora.Text = '00') then

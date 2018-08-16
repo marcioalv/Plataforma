@@ -3,7 +3,7 @@ object PlataformaERPVCLNumeradorBaseLista: TPlataformaERPVCLNumeradorBaseLista
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'Lista de numeradores por licen'#231'a'
+  Caption = 'Lista de numeradores por base'
   ClientHeight = 482
   ClientWidth = 725
   Color = clBtnFace
@@ -166,7 +166,7 @@ object PlataformaERPVCLNumeradorBaseLista: TPlataformaERPVCLNumeradorBaseLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 550
+      Left = 542
       Top = 358
       Width = 80
       Height = 13

@@ -55,7 +55,7 @@ type
     btnArquivoSelecionar: TBitBtn;
     btnMinimizar: TBitBtn;
     btnLimpar: TBitBtn;
-    Image1: TImage;
+    imgFormulario: TImage;
     lvwHistorico: TListView;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);

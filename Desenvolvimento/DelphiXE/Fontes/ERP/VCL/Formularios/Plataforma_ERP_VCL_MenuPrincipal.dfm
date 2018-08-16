@@ -45,9 +45,6 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    ExplicitLeft = 48
-    ExplicitTop = 312
-    ExplicitWidth = 185
     object lblHostName: TLabel
       Left = 8
       Top = 16
@@ -100,9 +97,9 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
         Caption = 'Instala'#231#227'o'
         object mniNumeradores: TMenuItem
           Caption = 'Numeradores'
-          object mniNumeradorGlobal: TMenuItem
-            Caption = 'Global'
-            OnClick = mniNumeradorGlobalClick
+          object mniNumeradorBase: TMenuItem
+            Caption = 'Base'
+            OnClick = mniNumeradorBaseClick
           end
           object mniNumeradorLicenca: TMenuItem
             Caption = 'Licen'#231'a'
