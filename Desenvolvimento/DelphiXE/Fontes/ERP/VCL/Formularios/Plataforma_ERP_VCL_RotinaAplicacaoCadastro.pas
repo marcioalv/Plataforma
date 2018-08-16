@@ -71,6 +71,9 @@ type
     chkAtivo: TCheckBox;
     lblChave: TLabel;
     edtChave: TEdit;
+    lblRotinaAplicacaoBase: TLabel;
+    edtRotinaAplicacaoBaseDescricao: TEdit;
+    edtRotinaAplicacaoBaseID: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -710,6 +713,7 @@ var
   locTipoUsuarioLogMsg  : string;
   locTipoUsuarioLogDados: string;
 
+  locRotinaAplicacaoBaseID: Integer;
   locRotinaAplicacaoID  : Integer;
   locCodigo             : string;
   locDescricao          : string;
@@ -952,8 +956,9 @@ begin
   if locInsert then
   begin
     try
-      locRotinaAplicacaoID := Plataforma_ERP_ADO_NumeradorDeterminar(locADOConnection,
-                                                                     NUMERADOR_ROTINA_APLICACAO_ID);
+      locRotinaAplicacaoID := Plataforma_ERP_ADO_NumeradorBaseDeterminar(locADOConnection,
+                                                                         locRotinaAplicacaoBaseID, 
+                                                                         NUMERADOR_ROTINA_APLICACAO_ID);
     except
       on locExcecao: Exception do
       begin

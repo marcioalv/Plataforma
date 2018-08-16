@@ -45,7 +45,8 @@ uses
   Plataforma_ERP_VCL_RotinaAplicacaoCadastro in '..\Formularios\Plataforma_ERP_VCL_RotinaAplicacaoCadastro.pas' {PlataformaERPVCLRotinaAplicacaoCadastro},
   Plataforma_ERP_VCL_NumeradorLicencaLista in '..\Formularios\Plataforma_ERP_VCL_NumeradorLicencaLista.pas' {PlataformaERPVCLNumeradorLicencaLista},
   Plataforma_ERP_VCL_NumeradorLicencaFiltro in '..\Formularios\Plataforma_ERP_VCL_NumeradorLicencaFiltro.pas' {PlataformaERPVCLNumeradorLicencaFiltro},
-  Plataforma_ERP_VCL_NumeradorLicencaCadastro in '..\Formularios\Plataforma_ERP_VCL_NumeradorLicencaCadastro.pas' {PlataformaERPVCLNumeradorLicencaCadastro};
+  Plataforma_ERP_VCL_NumeradorLicencaCadastro in '..\Formularios\Plataforma_ERP_VCL_NumeradorLicencaCadastro.pas' {PlataformaERPVCLNumeradorLicencaCadastro},
+  Plataforma_ERP_VCL_NumeradorBaseLista in '..\Formularios\Plataforma_ERP_VCL_NumeradorBaseLista.pas' {PlataformaERPVCLNumeradorBaseLista};
 
 {$R *.res}
 
@@ -62,5 +63,6 @@ begin
   Application.CreateForm(TPlataformaERPVCLNumeradorLicencaLista, PlataformaERPVCLNumeradorLicencaLista);
   Application.CreateForm(TPlataformaERPVCLNumeradorLicencaFiltro, PlataformaERPVCLNumeradorLicencaFiltro);
   Application.CreateForm(TPlataformaERPVCLNumeradorLicencaCadastro, PlataformaERPVCLNumeradorLicencaCadastro);
+  Application.CreateForm(TPlataformaERPVCLNumeradorBaseLista, PlataformaERPVCLNumeradorBaseLista);
   Application.Run;
 end.

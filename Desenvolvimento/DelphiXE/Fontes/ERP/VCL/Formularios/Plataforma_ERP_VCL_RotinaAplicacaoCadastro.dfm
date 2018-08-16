@@ -3,7 +3,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'Tipo de usu'#225'rio'
+  Caption = 'Rotinas da aplica'#231#227'o'
   ClientHeight = 410
   ClientWidth = 593
   Color = clBtnFace
@@ -30,48 +30,26 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     Picture.Data = {
       0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
       00200806000000737A7AF4000000017352474200AECE1CE90000000467414D41
-      0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000004
-      F24944415478DAB5977F6C535514C7EFBD7DEBCA706E2EFE0A1A111D6C996B07
-      2E6A241A071AA380014DB6B683C8C2A612457061E90F352935D9DAC7E284087F
-      381432756BF7238E18242C5174E00F3299DA96A1C4B905C5A901649DA475ED7B
-      EF7A5EB7415F779F7B05F6FE79EFFE38E77EEEF7DE7BCE7D185DC1536CE5D760
-      8A9C08A3628CD0398A502BD1EBB7075A6A47D3F585D33528316F7F9C12E91098
-      A6D8D23F4589BB7FA0BDEEB759053059F8FD60B59AD5064AB8433EFBB6AB0230
-      591A1FA058B4638AEF80D66170FB6ED0E7E849020842BD910940D17B21BFBD46
-      FE2E7DFE9D8CF8587823C5D22A28E660848338CEB9035D5B7F5701A0189CEF05
-      65AB189CEB833EDBFBF297D1E23D8C315EC606A06F84FC0ED704A8771FC3578C
-      62F472A8CDDE3C0DE01EB377A98EE0AFD842D15F4085FC49C7DDE0780DBB1BAA
-      0BFAED6F2EA96C9C2F527178FA3E492C53784C1FB9F5748BFB5F0580D1CAD740
-      618FDA5A057DF6445F93D5FB29983DAA02EA0450AFD1EC7D12137C50CD172CCB
-      DDA136E79012A0D2B31A53B25FC52606009913009EA710221F33DCFEADA3D8F8
-      BDDF3E02C7F41182D0176A000662C8E96BDD32A60090371FC2D231B6B27424E4
-      73DC76B92F7F1C2C4B157D286A820DB855FE2EB6D61712C4FDC8F445E958A820
-      7A0372BB25050050AF00EA4F54441B07690D97D4B2785EC298EC4AEE218AD2E2
-      810E6760D297BA021449191723D9FD07DC110540C1063E5B1FA101D8E10B180A
-      EC0505AA1383AFF5DE8E24FC011896A574DA258811E7C94EF7C5FC277666CEC9
-      8D7E07BE8A18085DB09CE55305C52E65CD0C248B7344B750CAE0C2526CFC7530
-      D8046699ECC9A1B3F0DA963712693E3F2FCB0C2A7C983A7B8CA829E0770C3001
-      E4E011FB6774142AB392D6F62322709B252E7E94A50E5B667A5010A34F735CD6
-      AF50BA25A9E13358CAC792BB2A00165734DC2711DD31A82549D4215882D330F8
-      2A4D835F7E76807ACF81DDDC245F831958F760BFAFEE9C026089859F2720EA81
-      D25A0899BA996788248AE9B7F03E05A53C18A40CDED769120702110CDA14B960
-      E0070F6D19C745EB1AF275A2EE6BA8BC49E3CCFE8240B2120249FF544562638A
-      F8558CE94656F463AF12EA13C5C8C3F8FFB21BEB8124F54CC06FEB66B599ACFC
-      5BF07A45F32251BC1943683D0F6EF3349AC40421920D472DC66A84685A0AD1F4
-      B8E6F111ED06009E6A374061C8F7B96AED2566CF9D949061CDFE28FA323D0088
-      09797F44B37A7BDD820A4019007C3E7B0008097A81DED8DFE908B3DA674868D7
-      0280460B85BBB23B3B2B44563BECA787603F1D9D358009235A05B79E162600FB
-      16746D014086A10271C1A254154CE6864588E84EA53799048057D21A3C2E3D12
-      B204DBEDED5733FBC9C91C911590EF814BD3B2C3B822D466EB5402F06F4340DB
-      9426403D9EF8D1A03DDAFAA3C3844A4D01BF73DAC5A5A8DCA5E7384335A5B816
-      72C3420DCE2E208E14622DF4B0F14E524C6A4EF86CDFCCE8D8E522C69FE73E8B
-      246927805CAF32B87C2FB0C2BDA02301505EDEA1FB891B6A864CB881D1F90C11
-      847B7FE87AED6C3AEA9A2C9EE500DD030370299389C3BFC10B277C8E7D725979
-      23B2F22F428F7A20CF4D32A88563B7239DC193FC1D800156264D6610FE2BAB21
-      931E99AA9AFE6BB6AEF1662A487648AD55729282F3B13CD066D71C5E15BEAC3C
-      0F2F9BFC63037B6337A4DFDDA9894CF5F8CD5FEF32E4C4E7AC00B9FA42AD8E33
-      57025052C92F43A24403ED8E5E3991B3FAFC079E682BF0DD889AD60000000049
-      454E44AE426082}
+      0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000002
+      424944415478DAED97316814411486DF9BCB2568E31536DA1814148B4B401B0B
+      D3480A315606314B406D0DA2A285B7627368CC9D289E2004ACC5443C14C14002
+      5A28164110CC295759D8A5914341CD79BB3BCF7F2F5788CCDE85BDDD15E15E31
+      FB6667DE7BDFCEFC3BEC328532E1AC75739A44CEA0F38D155DAC3CCC3D099389
+      8306864FDDC968A76E1E17358EE2B7E19D438A5DC862A7941AF6C45D354DF79C
+      BA537D9CFFBE21807D93D7B7B93AFD12EEDEB66B2034FB61FEF294EF0F59C56A
+      A7F9B07265F7CF1394CFEBB600D989E25566BA1650B4404A977D7FADB6F9E3A7
+      C5F3BF7C7FBF756B6B839D1DCD495A95107F30007BA432977BD30960060972E6
+      047AAA3267CFB67BCCAC557C8EA463C6E5167D7465DE5E080D20440BC45C0A2A
+      AEB437A059DD43D2C15800BAB51E400F203480902C42FD4FD73B5262E24DC902
+      E000C2A96737C7ADE257046D01D5EB46DA3B96F6589B8A798D7E4EF539F79979
+      3C160011F981F02526F1CC8FCB8C39A3B864BA0688CAFE6300A16534AF5A1117
+      D00C240A1020C265C574121A346AC053A2FA5C75175A38120F00490D10FE5790
+      F12D688A90640CAFECF628B6A08E76AD9525E3674F740BA2B22EB640DE63E2DB
+      D6D29E46DB9F30805184EF24256731E8988AA55C515AA91B001E8D0500F75671
+      0A3EA02011AEA73F8E0A3BA3D80214E55AAB3B882895E81644653D800D010C4D
+      14A6A1DC2B7100404D87F163B2D40160E610005E843DED024B8B7CF1DCF49E6A
+      F952EDCFFBC622D9C9C201D23C821F91506AFFDB50A4AEB47EB6F2C8FE6C18FB
+      B7F61B50CD8830F97E19340000000049454E44AE426082}
   end
   object imgBackground: TImage
     Left = 0
@@ -411,10 +389,6 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -483,7 +457,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         Font.Height = -15
         Font.Name = 'Tahoma'
         Font.Style = []
-        MaxLength = 100
+        MaxLength = 250
         ParentFont = False
         TabOrder = 1
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
@@ -549,7 +523,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         Font.Height = -15
         Font.Name = 'Tahoma'
         Font.Style = []
-        MaxLength = 100
+        MaxLength = 50
         ParentFont = False
         TabOrder = 2
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
@@ -561,10 +535,6 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 465
-      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 80
@@ -579,7 +549,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ParentFont = False
       end
       object lblUpdDtHr: TLabel
-        Left = 200
+        Left = 248
         Top = 80
         Width = 90
         Height = 14
@@ -592,7 +562,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ParentFont = False
       end
       object lblUpdContador: TLabel
-        Left = 376
+        Left = 424
         Top = 80
         Width = 61
         Height = 14
@@ -605,11 +575,24 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ParentFont = False
       end
       object lblRotinaAplicacaoID: TLabel
-        Left = 16
+        Left = 424
         Top = 16
         Width = 16
         Height = 14
         Caption = 'ID:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblRotinaAplicacaoBase: TLabel
+        Left = 16
+        Top = 16
+        Width = 29
+        Height = 14
+        Caption = 'Base:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -634,12 +617,12 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ParentShowHint = False
         ReadOnly = True
         ShowHint = False
-        TabOrder = 1
+        TabOrder = 3
         Text = '99/99/9999 99:99'
         OnClick = edtInsLocalDtHrClick
       end
       object edtUpdLocalDtHr: TEdit
-        Left = 200
+        Left = 248
         Top = 96
         Width = 161
         Height = 26
@@ -653,12 +636,12 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 2
+        TabOrder = 4
         Text = '99/99/9999 99:99'
         OnClick = edtUpdLocalDtHrClick
       end
       object edtUpdContador: TEdit
-        Left = 376
+        Left = 424
         Top = 96
         Width = 73
         Height = 26
@@ -672,11 +655,11 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 3
+        TabOrder = 5
         Text = '999.999'
       end
       object edtRotinaAplicacaoID: TEdit
-        Left = 16
+        Left = 424
         Top = 32
         Width = 73
         Height = 26
@@ -690,8 +673,46 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 0
+        TabOrder = 2
         Text = '9.999'
+      end
+      object edtRotinaAplicacaoBaseDescricao: TEdit
+        Left = 16
+        Top = 32
+        Width = 393
+        Height = 26
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ReadOnly = True
+        ShowHint = False
+        TabOrder = 1
+        Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
+      end
+      object edtRotinaAplicacaoBaseID: TEdit
+        Left = 312
+        Top = 32
+        Width = 65
+        Height = 26
+        TabStop = False
+        Alignment = taRightJustify
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 0
+        Text = '999.999'
+        Visible = False
       end
     end
   end

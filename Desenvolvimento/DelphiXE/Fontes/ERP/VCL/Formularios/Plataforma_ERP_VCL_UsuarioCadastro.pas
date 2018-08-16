@@ -1802,6 +1802,15 @@ begin
   locUsuarioID     := StringIntegerConverter(edtUsuarioID.Text);
 
   //
+  // Você não pode excluir você mesmo como usuário.
+  //
+  if (locUsuarioBaseID = gloUsuarioBaseID) and (locUsuarioID = gloUsuarioID) then
+  begin
+    VCLConsistenciaExibir('Você não pode se excluir como usuário!');
+    Exit;
+  end;
+
+  //
   // Log dados.
   //
   locUsuarioLogDados := LogDadosGerar;

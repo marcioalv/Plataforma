@@ -75,10 +75,6 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -425,7 +421,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         Font.Height = -15
         Font.Name = 'Tahoma'
         Font.Style = []
-        MaxLength = 100
+        MaxLength = 50
         ParentFont = False
         TabOrder = 7
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
@@ -437,10 +433,6 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 128
@@ -1290,7 +1282,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     Left = 176
-    Top = 320
+    Top = 344
     object mniCadastro: TMenuItem
       Caption = 'Cadastro'
       object mniCadastroPerfilUsuario: TMenuItem

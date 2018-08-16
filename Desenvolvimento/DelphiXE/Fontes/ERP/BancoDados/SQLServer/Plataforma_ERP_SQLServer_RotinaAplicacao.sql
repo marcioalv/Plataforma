@@ -3,18 +3,20 @@ BEGIN
   --
   -- Declarção das variáveis de controle de erro!
   --
-  DECLARE @_ErrorMessage  VARCHAR(MAX)
-  DECLARE @_ErrorSeverity INT
-  DECLARE @_ErrorState    INT
+  DECLARE @_ErrorMessage      VARCHAR(MAX)
+  DECLARE @_ErrorSeverity     INT
+  DECLARE @_ErrorState        INT
+
+  DECLARE @_BaseID            SMALLINT
 
   DECLARE @_NUMERADOR_CODIGO  VARCHAR(MAX) = 'rotina_aplicacao_id'
   DECLARE @_RotinaAplicacaoID INT
     
-  DECLARE @_Cursor_Index     INT
-  DECLARE @_Cursor_Rows      INT
-  DECLARE @_Cursor_Codigo    VARCHAR(255)
-  DECLARE @_Cursor_Chave     VARCHAR(255)
-  DECLARE @_Cursor_Descricao VARCHAR(255)
+  DECLARE @_Cursor_Index      INT
+  DECLARE @_Cursor_Rows       INT
+  DECLARE @_Cursor_Codigo     VARCHAR(255)
+  DECLARE @_Cursor_Chave      VARCHAR(255)
+  DECLARE @_Cursor_Descricao  VARCHAR(255)
 
   --
   -- Se a tabela não existe então não faz nada!
@@ -22,6 +24,17 @@ BEGIN
   IF OBJECT_ID('rotina_aplicacao') IS NULL
   BEGIN
     PRINT 'A tabela [rotina_aplicacao] não existe na modelagem do banco de dados!'
+    RETURN
+  END
+
+  --
+  -- Determina a base de dados da instalação da aplicação.
+  --
+  SET @_BaseID = (SELECT [aplicacao_base].[base_id] FROM [aplicacao_base])
+
+  IF @_BaseID IS NULL
+  BEGIN
+    PRINT 'O ID da base dessa instalação da aplicação ainda não foi definido na tabela [aplicacao_base]!'
     RETURN
   END
 
@@ -241,7 +254,8 @@ BEGIN
                    FROM
                      [rotina_aplicacao]
                    WHERE
-                     [rotina_aplicacao].[chave] = @_Cursor_Chave)
+                     [rotina_aplicacao].[rotina_aplicacao_base_id] = @_BaseID AND
+                     [rotina_aplicacao].[chave]                    = @_Cursor_Chave)
     BEGIN
       --
       -- Se a chave não existe então determina o próximo ID para a inserção!
@@ -249,7 +263,9 @@ BEGIN
       SET @_RotinaAplicacaoID = (SELECT
                                    MAX([rotina_aplicacao].[rotina_aplicacao_id])
                                  FROM
-                                   [rotina_aplicacao])
+                                   [rotina_aplicacao]
+                                 WHERE
+                                   [rotina_Aplicacao].[rotina_aplicacao_base_id] = @_BaseID)
 
       SET @_RotinaAplicacaoID = ISNULL(@_RotinaAplicacaoID, 0) + 1
 
@@ -258,19 +274,21 @@ BEGIN
       --
       BEGIN TRY
         INSERT INTO [rotina_aplicacao] (
-          rotina_aplicacao_id,
-          codigo,
-          descricao,
-          chave,
-          bloqueado,
-          ativo,
-          ins_local_dt_hr,
-          ins_server_dt_hr,
-          upd_local_dt_hr,
-          upd_server_dt_hr,
-          upd_contador
+          [rotina_aplicacao_base_id],
+          [rotina_aplicacao_id],
+          [codigo],
+          [descricao],
+          [chave],
+          [bloqueado],
+          [ativo],
+          [ins_local_dt_hr],
+          [ins_server_dt_hr],
+          [upd_local_dt_hr],
+          [upd_server_dt_hr],
+          [upd_contador]
         )
         VALUES (
+          @_BaseID,            --> [rotina_aplicacao_base_id].
           @_RotinaAplicacaoID, --> [rotina_aplicacao_id].
           @_Cursor_Codigo,     --> [codigo].
           @_Cursor_Descricao,  --> [descricao].
@@ -307,7 +325,8 @@ BEGIN
           [upd_server_dt_hr] = GETDATE(),
           [upd_contador]     = [upd_contador] + 1
         WHERE
-          [chave] = @_Cursor_Chave
+          [rotina_aplicacao_base_id] = @_BaseID AND
+          [chave]                    = @_Cursor_Chave
       END TRY
       BEGIN CATCH
         SELECT @_ErrorMessage = ERROR_MESSAGE(), @_ErrorSeverity = ERROR_SEVERITY(), @_ErrorState = ERROR_STATE()
@@ -332,18 +351,22 @@ BEGIN
     SET @_RotinaAplicacaoID = (SELECT
                                  MAX([rotina_aplicacao].[rotina_aplicacao_id])
                                FROM
-                                 [rotina_aplicacao])
+                                 [rotina_aplicacao]
+                               WHERE
+                                 [rotina_aplicacao].[rotina_aplicacao_base_id] = @_BaseID)
 
     SET @_RotinaAplicacaoID = ISNULL(@_RotinaAplicacaoID, 0)
     
     IF NOT EXISTS (SELECT TOP 1
                      1
                    FROM
-                     [numerador]
+                     [numerador_base]
                    WHERE
-                     [numerador].[codigo] = @_NUMERADOR_CODIGO)
+                     [numerador_base].[base_id] = @_BaseID AND
+                     [numerador_base].[codigo]  = @_NUMERADOR_CODIGO)
     BEGIN
-      INSERT INTO [numerador] (
+      INSERT INTO [numerador_base] (
+        [base_id],
         [codigo],
         [atual_id],
         [bloqueado],
@@ -355,6 +378,7 @@ BEGIN
         [upd_contador]
       )
       VALUES (
+        @_BaseID,            --> [base_id].
         @_NUMERADOR_CODIGO,  --> [codigo].
         @_RotinaAplicacaoID, --> [atual_id].
         'N',                 --> [bloqueado].
@@ -369,21 +393,22 @@ BEGIN
     ELSE
     BEGIN
       UPDATE
-        [numerador]
+        [numerador_base]
       SET
         [atual_id]         = @_RotinaAplicacaoID,
         [upd_local_dt_hr]  = GETDATE(),
         [upd_server_dt_hr] = GETDATE(),
         [upd_contador]     = [upd_contador] + 1
       WHERE
-        [codigo] = @_NUMERADOR_CODIGO        
+        [base_id] = @_BaseID AND
+        [codigo]  = @_NUMERADOR_CODIGO        
     END
   END TRY
   BEGIN CATCH
     SELECT @_ErrorMessage = ERROR_MESSAGE(), @_ErrorSeverity = ERROR_SEVERITY(), @_ErrorState = ERROR_STATE()
     ROLLBACK TRANSACTION
     DROP TABLE [#tmp_rotina_aplicacao]
-    RAISERROR ('Impossível atualizar o numerador [rotina_aplicacao_id] na tabela [numerador]: %s!', @_ErrorSeverity, @_ErrorState, @_ErrorMessage)
+    RAISERROR ('Impossível atualizar o numerador [rotina_aplicacao_id] na tabela [numerador_base]: %s!', @_ErrorSeverity, @_ErrorState, @_ErrorMessage)
     RETURN
   END CATCH
 

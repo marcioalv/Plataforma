@@ -24,7 +24,7 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     Left = 0
     Top = 0
     Width = 727
-    Height = 425
+    Height = 384
     Align = alClient
     Center = True
     Stretch = True
@@ -32,6 +32,35 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     ExplicitTop = 224
     ExplicitWidth = 105
     ExplicitHeight = 105
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 384
+    Width = 727
+    Height = 41
+    Align = alBottom
+    BevelOuter = bvNone
+    Caption = 'Panel1'
+    Color = clMenuBar
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 0
+    ExplicitLeft = 48
+    ExplicitTop = 312
+    ExplicitWidth = 185
+    object lblHostName: TLabel
+      Left = 8
+      Top = 16
+      Width = 96
+      Height = 13
+      Caption = 'ComputerHostName'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGray
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
   end
   object mnuFormulario: TMainMenu
     Left = 280

@@ -75,10 +75,11 @@ procedure Plataforma_ERP_ADO_LogOcorrenciaInserir(argRegistroAcao: Byte;
                                                   argDados       : string);
 
 //
-// Plataforma_ERP_ADO_NumeradorDeterminar.
+// Plataforma_ERP_ADO_NumeradorBaseDeterminar.
 //
-function Plataforma_ERP_ADO_NumeradorDeterminar(argADOConnection: TADOConnection;
-                                                argCodigo       : string): Integer;
+function Plataforma_ERP_ADO_NumeradorBaseDeterminar(argADOConnection: TADOConnection;
+                                                    argBaseID       : Integer;
+                                                    argCodigo       : string): Integer;
 
 //
 // Plataforma_ERP_ADO_NumeradorLicencaDeterminar.
@@ -419,10 +420,11 @@ begin
 end;
 
 //
-// Plataforma_ERP_ADO_NumeradorDeterminar.
+// Plataforma_ERP_ADO_NumeradorBaseDeterminar.
 //
-function Plataforma_ERP_ADO_NumeradorDeterminar(argADOConnection: TADOConnection;
-                                                argCodigo       : string): Integer;
+function Plataforma_ERP_ADO_NumeradorBaseDeterminar(argADOConnection: TADOConnection;
+                                                    argBaseID       : Integer;
+                                                    argCodigo       : string): Integer;
 const
   FUNCAO_NOME: string = 'Plataforma_ERP_ADO_NumeradorDeterminar';
 var
@@ -438,15 +440,17 @@ begin
   // Monta SQL para consistir se o código informado é único.
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                           ');
-  locADOQuery.SQL.Add('  [numerador].[atual_id]         ');
-  locADOQuery.SQL.Add('FROM                             ');
-  locADOQuery.SQL.Add('  [numerador]                    ');
-  locADOQuery.SQL.Add('WHERE                            ');
-  locADOQuery.SQL.Add('  [numerador].[codigo] = :codigo ');
+  locADOQuery.SQL.Add('SELECT                                 ');
+  locADOQuery.SQL.Add('  [numerador].[atual_id]               ');
+  locADOQuery.SQL.Add('FROM                                   ');
+  locADOQuery.SQL.Add('  [numerador]                          ');
+  locADOQuery.SQL.Add('WHERE                                  ');
+  locADOQuery.SQL.Add('  [numerador].[base_id] = :base_id AND ');
+  locADOQuery.SQL.Add('  [numerador].[codigo]  = :codigo      ');
 
   // Passa parâmetros.
-  locADOQuery.Parameters.ParamByName('codigo').Value := argCodigo;
+  locADOQuery.Parameters.ParamByName('base_id').Value := argBaseID;
+  locADOQuery.Parameters.ParamByName('codigo').Value  := argCodigo;
 
   // Executa query.
   try
@@ -469,6 +473,7 @@ begin
     locADOQuery.Close;
     locADOQuery.SQL.Clear;
     locADOQuery.SQL.Add('INSERT INTO [numerador] ( ');
+    locADOQuery.SQL.Add('  [base_id],              ');
     locADOQuery.SQL.Add('  [codigo],               ');
     locADOQuery.SQL.Add('  [atual_id],             ');
     locADOQuery.SQL.Add('  [bloqueado],            ');
@@ -480,6 +485,7 @@ begin
     locADOQuery.SQL.Add('  [upd_contador]          ');
     locADOQuery.SQL.Add(')                         ');
     locADOQuery.SQL.Add('VALUES (                  ');
+    locADOQuery.SQL.Add('  :base_id,               '); // [base_id].
     locADOQuery.SQL.Add('  :codigo,                '); // [codigo].
     locADOQuery.SQL.Add('  :atual_id,              '); // [atual_id].
     locADOQuery.SQL.Add('  :bloqueado,             '); // [bloqueado].
@@ -491,6 +497,7 @@ begin
     locADOQuery.SQL.Add('  :upd_contador           '); // [upd_contador].
     locADOQuery.SQL.Add(')                         ');
 
+    locADOQuery.Parameters.ParamByName('base_id').Value         := argBaseID;
     locADOQuery.Parameters.ParamByName('codigo').Value          := argCodigo;
     locADOQuery.Parameters.ParamByName('atual_id').Value        := 1;
     locADOQuery.Parameters.ParamByName('bloqueado').Value       := 'N';
@@ -530,8 +537,10 @@ begin
     locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),         ');
     locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1 ');
     locADOQuery.SQL.Add('WHERE                                     ');
-    locADOQuery.SQL.Add('  [codigo] = :codigo                      ');
+    locADOQuery.SQL.Add('  [base_id] = :base_id AND                ');
+    locADOQuery.SQL.Add('  [codigo]  = :codigo                     ');
 
+    locADOQuery.Parameters.ParamByName('base_id').Value         := argBaseID;
     locADOQuery.Parameters.ParamByName('codigo').Value          := argCodigo;
     locADOQuery.Parameters.ParamByName('atual_id').Value        := Result;
     locADOQuery.Parameters.ParamByName('upd_local_dt_hr').Value := Now;

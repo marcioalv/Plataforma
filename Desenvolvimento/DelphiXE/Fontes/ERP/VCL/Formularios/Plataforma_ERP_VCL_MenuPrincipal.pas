@@ -25,7 +25,7 @@ uses
   Vcl.Forms,
   Vcl.Dialogs,
   Vcl.Menus,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, Vcl.StdCtrls;
 
 type
   TPlataformaERPVCLMenuPrincipal = class(TForm)
@@ -47,6 +47,8 @@ type
     mniNumeradores: TMenuItem;
     mniNumeradorGlobal: TMenuItem;
     mniNumeradorLicenca: TMenuItem;
+    Panel1: TPanel;
+    lblHostName: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
@@ -61,7 +63,7 @@ type
     procedure mniNumeradorLicencaClick(Sender: TObject);
   private
     procedure FormularioInicializar;
-    procedure FormularioTituloDeterminar;
+    procedure FormularioInformacoesDeterminar;
     procedure FormularioMenuConstruir;
   public
     { Public declarations }
@@ -106,7 +108,7 @@ begin
   //
   // Ajusta formulário com perfil de visualização antes da inicialização.
   //
-  FormularioTituloDeterminar;
+  FormularioInformacoesDeterminar;
   FormularioMenuConstruir;
 
   //
@@ -240,11 +242,12 @@ end;
 {--------------------------------------------------------------------------------------------------}
 
 //
-// Procedimento para determinar o título apropriado do formulário.
+// Procedimento para determinar as informações do formulário.
 //
-procedure TPlataformaERPVCLMenuPrincipal.FormularioTituloDeterminar;
+procedure TPlataformaERPVCLMenuPrincipal.FormularioInformacoesDeterminar;
 begin
   Caption := 'Plataforma ERP';
+  lblHostName.Caption := HostNameRecuperar + '\' + UserNameRecuperar;
 end;
 
 //

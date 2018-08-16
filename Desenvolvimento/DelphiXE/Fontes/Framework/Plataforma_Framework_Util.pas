@@ -18,6 +18,7 @@ uses
   System.SysUtils,
   System.DateUtils,
   System.Classes,
+  Winapi.Winsock,
   Winapi.Windows;
 
 const
@@ -156,12 +157,13 @@ implementation
 //
 function HostNameRecuperar: string;
 var
-  locBuffer: array[0 .. 255] of Char;
-  locSize  : DWORD;
+  locBuffer: array [0..63] of AnsiChar;
+  locGInitData: TWSADATA;
 begin
-  locSize := MAX_COMPUTERNAME_LENGTH + 1;
-  GetComputerName(locBuffer, locSize);
-  Result := locBuffer;
+  WSAStartup($101, locGInitData);
+  GetHostName(locBuffer, SizeOf(locBuffer));
+  Result := string(locBuffer);
+  WSACleanup;
 end;
 
 //
