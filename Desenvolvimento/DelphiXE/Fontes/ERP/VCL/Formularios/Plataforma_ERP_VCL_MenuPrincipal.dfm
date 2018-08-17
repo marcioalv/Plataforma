@@ -88,10 +88,6 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
           Caption = 'Tipos usu'#225'rios'
           OnClick = mniTiposUsuariosClick
         end
-        object mniRotinasAplicacao: TMenuItem
-          Caption = 'Rotinas aplica'#231#227'o'
-          OnClick = mniRotinasAplicacaoClick
-        end
       end
       object mniInstalacao: TMenuItem
         Caption = 'Instala'#231#227'o'
@@ -105,6 +101,14 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
             Caption = 'Licen'#231'a'
             OnClick = mniNumeradorLicencaClick
           end
+        end
+        object mniRotinasAplicacao: TMenuItem
+          Caption = 'Rotinas aplica'#231#227'o'
+          OnClick = mniRotinasAplicacaoClick
+        end
+        object mniRegistroAcao: TMenuItem
+          Caption = 'A'#231#245'es com registros'
+          OnClick = mniRegistroAcaoClick
         end
       end
       object mniLogsAplicacao: TMenuItem

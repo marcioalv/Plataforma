@@ -706,7 +706,6 @@ var
 
   locInsert               : Boolean;
   locRegistroAcao         : Byte;
-  locRegistroAcaoID       : Integer;
   locNumeradorBaseLogMsg  : string;
   locNumeradorBaseLogDados: string;
 
@@ -899,21 +898,6 @@ begin
   begin
     locRegistroAcao        := REGISTRO_ACAO_ALTERACAO;
     locNumeradorBaseLogMsg := MENSAGEM_REGISTRO_ACAO_ALTERADO;
-  end;
-
-  try
-    locRegistroAcaoID := Plataforma_ERP_RegistroAcaoIDDeterminar(locADOConnection, locRegistroAcao);
-  except
-    on locExcecao: Exception do
-    begin
-      locADOQuery.Close;
-      FreeAndNil(locADOQuery);
-      locADOConnection.Close;
-      FreeAndNil(locADOConnection);
-      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
-      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
-      Exit
-    end;
   end;
 
   //

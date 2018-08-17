@@ -50,6 +50,7 @@ type
     mniNumeradorLicenca: TMenuItem;
     Panel1: TPanel;
     lblHostName: TLabel;
+    mniRegistroAcao: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
@@ -62,6 +63,7 @@ type
     procedure mniRotinasAplicacaoClick(Sender: TObject);
     procedure mniNumeradorBaseClick(Sender: TObject);
     procedure mniNumeradorLicencaClick(Sender: TObject);
+    procedure mniRegistroAcaoClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -88,6 +90,7 @@ uses
   Plataforma_ERP_VCL_PerfilUsuarioLista,
   Plataforma_ERP_VCL_TiposUsuariosLista,
   Plataforma_ERP_VCL_RotinaAplicacaoLista,
+  Plataforma_ERP_VCL_RegistroAcaoLista,
   Plataforma_ERP_VCL_NumeradorLicencaLista,
   Plataforma_ERP_VCL_NumeradorBaseLista;
 
@@ -220,6 +223,19 @@ begin
   FreeAndNil(locFormulario);
 end;
 
+//
+// Evento de click na opção "ações com registros".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniRegistroAcaoClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLRegistroAcaoLista;
+begin
+  locFormulario := TPlataformaERPVCLRegistroAcaoLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
 {-------------------------------------------------------------------------------------------------}
 { INSTALAÇÃO                                                                                      }
 {-------------------------------------------------------------------------------------------------}
@@ -268,12 +284,10 @@ begin
   mniUsuarios.Visible         := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA');
   mniPerfisUsuario.Visible    := Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA');
   mniTiposUsuarios.Visible    := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
-  mniRotinasAplicacao.Visible := Plataforma_ERP_UsuarioRotina('ERP_ROTINA_APLICACAO_LISTA');
 
   mniControleAcesso.Visible := (mniUsuarios.Visible) or
                                (mniPerfisUsuario.Visible) or
-                               (mniTiposUsuarios.Visible) or
-                               (mniRotinasAplicacao.Visible); 
+                               (mniTiposUsuarios.Visible);
 
   //
   // Numeradores.
@@ -288,7 +302,12 @@ begin
   //
   // Instalação.
   //
-  mniInstalacao.Visible := mniNumeradores.Visible;
+  mniRotinasAplicacao.Visible := Plataforma_ERP_UsuarioRotina('ERP_ROTINA_APLICACAO_LISTA');
+  mniRegistroAcao.Visible     := Plataforma_ERP_UsuarioRotina('ERP_REGISTRO_ACAO_LISTA');
+
+  mniInstalacao.Visible := (mniNumeradores.Visible) or
+                           (mniRotinasAplicacao.Visible) or
+                           (mniRegistroAcao.Visible);
   
 
   //

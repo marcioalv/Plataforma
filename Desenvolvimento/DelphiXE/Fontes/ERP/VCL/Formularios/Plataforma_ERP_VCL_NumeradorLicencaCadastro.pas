@@ -739,7 +739,6 @@ var
 
   locInsert                  : Boolean;
   locRegistroAcao            : Byte;
-  locRegistroAcaoID          : Integer;
   locNumeradorLicencaLogMsg  : string;
   locNumeradorLicencaLogDados: string;
 
@@ -944,21 +943,6 @@ begin
     locNumeradorLicencaLogMsg := MENSAGEM_REGISTRO_ACAO_ALTERADO;
   end;
 
-  try
-    locRegistroAcaoID := Plataforma_ERP_RegistroAcaoIDDeterminar(locADOConnection, locRegistroAcao);
-  except
-    on locExcecao: Exception do
-    begin
-      locADOQuery.Close;
-      FreeAndNil(locADOQuery);
-      locADOConnection.Close;
-      FreeAndNil(locADOConnection);
-      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
-      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
-      Exit
-    end;
-  end;
-
   //
   // Inicia transação com o banco de dados.
   //
@@ -1145,8 +1129,8 @@ begin
   //
   // Atualiza componentes que sofreram alteração com a gravação.
   //
-  edtInsLocalDtHr.Text  := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn');
-  edtUpdLocalDtHr.Text  := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn');
+  edtInsLocalDtHr.Text  := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn:ss');
+  edtUpdLocalDtHr.Text  := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn:ss');
   edtUpdContador.Text   := IntegerStringConverter(locUpdContador);
 
   //
