@@ -71,14 +71,11 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabAuditoria
+    ActivePage = tabCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitLeft = -4
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -245,10 +242,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         ReadOnly = True
         TabOrder = 1
         Text = '999.999'
-        OnEnter = edtCodigoEnter
-        OnExit = edtCodigoExit
-        OnKeyDown = edtCodigoKeyDown
-        OnKeyPress = edtCodigoKeyPress
+        OnClick = edtCodigoCadastradoClick
       end
       object edtTipoUsuarioCodigo: TEdit
         Left = 16
@@ -433,10 +427,54 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
         OnExit = edtLogonExit
         OnKeyPress = edtLogonKeyPress
       end
+      object edtCodigoCadastradoBaseID: TEdit
+        Left = 361
+        Top = 32
+        Width = 49
+        Height = 26
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 9
+        Text = 'Base'
+        Visible = False
+      end
+      object edtCodigoCadastradoID: TEdit
+        Left = 425
+        Top = 32
+        Width = 41
+        Height = 26
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 10
+        Text = 'ID'
+        Visible = False
+      end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 128

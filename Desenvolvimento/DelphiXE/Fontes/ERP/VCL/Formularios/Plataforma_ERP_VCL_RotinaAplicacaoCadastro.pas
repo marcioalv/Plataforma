@@ -74,6 +74,10 @@ type
     lblRotinaAplicacaoBase: TLabel;
     edtRotinaAplicacaoBaseDescricao: TEdit;
     edtRotinaAplicacaoBaseID: TEdit;
+    lblCodigoCadastrado: TLabel;
+    edtCodigoCadastrado: TEdit;
+    edtCodigoCadastradoID: TEdit;
+    edtCodigoCadastradoBaseID: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -111,6 +115,7 @@ type
     procedure edtChaveExit(Sender: TObject);
     procedure edtChaveKeyPress(Sender: TObject; var Key: Char);
     procedure edtRotinaAplicacaoBaseDescricaoClick(Sender: TObject);
+    procedure edtCodigoCadastradoClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -123,6 +128,7 @@ type
     procedure FormularioGravar;
     procedure FormularioCancelar;
     procedure FormularioExcluir;
+    procedure FormularioCodigoSugerir;
     function  LogDadosGerar(argRotinaAplicacaoID: Integer = 0): string;
   public
     pubDadosAtualizados     : Boolean;
@@ -186,6 +192,7 @@ begin
   //
   // Controla os componentes de exibição de cadastro.
   //
+  VCLEditClickControlar(edtCodigoCadastrado,             False);
   VCLEditClickControlar(edtRotinaAplicacaoBaseDescricao, False);
   VCLEditClickControlar(edtInsLocalDtHr,                 False);
   VCLEditClickControlar(edtUpdLocalDtHr,                 False);
@@ -290,6 +297,32 @@ end;
 procedure TPlataformaERPVCLRotinaAplicacaoCadastro.edtCodigoExit(Sender: TObject);
 begin
   if not VCLEditSair(edtCodigo) then Exit;
+end;
+
+//
+// Evento de click no código sugerido.
+//
+procedure TPlataformaERPVCLRotinaAplicacaoCadastro.edtCodigoCadastradoClick(Sender: TObject);
+var
+  locFormulario      : TPlataformaERPVCLRotinaAplicacaoCadastro;
+  locDadosAtualizados: Boolean;
+begin
+  locFormulario := TPlataformaERPVCLRotinaAplicacaoCadastro.Create(Self);
+
+  locFormulario.pubRotinaAplicacaoBaseID := StringIntegerConverter(edtCodigoCadastradoBaseID.Text);
+  locFormulario.pubRotinaAplicacaoID     := StringIntegerConverter(edtCodigoCadastradoID.Text);
+
+  locFormulario.ShowModal;
+
+  locDadosAtualizados := locFormulario.pubDadosAtualizados;
+
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if locDadosAtualizados then
+  begin
+    FormularioCodigoSugerir;
+  end;
 end;
 
 //
@@ -450,6 +483,10 @@ begin
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
 
+  VCLEditLimpar(edtCodigoCadastrado);
+  VCLEditLimpar(edtCodigoCadastradoID);
+  VCLEditLimpar(edtCodigoCadastradoBaseID);
+
   //
   // Limpa componentes da aba "auditoria".
   //
@@ -480,6 +517,12 @@ begin
   VCLEditControlar(edtCodigo,    argEditar);
   VCLEditControlar(edtDescricao, argEditar);
   gbxOpcoes.Enabled := argEditar;
+
+  //
+  // Exibe o último código cadastrado somente se for um novo cadastro.
+  //
+  lblCodigoCadastrado.Visible := (argEditar) and (not locDadosPopulados);
+  edtCodigoCadastrado.Visible := (argEditar) and (not locDadosPopulados);
 
   //
   // Controla os componentes de exibição de cadastro.
@@ -565,6 +608,11 @@ begin
   edtRotinaAplicacaoBaseDescricao.Text := gloBaseDescricao;  
   edtRotinaAplicacaoID.Text            := STR_NOVO;
   chkAtivo.Checked                     := True;
+
+  //
+  // Exibe o último código cadastrado.
+  //
+  FormularioCodigoSugerir;
 
   //
   // Componentes ligados para edição.
@@ -879,7 +927,53 @@ begin
     FreeAndNil(locADOConnection);
     locLogMensagem := 'O código "' + locCodigo + '" informado para a rotina da aplicação já existe em algum outro cadastro!';
     Plataforma_ERP_Logar(False, ERRO_MENSAGEM, locLogMensagem, FONTE_NOME, PROCEDIMENTO_NOME);
-    VCLErroExibir(ERRO_MENSAGEM, locLogMensagem);
+    VCLConsistenciaExibir(ERRO_MENSAGEM, locLogMensagem);
+    Exit;
+  end;
+
+  //
+  // Determina se a chave da rotina da aplicação já existe no banco de dados para um outro registro.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT TOP 1                                                                    ');
+  locADOQuery.SQL.Add('  1                                                                             ');
+  locADOQuery.SQL.Add('FROM                                                                            ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                              ');
+  locADOQuery.SQL.Add('WHERE                                                                           ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id AND ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[chave]                    = :chave                    AND ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id]     <> :rotina_aplicacao_id          ');
+
+  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := locRotinaAplicacaoBaseID;
+  locADOQuery.Parameters.ParamByName('chave').Value                    := locChave;
+  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value      := locRotinaAplicacaoID;
+
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar a mesma chave de rotina da aplicação em um outro registro!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  if locADOQuery.RecordCount > 0 then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);
+    locLogMensagem := 'A chave "' + locChave + '" informada para a rotina da aplicação já existe em algum outro cadastro!';
+    Plataforma_ERP_Logar(False, ERRO_MENSAGEM, locLogMensagem, FONTE_NOME, PROCEDIMENTO_NOME);
+    VCLConsistenciaExibir(ERRO_MENSAGEM, locLogMensagem);
     Exit;
   end;
 
@@ -1455,6 +1549,122 @@ begin
   // Componentes desligados para edição.
   //
   FormularioControlar(False);
+end;
+
+//
+// Procedimento par sugerir o próximo código.
+//
+procedure TPlataformaERPVCLRotinaAplicacaoCadastro.FormularioCodigoSugerir;
+const
+  PROCEDIMENTO_NOME: string = 'FormularioCodigoSugerir';
+  ERRO_MENSAGEM    : string = 'Impossível sugerir informações sobre o próximo código da rotina da aplicação!';
+var
+  locADOConnection        : TADOConnection;
+  locADOQuery             : TADOQuery;
+  locLogMensagem          : string;
+  locRotinaAplicacaoBaseID: Integer;
+begin
+  //
+  // ID da base.
+  //
+  locRotinaAplicacaoBaseID := gloBaseID;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Limpa componente.
+  //
+  VCLEditLimpar(edtCodigoCadastrado);
+  VCLEditLimpar(edtCodigoCadastradoBaseID);
+  VCLEditLimpar(edtCodigoCadastradoID);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(Self);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do código do usuário.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT TOP 1                                                                ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id],                            ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id],                                 ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo]                                               ');
+  locADOQuery.SQL.Add('FROM                                                                        ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                          ');
+  locADOQuery.SQL.Add('WHERE                                                                       ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id ');
+  locADOQuery.SQL.Add('ORDER BY                                                                    ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[ins_server_dt_hr] DESC,                               ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo] DESC                                          ');
+
+  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := locRotinaAplicacaoBaseID;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar último cadastro na tabela [rotina_aplicacao]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Registro encontrado então carrega componentes.
+  //
+  if locADOQuery.RecordCount >= 0 then
+  begin
+    edtCodigoCadastrado.Text       := locADOQuery.FieldByName('codigo').AsString;
+    edtCodigoCadastradoBaseID.Text := IntegerStringConverter(locADOQuery.FieldByName('rotina_aplicacao_base_id').AsInteger);
+    edtCodigoCadastradoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('rotina_aplicacao_id').AsInteger);
+
+    VCLEditClickControlar(edtCodigoCadastrado, True);
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+
+  VCLCursorTrocar;
 end;
 
 //

@@ -407,7 +407,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabAuditoria
+    ActivePage = tabCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
@@ -507,10 +507,7 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
         ReadOnly = True
         TabOrder = 2
         Text = '999.999'
-        OnEnter = edtCodigoEnter
-        OnExit = edtCodigoExit
-        OnKeyDown = edtCodigoKeyDown
-        OnKeyPress = edtCodigoKeyPress
+        OnClick = edtCodigoCadastradoClick
       end
       object gbxOpcoes: TGroupBox
         Left = 320
@@ -558,6 +555,46 @@ object PlataformaERPVCLTiposUsuariosCadastro: TPlataformaERPVCLTiposUsuariosCada
           OnExit = chkAtivoExit
           OnKeyPress = chkAtivoKeyPress
         end
+      end
+      object edtCodigoCadastradoBaseID: TEdit
+        Left = 329
+        Top = 32
+        Width = 49
+        Height = 26
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 4
+        Text = 'Base'
+        Visible = False
+      end
+      object edtCodigoCadastradoID: TEdit
+        Left = 392
+        Top = 32
+        Width = 41
+        Height = 26
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 5
+        Text = 'ID'
+        Visible = False
       end
     end
     object tabAuditoria: TTabSheet

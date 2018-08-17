@@ -79,6 +79,8 @@ type
     chkBloqueado: TCheckBox;
     chkAtivo: TCheckBox;
     mniLog: TMenuItem;
+    edtCodigoCadastradoBaseID: TEdit;
+    edtCodigoCadastradoID: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -116,6 +118,7 @@ type
     procedure mniNovoClick(Sender: TObject);
     procedure mniAtualizarClick(Sender: TObject);
     procedure mniLogClick(Sender: TObject);
+    procedure edtCodigoCadastradoClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -197,6 +200,7 @@ begin
   //
   // Controla os componentes de exibição de cadastro.
   //
+  VCLEditClickControlar(edtCodigoCadastrado,         False);
   VCLEditClickControlar(edtLicencaDescricao,         False);
   VCLEditClickControlar(edtTipoUsuarioBaseDescricao, False);
   VCLEditClickControlar(edtInsLocalDtHr,             False);
@@ -299,6 +303,33 @@ end;
 procedure TPlataformaERPVCLTiposUsuariosCadastro.edtCodigoExit(Sender: TObject);
 begin
   if not VCLEditSair(edtCodigo) then Exit;
+end;
+
+//
+// Evento de click no código sugerido.
+//
+procedure TPlataformaERPVCLTiposUsuariosCadastro.edtCodigoCadastradoClick(Sender: TObject);
+var
+  locFormulario      : TPlataformaERPVCLTiposUsuariosCadastro;
+  locDadosAtualizados: Boolean;
+begin
+  locFormulario := TPlataformaERPVCLTiposUsuariosCadastro.Create(Self);
+
+  locFormulario.pubLicencaID         := StringIntegerConverter(edtLicencaID.Text);
+  locFormulario.pubTipoUsuarioBaseID := StringIntegerConverter(edtCodigoCadastradoBaseID.Text);
+  locFormulario.pubTipoUsuarioID     := StringIntegerConverter(edtCodigoCadastradoID.Text);
+
+  locFormulario.ShowModal;
+
+  locDadosAtualizados := locFormulario.pubDadosAtualizados;
+
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if locDadosAtualizados then
+  begin
+    FormularioCodigoSugerir;
+  end;
 end;
 
 //
@@ -460,10 +491,13 @@ begin
 
   // Limpa componentes da aba "cadastro".
   VCLEditLimpar    (edtCodigo);
-  VCLEditLimpar    (edtCodigoCadastrado);
   VCLEditLimpar    (edtDescricao);
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
+
+  VCLEditLimpar(edtCodigoCadastrado);
+  VCLEditLimpar(edtCodigoCadastradoBaseID);
+  VCLEditLimpar(edtCodigoCadastradoID); 
 
   //
   // Limpa componentes da aba "auditoria".
@@ -1051,7 +1085,7 @@ begin
     FreeAndNil(locADOConnection);
     locLogMensagem := 'O código "' + locCodigo + '" informado para o tipo de usuário já existe em algum outro cadastro!';
     Plataforma_ERP_Logar(False, ERRO_MENSAGEM, locLogMensagem, FONTE_NOME, PROCEDIMENTO_NOME);
-    VCLErroExibir(ERRO_MENSAGEM, locLogMensagem);
+    VCLConsistenciaExibir(ERRO_MENSAGEM, locLogMensagem);
     Exit;
   end;
 
@@ -1811,6 +1845,8 @@ begin
   // Limpa componente.
   //
   VCLEditLimpar(edtCodigoCadastrado);
+  VCLEditLimpar(edtCodigoCadastradoBaseID);
+  VCLEditLimpar(edtCodigoCadastradoID);
 
   //
   // Conexão ao banco de dados.
@@ -1843,8 +1879,9 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT TOP 1                                ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[codigo],                  ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[descricao]                ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_base_id],    ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id],         ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[codigo]                   ');
   locADOQuery.SQL.Add('FROM                                        ');
   locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)              ');
   locADOQuery.SQL.Add('WHERE                                       ');
@@ -1879,7 +1916,11 @@ begin
   //
   if locADOQuery.RecordCount >= 0 then
   begin
-    edtCodigoCadastrado.Text := locADOQuery.FieldByName('codigo').AsString;
+    edtCodigoCadastrado.Text       := locADOQuery.FieldByName('codigo').AsString;
+    edtCodigoCadastradoBaseID.Text := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_base_id').AsInteger);
+    edtCodigoCadastradoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger);
+
+    VCLEditClickControlar(edtCodigoCadastrado, True);    
   end;
 
   //

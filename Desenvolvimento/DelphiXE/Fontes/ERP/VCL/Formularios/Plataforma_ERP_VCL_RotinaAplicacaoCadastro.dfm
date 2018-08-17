@@ -4,8 +4,8 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Rotinas da aplica'#231#227'o'
-  ClientHeight = 410
-  ClientWidth = 593
+  ClientHeight = 408
+  ClientWidth = 737
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -53,14 +53,14 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
   end
   object imgBackground: TImage
     Left = 0
-    Top = 305
+    Top = 297
     Width = 105
     Height = 105
     Center = True
     Stretch = True
   end
   object btnGravar: TBitBtn
-    Left = 416
+    Left = 560
     Top = 344
     Width = 49
     Height = 49
@@ -141,7 +141,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     OnClick = btnGravarClick
   end
   object btnCancelar: TBitBtn
-    Left = 528
+    Left = 672
     Top = 344
     Width = 49
     Height = 49
@@ -222,7 +222,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     OnClick = btnCancelarClick
   end
   object btnMinimizar: TBitBtn
-    Left = 472
+    Left = 616
     Top = 344
     Width = 49
     Height = 49
@@ -295,7 +295,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     OnClick = btnMinimizarClick
   end
   object btnAlterar: TBitBtn
-    Left = 416
+    Left = 560
     Top = 344
     Width = 49
     Height = 49
@@ -378,14 +378,14 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
   object pagFormulario: TPageControl
     Left = 48
     Top = 16
-    Width = 529
+    Width = 673
     Height = 313
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabAuditoria
+    ActivePage = tabCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
@@ -428,10 +428,23 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         Font.Style = []
         ParentFont = False
       end
+      object lblCodigoCadastrado: TLabel
+        Left = 424
+        Top = 16
+        Width = 141
+        Height = 14
+        Caption = #218'ltimo c'#243'digo cadastrado:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
       object edtCodigo: TEdit
         Left = 16
         Top = 32
-        Width = 193
+        Width = 225
         Height = 26
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -441,7 +454,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         MaxLength = 25
         ParentFont = False
         TabOrder = 0
-        Text = '999.999'
+        Text = '999.999.999.999.999.999.999'
         OnEnter = edtCodigoEnter
         OnExit = edtCodigoExit
         OnKeyDown = edtCodigoKeyDown
@@ -450,7 +463,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
       object edtDescricao: TEdit
         Left = 16
         Top = 88
-        Width = 481
+        Width = 633
         Height = 26
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -467,7 +480,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         OnKeyPress = edtDescricaoKeyPress
       end
       object gbxOpcoes: TGroupBox
-        Left = 368
+        Left = 512
         Top = 192
         Width = 129
         Height = 73
@@ -516,7 +529,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
       object edtChave: TEdit
         Left = 16
         Top = 144
-        Width = 377
+        Width = 409
         Height = 26
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -531,10 +544,74 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         OnExit = edtChaveExit
         OnKeyPress = edtChaveKeyPress
       end
+      object edtCodigoCadastrado: TEdit
+        Left = 424
+        Top = 32
+        Width = 225
+        Height = 26
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 4
+        Text = '999.999.999.999.999.999.999'
+        OnClick = edtCodigoCadastradoClick
+      end
+      object edtCodigoCadastradoID: TEdit
+        Left = 560
+        Top = 32
+        Width = 41
+        Height = 26
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 5
+        Text = 'ID'
+        Visible = False
+      end
+      object edtCodigoCadastradoBaseID: TEdit
+        Left = 488
+        Top = 32
+        Width = 49
+        Height = 26
+        TabStop = False
+        Alignment = taCenter
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 6
+        Text = 'Base'
+        Visible = False
+      end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 521
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 80
@@ -718,7 +795,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     end
   end
   object btnFechar: TBitBtn
-    Left = 528
+    Left = 672
     Top = 344
     Width = 49
     Height = 49
@@ -781,7 +858,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     OnClick = btnFecharClick
   end
   object btnNovo: TBitBtn
-    Left = 360
+    Left = 504
     Top = 344
     Width = 49
     Height = 49

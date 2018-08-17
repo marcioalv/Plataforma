@@ -873,7 +873,7 @@ begin
       FreeAndNil(locADOConnection);
       locLogMensagem := 'O código "' + locCodigo + '" informado para o numerador por licença já existe em algum outro cadastro!';
       Plataforma_ERP_Logar(False, ERRO_MENSAGEM, locLogMensagem, FONTE_NOME, PROCEDIMENTO_NOME);
-      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem);
+      VCLConsistenciaExibir(ERRO_MENSAGEM, locLogMensagem);
       Exit;
     end;
   end;
