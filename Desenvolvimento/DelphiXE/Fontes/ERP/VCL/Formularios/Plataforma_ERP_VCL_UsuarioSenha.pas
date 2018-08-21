@@ -817,10 +817,6 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-
-  //
-  // Atualiza dados.
-  //
   locADOQuery.SQL.Add('UPDATE                                    ');
   locADOQuery.SQL.Add('  [usuario]                               ');
   locADOQuery.SQL.Add('SET                                       ');
@@ -908,7 +904,7 @@ begin
     end;   
   end;
 
-  locUpdContador  := locADOQuery.FieldByName('upd_contador').AsInteger;
+  locUpdContador := locADOQuery.FieldByName('upd_contador').AsInteger;
   
   //
   // Determina o próximo sequencial da tabela usuario_log.

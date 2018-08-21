@@ -206,6 +206,8 @@ procedure VCLListViewQtdeLinhasMensagem(argLabel: TLabel; argListView: TListView
 
 procedure VCLListViewColunarDimensionar(argComponente: TListView);
 
+procedure VCLListViewItensMarcar(argComponente: TListView; argSelecionar: Boolean);
+
 
 {*************************************************************************************************}
 implementation
@@ -1749,7 +1751,7 @@ begin
 end;
 
 //
-// argComponente.
+// VCLListViewColunarDimensionar.
 //
 procedure VCLListViewColunarDimensionar(argComponente: TListView);
 var
@@ -1782,8 +1784,20 @@ begin
     locPercentual   := ((locTamanhoAtual / locTamanhoTotal) * 100.0000);
 
     argComponente.Columns[locContador].Width := Round((locTamanhoNovo / 100.0000) * locPercentual);
-  end;  
-  
+  end;
+end;
+
+//
+// VCLListViewItensMarcar.
+//
+procedure VCLListViewItensMarcar(argComponente: TListView; argSelecionar: Boolean);
+var
+  locContador: Integer;
+begin
+  for locContador := 0 to (argComponente.Items.Count - 1) do
+  begin
+    argComponente.Items.Item[locContador].Checked := argSelecionar;
+  end;
 end;
 
 end.

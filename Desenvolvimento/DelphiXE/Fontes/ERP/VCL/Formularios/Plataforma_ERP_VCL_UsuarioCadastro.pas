@@ -591,7 +591,10 @@ var
   locPerfilUsuarioBaseID: Integer;
   locPerfilUsuarioID    : Integer;
   locFormulario         : TPlataformaERPVCLPerfilUsuarioCadastro;
+  locDadosAtualizados   : Boolean;
 begin
+  if not edtCodigo.ReadOnly then Exit;
+
   locIndice := VCLListViewIndiceItemRetornar(lvwPerfil);
   if locIndice <= VCL_NENHUM_INDICE then Exit;
 
@@ -600,14 +603,22 @@ begin
   locPerfilUsuarioID     := StringIntegerConverter(lvwPerfil.Items.Item[locIndice].SubItems.Strings[LVW_PERFIL_USUARIO_ID]);
 
   locFormulario := TPlataformaERPVCLPerfilUsuarioCadastro.Create(Self);
-
+  
   locFormulario.pubLicencaID           := locLicencaID;
   locFormulario.pubPerfilUsuarioBaseID := locPerfilUsuarioBaseID;
   locFormulario.pubPerfilUsuarioID     := locPerfilUsuarioID;
   
   locFormulario.ShowModal;
+
+  locDadosAtualizados := locFormulario.pubDadosAtualizados;
+
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  if locDadosAtualizados then
+  begin
+    FormularioPerfilPopular(locLicencaID, StringIntegerConverter(edtUsuarioBaseID.Text), StringIntegerConverter(edtUsuarioID.Text));
+  end;
 end;
 
 procedure TPlataformaERPVCLUsuarioCadastro.lvwPerfilKeyPress(Sender: TObject; var Key: Char);
@@ -880,12 +891,36 @@ end;
 //
 procedure TPlataformaERPVCLUsuarioCadastro.FormularioPerfis;
 var
-  locFormulario: TPlataformaERPVCLUsuarioPerfil;
+  locLicencaID    : Integer;
+  locUsuarioBaseID: Integer;
+  locUsuarioID    : Integer;
+  locUpdContador  : Integer;
+  locFormulario   : TPlataformaERPVCLUsuarioPerfil;
+  locClicouFechar : Boolean;
 begin
+  locLicencaID     := StringIntegerConverter(edtLicencaID.Text);
+  locUsuarioBaseID := StringIntegerConverter(edtUsuarioBaseID.Text);
+  locUsuarioID     := StringIntegerConverter(edtUsuarioID.Text);
+  locUpdContador   := StringIntegerConverter(edtUpdContador.Text);
+
   locFormulario := TPlataformaERPVCLUsuarioPerfil.Create(Self);
+
+  locFormulario.pubLicencaID     := locLicencaID;
+  locFormulario.pubUsuarioBaseID := locUsuarioBaseID;
+  locFormulario.pubUsuarioID     := locUsuarioID;
+  locFormulario.pubUpdContador   := locUpdContador;
+
   locFormulario.ShowModal;
+
+  locClicouFechar := locFormulario.pubClicouFechar;
+
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    FormularioPerfilPopular(locLicencaID, locUsuarioBaseID, locUsuarioID);
+  end;
 end;
 
 //
@@ -1324,6 +1359,8 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                                                           ');
+  locADOQuery.SQL.Add('  [usuario].[upd_local_dt_hr],                                                                   ');
+  locADOQuery.SQL.Add('  [usuario].[upd_contador],                                                                      ');
   locADOQuery.SQL.Add('  [usuario_perfil].[licenca_id],                                                                 ');
   locADOQuery.SQL.Add('  [usuario_perfil].[usuario_perfil_sq],                                                          ');
   locADOQuery.SQL.Add('  [perfil_usuario].[perfil_usuario_base_id],                                                     ');
@@ -1331,15 +1368,19 @@ begin
   locADOQuery.SQL.Add('  [perfil_usuario].[codigo],                                                                     ');
   locADOQuery.SQL.Add('  [perfil_usuario].[descricao]                                                                   ');
   locADOQuery.SQL.Add('FROM                                                                                             ');
-  locADOQuery.SQL.Add('  [usuario_perfil] WITH (NOLOCK)                                                                 ');
+  locADOQuery.SQL.Add('  [usuario] WITH (NOLOCK)                                                                        ');  
+  locADOQuery.SQL.Add('  INNER JOIN [usuario_perfil] WITH (NOLOCK)                                                      ');
+  locADOQuery.SQL.Add('    ON [usuario_perfil].[licenca_id]      = [usuario].[licenca_id]      AND                      ');
+  locADOQuery.SQL.Add('       [usuario_perfil].[usuario_base_id] = [usuario].[usuario_base_id] AND                      ');
+  locADOQuery.SQL.Add('       [usuario_perfil].[usuario_id]      = [usuario].[usuario_id]                               ');
   locADOQuery.SQL.Add('  INNER JOIN [perfil_usuario] WITH (NOLOCK)                                                      ');
   locADOQuery.SQL.Add('    ON [perfil_usuario].[licenca_id]             = [usuario_perfil].[licenca_id]             AND ');
   locADOQuery.SQL.Add('       [perfil_usuario].[perfil_usuario_base_id] = [usuario_perfil].[perfil_usuario_base_id] AND ');
   locADOQuery.SQL.Add('       [perfil_usuario].[perfil_usuario_id]      = [usuario_perfil].[perfil_usuario_id]          ');
   locADOQuery.SQL.Add('WHERE                                                                                            ');
-  locADOQuery.SQL.Add('  [usuario_perfil].[licenca_id]      = :licenca_id      AND                                      ');
-  locADOQuery.SQL.Add('  [usuario_perfil].[usuario_base_id] = :usuario_base_id AND                                      ');
-  locADOQuery.SQL.Add('  [usuario_perfil].[usuario_id]      = :usuario_id                                               ');
+  locADOQuery.SQL.Add('  [usuario].[licenca_id]      = :licenca_id      AND                                             ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_base_id] = :usuario_base_id AND                                             ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_id]      = :usuario_id                                                      ');
                                                               
   locADOQuery.Parameters.ParamByName('licenca_id').Value      := argLicencaID;
   locADOQuery.Parameters.ParamByName('usuario_base_id').Value := argUsuarioBaseID;
@@ -1370,17 +1411,20 @@ begin
   //
   // Registro encontrado.
   //
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
+    edtUpdLocalDtHr.Text := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
+    edtUpdContador.Text  := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
+  
     lvwPerfil.Items.BeginUpdate;
     while not locADOQuery.Eof do
     begin
       locListItem := lvwPerfil.Items.Add;
       locListItem.Caption := '';
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('licenca_id').AsInteger));
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('usuario_perfil_sq').AsInteger));
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('perfil_usuario_base_id').AsInteger));
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('perfil_usuario_id').AsInteger));
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('usuario_perfil_sq').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('descricao').AsString);
     
@@ -1502,7 +1546,7 @@ begin
 
   if (locTipoUsuarioBaseID = 0) or (locTipoUsuarioBaseID = 0) then
   begin
-    VCLConsistenciaExibir('O tipo do usuário deve ser informado!');
+    VCLConsistenciaExibir('O tipo do usuário deve ser selecionado!');
     VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtTipoUsuarioCodigo);
     Exit;
   end;
