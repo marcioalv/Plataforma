@@ -549,15 +549,15 @@ begin
   //
   // Controla os itens de menu do formulário.
   //
-  mniLog.Visible       := (mniLog.Enabled)       and (not argEditar) and (locDadosPopulados);
-  mniAtualizar.Visible := (mniAtualizar.Enabled) and (not argEditar) and (locDadosPopulados);
-  mniNovo.Visible      := (mniNovo.Enabled)      and (not argEditar);
-  mniExcluir.Visible   := (mniExcluir.Enabled)   and (not argEditar) and (locDadosPopulados);
-  mniAlterar.Visible   := (mniAlterar.Enabled)   and (not argEditar) and (locDadosPopulados);
-  mniGravar.Visible    := (mniGravar.Enabled)    and (argEditar);
-  mniCancelar.Visible  := (mniCancelar.Enabled)  and (argEditar);
-  mniMinimizar.Visible := (mniMinimizar.Enabled);
-  mniFechar.Visible    := (mniFechar.Enabled)    and (not argEditar);
+  mniLog.Visible       := (not argEditar) and (locDadosPopulados);
+  mniAtualizar.Visible := (not argEditar) and (locDadosPopulados);
+  mniNovo.Visible      := (not argEditar);
+  mniExcluir.Visible   := (not argEditar) and (locDadosPopulados);
+  mniAlterar.Visible   := (not argEditar) and (locDadosPopulados);
+  mniGravar.Visible    := (argEditar);
+  mniCancelar.Visible  := (argEditar);
+  mniMinimizar.Visible := True;
+  mniFechar.Visible    := (not argEditar);
 
   //
   // Permissões de acesso por usuário.
@@ -574,13 +574,13 @@ begin
   //
   // Botões.
   //
-  btnLog.Visible       := (btnLog.Enabled)       and (mniLog.Visible);
-  btnNovo.Visible      := (btnNovo.Enabled)      and (mniNovo.Visible);
-  btnAlterar.Visible   := (btnAlterar.Enabled)   and (mniAlterar.Visible);
-  btnGravar.Visible    := (btnGravar.Enabled)    and (mniGravar.Visible);
-  btnMinimizar.Visible := (btnMinimizar.Enabled) and (mniMinimizar.Visible);
-  btnCancelar.Visible  := (btnCancelar.Enabled)  and (mniCancelar.Visible);
-  btnFechar.Visible    := (btnFechar.Enabled)    and (mniFechar.Visible);
+  btnLog.Visible       := mniLog.Visible;
+  btnNovo.Visible      := mniNovo.Visible;
+  btnAlterar.Visible   := mniAlterar.Visible;
+  btnGravar.Visible    := mniGravar.Visible;
+  btnMinimizar.Visible := mniMinimizar.Visible;
+  btnCancelar.Visible  := mniCancelar.Visible;
+  btnFechar.Visible    := mniFechar.Visible;
 
   //
   // Ajusta o título do formulário.
@@ -589,7 +589,7 @@ begin
   locIdentificador := ': ' + edtDescricao.Text;
 
   if (not locDadosPopulados) and (argEditar) then Self.Caption := Self.Caption + ' - novo cadastro';
-  if locDadosPopulados and argEditar         then Self.Caption := Self.Caption + ' - alterando cadastro' + locIdentificador;
+  if locDadosPopulados and argEditar         then Self.Caption := Self.Caption + ' - alterando cadastro'   + locIdentificador;
   if locDadosPopulados and (not argEditar)   then Self.Caption := Self.Caption + ' - consultando cadastro' + locIdentificador;
 end;
 

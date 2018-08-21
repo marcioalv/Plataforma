@@ -51,7 +51,8 @@ uses
   Plataforma_ERP_VCL_NumeradorBaseCadastro in '..\Formularios\Plataforma_ERP_VCL_NumeradorBaseCadastro.pas' {PlataformaERPVCLNumeradorBaseCadastro},
   Plataforma_ERP_VCL_RegistroAcaoLista in '..\Formularios\Plataforma_ERP_VCL_RegistroAcaoLista.pas' {PlataformaERPVCLRegistroAcaoLista},
   Plataforma_ERP_VCL_RegistroAcaoFiltro in '..\Formularios\Plataforma_ERP_VCL_RegistroAcaoFiltro.pas' {PlataformaERPVCLRegistroAcaoFiltro},
-  Plataforma_ERP_VCL_RegistroAcaoCadastro in '..\Formularios\Plataforma_ERP_VCL_RegistroAcaoCadastro.pas' {PlataformaERPVCLRegistroAcaoCadastro};
+  Plataforma_ERP_VCL_RegistroAcaoCadastro in '..\Formularios\Plataforma_ERP_VCL_RegistroAcaoCadastro.pas' {PlataformaERPVCLRegistroAcaoCadastro},
+  Plataforma_ERP_VCL_UsuarioPerfil in '..\Formularios\Plataforma_ERP_VCL_UsuarioPerfil.pas' {PlataformaERPVCLUsuarioPerfil};
 
 {$R *.res}
 
@@ -59,20 +60,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
-  Application.CreateForm(TPlataformaERPVCLPerfilUsuarioLista, PlataformaERPVCLPerfilUsuarioLista);
-  Application.CreateForm(TPlataformaERPVCLPerfilUsuarioFiltro, PlataformaERPVCLPerfilUsuarioFiltro);
-  Application.CreateForm(TPlataformaERPVCLPerfilUsuarioCadastro, PlataformaERPVCLPerfilUsuarioCadastro);
-  Application.CreateForm(TPlataformaERPVCLRotinaAplicacaoLista, PlataformaERPVCLRotinaAplicacaoLista);
-  Application.CreateForm(TPlataformaERPVCLRotinaAplicacaoFiltro, PlataformaERPVCLRotinaAplicacaoFiltro);
-  Application.CreateForm(TPlataformaERPVCLRotinaAplicacaoCadastro, PlataformaERPVCLRotinaAplicacaoCadastro);
-  Application.CreateForm(TPlataformaERPVCLNumeradorLicencaLista, PlataformaERPVCLNumeradorLicencaLista);
-  Application.CreateForm(TPlataformaERPVCLNumeradorLicencaFiltro, PlataformaERPVCLNumeradorLicencaFiltro);
-  Application.CreateForm(TPlataformaERPVCLNumeradorLicencaCadastro, PlataformaERPVCLNumeradorLicencaCadastro);
-  Application.CreateForm(TPlataformaERPVCLNumeradorBaseLista, PlataformaERPVCLNumeradorBaseLista);
-  Application.CreateForm(TPlataformaERPVCLNumeradorBaseFiltro, PlataformaERPVCLNumeradorBaseFiltro);
-  Application.CreateForm(TPlataformaERPVCLNumeradorBaseCadastro, PlataformaERPVCLNumeradorBaseCadastro);
-  Application.CreateForm(TPlataformaERPVCLRegistroAcaoLista, PlataformaERPVCLRegistroAcaoLista);
-  Application.CreateForm(TPlataformaERPVCLRegistroAcaoFiltro, PlataformaERPVCLRegistroAcaoFiltro);
-  Application.CreateForm(TPlataformaERPVCLRegistroAcaoCadastro, PlataformaERPVCLRegistroAcaoCadastro);
   Application.Run;
 end.

@@ -391,8 +391,6 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitTop = 32
-      ExplicitHeight = 293
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -648,6 +646,8 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 665
       ExplicitHeight = 285
       object lblInsDtHt: TLabel

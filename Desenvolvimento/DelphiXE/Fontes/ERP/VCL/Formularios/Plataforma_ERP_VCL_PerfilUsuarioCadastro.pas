@@ -161,7 +161,7 @@ const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_PerfilUsuarioCadastro.pas';
 
   TAB_CADASTRO : Byte = 0;
-  TAB_AUDITORIA: Byte = 1;
+  TAB_AUDITORIA: Byte = 2;
 
 //
 // Evento de criação do formulário.
@@ -549,15 +549,15 @@ begin
   //
   // Controla os itens de menu do formulário.
   //
-  mniLog.Visible       := (mniLog.Enabled)       and (not argEditar) and (locDadosPopulados);
-  mniAtualizar.Visible := (mniAtualizar.Enabled) and (not argEditar) and (locDadosPopulados);
-  mniNovo.Visible      := (mniNovo.Enabled)      and (not argEditar);
-  mniExcluir.Visible   := (mniExcluir.Enabled)   and (not argEditar) and (locDadosPopulados);
-  mniAlterar.Visible   := (mniAlterar.Enabled)   and (not argEditar) and (locDadosPopulados);
-  mniGravar.Visible    := (mniGravar.Enabled)    and (argEditar);
-  mniCancelar.Visible  := (mniCancelar.Enabled)  and (argEditar);
-  mniMinimizar.Visible := (mniMinimizar.Enabled);
-  mniFechar.Visible    := (mniFechar.Enabled)    and (not argEditar);
+  mniLog.Visible       := (not argEditar) and (locDadosPopulados);
+  mniAtualizar.Visible := (not argEditar) and (locDadosPopulados);
+  mniNovo.Visible      := (not argEditar);
+  mniExcluir.Visible   := (not argEditar) and (locDadosPopulados);
+  mniAlterar.Visible   := (not argEditar) and (locDadosPopulados);
+  mniGravar.Visible    := (argEditar);
+  mniCancelar.Visible  := (argEditar);
+  mniMinimizar.Visible := True;
+  mniFechar.Visible    := (not argEditar);
 
   //
   // Permissões de acesso por usuário.

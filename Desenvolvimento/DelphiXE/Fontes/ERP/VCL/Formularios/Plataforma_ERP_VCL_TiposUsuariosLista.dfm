@@ -177,7 +177,7 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 456
+      Left = 452
       Top = 361
       Width = 80
       Height = 13
@@ -266,7 +266,6 @@ object PlataformaERPVCLTiposUsuariosLista: TPlataformaERPVCLTiposUsuariosLista
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
-      ExplicitTop = 41
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True

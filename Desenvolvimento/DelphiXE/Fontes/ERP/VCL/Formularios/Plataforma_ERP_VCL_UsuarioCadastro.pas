@@ -81,7 +81,7 @@ type
     mniExcluir: TMenuItem;
     mniNovo: TMenuItem;
     mniAtualizar: TMenuItem;
-    mniCadastro: TMenuItem;
+    mniAdicional: TMenuItem;
     mniCadastroTipoUsuario: TMenuItem;
     gbxOpcoes: TGroupBox;
     chkBloqueado: TCheckBox;
@@ -92,10 +92,15 @@ type
     edtLogon: TEdit;
     btnSenha: TBitBtn;
     mniSenha: TMenuItem;
-    mniLog: TMenuItem;
     mniCadastroPerfilUsuario: TMenuItem;
     edtCodigoCadastradoBaseID: TEdit;
     edtCodigoCadastradoID: TEdit;
+    tabPerfil: TTabSheet;
+    lvwPerfil: TListView;
+    btnPerfis: TBitBtn;
+    mniLog: TMenuItem;
+    mniPerfis: TMenuItem;
+    mniCadastros: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -153,9 +158,16 @@ type
     procedure mniLogClick(Sender: TObject);
     procedure mniCadastroPerfilUsuarioClick(Sender: TObject);
     procedure edtCodigoCadastradoClick(Sender: TObject);
+    procedure lvwPerfilCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lvwPerfilCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lvwPerfilDblClick(Sender: TObject);
+    procedure lvwPerfilKeyPress(Sender: TObject; var Key: Char);
+    procedure mniPerfisClick(Sender: TObject);
+    procedure btnPerfisClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
+    procedure FormularioPerfis;
     procedure FormularioLogExibir;
 
     procedure FormularioSenha;
@@ -165,6 +177,10 @@ type
     procedure FormularioPopular(argLicencaID    : Integer;
                                 argUsuarioBaseID: Integer;
                                 argUsuarioID    : Integer);
+
+    procedure FormularioPerfilPopular(argLicencaID    : Integer;
+                                      argUsuarioBaseID: Integer;
+                                      argUsuarioID    : Integer);
 
     procedure FormularioAlterar;
     procedure FormularioGravar;
@@ -193,6 +209,8 @@ uses
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_Generico,
+  Plataforma_ERP_VCL_PerfilUsuarioCadastro,
+  Plataforma_ERP_VCL_UsuarioPerfil,
   Plataforma_ERP_VCL_UsuarioSenha;
 
 const
@@ -200,6 +218,13 @@ const
 
   TAB_CADASTRO : Byte = 0;
   TAB_AUDITORIA: Byte = 1;
+
+  LVW_PERFIL_USUARIO_LICENCA_ID: Integer = 0;
+  LVW_PERFIL_USUARIO_BASE_ID   : Integer = 1;
+  LVW_PERFIL_USUARIO_ID        : Integer = 2;
+  LVW_PERFIL_USUARIO_SQ        : Integer = 3;
+  LVW_PERFIL_USUARIO_CODIGO    : Integer = 4;
+  LVW_PERFIL_USUARIO_DESCRICAO : Integer = 5;
 
 //
 // Evento de criação do formulário.
@@ -276,6 +301,16 @@ end;
 //
 // Evento de click nas opções do menu.
 //
+procedure TPlataformaERPVCLUsuarioCadastro.mniPerfisClick(Sender: TObject);
+begin
+  FormularioPerfis;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.mniLogClick(Sender: TObject);
+begin
+  FormularioLogExibir;
+end;
+
 procedure TPlataformaERPVCLUsuarioCadastro.mniCadastroPerfilUsuarioClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_PerfilUsuarioListaExibir;
@@ -284,11 +319,6 @@ end;
 procedure TPlataformaERPVCLUsuarioCadastro.mniCadastroTipoUsuarioClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_TipoUsuarioListaExibir;
-end;
-
-procedure TPlataformaERPVCLUsuarioCadastro.mniLogClick(Sender: TObject);
-begin
-  FormularioLogExibir;
 end;
 
 procedure TPlataformaERPVCLUsuarioCadastro.mniSenhaClick(Sender: TObject);
@@ -542,6 +572,50 @@ begin
 end;
 
 //
+// Eventos do componente "lista de perfis".
+//
+procedure TPlataformaERPVCLUsuarioCadastro.lvwPerfilCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  VCLListViewZebrar(Sender, Item);
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.lvwPerfilCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  VCLListViewZebrar(Sender, Item);
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.lvwPerfilDblClick(Sender: TObject);
+var
+  locIndice             : Integer;
+  locLicencaID          : Integer;
+  locPerfilUsuarioBaseID: Integer;
+  locPerfilUsuarioID    : Integer;
+  locFormulario         : TPlataformaERPVCLPerfilUsuarioCadastro;
+begin
+  locIndice := VCLListViewIndiceItemRetornar(lvwPerfil);
+  if locIndice <= VCL_NENHUM_INDICE then Exit;
+
+  locLicencaID           := StringIntegerConverter(lvwPerfil.Items.Item[locIndice].SubItems.Strings[LVW_PERFIL_USUARIO_LICENCA_ID]);
+  locPerfilUsuarioBaseID := StringIntegerConverter(lvwPerfil.Items.Item[locIndice].SubItems.Strings[LVW_PERFIL_USUARIO_BASE_ID]);
+  locPerfilUsuarioID     := StringIntegerConverter(lvwPerfil.Items.Item[locIndice].SubItems.Strings[LVW_PERFIL_USUARIO_ID]);
+
+  locFormulario := TPlataformaERPVCLPerfilUsuarioCadastro.Create(Self);
+
+  locFormulario.pubLicencaID           := locLicencaID;
+  locFormulario.pubPerfilUsuarioBaseID := locPerfilUsuarioBaseID;
+  locFormulario.pubPerfilUsuarioID     := locPerfilUsuarioID;
+  
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.lvwPerfilKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = ENTER then lvwPerfilDblClick(Sender);
+end;
+
+//
 // Evento de click no título da licença.
 //
 procedure TPlataformaERPVCLUsuarioCadastro.edtLicencaDescricaoClick(Sender: TObject);
@@ -571,6 +645,14 @@ end;
 procedure TPlataformaERPVCLUsuarioCadastro.edtUpdLocalDtHrClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtUpdLocalDtHr.Text));
+end;
+
+//
+// Evento de click no botão "perfis".
+//
+procedure TPlataformaERPVCLUsuarioCadastro.btnPerfisClick(Sender: TObject);
+begin
+  FormularioPerfis;
 end;
 
 //
@@ -665,6 +747,11 @@ begin
   VCLEditLimpar(edtCodigoCadastradoID);
 
   //
+  // Limpa componentes da aba "perfil".
+  //
+  VCLListViewLimpar(lvwPerfil);
+
+  //
   // Limpa componentes da aba "auditoria".
   //
   VCLEditLimpar(edtLicencaID);
@@ -722,24 +809,25 @@ begin
   //
   // Controla os itens de menu do formulário.
   //
-  mniLog.Visible       := (mniLog.Enabled)       and (not argEditar) and (locDadosPopulados);
-  mniSenha.Visible     := (mniSenha.Enabled)     and (not argEditar) and (locDadosPopulados);
-  mniAtualizar.Visible := (mniAtualizar.Enabled) and (not argEditar) and (locDadosPopulados);
-  mniNovo.Visible      := (mniNovo.Enabled)      and (not argEditar);
-  mniExcluir.Visible   := (mniExcluir.Enabled)   and (not argEditar) and (locDadosPopulados);
-  mniAlterar.Visible   := (mniAlterar.Enabled)   and (not argEditar) and (locDadosPopulados);
-  mniGravar.Visible    := (mniGravar.Enabled)    and argEditar;
-  mniCancelar.Visible  := (mniCancelar.Enabled)  and argEditar;
-  mniMinimizar.Visible := (mniMinimizar.Enabled);
-  mniFechar.Visible    := (mniFechar.Enabled)    and (not argEditar);
+  mniPerfis.Visible    := (not argEditar) and (locDadosPopulados);
+  mniLog.Visible       := (not argEditar) and (locDadosPopulados);
+  mniSenha.Visible     := (not argEditar) and (locDadosPopulados);
+  mniAtualizar.Visible := (not argEditar) and (locDadosPopulados);
+  mniNovo.Visible      := (not argEditar);
+  mniExcluir.Visible   := (not argEditar) and (locDadosPopulados);
+  mniAlterar.Visible   := (not argEditar) and (locDadosPopulados);
+  mniGravar.Visible    := argEditar;
+  mniCancelar.Visible  := argEditar;
+  mniMinimizar.Visible := True;
+  mniFechar.Visible    := (not argEditar);
 
   //
   // Permissões de acesso por usuário.
   //
   tabCadastro.TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_CADASTRO');
+  tabPerfil.TabVisible    := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_PERFIL');
   tabAuditoria.TabVisible := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_AUDITORIA');
-      
-  mniLog.Visible       := (mniLog.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_LOG'));
+
   mniSenha.Visible     := (mniSenha.Visible)     and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_SENHA'));
   mniAtualizar.Visible := (mniAtualizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ATUALIZAR'));
   mniNovo.Visible      := (mniNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_NOVO'));
@@ -747,26 +835,34 @@ begin
   mniAlterar.Visible   := (mniAlterar.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ALTERAR'));
 
   //
-  // Itens do menu de cadastro.
+  // Itens do menu cadastro.
   //
-  mniCadastroTipoUsuario.Visible   := (mniCadastroTipoUsuario.Enabled)   and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA'));
-  mniCadastroPerfilUsuario.Visible := (mniCadastroPerfilUsuario.Enabled) and (Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA'));
+  mniCadastroPerfilUsuario.Visible := Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA');
+  mniCadastroTipoUsuario.Visible   := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
 
-  mniCadastro.Visible  := mniCadastro.Enabled            and
-                          mniCadastroTipoUsuario.Visible and
-                          mniCadastroPerfilUsuario.Visible;
+  //
+  // Itens do menu adicional.
+  //
+  mniPerfis.Visible    := (mniPerfis.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA'));
+  mniLog.Visible       := (mniLog.Visible)    and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_LOG'));
+  mniCadastros.Visible := (mniCadastroPerfilUsuario.Visible) or (mniCadastroTipoUsuario.Visible);
 
+  mniAdicional.Visible := (mniPerfis.Visible) or
+                          (mniLog.Visible)    or
+                          (mniCadastros.Visible);
+                          
   //
   // Botões.
   //
-  btnLog.Visible       := (btnLog.Enabled)       and (mniLog.Visible);
-  btnSenha.Visible     := (btnSenha.Enabled)     and (mniSenha.Visible);
-  btnNovo.Visible      := (btnNovo.Enabled)      and (mniNovo.Visible);
-  btnAlterar.Visible   := (btnAlterar.Enabled)   and (mniAlterar.Visible);
-  btnGravar.Visible    := (btnGravar.Enabled)    and (mniGravar.Visible);
-  btnMinimizar.Visible := (btnMinimizar.Enabled) and (mniMinimizar.Visible);
-  btnCancelar.Visible  := (btnCancelar.Enabled)  and (mniCancelar.Visible);
-  btnFechar.Visible    := (btnFechar.Enabled)    and (mniFechar.Visible);
+  btnPerfis.Visible    := mniPerfis.Visible;
+  btnLog.Visible       := mniLog.Visible;
+  btnSenha.Visible     := mniSenha.Visible;
+  btnNovo.Visible      := mniNovo.Visible;
+  btnAlterar.Visible   := mniAlterar.Visible;
+  btnGravar.Visible    := mniGravar.Visible;
+  btnMinimizar.Visible := mniMinimizar.Visible;
+  btnCancelar.Visible  := mniCancelar.Visible;
+  btnFechar.Visible    := mniFechar.Visible;
 
   //
   // Ajusta o título do formulário.
@@ -775,8 +871,21 @@ begin
   locIdentificador := ': ' + edtNome.Text;
 
   if (not locDadosPopulados) and (argEditar) then Self.Caption := Self.Caption + ' - novo cadastro';
-  if locDadosPopulados and argEditar         then Self.Caption := Self.Caption + ' - alterando cadastro' + locIdentificador;
+  if locDadosPopulados and argEditar         then Self.Caption := Self.Caption + ' - alterando cadastro'   + locIdentificador;
   if locDadosPopulados and (not argEditar)   then Self.Caption := Self.Caption + ' - consultando cadastro' + locIdentificador;
+end;
+
+//
+// Procedimento para exibir a seleção de perfis de usuário.
+//
+procedure TPlataformaERPVCLUsuarioCadastro.FormularioPerfis;
+var
+  locFormulario: TPlataformaERPVCLUsuarioPerfil;
+begin
+  locFormulario := TPlataformaERPVCLUsuarioPerfil.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 //
@@ -1142,6 +1251,142 @@ begin
     edtInsLocalDtHr.Text         := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
     edtUpdLocalDtHr.Text         := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
     edtUpdContador.Text          := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
+  end; 
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);  
+  VCLCursorTrocar;
+
+  //
+  // Popula os componentes da aba perfil.
+  //
+  FormularioPerfilPopular(argLicencaID, argUsuarioBaseID, argUsuarioID);
+end;
+
+//
+// Procedimento para popular a aba de informações sobre os perfis do usuário.
+//
+procedure TPlataformaERPVCLUsuarioCadastro.FormularioPerfilPopular(argLicencaID    : Integer;
+                                                                   argUsuarioBaseID: Integer;
+                                                                   argUsuarioID    : Integer);
+const
+  PROCEDIMENTO_NOME: string = 'FormularioPerfilPopular';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados do perfil do usuário!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locListItem     : TListItem;
+begin
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Limpa os componentes da aba perfil.
+  //
+  VCLListViewLimpar(lvwPerfil);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(Self);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do usuário.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                                                                           ');
+  locADOQuery.SQL.Add('  [usuario_perfil].[licenca_id],                                                                 ');
+  locADOQuery.SQL.Add('  [usuario_perfil].[usuario_perfil_sq],                                                          ');
+  locADOQuery.SQL.Add('  [perfil_usuario].[perfil_usuario_base_id],                                                     ');
+  locADOQuery.SQL.Add('  [perfil_usuario].[perfil_usuario_id],                                                          ');
+  locADOQuery.SQL.Add('  [perfil_usuario].[codigo],                                                                     ');
+  locADOQuery.SQL.Add('  [perfil_usuario].[descricao]                                                                   ');
+  locADOQuery.SQL.Add('FROM                                                                                             ');
+  locADOQuery.SQL.Add('  [usuario_perfil] WITH (NOLOCK)                                                                 ');
+  locADOQuery.SQL.Add('  INNER JOIN [perfil_usuario] WITH (NOLOCK)                                                      ');
+  locADOQuery.SQL.Add('    ON [perfil_usuario].[licenca_id]             = [usuario_perfil].[licenca_id]             AND ');
+  locADOQuery.SQL.Add('       [perfil_usuario].[perfil_usuario_base_id] = [usuario_perfil].[perfil_usuario_base_id] AND ');
+  locADOQuery.SQL.Add('       [perfil_usuario].[perfil_usuario_id]      = [usuario_perfil].[perfil_usuario_id]          ');
+  locADOQuery.SQL.Add('WHERE                                                                                            ');
+  locADOQuery.SQL.Add('  [usuario_perfil].[licenca_id]      = :licenca_id      AND                                      ');
+  locADOQuery.SQL.Add('  [usuario_perfil].[usuario_base_id] = :usuario_base_id AND                                      ');
+  locADOQuery.SQL.Add('  [usuario_perfil].[usuario_id]      = :usuario_id                                               ');
+                                                              
+  locADOQuery.Parameters.ParamByName('licenca_id').Value      := argLicencaID;
+  locADOQuery.Parameters.ParamByName('usuario_base_id').Value := argUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('usuario_id').Value      := argUsuarioID;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar os registros da tabela [usuario_perfil]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  locADOQuery.Last;
+  locADOQuery.First;
+
+  //
+  // Registro encontrado.
+  //
+  if locADOQuery.RecordCount >= 0 then
+  begin
+    lvwPerfil.Items.BeginUpdate;
+    while not locADOQuery.Eof do
+    begin
+      locListItem := lvwPerfil.Items.Add;
+      locListItem.Caption := '';
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('licenca_id').AsInteger));
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('usuario_perfil_sq').AsInteger));
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('perfil_usuario_base_id').AsInteger));
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('perfil_usuario_id').AsInteger));
+      locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('descricao').AsString);
+    
+      locADOQuery.Next;
+    end;
+    lvwPerfil.Items.EndUpdate;
   end; 
 
   //

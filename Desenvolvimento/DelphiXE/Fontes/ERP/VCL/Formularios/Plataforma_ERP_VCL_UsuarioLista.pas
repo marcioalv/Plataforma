@@ -319,30 +319,29 @@ begin
   //
   // Menu - Cadastros.
   //
-  mniCadastroTipoUsuario.Visible   := (mniCadastroTipoUsuario.Enabled)   and (Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA'));
-  mniCadastroPerfilUsuario.Visible := (mniCadastroPerfilUsuario.Enabled) and (Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA'));
+  mniCadastroTipoUsuario.Visible   := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
+  mniCadastroPerfilUsuario.Visible := Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA');
 
-  mniCadastro.Visible := (mniCadastro.Enabled)            and
-                         (mniCadastroTipoUsuario.Visible) and
+  mniCadastro.Visible := (mniCadastroTipoUsuario.Visible) or
                          (mniCadastroPerfilUsuario.Visible);
 
   //
   // Menu - ações.
   //
-  mniLocalizar.Visible  := (mniLocalizar.Enabled)  and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_LOCALIZAR'));
-  mniAtualizar.Visible  := (mniAtualizar.Enabled)  and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_ATUALIZAR'));
-  mniNovo.Visible       := (mniNovo.Enabled)       and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_NOVO'));
-  mniSelecionar.Visible := (mniSelecionar.Enabled) and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_SELECIONAR'));
-  mniMinimizar.Visible  := (mniMinimizar.Enabled);
-  mniFechar.Visible     := (mniFechar.Enabled);
+  mniLocalizar.Visible  := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_LOCALIZAR');
+  mniAtualizar.Visible  := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_ATUALIZAR');
+  mniNovo.Visible       := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_NOVO');
+  mniSelecionar.Visible := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA_SELECIONAR');
+  mniMinimizar.Visible  := True;
+  mniFechar.Visible     := True;
                                                        
   //
   // Botões.
   //
-  btnLocalizar.Visible  := (btnLocalizar.Enabled)  and (mniLocalizar.Visible);
-  btnNovo.Visible       := (btnNovo.Enabled)       and (mniNovo.Visible);
-  btnMinimizar.Visible  := (btnMinimizar.Enabled);
-  btnFechar.Visible     := (btnFechar.Enabled);
+  btnLocalizar.Visible  := mniLocalizar.Visible;
+  btnNovo.Visible       := mniNovo.Visible;
+  btnMinimizar.Visible  := btnMinimizar.Enabled;
+  btnFechar.Visible     := btnFechar.Enabled;
 end;
 
 //
