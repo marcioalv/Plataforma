@@ -1258,7 +1258,7 @@ begin
   //
   // Registro encontrado.
   //
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
     //
     // Carrega componentes.
@@ -1929,8 +1929,8 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                  ');
-  locADOQuery.SQL.Add('  MAX([usuario_log].[usuario_log_sq]) AS Sequencial      ');
+  locADOQuery.SQL.Add('SELECT                                                   ');
+  locADOQuery.SQL.Add('  MAX([usuario_log].[usuario_log_sq]) AS [sequencial]    ');
   locADOQuery.SQL.Add('FROM                                                     ');
   locADOQuery.SQL.Add('  [usuario_log]                                          ');
   locADOQuery.SQL.Add('WHERE                                                    ');
@@ -1965,7 +1965,7 @@ begin
   end
   else  
   begin
-    locUsuarioLogSq := locADOQuery.FieldByName('Sequencial').AsInteger + 1;
+    locUsuarioLogSq := locADOQuery.FieldByName('sequencial').AsInteger + 1;
   end; 
 
   //
@@ -2447,7 +2447,7 @@ begin
   //
   // Registro encontrado então carrega componentes.
   //
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
     edtCodigoCadastrado.Text       := locADOQuery.FieldByName('codigo').AsString;
     edtCodigoCadastradoBaseID.Text := IntegerStringConverter(locADOQuery.FieldByName('usuario_base_id').AsInteger);

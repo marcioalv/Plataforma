@@ -199,7 +199,7 @@ begin
   // Registro encontrado.
   //
   locSenhaTrocar := False;
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
     //
     // Carrega componentes.
@@ -319,7 +319,7 @@ begin
   //
   // Registro encontrado.
   //
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
     while not locADOQuery.EOF do
     begin

@@ -474,6 +474,10 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
     object tabPerfil: TTabSheet
       Caption = 'Perfil'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lvwPerfil: TListView
         AlignWithMargins = True
         Left = 8

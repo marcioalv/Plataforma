@@ -16,8 +16,10 @@ object PlataformaERPVCLPerfilUsuarioRotinaAplicacao: TPlataformaERPVCLPerfilUsua
   Menu = mnuFormulario
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object imgFormulario: TImage
@@ -217,6 +219,19 @@ object PlataformaERPVCLPerfilUsuarioRotinaAplicacao: TPlataformaERPVCLPerfilUsua
     ParentBackground = False
     ShowCaption = False
     TabOrder = 2
+    object pbaProgresso: TProgressBar
+      AlignWithMargins = True
+      Left = 8
+      Top = 8
+      Width = 685
+      Height = 17
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 4
+      Align = alTop
+      TabOrder = 0
+    end
   end
   object btnGravar: TBitBtn
     Left = 592

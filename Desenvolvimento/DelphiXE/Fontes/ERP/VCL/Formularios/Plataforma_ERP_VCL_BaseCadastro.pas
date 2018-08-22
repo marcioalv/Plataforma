@@ -328,7 +328,7 @@ begin
   //
   // Registro encontrado então carrega componentes.
   //
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
     edtBaseID.Text       := locADOQuery.FieldByName('base_id').AsString;
     edtCodigo.Text       := locADOQuery.FieldByName('codigo').AsString;

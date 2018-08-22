@@ -135,6 +135,10 @@ type
                                 argPerfilUsuarioBaseID: Integer;
                                 argPerfilUsuarioID    : Integer);
 
+    procedure FormularioUpdPopular(argLicencaID          : Integer;
+                                   argPerfilUsuarioBaseID: Integer;
+                                   argPerfilUsuarioID    : Integer);
+                                
     procedure FormularioAlterar;
     procedure FormularioGravar;
     procedure FormularioCancelar;
@@ -620,12 +624,36 @@ end;
 //
 procedure TPlataformaERPVCLPerfilUsuarioCadastro.FormularioRotinas;
 var
-  locFormulario: TPlataformaERPVCLPerfilUsuarioRotinaAplicacao;
+  locLicencaID          : Integer;
+  locPerfilUsuarioBaseID: Integer;
+  locPerfilUsuarioID    : Integer;
+  locUpdContador        : Integer;
+  locFormulario         : TPlataformaERPVCLPerfilUsuarioRotinaAplicacao;
+  locClicouFechar       : Boolean;
 begin
+  locLicencaID           := StringIntegerConverter(edtLicencaID.Text);
+  locPerfilUsuarioBaseID := StringIntegerConverter(edtPerfilUsuarioBaseID.Text);
+  locPerfilUsuarioID     := StringIntegerConverter(edtPerfilUsuarioID.Text);
+  locUpdContador         := StringIntegerConverter(edtUpdContador.Text);
+
   locFormulario := TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.Create(Self);
+
+  locFormulario.pubLicencaID           := locLicencaID;
+  locFormulario.pubPerfilUsuarioBaseID := locPerfilUsuarioBaseID;
+  locFormulario.pubPerfilUsuarioID     := locPerfilUsuarioID;
+  locFormulario.pubUpdContador         := locUpdContador;
+  
   locFormulario.ShowModal;
+
+  locClicouFechar := locFormulario.pubClicouFechar;
+  
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    FormularioUpdPopular(locLicencaID, locPerfilUsuarioBaseID, locPerfilUsuarioID);
+  end;
 end;
 
 //
@@ -920,7 +948,7 @@ begin
   //
   // Registro encontrado.
   //
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
     //
     // Carrega componentes.
@@ -938,6 +966,115 @@ begin
     edtInsLocalDtHr.Text               := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
     edtUpdLocalDtHr.Text               := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
     edtUpdContador.Text                := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
+  end; 
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+end;
+
+//
+// Procedimento para popular os componentes de última atualização.
+//
+procedure TPlataformaERPVCLPerfilUsuarioCadastro.FormularioUpdPopular(argLicencaID          : Integer;
+                                                                      argPerfilUsuarioBaseID: Integer;
+                                                                      argPerfilUsuarioID    : Integer);
+const
+  PROCEDIMENTO_NOME: string = 'FormularioPopular';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados da última atualização do perfil de usuário!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+begin
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Limpa os componentes do formulário.
+  //
+  FormularioLimpar;
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(Self);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do perfil de usuário.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                                                    ');
+  locADOQuery.SQL.Add('  [perfil_usuario].[upd_local_dt_hr],                                     ');
+  locADOQuery.SQL.Add('  [perfil_usuario].[upd_contador]                                         ');  
+  locADOQuery.SQL.Add('FROM                                                                      ');
+  locADOQuery.SQL.Add('  [perfil_usuario] WITH (NOLOCK)                                          ');
+  locADOQuery.SQL.Add('WHERE                                                                     ');
+  locADOQuery.SQL.Add('  [perfil_usuario].[licenca_id]             = :licenca_id             AND ');
+  locADOQuery.SQL.Add('  [perfil_usuario].[perfil_usuario_base_id] = :perfil_usuario_base_id AND ');
+  locADOQuery.SQL.Add('  [perfil_usuario].[perfil_usuario_id]      = :perfil_usuario_id          ');
+
+  locADOQuery.Parameters.ParamByName('licenca_id').Value             := argLicencaID;
+  locADOQuery.Parameters.ParamByName('perfil_usuario_base_id').Value := argPerfilUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('perfil_usuario_id').Value      := argPerfilUsuarioID;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [perfil_usuario]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Registro encontrado.
+  //
+  if locADOQuery.RecordCount > 0 then
+  begin
+    //
+    // Carrega componentes.
+    //
+    edtUpdLocalDtHr.Text := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn');
+    edtUpdContador.Text  := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
   end; 
 
   //
@@ -1394,7 +1531,7 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                                        ');
-  locADOQuery.SQL.Add('  MAX([perfil_usuario_log].[perfil_usuario_log_sq]) AS Sequencial             ');
+  locADOQuery.SQL.Add('  MAX([perfil_usuario_log].[perfil_usuario_log_sq]) AS [sequencial]           ');
   locADOQuery.SQL.Add('FROM                                                                          ');
   locADOQuery.SQL.Add('  [perfil_usuario_log]                                                        ');
   locADOQuery.SQL.Add('WHERE                                                                         ');
@@ -1429,7 +1566,7 @@ begin
   end
   else  
   begin
-    locPerfilUsuarioLogSq := locADOQuery.FieldByName('Sequencial').AsInteger + 1;
+    locPerfilUsuarioLogSq := locADOQuery.FieldByName('sequencial').AsInteger + 1;
   end; 
 
   //
@@ -1951,7 +2088,7 @@ begin
   //
   // Registro encontrado então carrega componentes.
   //
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
     edtCodigoCadastrado.Text       := locADOQuery.FieldByName('codigo').AsString;
     edtCodigoCadastradoBaseID.Text := IntegerStringConverter(locADOQuery.FieldByName('perfil_usuario_base_id').AsInteger);

@@ -722,7 +722,7 @@ begin
   //
   // Registro encontrado.
   //
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
     //
     // Carrega componentes.
@@ -1631,7 +1631,7 @@ begin
   //
   // Registro encontrado então carrega componentes.
   //
-  if locADOQuery.RecordCount >= 0 then
+  if locADOQuery.RecordCount > 0 then
   begin
     edtCodigoCadastrado.Text       := locADOQuery.FieldByName('codigo').AsString;
     edtCodigoCadastradoBaseID.Text := IntegerStringConverter(locADOQuery.FieldByName('rotina_aplicacao_base_id').AsInteger);

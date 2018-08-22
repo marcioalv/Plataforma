@@ -490,7 +490,7 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                   ');
-  locADOQuery.SQL.Add('  MAX([usuario_log].[usuario_log_sq]) AS Sequencial      ');
+  locADOQuery.SQL.Add('  MAX([usuario_log].[usuario_log_sq]) AS [sequencial]    ');
   locADOQuery.SQL.Add('FROM                                                     ');
   locADOQuery.SQL.Add('  [usuario_log]                                          ');
   locADOQuery.SQL.Add('WHERE                                                    ');
@@ -525,7 +525,7 @@ begin
   end
   else  
   begin
-    locUsuarioLogSq := locADOQuery.FieldByName('Sequencial').AsInteger + 1;
+    locUsuarioLogSq := locADOQuery.FieldByName('sequencial').AsInteger + 1;
   end; 
 
   //
