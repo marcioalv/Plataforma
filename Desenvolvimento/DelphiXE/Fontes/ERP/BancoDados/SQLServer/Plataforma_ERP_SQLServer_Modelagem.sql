@@ -15,21 +15,22 @@ IF OBJECT_ID('numerador_licenca_fk_upd_usuario')   IS NOT NULL ALTER TABLE [nume
 --
 -- Apaga tabelas.
 --
-IF OBJECT_ID('usuario_perfil')     IS NOT NULL DROP TABLE [usuario_perfil]
-IF OBJECT_ID('usuario_log')        IS NOT NULL DROP TABLE [usuario_log]
-IF OBJECT_ID('usuario')            IS NOT NULL DROP TABLE [usuario]
-IF OBJECT_ID('tipo_usuario_log')   IS NOT NULL DROP TABLE [tipo_usuario_log]
-IF OBJECT_ID('tipo_usuario')       IS NOT NULL DROP TABLE [tipo_usuario]
-IF OBJECT_ID('perfil_usuario_log') IS NOT NULL DROP TABLE [perfil_usuario_log]
-IF OBJECT_ID('perfil_usuario')     IS NOT NULL DROP TABLE [perfil_usuario]
-IF OBJECT_ID('numerador_licenca')  IS NOT NULL DROP TABLE [numerador_licenca]
-IF OBJECT_ID('licenca')            IS NOT NULL DROP TABLE [licenca]
-IF OBJECT_ID('rotina_aplicacao')   IS NOT NULL DROP TABLE [rotina_aplicacao]
-IF OBJECT_ID('registro_acao')      IS NOT NULL DROP TABLE [registro_acao]
-IF OBJECT_ID('numerador_base')     IS NOT NULL DROP TABLE [numerador_base]
-IF OBJECT_ID('base')               IS NOT NULL DROP TABLE [base]
-IF OBJECT_ID('aplicacao_base')     IS NOT NULL DROP TABLE [aplicacao_base]
-IF OBJECT_ID('log_ocorrencia')     IS NOT NULL DROP TABLE [log_ocorrencia]
+IF OBJECT_ID('usuario_perfil')                  IS NOT NULL DROP TABLE [usuario_perfil]
+IF OBJECT_ID('usuario_log')                     IS NOT NULL DROP TABLE [usuario_log]
+IF OBJECT_ID('usuario')                         IS NOT NULL DROP TABLE [usuario]
+IF OBJECT_ID('tipo_usuario_log')                IS NOT NULL DROP TABLE [tipo_usuario_log]
+IF OBJECT_ID('tipo_usuario')                    IS NOT NULL DROP TABLE [tipo_usuario]
+IF OBJECT_ID('perfil_usuario_rotina_aplicacao') IS NOT NULL DROP TABLE [perfil_usuario_rotina_aplicacao]
+IF OBJECT_ID('perfil_usuario_log')              IS NOT NULL DROP TABLE [perfil_usuario_log]
+IF OBJECT_ID('perfil_usuario')                  IS NOT NULL DROP TABLE [perfil_usuario]
+IF OBJECT_ID('numerador_licenca')               IS NOT NULL DROP TABLE [numerador_licenca]
+IF OBJECT_ID('licenca')                         IS NOT NULL DROP TABLE [licenca]
+IF OBJECT_ID('rotina_aplicacao')                IS NOT NULL DROP TABLE [rotina_aplicacao]
+IF OBJECT_ID('registro_acao')                   IS NOT NULL DROP TABLE [registro_acao]
+IF OBJECT_ID('numerador_base')                  IS NOT NULL DROP TABLE [numerador_base]
+IF OBJECT_ID('base')                            IS NOT NULL DROP TABLE [base]
+IF OBJECT_ID('aplicacao_base')                  IS NOT NULL DROP TABLE [aplicacao_base]
+IF OBJECT_ID('log_ocorrencia')                  IS NOT NULL DROP TABLE [log_ocorrencia]
 GO
 
 --
@@ -283,6 +284,25 @@ CREATE TABLE [dbo].[perfil_usuario_log] (
   CONSTRAINT [perfil_usuario_log_fk_perfil_usuario] FOREIGN KEY ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id]) REFERENCES [perfil_usuario]  ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id]),
   CONSTRAINT [perfil_usuario_log_fk_log_base]       FOREIGN KEY ([log_base_id])                                               REFERENCES [base]          ([base_id]),
   CONSTRAINT [perfil_usuario_log_fk_registro_acao]  FOREIGN KEY ([log_base_id], [registro_acao_id])                           REFERENCES [registro_acao] ([registro_acao_base_id], [registro_acao_id]),
+)
+GO
+
+--
+-- Rotinas dos perfis de usuário.
+--
+CREATE TABLE [dbo].[perfil_usuario_rotina_aplicacao] (
+  [licenca_id]                         INT      NOT NULL,
+  [perfil_usuario_base_id]             SMALLINT NOT NULL,
+  [perfil_usuario_id]                  SMALLINT NOT NULL,
+  [perfil_usuario_rotina_aplicacao_sq] SMALLINT NOT NULL,
+  [rotina_aplicacao_base_id]           SMALLINT NOT NULL,
+  [rotina_aplicacao_id]                SMALLINT NOT NULL,
+ 
+  CONSTRAINT [perfil_usuario_rotina_aplicacao_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id], [perfil_usuario_rotina_aplicacao_sq]),
+  CONSTRAINT [perfil_usuario_rotina_aplicacao_ix_codigo] UNIQUE                ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id], [rotina_aplicacao_base_id], [rotina_aplicacao_id]),
+
+  CONSTRAINT [perfil_usuario_rotina_aplicacao_fk_perfil_usuario]   FOREIGN KEY ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id]) REFERENCES [perfil_usuario]   ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id]),
+  CONSTRAINT [perfil_usuario_rotina_aplicacao_fk_rotina_aplicacao] FOREIGN KEY ([rotina_aplicacao_base_id], [rotina_aplicacao_id])           REFERENCES [rotina_aplicacao] ([rotina_aplicacao_base_id], [rotina_aplicacao_id])
 )
 GO
 

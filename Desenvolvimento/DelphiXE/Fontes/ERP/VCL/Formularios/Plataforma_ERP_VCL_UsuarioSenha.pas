@@ -40,11 +40,11 @@ type
     btnFechar: TBitBtn;
     btnMinimizar: TBitBtn;
     panFormulario: TPanel;
-    btnConfirmar: TBitBtn;
+    btnGravar: TBitBtn;
     mnuFormulario: TMainMenu;
     mniFechar: TMenuItem;
     mniMinimizar: TMenuItem;
-    mniConfirmar: TMenuItem;
+    mniGravar: TMenuItem;
     chkSenhaExibir: TCheckBox;
     lblSenha: TLabel;
     edtSenha: TEdit;
@@ -80,12 +80,12 @@ type
     procedure chkSenhaExigirExit(Sender: TObject);
     procedure chkSenhaExigirKeyPress(Sender: TObject; var Key: Char);
     procedure chkSenhaExigirClick(Sender: TObject);
-    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure mniFecharClick(Sender: TObject);
     procedure mniMinimizarClick(Sender: TObject);
-    procedure mniConfirmarClick(Sender: TObject);
+    procedure mniGravarClick(Sender: TObject);
     procedure chkSenhaInformarEnter(Sender: TObject);
     procedure chkSenhaInformarExit(Sender: TObject);
     procedure chkSenhaInformarKeyPress(Sender: TObject; var Key: Char);
@@ -98,7 +98,7 @@ type
                                 argUsuarioBaseID: Integer;
                                 argUsuarioID    : Integer);
 
-    procedure FormularioConfirmar;
+    procedure FormularioGravar;
   public
     pubClicouFechar : Boolean;
     pubLicencaID    : Integer;
@@ -193,9 +193,9 @@ end;
 //
 // Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLUsuarioSenha.mniConfirmarClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenha.mniGravarClick(Sender: TObject);
 begin
-  FormularioConfirmar;
+  FormularioGravar;
 end;
 
 procedure TPlataformaERPVCLUsuarioSenha.mniMinimizarClick(Sender: TObject);
@@ -349,11 +349,11 @@ begin
 end;
 
 //
-// Evento de click no botão "confirmar".
+// Evento de click no botão "gravar".
 //
-procedure TPlataformaERPVCLUsuarioSenha.btnConfirmarClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenha.btnGravarClick(Sender: TObject);
 begin
-  FormularioConfirmar;
+  FormularioGravar;
 end;
 
 //
@@ -586,12 +586,12 @@ begin
 end;
 
 //
-// Procedimento para confirmar.
+// Procedimento para gravar.
 //
-procedure TPlataformaERPVCLUsuarioSenha.FormularioConfirmar;
+procedure TPlataformaERPVCLUsuarioSenha.FormularioGravar;
 const
   PROCEDIMENTO_NOME: string = 'FormularioConfirmar';
-  ERRO_MENSAGEM    : string = 'Impossível confirmar informações sobre a senha do usuário!';
+  ERRO_MENSAGEM    : string = 'Impossível gravar informações sobre a senha do usuário!';
 var
   locADOConnection   : TADOConnection;
   locADOQuery        : TADOQuery;

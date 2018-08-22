@@ -81,6 +81,8 @@ type
     mniLog: TMenuItem;
     edtCodigoCadastradoBaseID: TEdit;
     edtCodigoCadastradoID: TEdit;
+    btnRotinas: TBitBtn;
+    mniRotinas: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -119,9 +121,12 @@ type
     procedure mniAtualizarClick(Sender: TObject);
     procedure mniLogClick(Sender: TObject);
     procedure edtCodigoCadastradoClick(Sender: TObject);
+    procedure mniRotinasClick(Sender: TObject);
+    procedure btnRotinasClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
+    procedure FormularioRotinas;
     procedure FormularioLogExibir;
     procedure FormularioAtualizar;
     procedure FormularioNovo;
@@ -155,7 +160,8 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
-  Plataforma_ERP_VCL_Generico;
+  Plataforma_ERP_VCL_Generico,
+  Plataforma_ERP_VCL_PerfilUsuarioRotinaAplicacao;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_PerfilUsuarioCadastro.pas';
@@ -237,6 +243,11 @@ end;
 //
 // Eventos de click nas opções do menu.
 //
+procedure TPlataformaERPVCLPerfilUsuarioCadastro.mniRotinasClick(Sender: TObject);
+begin
+  FormularioRotinas;
+end;
+
 procedure TPlataformaERPVCLPerfilUsuarioCadastro.mniLogClick(Sender: TObject);
 begin
   FormularioLogExibir;
@@ -424,6 +435,14 @@ begin
 end;
 
 //
+// Evento de click no botao "rotinas".
+//
+procedure TPlataformaERPVCLPerfilUsuarioCadastro.btnRotinasClick(Sender: TObject);
+begin
+  FormularioRotinas;
+end;
+
+//
 // Evento de click no botão "log alterações".
 //
 procedure TPlataformaERPVCLPerfilUsuarioCadastro.btnLogClick(Sender: TObject);
@@ -549,6 +568,7 @@ begin
   //
   // Controla os itens de menu do formulário.
   //
+  mniRotinas.Visible   := (not argEditar) and (locDadosPopulados);
   mniLog.Visible       := (not argEditar) and (locDadosPopulados);
   mniAtualizar.Visible := (not argEditar) and (locDadosPopulados);
   mniNovo.Visible      := (not argEditar);
@@ -564,7 +584,8 @@ begin
   //
   tabCadastro.TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_CADASTRO_ABA_CADASTRO');
   tabAuditoria.TabVisible := Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_CADASTRO_ABA_AUDITORIA');
-      
+
+  mniRotinas.Visible   := (mniRotinas.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_CADASTRO_ROTINAS'));
   mniLog.Visible       := (mniLog.Visible)       and (Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_CADASTRO_LOG'));
   mniAtualizar.Visible := (mniAtualizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_CADASTRO_ATUALIZAR'));
   mniNovo.Visible      := (mniNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_CADASTRO_NOVO'));
@@ -574,13 +595,14 @@ begin
   //
   // Botões.
   //
-  btnLog.Visible       := (btnLog.Enabled)       and (mniLog.Visible);
-  btnNovo.Visible      := (btnNovo.Enabled)      and (mniNovo.Visible);
-  btnAlterar.Visible   := (btnAlterar.Enabled)   and (mniAlterar.Visible);
-  btnGravar.Visible    := (btnGravar.Enabled)    and (mniGravar.Visible);
-  btnMinimizar.Visible := (btnMinimizar.Enabled) and (mniMinimizar.Visible);
-  btnCancelar.Visible  := (btnCancelar.Enabled)  and (mniCancelar.Visible);
-  btnFechar.Visible    := (btnFechar.Enabled)    and (mniFechar.Visible);
+  btnRotinas.Visible   := mniRotinas.Visible;
+  btnLog.Visible       := mniLog.Visible;
+  btnNovo.Visible      := mniNovo.Visible;
+  btnAlterar.Visible   := mniAlterar.Visible;
+  btnGravar.Visible    := mniGravar.Visible;
+  btnMinimizar.Visible := mniMinimizar.Visible;
+  btnCancelar.Visible  := mniCancelar.Visible;
+  btnFechar.Visible    := mniFechar.Visible;
 
   //
   // Ajusta o título do formulário.
@@ -591,6 +613,19 @@ begin
   if (not locDadosPopulados) and (argEditar) then Self.Caption := Self.Caption + ' - novo cadastro';
   if locDadosPopulados and argEditar         then Self.Caption := Self.Caption + ' - alterando cadastro' + locIdentificador;
   if locDadosPopulados and (not argEditar)   then Self.Caption := Self.Caption + ' - consultando cadastro' + locIdentificador;
+end;
+
+//
+// Procedimento para cadastrar as rotinas de acesso desse perfil.
+//
+procedure TPlataformaERPVCLPerfilUsuarioCadastro.FormularioRotinas;
+var
+  locFormulario: TPlataformaERPVCLPerfilUsuarioRotinaAplicacao;
+begin
+  locFormulario := TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 //

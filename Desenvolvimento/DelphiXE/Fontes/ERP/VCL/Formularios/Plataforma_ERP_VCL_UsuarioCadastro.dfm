@@ -517,7 +517,7 @@ object PlataformaERPVCLUsuarioCadastro: TPlataformaERPVCLUsuarioCadastro
           end>
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -13
+        Font.Height = -15
         Font.Name = 'Tahoma'
         Font.Style = []
         ReadOnly = True

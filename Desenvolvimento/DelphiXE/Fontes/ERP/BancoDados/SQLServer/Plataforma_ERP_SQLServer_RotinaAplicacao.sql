@@ -4,6 +4,11 @@ GO
 ALTER PROCEDURE Plataforma_ERP_SQLServer_RotinaAplicacao_Inserir AS
 BEGIN
   --
+  -- Configurações.
+  --
+  SET NOCOUNT ON
+
+  --
   -- Declarção das variáveis de controle de erro!
   --
   DECLARE @_ErrorMessage      VARCHAR(MAX)
@@ -139,12 +144,13 @@ BEGIN
     INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02',     'ERP_PERFIL_USUARIO_CADASTRO',                  'Cadastro')            
     INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.01',  'ERP_PERFIL_USUARIO_CADASTRO_ABA_CADASTRO',     'Aba cadastro')
     INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.02',  'ERP_PERFIL_USUARIO_CADASTRO_ABA_AUDITORIA',    'Aba auditoria')
-    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.03',  'ERP_PERFIL_USUARIO_CADASTRO_LOG',              'Log')
-    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.04',  'ERP_PERFIL_USUARIO_CADASTRO_ATUALIZAR',        'Atualizar')
-    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.05',  'ERP_PERFIL_USUARIO_CADASTRO_LOCALIZAR',        'Localizar')
-    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.06',  'ERP_PERFIL_USUARIO_CADASTRO_NOVO',             'Novo')
-    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.07',  'ERP_PERFIL_USUARIO_CADASTRO_EXCLUIR',          'Excluir')
-    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.08',  'ERP_PERFIL_USUARIO_CADASTRO_ALTERAR',          'Alterar')
+    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.03',  'ERP_PERFIL_USUARIO_CADASTRO_ROTINAS',          'Rotinas')
+    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.04',  'ERP_PERFIL_USUARIO_CADASTRO_LOG',              'Log')
+    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.05',  'ERP_PERFIL_USUARIO_CADASTRO_ATUALIZAR',        'Atualizar')
+    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.06',  'ERP_PERFIL_USUARIO_CADASTRO_LOCALIZAR',        'Localizar')
+    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.07',  'ERP_PERFIL_USUARIO_CADASTRO_NOVO',             'Novo')
+    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.08',  'ERP_PERFIL_USUARIO_CADASTRO_EXCLUIR',          'Excluir')
+    INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.05.02.09',  'ERP_PERFIL_USUARIO_CADASTRO_ALTERAR',          'Alterar')
                                                                                                                                                 
     INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.06',        'ERP_TIPO_USUARIO',                             'Tipos de usuário')
     INSERT INTO [#tmp_rotina_aplicacao] VALUES ('01.01.01.06.01',     'ERP_TIPO_USUARIO_LISTA',                       'Lista')
@@ -209,7 +215,7 @@ BEGIN
   -- Trunca tabela!
   --
   BEGIN TRY
-    TRUNCATE TABLE [rotina_aplicacao]
+    DELETE FROM [rotina_aplicacao]
   END TRY
   BEGIN CATCH
     SELECT @_ErrorMessage = ERROR_MESSAGE(), @_ErrorSeverity = ERROR_SEVERITY(), @_ErrorState = ERROR_STATE()

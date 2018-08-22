@@ -39,9 +39,9 @@ type
     btnFechar: TBitBtn;
     btnMinimizar: TBitBtn;
     panFormulario: TPanel;
-    btnConfirmar: TBitBtn;
+    btnGravar: TBitBtn;
     mnuFormulario: TMainMenu;
-    mniConfirmar: TMenuItem;
+    mniGravar: TMenuItem;
     mniMinimizar: TMenuItem;
     mniFechar: TMenuItem;
     lvwPerfis: TListView;
@@ -50,10 +50,10 @@ type
     btnTodosDeselecionar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure mniConfirmarClick(Sender: TObject);
+    procedure mniGravarClick(Sender: TObject);
     procedure mniMinimizarClick(Sender: TObject);
     procedure mniFecharClick(Sender: TObject);
-    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -87,6 +87,7 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_Generico,
   Plataforma_ERP_VCL_PerfilUsuarioCadastro;
 
 const
@@ -110,10 +111,10 @@ begin
   // Inicialização das variáveis públicas do formulário.
   //
   pubClicouFechar  := True;
-  pubLicencaID     := 1;
-  pubUsuarioBaseID := 1;
-  pubUsuarioID     := 2;
-  pubUpdContador   := 1;
+  pubLicencaID     := 0;
+  pubUsuarioBaseID := 0;
+  pubUsuarioID     := 0;
+  pubUpdContador   := 0;
 end;
 
 //
@@ -121,6 +122,14 @@ end;
 //
 procedure TPlataformaERPVCLUsuarioPerfil.FormShow(Sender: TObject);
 begin
+  //
+  // Background do formulário.
+  //
+  Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+
+  //
+  // Popula os dados no formulário.
+  //
   FormularioPopular;
 end;
 
@@ -135,7 +144,7 @@ end;
 //
 // Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLUsuarioPerfil.mniConfirmarClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioPerfil.mniGravarClick(Sender: TObject);
 begin
   FormularioGravar;
 end;
@@ -221,7 +230,7 @@ end;
 //
 // Evento de click no botão "confirmar".
 //
-procedure TPlataformaERPVCLUsuarioPerfil.btnConfirmarClick(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioPerfil.btnGravarClick(Sender: TObject);
 begin
   FormularioGravar;
 end;
@@ -320,12 +329,16 @@ begin
   locADOQuery.SQL.Add('  LEFT OUTER JOIN [usuario_perfil] WITH (NOLOCK)                                                 ');
   locADOQuery.SQL.Add('    ON [usuario_perfil].[licenca_id]             = [perfil_usuario].[licenca_id]             AND ');
   locADOQuery.SQL.Add('       [usuario_perfil].[perfil_usuario_base_id] = [perfil_usuario].[perfil_usuario_base_id] AND ');
-  locADOQuery.SQL.Add('       [usuario_perfil].[perfil_usuario_id]      = [perfil_usuario].[perfil_usuario_id]          ');
+  locADOQuery.SQL.Add('       [usuario_perfil].[perfil_usuario_id]      = [perfil_usuario].[perfil_usuario_id]      AND ');
+  locADOQuery.SQL.Add('       [usuario_perfil].[usuario_base_id]        = :usuario_base_id                          AND ');
+  locADOQuery.SQL.Add('       [usuario_perfil].[usuario_id]             = :usuario_id                                   ');
   locADOQuery.SQL.Add('WHERE                                                                                            ');
   locADOQuery.SQL.Add('  [perfil_usuario].[licenca_id] = :licenca_id AND                                                ');
-  locADOQuery.SQL.Add('  [perfil_usuario].[ativo]      = ''S''                                                         ');
+  locADOQuery.SQL.Add('  [perfil_usuario].[ativo]      = ''S''                                                          ');
                                                               
-  locADOQuery.Parameters.ParamByName('licenca_id').Value := pubLicencaID;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value      := pubLicencaID;
+  locADOQuery.Parameters.ParamByName('usuario_base_id').Value := pubUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('usuario_id').Value      := pubUsuarioID;
 
   //
   // Executa query.
@@ -916,7 +929,7 @@ begin
   //
   // Configurações de senha atualizadas!
   //
-  VCLInformacaoExibir('Perfis de usuário cadastrados com sucesso!');
+  VCLInformacaoExibir('Perfis de usuário gravados com sucesso!');
 
   //
   // Retorna.

@@ -52,7 +52,8 @@ uses
   Plataforma_ERP_VCL_RegistroAcaoLista in '..\Formularios\Plataforma_ERP_VCL_RegistroAcaoLista.pas' {PlataformaERPVCLRegistroAcaoLista},
   Plataforma_ERP_VCL_RegistroAcaoFiltro in '..\Formularios\Plataforma_ERP_VCL_RegistroAcaoFiltro.pas' {PlataformaERPVCLRegistroAcaoFiltro},
   Plataforma_ERP_VCL_RegistroAcaoCadastro in '..\Formularios\Plataforma_ERP_VCL_RegistroAcaoCadastro.pas' {PlataformaERPVCLRegistroAcaoCadastro},
-  Plataforma_ERP_VCL_UsuarioPerfil in '..\Formularios\Plataforma_ERP_VCL_UsuarioPerfil.pas' {PlataformaERPVCLUsuarioPerfil};
+  Plataforma_ERP_VCL_UsuarioPerfil in '..\Formularios\Plataforma_ERP_VCL_UsuarioPerfil.pas' {PlataformaERPVCLUsuarioPerfil},
+  Plataforma_ERP_VCL_PerfilUsuarioRotinaAplicacao in '..\Formularios\Plataforma_ERP_VCL_PerfilUsuarioRotinaAplicacao.pas' {PlataformaERPVCLPerfilUsuarioRotinaAplicacao};
 
 {$R *.res}
 
