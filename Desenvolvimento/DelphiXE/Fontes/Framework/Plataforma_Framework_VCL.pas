@@ -208,6 +208,13 @@ procedure VCLListViewColunarDimensionar(argComponente: TListView);
 
 procedure VCLListViewItensMarcar(argComponente: TListView; argSelecionar: Boolean);
 
+//
+// Específicos para treeview.
+//
+procedure VCLTreeViewLimpar(argComponente: TTreeView);
+
+procedure VCLTreeViewIconeDeterminar(argTreeNode: TTreeNode; argIconeIndice: Integer);
+
 
 {*************************************************************************************************}
 implementation
@@ -397,6 +404,7 @@ end;
 //
 procedure VCLListViewLimpar(argComponente: TListView);
 begin
+  argComponente.Cursor := crHandPoint;
   argComponente.Items.BeginUpdate;
   argComponente.Items.Clear;
   argComponente.Items.EndUpdate;
@@ -1798,6 +1806,27 @@ begin
   begin
     argComponente.Items.Item[locContador].Checked := argSelecionar;
   end;
+end;
+
+//
+// VCLTreeViewLimpar.
+//
+procedure VCLTreeViewLimpar(argComponente: TTreeView);
+begin
+  argComponente.Cursor := crHandPoint;
+  argComponente.Items.BeginUpdate;
+  argComponente.Items.Clear;
+  argComponente.Items.EndUpdate;
+end;
+
+//
+// VCLTreeViewIconeDeterminar.
+//
+procedure VCLTreeViewIconeDeterminar(argTreeNode: TTreeNode; argIconeIndice: Integer);
+begin
+  argTreeNode.ImageIndex         := argIconeIndice;
+  argTreeNode.ExpandedImageIndex := argIconeIndice;
+  argTreeNode.SelectedIndex      := argIconeIndice;
 end;
 
 end.

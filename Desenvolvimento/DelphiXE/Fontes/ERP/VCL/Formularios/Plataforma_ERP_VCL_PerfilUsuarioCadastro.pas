@@ -998,11 +998,6 @@ begin
   VCLCursorTrocar(True);
 
   //
-  // Limpa os componentes do formulário.
-  //
-  FormularioLimpar;
-
-  //
   // Conexão ao banco de dados.
   //
   locADOConnection := TADOConnection.Create(Self);

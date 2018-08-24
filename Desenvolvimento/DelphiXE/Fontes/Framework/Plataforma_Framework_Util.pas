@@ -100,6 +100,8 @@ function StringTrim(argValor: string): string;
 
 function StringLocalizar(argValor: string; argSubString: string): Boolean;
 
+function StringCaracterContar(argValor: string; argCaracter: string): Integer;
+
 function StringSubstituir(argValor: string; argVelho: string; argNovo : string): string;
 
 function StringRemover(argValor: string; argRemover: string): string;
@@ -404,6 +406,20 @@ begin
     Result := False
   else
     Result := True;
+end;
+
+//
+// StringCaracterContar.
+//
+function StringCaracterContar(argValor: string; argCaracter: string): Integer;
+var
+  locContador: Integer;
+begin
+  Result := 0;
+  for locContador := 0 to Length(argValor) - 1 do
+  begin
+    if Copy(argValor, locContador, 1) = argCaracter then Inc(Result);
+  end;
 end;
 
 //

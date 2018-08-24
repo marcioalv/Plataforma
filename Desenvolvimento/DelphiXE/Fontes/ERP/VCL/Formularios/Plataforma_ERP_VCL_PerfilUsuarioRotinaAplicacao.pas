@@ -1,3 +1,15 @@
+//
+// Arquivo..: Plataforma_ERP_VCL_PerfilUsuarioRotinaAplicacao.pas
+// Projeto..: ERP
+// Fonte....: Formulário VCL
+// Criação..: 21/Agosto/2018
+// Autor....: Marcio Alves (marcioalv@yahoo.com.br)
+// Descrição: Formulário com a seleção de rotinas da aplicação com acesso para esse perfil de usuário.
+//
+// Histórico de alterações:
+//   Nenhuma alteração até o momento.
+//
+
 unit Plataforma_ERP_VCL_PerfilUsuarioRotinaAplicacao;
 
 interface
@@ -18,7 +30,9 @@ uses
   Vcl.StdCtrls,
   Vcl.Buttons,
   Vcl.Imaging.pngimage,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls,
+  System.ImageList,
+  Vcl.ImgList;
 
 type
   TPlataformaERPVCLPerfilUsuarioRotinaAplicacao = class(TForm)
@@ -33,6 +47,8 @@ type
     mniMinimizar: TMenuItem;
     mniFechar: TMenuItem;
     pbaProgresso: TProgressBar;
+    tvwRotinas: TTreeView;
+    imlIcones: TImageList;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure mniGravarClick(Sender: TObject);
@@ -43,10 +59,14 @@ type
     procedure btnFecharClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure tvwRotinasDblClick(Sender: TObject);
   private
+    priListaDados: array of Integer;
     procedure FormularioLimpar;
     procedure FormularioPopular;
     procedure FormularioGravar;
+    procedure TreeViewNosAjustar;
+    procedure TreeViewNosInferioresAjustar(argTreeNode: TTreeNode);
   public
     pubClicouFechar       : Boolean;
     pubLicencaID          : Integer;
@@ -71,6 +91,11 @@ uses
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_PerfilUsuarioRotinaAplicacao.pas';
+
+const
+ ICONE_UNCHECKED: Byte = 0;
+ ICONE_CHECKED  : Byte = 1;
+ ICONE_PARCIAL  : Byte = 2;
 
 //
 // Evento de criação do formulário.
@@ -131,6 +156,30 @@ begin
 end;
 
 //
+// Eventos do componente "treeview".
+//
+procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.tvwRotinasDblClick(Sender: TObject);
+var
+  locTreeNode: TTreeNode;
+begin
+  locTreeNode := tvwRotinas.Selected;
+
+  if locTreeNode.getFirstChild = nil then
+  begin
+    if locTreeNode.ImageIndex = ICONE_CHECKED then
+    begin
+      VCLTreeViewIconeDeterminar(locTreeNode, ICONE_UNCHECKED);
+    end
+    else
+    begin
+      VCLTreeViewIconeDeterminar(locTreeNode, ICONE_CHECKED);
+    end;
+
+    TreeViewNosAjustar;
+  end;
+end;
+
+//
 // Evento de click no botão "gravar".
 //
 procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.btnGravarClick(Sender: TObject);
@@ -159,7 +208,7 @@ end;
 //
 procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.FormularioLimpar;
 begin
-  Exit;
+  VCLTreeViewLimpar(tvwRotinas);  
 end;
     
 //
@@ -170,9 +219,31 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioPopular';
   ERRO_MENSAGEM    : string = 'Impossível consultar dados sobre as rotinas do perfil!';
 var
-  locADOConnection: TADOConnection;
-  locADOQuery     : TADOQuery;
-  locLogMensagem  : string;
+  locADOConnection    : TADOConnection;
+  locADOQuery         : TADOQuery;
+  locLogMensagem      : string;
+  locContador         : Integer;
+  locIDRotinaAplicacao: Integer;
+  locCodigo           : string;
+  locDescricao        : string;
+  locNivel            : Integer;
+
+  locTreeNodeRaiz     : TTreeNode;
+  locTreeNode01       : TTreeNode;
+  locTreeNode02       : TTreeNode;
+  locTreeNode03       : TTreeNode;
+  locTreeNode04       : TTreeNode;
+  locTreeNode05       : TTreeNode;
+  locTreeNode06       : TTreeNode;
+  locTreeNode07       : TTreeNode;
+  locTreeNode08       : TTreeNode;
+  locTreeNode09       : TTreeNode;
+  locTreeNode10       : TTreeNode;
+  locTreeNode11       : TTreeNode;
+  locTreeNode12       : TTreeNode;
+  locTreeNode13       : TTreeNode;
+  locTreeNode14       : TTreeNode;
+  locTreeNode15       : TTreeNode;
 begin
   //
   // Troca cursor.
@@ -234,6 +305,8 @@ begin
   locADOQuery.SQL.Add('       [perfil_usuario_rotina_aplicacao].[rotina_aplicacao_id]      = [rotina_aplicacao].[rotina_aplicacao_id]          ');
   locADOQuery.SQL.Add('WHERE                                                                                                                   ');
   locADOQuery.SQL.Add('  [rotina_aplicacao].[ativo] = ''S''                                                                                    ');
+  locADOQuery.SQL.Add('ORDER BY                                                                                                                ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo] ASC                                                                                       ');
                                                               
   locADOQuery.Parameters.ParamByName('licenca_id').Value             := pubLicencaID;
   locADOQuery.Parameters.ParamByName('perfil_usuario_base_id').Value := pubPerfilUsuarioBaseID;
@@ -261,6 +334,22 @@ begin
   //
   // Registro encontrado.
   //
+  locTreeNodeRaiz := nil;
+  locTreeNode01   := nil;
+  locTreeNode02   := nil;
+  locTreeNode03   := nil;
+  locTreeNode04   := nil;
+  locTreeNode05   := nil;
+  locTreeNode06   := nil;
+  locTreeNode07   := nil;
+  locTreeNode08   := nil;
+  locTreeNode09   := nil;
+  locTreeNode10   := nil;
+  locTreeNode11   := nil;
+  locTreeNode12   := nil;
+  locTreeNode13   := nil;
+  locTreeNode14   := nil;
+  
   if locADOQuery.RecordCount > 0 then
   begin
     VCLProgressBarInicializar(pbaProgresso, locADOQuery.RecordCount);
@@ -268,7 +357,66 @@ begin
     while not locADOQuery.Eof do
     begin
       VCLProgressBarIncrementar(pbaProgresso);
-  
+
+      //
+      // Carrega campos em variáveis.
+      //
+      locIDRotinaAplicacao := locADOQuery.FieldByName('rotina_aplicacao_id').AsInteger;
+      locCodigo            := locADOQuery.FieldByName('codigo').AsString;
+      locDescricao         := locADOQuery.FieldByName('descricao').AsString;
+
+      //
+      // Insere ID da rotina no array paralelo indicando o ID daquele item da estrutura do treeview.
+      //
+      SetLength(priListaDados, Length(priListaDados) + 1);
+      priListaDados[Length(priListaDados) - 1] := locIDRotinaAplicacao;
+      
+      //
+      // Determina o nível da estrutura de código para inserir no treeview.
+      //
+      locNivel := StringCaracterContar(locCodigo, '.');
+
+      //
+      // Insere nó no treeview.
+      //
+      if locNivel =  0 then locTreeNodeRaiz := tvwRotinas.Items.Add(nil, locDescricao);
+      if locNivel =  1 then locTreeNode01   := tvwRotinas.Items.AddChild(locTreeNodeRaiz, locDescricao);
+      if locNivel =  2 then locTreeNode02   := tvwRotinas.Items.AddChild(locTreeNode01,   locDescricao);
+      if locNivel =  3 then locTreeNode03   := tvwRotinas.Items.AddChild(locTreeNode02,   locDescricao);
+      if locNivel =  4 then locTreeNode04   := tvwRotinas.Items.AddChild(locTreeNode03,   locDescricao);
+      if locNivel =  5 then locTreeNode05   := tvwRotinas.Items.AddChild(locTreeNode04,   locDescricao);
+      if locNivel =  6 then locTreeNode06   := tvwRotinas.Items.AddChild(locTreeNode05,   locDescricao);
+      if locNivel =  7 then locTreeNode07   := tvwRotinas.Items.AddChild(locTreeNode06,   locDescricao);
+      if locNivel =  8 then locTreeNode08   := tvwRotinas.Items.AddChild(locTreeNode07,   locDescricao);
+      if locNivel =  9 then locTreeNode09   := tvwRotinas.Items.AddChild(locTreeNode08,   locDescricao);
+      if locNivel = 10 then locTreeNode10   := tvwRotinas.Items.AddChild(locTreeNode09,   locDescricao);
+      if locNivel = 11 then locTreeNode11   := tvwRotinas.Items.AddChild(locTreeNode10,   locDescricao);
+      if locNivel = 12 then locTreeNode12   := tvwRotinas.Items.AddChild(locTreeNode11,   locDescricao);
+      if locNivel = 13 then locTreeNode13   := tvwRotinas.Items.AddChild(locTreeNode12,   locDescricao);
+      if locNivel = 14 then locTreeNode14   := tvwRotinas.Items.AddChild(locTreeNode13,   locDescricao);
+
+      // Trava de segurança para indicar que a estrutra de níveis do código atingiu seu ponto máximo.
+      if locNivel = 15 then
+      begin
+        locTreeNode15 := tvwRotinas.Items.AddChild(locTreeNode14,   locDescricao);
+        VCLConsistenciaExibir('Alcançou o último nível programado para as rotinas de aplicação: ' + locTreeNode15.Text);
+      end;
+
+      //
+      // Determina a imagem apropriada para o treeview.
+      //
+      if locADOQuery.FieldByName('perfil_usuario_rotina_aplicacao_sq').IsNull then
+      begin
+        VCLTreeViewIconeDeterminar(tvwRotinas.Items.Item[tvwRotinas.Items.Count - 1], ICONE_UNCHECKED);
+      end
+      else
+      begin
+        VCLTreeViewIconeDeterminar(tvwRotinas.Items.Item[tvwRotinas.Items.Count - 1], ICONE_CHECKED);
+      end;
+      
+      //
+      // Próxima rotina da aplicação.
+      //
       locADOQuery.Next;
     end;
 
@@ -282,7 +430,38 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  //
+  // Construi imagem correta para os níveis inferiores.
+  //
+  tvwRotinas.Items.BeginUpdate;
+  VCLProgressBarInicializar(pbaProgresso, tvwRotinas.Items.Count);  
+  for locContador := 0 to (tvwRotinas.Items.Count - 1) do
+  begin
+    VCLProgressBarIncrementar(pbaProgresso);
+    if not tvwRotinas.Items.Item[locContador].HasChildren then
+    begin
+      tvwRotinas.Select(tvwRotinas.Items.Item[locContador]);
+      TreeViewNosAjustar;
+    end;
+  end;
+  VCLProgressBarLimpar(pbaProgresso);
+  tvwRotinas.Items.EndUpdate;
+
+  //
+  // Troca cursor.
+  //
   VCLCursorTrocar;
+
+  //
+  // Foco.
+  //
+  if tvwRotinas.Items.Count > 0 then
+  begin
+    tvwRotinas.FullExpand;
+    tvwRotinas.Items.Item[0].Selected := True;
+    tvwRotinas.SetFocus;
+  end;
 end;
 
 //
@@ -344,13 +523,14 @@ begin
   LogDadosIntegerDescrever('ID do perfil',   locPerfilUsuarioID,     locPerfilUsuarioLogDados);
 
   locSequencial := 0;
-  for locContador := 0 to -1 do
+  for locContador := 0 to (tvwRotinas.Items.Count - 1) do
   begin
-    if True then
+    if (tvwRotinas.Items.Item[locContador].ImageIndex = ICONE_CHECKED) or
+       (tvwRotinas.Items.Item[locContador].ImageIndex = ICONE_PARCIAL) then
     begin
-      Inc(locSequencial);      
-      locRotinaAplicacaoBaseID := StringIntegerConverter('1');
-      locRotinaAplicacaoID     := StringIntegerConverter('1');
+      Inc(locSequencial);
+      locRotinaAplicacaoBaseID := 1;
+      locRotinaAplicacaoID     := priListaDados[locContador];
   
       LogDadosIntegerDescrever('Sequencial',     locSequencial,            locPerfilUsuarioLogDados);
       LogDadosIntegerDescrever('Base da rotina', locRotinaAplicacaoBaseID, locPerfilUsuarioLogDados);
@@ -562,14 +742,19 @@ begin
   //
   // Percorre a lista de rotinas para inserir as selecionadas.
   //
+  VCLProgressBarInicializar(pbaProgresso, tvwRotinas.Items.Count);
+  
   locSequencial := 0;
-  for locContador := 0 to -1 do
+  for locContador := 0 to (tvwRotinas.Items.Count - 1) do
   begin
-    if True then
+    VCLProgressBarIncrementar(pbaProgresso);
+  
+    if (tvwRotinas.Items.Item[locContador].ImageIndex = ICONE_CHECKED) or
+       (tvwRotinas.Items.Item[locContador].ImageIndex = ICONE_PARCIAL) then
     begin
       Inc(locSequencial);      
-      locRotinaAplicacaoBaseID := StringIntegerConverter('1');
-      locRotinaAplicacaoID     := StringIntegerConverter('1');
+      locRotinaAplicacaoBaseID := 1;
+      locRotinaAplicacaoID     := priListaDados[locContador];
     
       locADOQuery.Close;
       locADOQuery.SQL.Clear;
@@ -616,6 +801,8 @@ begin
       end;
     end;
   end;
+
+  VCLProgressBarLimpar(pbaProgresso);
 
   //
   // Determina o contador de updates atual.
@@ -822,6 +1009,90 @@ begin
   //
   pubClicouFechar := False;
   Close;
+end;
+
+//
+// Procedure para marcar e desmarcar itens selecionados na TreeView.
+//
+procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.TreeViewNosAjustar;
+var
+  locContador: Integer;
+  locTreeNode: TTreeNode;
+begin
+  for locContador := 0 to (tvwRotinas.SelectionCount - 1) do
+  begin
+    locTreeNode := tvwRotinas.Selections[locContador];
+    TreeViewNosInferioresAjustar(locTreeNode);
+  end;
+end;
+
+//
+// Ajusta as imagens nos nós inferiores do treeview.
+//
+procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.TreeViewNosInferioresAjustar(argTreeNode: TTreeNode);
+var
+  locContador          : Integer;
+  locEncontrouChecked  : Boolean;
+  locEncontrouUnchecked: Boolean;
+begin
+  argTreeNode := argTreeNode.Parent;
+
+  locEncontrouChecked   := False;
+  locEncontrouUnchecked := False;
+
+  if argTreeNode = nil then Exit;
+
+  for locContador := 0 to (argTreeNode.Count - 1) do
+  begin
+    if (argTreeNode[locContador].ImageIndex = ICONE_UNCHECKED) and (not locEncontrouUnchecked) then
+    begin
+      locEncontrouUnchecked := True;
+    end;
+
+    if (argTreeNode[locContador].ImageIndex = ICONE_CHECKED) and (not locEncontrouChecked) then
+    begin
+      locEncontrouChecked := True;
+    end;
+
+    if (argTreeNode[locContador].ImageIndex = ICONE_PARCIAL) then
+    begin
+      VCLTreeViewIconeDeterminar(argTreeNode, ICONE_PARCIAL);
+      Break;
+    end;
+
+    if (argTreeNode[locContador].ImageIndex = ICONE_UNCHECKED) and (not locEncontrouUnchecked) then
+    begin
+      locEncontrouUnchecked := True;
+    end;
+
+    if (argTreeNode[locContador].ImageIndex = ICONE_CHECKED) and (not locEncontrouChecked) then
+    begin
+      locEncontrouChecked := True;
+    end;
+
+    if (locEncontrouChecked) and (locEncontrouUnchecked) then
+    begin
+      VCLTreeViewIconeDeterminar(argTreeNode, ICONE_PARCIAL);
+    end;
+
+    if (locEncontrouChecked) and (not locEncontrouUnchecked) then
+    begin
+      VCLTreeViewIconeDeterminar(argTreeNode, ICONE_CHECKED);
+    end;
+
+    if (not locEncontrouChecked) and (locEncontrouUnchecked) then
+    begin
+      VCLTreeViewIconeDeterminar(argTreeNode, ICONE_UNCHECKED);
+    end;
+  end;
+
+  if argTreeNode.Parent <> nil then
+  begin
+    TreeViewNosInferioresAjustar(argTreeNode);
+  end;
+
+  tvwRotinas.Refresh;
+  tvwRotinas.Repaint;
 end;
 
 end.
