@@ -54,9 +54,6 @@ type
     btnCancelar: TBitBtn;
     btnAlterar: TBitBtn;
     btnNovo: TBitBtn;
-    lblBase: TLabel;
-    edtBaseDescricao: TEdit;
-    edtBaseID: TEdit;
     imgBackground: TImage;
     mnuFormulario: TMainMenu;
     mniFechar: TMenuItem;
@@ -94,7 +91,6 @@ type
     procedure btnCancelarClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
-    procedure edtBaseDescricaoClick(Sender: TObject);
     procedure edtInsLocalDtHrClick(Sender: TObject);
     procedure edtUpdLocalDtHrClick(Sender: TObject);
     procedure mniFecharClick(Sender: TObject);
@@ -111,8 +107,7 @@ type
     procedure FormularioAtualizar;
     procedure FormularioNovo;
 
-    procedure FormularioPopular(argBaseID: Integer;
-                                argCodigo: string);
+    procedure FormularioPopular(argCodigo: string);
 
     procedure FormularioAlterar;
     procedure FormularioGravar;
@@ -121,7 +116,6 @@ type
     function  LogDadosGerar: string;
   public
     pubDadosAtualizados: Boolean;
-    pubBaseID          : Integer;
     pubCodigo          : string;
   end;
 
@@ -154,7 +148,6 @@ begin
   // Inicializa variáveis públicas.
   //
   pubDadosAtualizados := False;
-  pubBaseID           := 0;
   pubCodigo           := '';
  
   //
@@ -181,14 +174,13 @@ begin
   //
   // Controla os componentes de exibição de cadastro.
   //
-  VCLEditClickControlar(edtBaseDescricao,    False);
-  VCLEditClickControlar(edtInsLocalDtHr,     False);
-  VCLEditClickControlar(edtUpdLocalDtHr,     False);
+  VCLEditClickControlar(edtInsLocalDtHr, False);
+  VCLEditClickControlar(edtUpdLocalDtHr, False);
   
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
   //
-  if (pubBaseID = 0) and (pubCodigo = '') then
+  if (pubCodigo = '') then
   begin
     FormularioNovo;
     Exit;
@@ -197,9 +189,9 @@ begin
   //
   // Se foi passada uma chave então popula formulário.
   //
-  if (pubBaseID > 0) and (pubCodigo <> '') then
+  if (pubCodigo <> '') then
   begin
-    FormularioPopular(pubBaseID, pubCodigo);
+    FormularioPopular(pubCodigo);
     FormularioControlar(False);
     Exit;
   end;
@@ -289,7 +281,7 @@ end;
 
 procedure TPlataformaERPVCLNumeradorBaseCadastro.edtAtualIDKeyPress(Sender: TObject; var Key: Char);
 begin
-  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_NUMERICA_INTEIRA);
 end;
 
 procedure TPlataformaERPVCLNumeradorBaseCadastro.edtAtualIDKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -336,14 +328,6 @@ end;
 procedure TPlataformaERPVCLNumeradorBaseCadastro.chkAtivoExit(Sender: TObject);
 begin
   if not VCLCheckBoxSair(chkAtivo) then Exit;
-end;
-
-//
-// Evento de click no título da base.
-//
-procedure TPlataformaERPVCLNumeradorBaseCadastro.edtBaseDescricaoClick(Sender: TObject);
-begin
-  Plataforma_ERP_VCL_BaseCadastroExibir(StringIntegerConverter(edtBaseID.Text));
 end;
 
 //
@@ -430,8 +414,6 @@ begin
   //
   // Limpa componentes da aba "auditoria".
   //
-  VCLEditLimpar(edtBaseID);
-  VCLEditLimpar(edtBaseDescricao);
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
   VCLEditLimpar(edtUpdContador);
@@ -460,9 +442,8 @@ begin
   //
   // Controla os componentes de exibição de cadastro.
   //
-  VCLEditClickControlar(edtBaseDescricao, True);
-  VCLEditClickControlar(edtInsLocalDtHr,  True);
-  VCLEditClickControlar(edtUpdLocalDtHr,  True);
+  VCLEditClickControlar(edtInsLocalDtHr, True);
+  VCLEditClickControlar(edtUpdLocalDtHr, True);
 
   //
   // Controla os itens de menu do formulário.
@@ -516,7 +497,7 @@ begin
   //
   // Popula componentes com as informações do cadastro.
   //
-  FormularioPopular(StringIntegerConverter(edtBaseID.Text), edtCodigo.Text);
+  FormularioPopular(edtCodigo.Text);
 
   //
   // Controla a exibição dos componentes.
@@ -537,10 +518,8 @@ begin
   //
   // Carrega conteúdo dos campos necessários.
   //
-  edtBaseID.Text           := IntegerStringConverter(gloBaseID,    True);
-  edtBaseDescricao.Text    := gloBaseDescricao;
-  chkCadastroNovo.Checked  := True;
-  chkAtivo.Checked         := True;
+  chkCadastroNovo.Checked := True;
+  chkAtivo.Checked        := True;
 
   //
   // Componentes ligados para edição.
@@ -556,7 +535,7 @@ end;
 //
 // Procedimento para popular os componentes com os dados de um cadastro.
 //
-procedure TPlataformaERPVCLNumeradorBaseCadastro.FormularioPopular(argBaseID: Integer; argCodigo: string);
+procedure TPlataformaERPVCLNumeradorBaseCadastro.FormularioPopular(argCodigo: string);
 const
   PROCEDIMENTO_NOME: string = 'FormularioPopular';
   ERRO_MENSAGEM    : string = 'Impossível consultar dados do numerador por base!';
@@ -605,25 +584,19 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                               ');
-  locADOQuery.SQL.Add('  [base].[base_id]   AS [base_id],                   ');
-  locADOQuery.SQL.Add('  [base].[descricao] AS [base_descricao],            ');
-  locADOQuery.SQL.Add('  [numerador_base].[codigo],                         ');
-  locADOQuery.SQL.Add('  [numerador_base].[atual_id],                       ');
-  locADOQuery.SQL.Add('  [numerador_base].[bloqueado],                      ');
-  locADOQuery.SQL.Add('  [numerador_base].[ativo],                          ');
-  locADOQuery.SQL.Add('  [numerador_base].[ins_local_dt_hr],                ');
-  locADOQuery.SQL.Add('  [numerador_base].[upd_local_dt_hr],                ');
-  locADOQuery.SQL.Add('  [numerador_base].[upd_contador]                    ');
-  locADOQuery.SQL.Add('FROM                                                 ');
-  locADOQuery.SQL.Add('  [numerador_base] WITH (NOLOCK)                     ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                    ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [numerador_base].[base_id] ');
-  locADOQuery.SQL.Add('WHERE                                                ');
-  locADOQuery.SQL.Add('  [numerador_base].[base_id] = :base_id AND          ');
-  locADOQuery.SQL.Add('  [numerador_base].[codigo]  = :codigo               ');
+  locADOQuery.SQL.Add('SELECT                                ');
+  locADOQuery.SQL.Add('  [numerador_base].[codigo],          ');
+  locADOQuery.SQL.Add('  [numerador_base].[atual_id],        ');
+  locADOQuery.SQL.Add('  [numerador_base].[bloqueado],       ');
+  locADOQuery.SQL.Add('  [numerador_base].[ativo],           ');
+  locADOQuery.SQL.Add('  [numerador_base].[ins_local_dt_hr], ');
+  locADOQuery.SQL.Add('  [numerador_base].[upd_local_dt_hr], ');
+  locADOQuery.SQL.Add('  [numerador_base].[upd_contador]     ');
+  locADOQuery.SQL.Add('FROM                                  ');
+  locADOQuery.SQL.Add('  [numerador_base] WITH (NOLOCK)      ');
+  locADOQuery.SQL.Add('WHERE                                 ');
+  locADOQuery.SQL.Add('  [numerador_base].[codigo] = :codigo ');
 
-  locADOQuery.Parameters.ParamByName('base_id').Value := argBaseID;
   locADOQuery.Parameters.ParamByName('codigo').Value  := argCodigo;
 
   //
@@ -659,11 +632,9 @@ begin
     chkBloqueado.Checked    := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked        := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
 
-    edtBaseID.Text        := locADOQuery.FieldByName('base_id').AsString;
-    edtBaseDescricao.Text := locADOQuery.FieldByName('base_descricao').AsString;
-    edtInsLocalDtHr.Text  := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
-    edtUpdLocalDtHr.Text  := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
-    edtUpdContador.Text   := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
+    edtInsLocalDtHr.Text    := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
+    edtUpdLocalDtHr.Text    := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
+    edtUpdContador.Text     := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
   end; 
 
   //
@@ -709,7 +680,6 @@ var
   locNumeradorBaseLogMsg  : string;
   locNumeradorBaseLogDados: string;
 
-  locBaseID               : Integer;
   locCodigo               : string;
   locAtualID              : Integer;
   locBloqueado            : Boolean;
@@ -728,7 +698,6 @@ begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locBaseID      := StringIntegerConverter(edtBaseID.Text);
   locCodigo      := StringTrim(edtCodigo.Text);
   locAtualID     := StringIntegerConverter(edtAtualID.Text);
   locBloqueado   := chkBloqueado.Checked;
@@ -796,15 +765,13 @@ begin
   begin
     locADOQuery.Close;
     locADOQuery.SQL.Clear;
-    locADOQuery.SQL.Add('SELECT TOP 1                                ');
-    locADOQuery.SQL.Add('  1                                         ');
-    locADOQuery.SQL.Add('FROM                                        ');
-    locADOQuery.SQL.Add('  [numerador_base] WITH (NOLOCK)            ');
-    locADOQuery.SQL.Add('WHERE                                       ');
-    locADOQuery.SQL.Add('  [numerador_base].[base_id] = :base_id AND ');
-    locADOQuery.SQL.Add('  [numerador_base].[codigo]  = :codigo      ');
+    locADOQuery.SQL.Add('SELECT TOP 1                          ');
+    locADOQuery.SQL.Add('  1                                   ');
+    locADOQuery.SQL.Add('FROM                                  ');
+    locADOQuery.SQL.Add('  [numerador_base] WITH (NOLOCK)      ');
+    locADOQuery.SQL.Add('WHERE                                 ');
+    locADOQuery.SQL.Add('  [numerador_base].[codigo] = :codigo ');
 
-    locADOQuery.Parameters.ParamByName('base_id').Value    := locBaseID;
     locADOQuery.Parameters.ParamByName('codigo').Value     := locCodigo;
 
     try
@@ -843,16 +810,14 @@ begin
   begin
     locADOQuery.Close;
     locADOQuery.SQL.Clear;
-    locADOQuery.SQL.Add('SELECT                                      ');
-    locADOQuery.SQL.Add('  [numerador_base].[upd_contador]           ');
-    locADOQuery.SQL.Add('FROM                                        ');
-    locADOQuery.SQL.Add('  [numerador_base] WITH (NOLOCK)            ');
-    locADOQuery.SQL.Add('WHERE                                       ');
-    locADOQuery.SQL.Add('  [numerador_base].[base_id] = :base_id AND ');
-    locADOQuery.SQL.Add('  [numerador_base].[codigo]  = :codigo      ');
+    locADOQuery.SQL.Add('SELECT                                ');
+    locADOQuery.SQL.Add('  [numerador_base].[upd_contador]     ');
+    locADOQuery.SQL.Add('FROM                                  ');
+    locADOQuery.SQL.Add('  [numerador_base] WITH (NOLOCK)      ');
+    locADOQuery.SQL.Add('WHERE                                 ');
+    locADOQuery.SQL.Add('  [numerador_base].[codigo] = :codigo ');
 
-    locADOQuery.Parameters.ParamByName('base_id').Value := locBaseID;
-    locADOQuery.Parameters.ParamByName('codigo').Value  := locCodigo;
+    locADOQuery.Parameters.ParamByName('codigo').Value := locCodigo;
 
     try
       locADOQuery.Open;
@@ -931,7 +896,6 @@ begin
     // Insere dados.
     //
     locADOQuery.SQL.Add('INSERT INTO [numerador_base] (');
-    locADOQuery.SQL.Add('  [base_id],                  ');
     locADOQuery.SQL.Add('  [codigo],                   ');
     locADOQuery.SQL.Add('  [atual_id],                 ');
     locADOQuery.SQL.Add('  [bloqueado],                ');
@@ -943,7 +907,6 @@ begin
     locADOQuery.SQL.Add('  [upd_contador]              ');  
     locADOQuery.SQL.Add(')                             ');
     locADOQuery.SQL.Add('VALUES (                      ');
-    locADOQuery.SQL.Add('  :base_id,                   '); // [base_id].
     locADOQuery.SQL.Add('  :codigo,                    '); // [codigo].
     locADOQuery.SQL.Add('  :atual_id,                  '); // [atual_id].
     locADOQuery.SQL.Add('  :bloqueado,                 '); // [bloqueado].
@@ -970,14 +933,12 @@ begin
     locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),         ');
     locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1 ');
     locADOQuery.SQL.Add('WHERE                                     ');
-    locADOQuery.SQL.Add('  [base_id] = :base_id AND                ');
-    locADOQuery.SQL.Add('  [codigo]  = :codigo                     ');
+    locADOQuery.SQL.Add('  [codigo] = :codigo                      ');
   end;
 
   //
   // Parâmetros.
   //
-  locADOQuery.Parameters.ParamByName('base_id').Value     := locBaseID;
   locADOQuery.Parameters.ParamByName('codigo').Value      := locCodigo;
   locADOQuery.Parameters.ParamByName('atual_id').Value    := locAtualID;
   locADOQuery.Parameters.ParamByName('bloqueado').Value   := BooleanStringConverter(locBloqueado);
@@ -1006,18 +967,16 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                      ');
-  locADOQuery.SQL.Add('  [numerador_base].[ins_local_dt_hr],       ');
-  locADOQuery.SQL.Add('  [numerador_base].[upd_local_dt_hr],       ');
-  locADOQuery.SQL.Add('  [numerador_base].[upd_contador]           ');
-  locADOQuery.SQL.Add('FROM                                        ');
-  locADOQuery.SQL.Add('  [numerador_base]                          ');
-  locADOQuery.SQL.Add('WHERE                                       ');
-  locADOQuery.SQL.Add('  [numerador_base].[base_id] = :base_id AND ');
-  locADOQuery.SQL.Add('  [numerador_base].[codigo]  = :codigo      ');
+  locADOQuery.SQL.Add('SELECT                                ');
+  locADOQuery.SQL.Add('  [numerador_base].[ins_local_dt_hr], ');
+  locADOQuery.SQL.Add('  [numerador_base].[upd_local_dt_hr], ');
+  locADOQuery.SQL.Add('  [numerador_base].[upd_contador]     ');
+  locADOQuery.SQL.Add('FROM                                  ');
+  locADOQuery.SQL.Add('  [numerador_base]                    ');
+  locADOQuery.SQL.Add('WHERE                                 ');
+  locADOQuery.SQL.Add('  [numerador_base].[codigo] = :codigo ');
 
-  locADOQuery.Parameters.ParamByName('base_id').Value := locBaseID;
-  locADOQuery.Parameters.ParamByName('codigo').Value  := locCodigo;
+  locADOQuery.Parameters.ParamByName('codigo').Value := locCodigo;
 
   try
     locADOQuery.Open;
@@ -1119,14 +1078,12 @@ var
   locADOConnection        : TADOConnection;
   locADOQuery             : TADOQuery;
   locLogMensagem          : string;
-  locBaseID               : Integer;
   locCodigo               : string;
   locNumeradorBaseLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locBaseID := StringIntegerConverter(edtBaseID.Text);
   locCodigo := StringTrim(edtCodigo.Text);
 
   //
@@ -1194,14 +1151,12 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('DELETE FROM                                 ');
-  locADOQuery.SQL.Add('  [numerador_base]                          ');
-  locADOQuery.SQL.Add('WHERE                                       ');
-  locADOQuery.SQL.Add('  [numerador_base].[base_id] = :base_id AND ');
-  locADOQuery.SQL.Add('  [numerador_base].[codigo]  = :codigo      ');
+  locADOQuery.SQL.Add('DELETE FROM                           ');
+  locADOQuery.SQL.Add('  [numerador_base]                    ');
+  locADOQuery.SQL.Add('WHERE                                 ');
+  locADOQuery.SQL.Add('  [numerador_base].[codigo] = :codigo ');
 
-  locADOQuery.Parameters.ParamByName('base_id').Value := locBaseID;
-  locADOQuery.Parameters.ParamByName('codigo').Value  := locCodigo;
+  locADOQuery.Parameters.ParamByName('codigo').Value := locCodigo;
 
   try
     locADOQuery.ExecSQL;
@@ -1278,13 +1233,11 @@ end;
 //
 procedure TPlataformaERPVCLNumeradorBaseCadastro.FormularioCancelar;
 var
-  locBaseID: Integer;
   locCodigo: string;
 begin
   //
   // Carrega chave do registro que estava sendo editado.
   //
-  locBaseID := StringIntegerConverter(edtBaseID.Text);
   locCodigo := StringTrim(edtCodigo.Text);
 
   //
@@ -1302,7 +1255,7 @@ begin
   //
   // Popula somente os dados.
   //
-  FormularioPopular(locBaseID, locCodigo);
+  FormularioPopular(locCodigo);
 
   //
   // Componentes desligados para edição.
@@ -1316,11 +1269,10 @@ end;
 function TPlataformaERPVCLNumeradorBaseCadastro.LogDadosGerar: string;
 begin
   Result := '';
-  LogDadosStringDescrever ('Base do numerador por base', edtBaseID.Text,       Result);
-  LogDadosStringDescrever ('Código',                     edtCodigo.Text,       Result);
-  LogDadosStringDescrever ('ID atual',                   edtAtualID.Text,      Result);
-  LogDadosBooleanDescrever('Bloqueado',                  chkBloqueado.Checked, Result);
-  LogDadosBooleanDescrever('Ativo',                      chkAtivo.Checked,     Result);
+  LogDadosStringDescrever ('Código',    edtCodigo.Text,       Result);
+  LogDadosStringDescrever ('ID atual',  edtAtualID.Text,      Result);
+  LogDadosBooleanDescrever('Bloqueado', chkBloqueado.Checked, Result);
+  LogDadosBooleanDescrever('Ativo',     chkAtivo.Checked,     Result);
 end;
 
 end.

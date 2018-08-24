@@ -116,14 +116,12 @@ uses
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_RotinaAplicacaoLista.pas';
 
-  LVW_LISTA_ROTINA_APLICACAO_BASE_ID       : Integer = 0;
-  LVW_LISTA_ROTINA_APLICACAO_BASE_DESCRICAO: Integer = 1;
-  LVW_LISTA_ROTINA_APLICACAO_ID            : Integer = 2;
-  LVW_LISTA_CODIGO                         : Integer = 3;
-  LVW_LISTA_DESCRICAO                      : Integer = 4;
-  LVW_LISTA_CHAVE                          : Integer = 5;
-  LVW_LISTA_BLOQUEADO                      : Integer = 6;
-  LVW_LISTA_ATIVO                          : Integer = 7;
+  LVW_LISTA_ROTINA_APLICACAO_ID: Integer = 0;
+  LVW_LISTA_CODIGO             : Integer = 1;
+  LVW_LISTA_DESCRICAO          : Integer = 2;
+  LVW_LISTA_CHAVE              : Integer = 3;
+  LVW_LISTA_BLOQUEADO          : Integer = 4;
+  LVW_LISTA_ATIVO              : Integer = 5;
 
 //
 // Evento de criação do formulário.
@@ -404,18 +402,12 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
   ERRO_MENSAGEM    : string = 'Impossível atualizar lista de rotinas da aplicação!';
 var
-  locADOConnection        : TADOConnection;
-  locADOQuery             : TADOQuery;
-  locRotinaAplicacaoBaseID: Integer;
-  locLogMensagem          : string;
-  locListItem             : TListItem;
-  locFiltros              : Boolean;
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locListItem     : TListItem;
+  locFiltros      : Boolean;
 begin
-  //
-  // ID da base de dados.
-  //
-  locRotinaAplicacaoBaseID := gloBaseID;
-
   //
   // Troca cursor.
   //
@@ -458,8 +450,6 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                                           ');
-  locADOQuery.SQL.Add('  [base].[base_id]                         AS [rotina_aplicacao_base_id],        ');
-  locADOQuery.SQL.Add('  [base].[descricao]                       AS [rotina_aplicacao_base_descricao], ');
   locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id] AS [rotina_aplicacao_id],             ');
   locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo]              AS [codigo],                          ');
   locADOQuery.SQL.Add('  [rotina_aplicacao].[descricao]           AS [descricao],                       ');
@@ -468,12 +458,8 @@ begin
   locADOQuery.SQL.Add('  [rotina_aplicacao].[ativo]               AS [ativo]                            ');
   locADOQuery.SQL.Add('FROM                                                                             ');
   locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                               ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                                ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [rotina_aplicacao].[rotina_aplicacao_base_id]          ');
   locADOQuery.SQL.Add('WHERE                                                                            ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id      ');
-
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := locRotinaAplicacaoBaseID;
+  locADOQuery.SQL.Add('  1 = 1                                                                          ');
 
   //
   // Filtros.
@@ -606,8 +592,6 @@ begin
     
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('rotina_aplicacao_base_id').AsInteger));
-      locListItem.SubItems.Add(locADOQuery.FieldByName('rotina_aplicacao_base_descricao').AsString);
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('rotina_aplicacao_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('descricao').AsString);
@@ -655,31 +639,26 @@ end;
 //
 procedure TPlataformaERPVCLRotinaAplicacaoLista.FormularioCadastroExibir(argNovo: Boolean);
 var
-  locFormulario           : TPlataformaERPVCLRotinaAplicacaoCadastro;
-  locDadosAtualizados     : Boolean;
-  locIndice               : Integer;
-  locRotinaAplicacaoBaseID: Integer;
-  locRotinaAplicacaoID    : Integer;
+  locFormulario       : TPlataformaERPVCLRotinaAplicacaoCadastro;
+  locDadosAtualizados : Boolean;
+  locIndice           : Integer;
+  locRotinaAplicacaoID: Integer;
 begin
   if argNovo then
   begin
-    locIndice                := VCL_NENHUM_INDICE;
-    locRotinaAplicacaoBaseID := 0;
-    locRotinaAplicacaoID     := 0;
+    locIndice            := VCL_NENHUM_INDICE;
+    locRotinaAplicacaoID := 0;
   end
   else
   begin  
     locIndice := VCLListViewIndiceItemRetornar(lvwLista);
     if locIndice <= VCL_NENHUM_INDICE then Exit;
-
-    locRotinaAplicacaoBaseID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_ROTINA_APLICACAO_BASE_ID]);
-    locRotinaAplicacaoID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_ROTINA_APLICACAO_ID]);
+    locRotinaAplicacaoID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_ROTINA_APLICACAO_ID]);
   end;
 
   locFormulario := TPlataformaERPVCLRotinaAplicacaoCadastro.Create(Self);
 
-  locFormulario.pubRotinaAplicacaoBaseID := locRotinaAplicacaoBaseID;
-  locFormulario.pubRotinaAplicacaoID     := locRotinaAplicacaoID;
+  locFormulario.pubRotinaAplicacaoID := locRotinaAplicacaoID;
   
   locFormulario.ShowModal;
 

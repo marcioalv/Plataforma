@@ -111,12 +111,10 @@ uses
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_NumeradorBaseLista.pas';
 
-  LVW_LISTA_BASE_ID       : Integer = 0;
-  LVW_LISTA_BASE_DESCRICAO: Integer = 1;
-  LVW_LISTA_CODIGO        : Integer = 2;
-  LVW_LISTA_ATUAL_ID      : Integer = 3;
-  LVW_LISTA_BLOQUEADO     : Integer = 4;
-  LVW_LISTA_ATIVO         : Integer = 5;
+  LVW_LISTA_CODIGO   : Integer = 0;
+  LVW_LISTA_ATUAL_ID : Integer = 1;
+  LVW_LISTA_BLOQUEADO: Integer = 2;
+  LVW_LISTA_ATIVO    : Integer = 3;
 
 //
 // Evento de criação do formulário.
@@ -370,20 +368,14 @@ end;
 procedure TPlataformaERPVCLNumeradorBaseLista.FormularioAtualizar(argIndice: Integer);
 const
   PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
-  ERRO_MENSAGEM    : string = 'Impossível atualizar lista de numeradores por licença!';
+  ERRO_MENSAGEM    : string = 'Impossível atualizar lista de numeradores por base!';
 var
   locADOConnection : TADOConnection;
   locADOQuery      : TADOQuery;
   locLogMensagem   : string;
-  locBaseID        : Integer;
   locListItem      : TListItem;
   locFiltros       : Boolean;
 begin
-  //
-  // ID da base.
-  //
-  locBaseID := gloBaseID;
-
   //
   // Troca cursor.
   //
@@ -425,21 +417,15 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                               ');
-  locADOQuery.SQL.Add('  [base].[base_id]             AS [base_id],         ');
-  locADOQuery.SQL.Add('  [base].[descricao]           AS [base_descricao],  ');
-  locADOQuery.SQL.Add('  [numerador_base].[codigo]    AS [codigo],          ');
-  locADOQuery.SQL.Add('  [numerador_base].[atual_id]  AS [atual_id],        ');
-  locADOQuery.SQL.Add('  [numerador_base].[bloqueado] AS [bloqueado],       ');
-  locADOQuery.SQL.Add('  [numerador_base].[ativo]     AS [ativo]            ');
-  locADOQuery.SQL.Add('FROM                                                 ');
-  locADOQuery.SQL.Add('  [numerador_base] WITH (NOLOCK)                     ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                    ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [numerador_base].[base_id] ');
-  locADOQuery.SQL.Add('WHERE                                                ');
-  locADOQuery.SQL.Add('  [numerador_base].[base_id] = :base_id              ');
-
-  locADOQuery.Parameters.ParamByName('base_id').Value := locBaseID;
+  locADOQuery.SQL.Add('SELECT                                         ');
+  locADOQuery.SQL.Add('  [numerador_base].[codigo]    AS [codigo],    ');
+  locADOQuery.SQL.Add('  [numerador_base].[atual_id]  AS [atual_id],  ');
+  locADOQuery.SQL.Add('  [numerador_base].[bloqueado] AS [bloqueado], ');
+  locADOQuery.SQL.Add('  [numerador_base].[ativo]     AS [ativo]      ');
+  locADOQuery.SQL.Add('FROM                                           ');
+  locADOQuery.SQL.Add('  [numerador_base] WITH (NOLOCK)               ');
+  locADOQuery.SQL.Add('WHERE                                          ');
+  locADOQuery.SQL.Add('  1 = 1                                        ');
 
   //
   // Filtros.
@@ -537,8 +523,6 @@ begin
     
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('base_id').AsInteger));
-      locListItem.SubItems.Add(locADOQuery.FieldByName('base_descricao').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('atual_id').AsInteger, True));
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
@@ -587,28 +571,23 @@ var
   locFormulario      : TPlataformaERPVCLNumeradorBaseCadastro;
   locDadosAtualizados: Boolean;
   locIndice          : Integer;
-  locBaseID          : Integer;
   locCodigo          : string;
 begin
   if argNovo then
   begin
-    locIndice    := VCL_NENHUM_INDICE;
-    locBaseID    := 0;
-    locCodigo    := '';
+    locIndice := VCL_NENHUM_INDICE;
+    locCodigo := '';
   end
   else
   begin  
     locIndice := VCLListViewIndiceItemRetornar(lvwLista);
     if locIndice <= VCL_NENHUM_INDICE then Exit;
-
-    locBaseID    := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_BASE_ID]);
-    locCodigo    := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
+    locCodigo := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
   end;
 
   locFormulario := TPlataformaERPVCLNumeradorBaseCadastro.Create(Self);
 
-  locFormulario.pubBaseID    := locBaseID;
-  locFormulario.pubCodigo    := locCodigo;
+  locFormulario.pubCodigo := locCodigo;
   
   locFormulario.ShowModal;
 

@@ -49,6 +49,8 @@ type
     pbaProgresso: TProgressBar;
     tvwRotinas: TTreeView;
     imlIcones: TImageList;
+    btnTodosSelecionar: TBitBtn;
+    btnTodosDeselecionar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure mniGravarClick(Sender: TObject);
@@ -60,6 +62,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure tvwRotinasDblClick(Sender: TObject);
+    procedure btnTodosSelecionarClick(Sender: TObject);
+    procedure btnTodosDeselecionarClick(Sender: TObject);
   private
     priListaDados: array of Integer;
     procedure FormularioLimpar;
@@ -67,6 +71,8 @@ type
     procedure FormularioGravar;
     procedure TreeViewNosAjustar;
     procedure TreeViewNosInferioresAjustar(argTreeNode: TTreeNode);
+    procedure TreeViewNosMarcar(argTreeNode: TTreeNode; argMarcar: Boolean);
+    procedure TreeViewImagemDeterminar;
   public
     pubClicouFechar       : Boolean;
     pubLicencaID          : Integer;
@@ -180,6 +186,26 @@ begin
 end;
 
 //
+// Evento de click no botão "selecionar todos".
+//
+procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.btnTodosSelecionarClick(Sender: TObject);
+begin
+  if tvwRotinas.Selected = nil then Exit;
+  TreeViewNosMarcar(tvwRotinas.Selected, True);
+  TreeViewImagemDeterminar;
+end;
+
+//
+// Evento de click no botão "deselecionar todos".
+//
+procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.btnTodosDeselecionarClick(Sender: TObject);
+begin
+  if tvwRotinas.Selected = nil then Exit;
+  TreeViewNosMarcar(tvwRotinas.Selected, False);
+  TreeViewImagemDeterminar;
+end;
+
+//
 // Evento de click no botão "gravar".
 //
 procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.btnGravarClick(Sender: TObject);
@@ -286,8 +312,6 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                                                                                  ');
-  locADOQuery.SQL.Add('  [base].[base_id]   AS [rotina_aplicacao_base_id],                                                                     ');
-  locADOQuery.SQL.Add('  [base].[descricao] AS [rotina_aplicacao_base_descricao],                                                              ');
   locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id],                                                                             ');
   locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo],                                                                                          ');
   locADOQuery.SQL.Add('  [rotina_aplicacao].[descricao],                                                                                       ');
@@ -295,13 +319,10 @@ begin
   locADOQuery.SQL.Add('  [perfil_usuario_rotina_aplicacao].[perfil_usuario_rotina_aplicacao_sq]                                                ');
   locADOQuery.SQL.Add('FROM                                                                                                                    ');
   locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                                                                      ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                                                                       ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [rotina_aplicacao].[rotina_aplicacao_base_id]                                                 ');
   locADOQuery.SQL.Add('  LEFT OUTER JOIN [perfil_usuario_rotina_aplicacao] WITH (NOLOCK)                                                       ');
   locADOQuery.SQL.Add('    ON [perfil_usuario_rotina_aplicacao].[licenca_id]               = :licenca_id                                   AND ');
   locADOQuery.SQL.Add('       [perfil_usuario_rotina_aplicacao].[perfil_usuario_base_id]   = :perfil_usuario_base_id                       AND ');
   locADOQuery.SQL.Add('       [perfil_usuario_rotina_aplicacao].[perfil_usuario_id]        = :perfil_usuario_id                            AND ');
-  locADOQuery.SQL.Add('       [perfil_usuario_rotina_aplicacao].[rotina_aplicacao_base_id] = [rotina_aplicacao].[rotina_aplicacao_base_id] AND ');
   locADOQuery.SQL.Add('       [perfil_usuario_rotina_aplicacao].[rotina_aplicacao_id]      = [rotina_aplicacao].[rotina_aplicacao_id]          ');
   locADOQuery.SQL.Add('WHERE                                                                                                                   ');
   locADOQuery.SQL.Add('  [rotina_aplicacao].[ativo] = ''S''                                                                                    ');
@@ -432,21 +453,9 @@ begin
   FreeAndNil(locADOConnection);
 
   //
-  // Construi imagem correta para os níveis inferiores.
+  // Imagem apropriada para os níveis inferiores.
   //
-  tvwRotinas.Items.BeginUpdate;
-  VCLProgressBarInicializar(pbaProgresso, tvwRotinas.Items.Count);  
-  for locContador := 0 to (tvwRotinas.Items.Count - 1) do
-  begin
-    VCLProgressBarIncrementar(pbaProgresso);
-    if not tvwRotinas.Items.Item[locContador].HasChildren then
-    begin
-      tvwRotinas.Select(tvwRotinas.Items.Item[locContador]);
-      TreeViewNosAjustar;
-    end;
-  end;
-  VCLProgressBarLimpar(pbaProgresso);
-  tvwRotinas.Items.EndUpdate;
+  TreeViewImagemDeterminar;
 
   //
   // Troca cursor.
@@ -481,7 +490,6 @@ var
   locPerfilUsuarioBaseID  : Integer;
   locPerfilUsuarioID      : Integer;
   locSequencial           : Integer;
-  locRotinaAplicacaoBaseID: Integer;
   locRotinaAplicacaoID    : Integer;
                      
   locUpdContador          : Integer;
@@ -529,12 +537,10 @@ begin
        (tvwRotinas.Items.Item[locContador].ImageIndex = ICONE_PARCIAL) then
     begin
       Inc(locSequencial);
-      locRotinaAplicacaoBaseID := 1;
-      locRotinaAplicacaoID     := priListaDados[locContador];
+      locRotinaAplicacaoID := priListaDados[locContador];
   
-      LogDadosIntegerDescrever('Sequencial',     locSequencial,            locPerfilUsuarioLogDados);
-      LogDadosIntegerDescrever('Base da rotina', locRotinaAplicacaoBaseID, locPerfilUsuarioLogDados);
-      LogDadosIntegerDescrever('ID da rotina',   locRotinaAplicacaoID,     locPerfilUsuarioLogDados);
+      LogDadosIntegerDescrever('Sequencial',   locSequencial,        locPerfilUsuarioLogDados);
+      LogDadosIntegerDescrever('ID da rotina', locRotinaAplicacaoID, locPerfilUsuarioLogDados);
     end;
   end;
 
@@ -753,8 +759,7 @@ begin
        (tvwRotinas.Items.Item[locContador].ImageIndex = ICONE_PARCIAL) then
     begin
       Inc(locSequencial);      
-      locRotinaAplicacaoBaseID := 1;
-      locRotinaAplicacaoID     := priListaDados[locContador];
+      locRotinaAplicacaoID := priListaDados[locContador];
     
       locADOQuery.Close;
       locADOQuery.SQL.Clear;
@@ -763,7 +768,6 @@ begin
       locADOQuery.SQL.Add('  [perfil_usuario_base_id],                     ');
       locADOQuery.SQL.Add('  [perfil_usuario_id],                          ');
       locADOQuery.SQL.Add('  [perfil_usuario_rotina_aplicacao_sq],         ');
-      locADOQuery.SQL.Add('  [rotina_aplicacao_base_id],                   ');
       locADOQuery.SQL.Add('  [rotina_aplicacao_id]                         ');
       locADOQuery.SQL.Add(')                                               ');
       locADOQuery.SQL.Add('VALUES (                                        ');
@@ -771,7 +775,6 @@ begin
       locADOQuery.SQL.Add('  :perfil_usuario_base_id,                      '); // [perfil_usuario_base_id].
       locADOQuery.SQL.Add('  :perfil_usuario_id,                           '); // [perfil_usuario_id].
       locADOQuery.SQL.Add('  :perfil_usuario_rotina_aplicacao_sq,          '); // [perfil_usuario_rotina_aplicacao_sq].
-      locADOQuery.SQL.Add('  :rotina_aplicacao_base_id,                    '); // [rotina_aplicacao_base_id].
       locADOQuery.SQL.Add('  :rotina_aplicacao_id                          '); // [rotina_aplicacao_id].
       locADOQuery.SQL.Add(')                                               ');
 
@@ -779,7 +782,6 @@ begin
       locADOQuery.Parameters.ParamByName('perfil_usuario_base_id').Value             := locPerfilUsuarioBaseID;
       locADOQuery.Parameters.ParamByName('perfil_usuario_id').Value                  := locPerfilUsuarioID;
       locADOQuery.Parameters.ParamByName('perfil_usuario_rotina_aplicacao_sq').Value := locSequencial;
-      locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value           := locRotinaAplicacaoBaseID;
       locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value                := locRotinaAplicacaoID;
 
       
@@ -1093,6 +1095,49 @@ begin
 
   tvwRotinas.Refresh;
   tvwRotinas.Repaint;
+end;
+
+//
+// Procedimento para marcar ou desmarcar todos os itens do treeview.
+//
+procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.TreeViewNosMarcar(argTreeNode: TTreeNode; argMarcar: Boolean);
+var
+  locIcone   : Integer;
+  locContador: Integer;
+begin
+  if argMarcar then
+    locIcone := ICONE_CHECKED
+  else
+    locIcone := ICONE_UNCHECKED;
+
+  VCLTreeViewIconeDeterminar(argTreeNode, locIcone);
+  
+  for locContador := 0 to argTreeNode.Count - 1 do
+  begin
+    TreeViewNosMarcar(argTreeNode[locContador], argMarcar);
+  end;
+end;
+
+//
+// Construi imagem correta para os níveis inferiores.
+//
+procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.TreeViewImagemDeterminar;
+var
+  locContador: Integer;
+begin
+  tvwRotinas.Items.BeginUpdate;
+  VCLProgressBarInicializar(pbaProgresso, tvwRotinas.Items.Count);  
+  for locContador := 0 to (tvwRotinas.Items.Count - 1) do
+  begin
+    VCLProgressBarIncrementar(pbaProgresso);
+    if not tvwRotinas.Items.Item[locContador].HasChildren then
+    begin
+      tvwRotinas.Select(tvwRotinas.Items.Item[locContador]);
+      TreeViewNosAjustar;
+    end;
+  end;
+  VCLProgressBarLimpar(pbaProgresso);
+  tvwRotinas.Items.EndUpdate;
 end;
 
 end.

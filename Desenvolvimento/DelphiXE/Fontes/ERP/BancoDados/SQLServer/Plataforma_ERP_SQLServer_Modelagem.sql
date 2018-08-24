@@ -7,10 +7,10 @@ GO
 --
 -- Apaga foreign keys.
 --
-IF OBJECT_ID('tipo_usuario_log_fk_log_usuario')    IS NOT NULL ALTER TABLE [tipo_usuario_log]    DROP CONSTRAINT [tipo_usuario_log_fk_log_usuario]
-IF OBJECT_ID('perfil_usuario_log_fk_log_usuario')  IS NOT NULL ALTER TABLE [perfil_usuario_log]  DROP CONSTRAINT [perfil_usuario_log_fk_log_usuario]
-IF OBJECT_ID('numerador_licenca_fk_ins_usuario')   IS NOT NULL ALTER TABLE [numerador_licenca]   DROP CONSTRAINT [numerador_licenca_fk_ins_usuario]
-IF OBJECT_ID('numerador_licenca_fk_upd_usuario')   IS NOT NULL ALTER TABLE [numerador_licenca]   DROP CONSTRAINT [numerador_licenca_fk_upd_usuario]
+IF OBJECT_ID('tipo_usuario_log_fk_log_usuario')   IS NOT NULL ALTER TABLE [tipo_usuario_log]    DROP CONSTRAINT [tipo_usuario_log_fk_log_usuario]
+IF OBJECT_ID('perfil_usuario_log_fk_log_usuario') IS NOT NULL ALTER TABLE [perfil_usuario_log]  DROP CONSTRAINT [perfil_usuario_log_fk_log_usuario]
+IF OBJECT_ID('numerador_licenca_fk_ins_usuario')  IS NOT NULL ALTER TABLE [numerador_licenca]   DROP CONSTRAINT [numerador_licenca_fk_ins_usuario]
+IF OBJECT_ID('numerador_licenca_fk_upd_usuario')  IS NOT NULL ALTER TABLE [numerador_licenca]   DROP CONSTRAINT [numerador_licenca_fk_upd_usuario]
 
 --
 -- Apaga tabelas.
@@ -96,23 +96,20 @@ GO
 -- Numerador por base.
 --
 CREATE TABLE [dbo].[numerador_base] (
-  [base_id]             SMALLINT                                 NOT NULL,
-  [codigo]              VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [atual_id]            INT                                      NOT NULL,
-  [bloqueado]           CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ativo]               CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ins_local_dt_hr]     DATETIME                                 NOT NULL,
-  [ins_server_dt_hr]    DATETIME                                 NOT NULL,
-  [upd_local_dt_hr]     DATETIME                                 NULL,
-  [upd_server_dt_hr]    DATETIME                                 NULL,
-  [upd_contador]        INT                                      NOT NULL,
+  [codigo]           VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [atual_id]         INT                                      NOT NULL,
+  [bloqueado]        CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]            CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]  DATETIME                                 NOT NULL,
+  [ins_server_dt_hr] DATETIME                                 NOT NULL,
+  [upd_local_dt_hr]  DATETIME                                 NULL,
+  [upd_server_dt_hr] DATETIME                                 NULL,
+  [upd_contador]     INT                                      NOT NULL,
  
   CONSTRAINT [numerador_base_pk] PRIMARY KEY CLUSTERED ([codigo]),
 
   CONSTRAINT [numerador_base_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
   CONSTRAINT [numerador_base_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
-
-  CONSTRAINT [numerador_base_fk_base] FOREIGN KEY ([base_id]) REFERENCES [base] ([base_id])
 )
 GO
 
@@ -120,24 +117,23 @@ GO
 -- Tipos de ações com registros.
 --
 CREATE TABLE [dbo].[registro_acao] (
-  [registro_acao_base_id] SMALLINT                                 NOT NULL,
-  [registro_acao_id]      TINYINT                                  NOT NULL,
-  [codigo]                VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [descricao]             VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [criacao]               CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [consulta]              CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [alteracao]             CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [exclusao]              CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [bloqueado]             CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ativo]                 CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ins_local_dt_hr]       DATETIME                                 NOT NULL,
-  [ins_server_dt_hr]      DATETIME                                 NOT NULL,
-  [upd_local_dt_hr]       DATETIME                                 NULL,
-  [upd_server_dt_hr]      DATETIME                                 NULL,
-  [upd_contador]          INT                                      NOT NULL,
+  [registro_acao_id] TINYINT                                  NOT NULL,
+  [codigo]           VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]        VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [criacao]          CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [consulta]         CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [alteracao]        CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [exclusao]         CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]        CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]            CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]  DATETIME                                 NOT NULL,
+  [ins_server_dt_hr] DATETIME                                 NOT NULL,
+  [upd_local_dt_hr]  DATETIME                                 NULL,
+  [upd_server_dt_hr] DATETIME                                 NULL,
+  [upd_contador]     INT                                      NOT NULL,
   
-  CONSTRAINT [registro_acao_pk]        PRIMARY KEY CLUSTERED ([registro_acao_base_id], [registro_acao_id]),
-  CONSTRAINT [registro_acao_ix_codigo] UNIQUE ([registro_acao_base_id], [codigo]),
+  CONSTRAINT [registro_acao_pk]        PRIMARY KEY CLUSTERED ([registro_acao_id]),
+  CONSTRAINT [registro_acao_ix_codigo] UNIQUE ([codigo]),
 
   CONSTRAINT [registro_acao_ck_criacao]   CHECK ([criacao]   IN ('S', 'N')),
   CONSTRAINT [registro_acao_ck_consulta]  CHECK ([consulta]  IN ('S', 'N')),
@@ -145,8 +141,6 @@ CREATE TABLE [dbo].[registro_acao] (
   CONSTRAINT [registro_acao_ck_exclusao]  CHECK ([exclusao]  IN ('S', 'N')),  
   CONSTRAINT [registro_acao_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
   CONSTRAINT [registro_acao_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
-
-  CONSTRAINT [registro_acao_fk_base] FOREIGN KEY ([registro_acao_base_id]) REFERENCES [base] ([base_id])
 )
 GO
 
@@ -154,27 +148,24 @@ GO
 -- Rotinas da aplicação.
 --
 CREATE TABLE [dbo].[rotina_aplicacao] (
-  [rotina_aplicacao_base_id] SMALLINT                                  NOT NULL,
-  [rotina_aplicacao_id]      SMALLINT                                  NOT NULL,
-  [codigo]                   VARCHAR(25)                               NOT NULL,
-  [descricao]                VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [chave]                    VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [bloqueado]                CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ativo]                    CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ins_local_dt_hr]          DATETIME                                  NOT NULL,
-  [ins_server_dt_hr]         DATETIME                                  NOT NULL,
-  [upd_local_dt_hr]          DATETIME                                  NULL,
-  [upd_server_dt_hr]         DATETIME                                  NULL,
-  [upd_contador]             INT                                       NOT NULL,
+  [rotina_aplicacao_id] SMALLINT                                  NOT NULL,
+  [codigo]              VARCHAR(25)                               NOT NULL,
+  [descricao]           VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [chave]               VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]           CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]               CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]     DATETIME                                  NOT NULL,
+  [ins_server_dt_hr]    DATETIME                                  NOT NULL,
+  [upd_local_dt_hr]     DATETIME                                  NULL,
+  [upd_server_dt_hr]    DATETIME                                  NULL,
+  [upd_contador]        INT                                       NOT NULL,
   
-  CONSTRAINT [rotina_aplicacao_pk]        PRIMARY KEY CLUSTERED ([rotina_aplicacao_base_id], [rotina_aplicacao_id]),
-  CONSTRAINT [rotina_aplicacao_ix_codigo] UNIQUE ([rotina_aplicacao_base_id], [codigo]),
-  CONSTRAINT [rotina_aplicacao_ix_chave]  UNIQUE ([rotina_aplicacao_base_id], [chave]),
+  CONSTRAINT [rotina_aplicacao_pk]        PRIMARY KEY CLUSTERED ([rotina_aplicacao_id]),
+  CONSTRAINT [rotina_aplicacao_ix_codigo] UNIQUE ([codigo]),
+  CONSTRAINT [rotina_aplicacao_ix_chave]  UNIQUE ([chave]),
 
   CONSTRAINT [rotina_aplicacao_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
   CONSTRAINT [rotina_aplicacao_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
-
-  CONSTRAINT [rotina_aplicacao_fk_base] FOREIGN KEY ([rotina_aplicacao_base_id]) REFERENCES [base] ([base_id])
 )
 GO
 
@@ -183,7 +174,6 @@ GO
 --
 CREATE TABLE [dbo].[licenca] (
   [licenca_id]       INT                                       NOT NULL,
-  [base_id]          SMALLINT                                  NOT NULL,
   [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [descricao]        VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
@@ -283,7 +273,7 @@ CREATE TABLE [dbo].[perfil_usuario_log] (
 
   CONSTRAINT [perfil_usuario_log_fk_perfil_usuario] FOREIGN KEY ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id]) REFERENCES [perfil_usuario]  ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id]),
   CONSTRAINT [perfil_usuario_log_fk_log_base]       FOREIGN KEY ([log_base_id])                                               REFERENCES [base]          ([base_id]),
-  CONSTRAINT [perfil_usuario_log_fk_registro_acao]  FOREIGN KEY ([log_base_id], [registro_acao_id])                           REFERENCES [registro_acao] ([registro_acao_base_id], [registro_acao_id]),
+  CONSTRAINT [perfil_usuario_log_fk_registro_acao]  FOREIGN KEY ([registro_acao_id])                                          REFERENCES [registro_acao] ([registro_acao_id]),
 )
 GO
 
@@ -295,14 +285,13 @@ CREATE TABLE [dbo].[perfil_usuario_rotina_aplicacao] (
   [perfil_usuario_base_id]             SMALLINT NOT NULL,
   [perfil_usuario_id]                  SMALLINT NOT NULL,
   [perfil_usuario_rotina_aplicacao_sq] SMALLINT NOT NULL,
-  [rotina_aplicacao_base_id]           SMALLINT NOT NULL,
   [rotina_aplicacao_id]                SMALLINT NOT NULL,
  
   CONSTRAINT [perfil_usuario_rotina_aplicacao_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id], [perfil_usuario_rotina_aplicacao_sq]),
-  CONSTRAINT [perfil_usuario_rotina_aplicacao_ix_codigo] UNIQUE                ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id], [rotina_aplicacao_base_id], [rotina_aplicacao_id]),
+  CONSTRAINT [perfil_usuario_rotina_aplicacao_ix_codigo] UNIQUE                ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id], [rotina_aplicacao_id]),
 
   CONSTRAINT [perfil_usuario_rotina_aplicacao_fk_perfil_usuario]   FOREIGN KEY ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id]) REFERENCES [perfil_usuario]   ([licenca_id], [perfil_usuario_base_id], [perfil_usuario_id]),
-  CONSTRAINT [perfil_usuario_rotina_aplicacao_fk_rotina_aplicacao] FOREIGN KEY ([rotina_aplicacao_base_id], [rotina_aplicacao_id])           REFERENCES [rotina_aplicacao] ([rotina_aplicacao_base_id], [rotina_aplicacao_id])
+  CONSTRAINT [perfil_usuario_rotina_aplicacao_fk_rotina_aplicacao] FOREIGN KEY ([rotina_aplicacao_id])                                       REFERENCES [rotina_aplicacao] ([rotina_aplicacao_id])
 )
 GO
 
@@ -357,7 +346,7 @@ CREATE TABLE [dbo].[tipo_usuario_log] (
 
   CONSTRAINT [tipo_usuario_log_fk_tipo_usuario]  FOREIGN KEY ([licenca_id], [tipo_usuario_base_id], [tipo_usuario_id]) REFERENCES [tipo_usuario]  ([licenca_id], [tipo_usuario_base_id], [tipo_usuario_id]),
   CONSTRAINT [tipo_usuario_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                           REFERENCES [base]          ([base_id]),
-  CONSTRAINT [tipo_usuario_log_fk_registro_acao] FOREIGN KEY ([log_base_id], [registro_acao_id])                       REFERENCES [registro_acao] ([registro_acao_base_id], [registro_acao_id]),
+  CONSTRAINT [tipo_usuario_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                      REFERENCES [registro_acao] ([registro_acao_id]),
 )
 GO
 
@@ -423,7 +412,7 @@ CREATE TABLE [dbo].[usuario_log] (
 
   CONSTRAINT [usuario_log_fk_usuario]       FOREIGN KEY ([licenca_id], [usuario_base_id], [usuario_id])         REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id]),
   CONSTRAINT [usuario_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
-  CONSTRAINT [usuario_log_fk_registro_acao] FOREIGN KEY ([log_base_id], [registro_acao_id])                     REFERENCES [registro_acao] ([registro_acao_base_id], [registro_acao_id]),
+  CONSTRAINT [usuario_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
   CONSTRAINT [usuario_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
 )
 GO
@@ -459,17 +448,17 @@ GO
 INSERT INTO [base] VALUES (1, '01', 'Base central', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [base] VALUES (2, '02', 'Outra base',   'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 
-INSERT INTO [numerador_base] VALUES (1, 'base_id', 2, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [numerador_base] VALUES ('base_id', 2, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 
 --
 -- Ações com registros.
 --
-INSERT INTO [registro_acao] VALUES (1, 1, '01', 'Criação',   'S', 'N', 'N', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [registro_acao] VALUES (1, 2, '02', 'Consulta',  'N', 'S', 'N', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [registro_acao] VALUES (1, 3, '03', 'Alteração', 'N', 'N', 'S', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [registro_acao] VALUES (1, 4, '04', 'Exclusão',  'N', 'N', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [registro_acao] VALUES (1, '01', 'Criação',   'S', 'N', 'N', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [registro_acao] VALUES (2, '02', 'Consulta',  'N', 'S', 'N', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [registro_acao] VALUES (3, '03', 'Alteração', 'N', 'N', 'S', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [registro_acao] VALUES (4, '04', 'Exclusão',  'N', 'N', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 
-INSERT INTO [numerador_base] VALUES (1, 'registro_acao_id', 4, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [numerador_base] VALUES ('registro_acao_id', 4, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 
 --
 -- Rotinas da aplicação.
@@ -479,9 +468,9 @@ EXECUTE Plataforma_ERP_SQLServer_RotinaAplicacao_Inserir
 --
 -- Licença padrão.
 --
-INSERT INTO [licenca] VALUES (1, 1, 'ABC.123.DEF.456', 'Licença central', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [licenca] VALUES (1, 'ABC.123.DEF.456', 'Licença central', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 
-INSERT INTO [numerador_base] VALUES (1, 'licenca_id', 1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [numerador_base] VALUES ('licenca_id', 1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 
 --
 -- Perfis de usuário.

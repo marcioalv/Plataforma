@@ -389,10 +389,6 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -588,37 +584,13 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         Text = 'ID'
         Visible = False
       end
-      object edtCodigoCadastradoBaseID: TEdit
-        Left = 488
-        Top = 32
-        Width = 49
-        Height = 26
-        TabStop = False
-        Alignment = taCenter
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clGray
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        MaxLength = 25
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 6
-        Text = 'Base'
-        Visible = False
-      end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 521
-      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
-        Top = 80
+        Top = 72
         Width = 42
         Height = 14
         Caption = 'Cria'#231#227'o:'
@@ -630,8 +602,8 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ParentFont = False
       end
       object lblUpdDtHr: TLabel
-        Left = 248
-        Top = 80
+        Left = 16
+        Top = 128
         Width = 90
         Height = 14
         Caption = #218'ltima altera'#231#227'o:'
@@ -643,8 +615,8 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ParentFont = False
       end
       object lblUpdContador: TLabel
-        Left = 424
-        Top = 80
+        Left = 192
+        Top = 128
         Width = 61
         Height = 14
         Caption = 'Altera'#231#245'es:'
@@ -656,7 +628,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ParentFont = False
       end
       object lblRotinaAplicacaoID: TLabel
-        Left = 424
+        Left = 16
         Top = 16
         Width = 16
         Height = 14
@@ -668,22 +640,9 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         Font.Style = []
         ParentFont = False
       end
-      object lblRotinaAplicacaoBase: TLabel
-        Left = 16
-        Top = 16
-        Width = 29
-        Height = 14
-        Caption = 'Base:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-      end
       object edtInsLocalDtHr: TEdit
         Left = 16
-        Top = 96
+        Top = 88
         Width = 169
         Height = 26
         TabStop = False
@@ -698,13 +657,13 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ParentShowHint = False
         ReadOnly = True
         ShowHint = False
-        TabOrder = 3
+        TabOrder = 1
         Text = '99/99/9999 99:99:99'
         OnClick = edtInsLocalDtHrClick
       end
       object edtUpdLocalDtHr: TEdit
-        Left = 248
-        Top = 96
+        Left = 16
+        Top = 144
         Width = 161
         Height = 26
         TabStop = False
@@ -717,13 +676,13 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 4
+        TabOrder = 2
         Text = '99/99/9999 99:99:99'
         OnClick = edtUpdLocalDtHrClick
       end
       object edtUpdContador: TEdit
-        Left = 424
-        Top = 96
+        Left = 192
+        Top = 144
         Width = 73
         Height = 26
         TabStop = False
@@ -736,54 +695,16 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 5
+        TabOrder = 3
         Text = '999.999'
       end
       object edtRotinaAplicacaoID: TEdit
-        Left = 424
+        Left = 16
         Top = 32
         Width = 73
         Height = 26
         TabStop = False
         Alignment = taCenter
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 2
-        Text = '9.999'
-      end
-      object edtRotinaAplicacaoBaseDescricao: TEdit
-        Left = 16
-        Top = 32
-        Width = 393
-        Height = 26
-        TabStop = False
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ParentShowHint = False
-        ReadOnly = True
-        ShowHint = False
-        TabOrder = 1
-        Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
-        OnClick = edtRotinaAplicacaoBaseDescricaoClick
-      end
-      object edtRotinaAplicacaoBaseID: TEdit
-        Left = 312
-        Top = 32
-        Width = 65
-        Height = 26
-        TabStop = False
-        Alignment = taRightJustify
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -793,8 +714,7 @@ object PlataformaERPVCLRotinaAplicacaoCadastro: TPlataformaERPVCLRotinaAplicacao
         ParentFont = False
         ReadOnly = True
         TabOrder = 0
-        Text = '999.999'
-        Visible = False
+        Text = '9.999'
       end
     end
   end

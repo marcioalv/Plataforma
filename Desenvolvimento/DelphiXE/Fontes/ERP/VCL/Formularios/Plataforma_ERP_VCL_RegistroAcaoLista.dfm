@@ -151,7 +151,7 @@ object PlataformaERPVCLRegistroAcaoLista: TPlataformaERPVCLRegistroAcaoLista
       437)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 392
+      Top = 384
       Width = 142
       Height = 13
       Anchors = [akLeft, akBottom]
@@ -159,8 +159,8 @@ object PlataformaERPVCLRegistroAcaoLista: TPlataformaERPVCLRegistroAcaoLista
       ExplicitTop = 464
     end
     object lblListaFiltros: TLabel
-      Left = 516
-      Top = 384
+      Left = 508
+      Top = 376
       Width = 80
       Height = 13
       Anchors = [akRight, akBottom]
@@ -190,15 +190,6 @@ object PlataformaERPVCLRegistroAcaoLista: TPlataformaERPVCLRegistroAcaoLista
       BorderStyle = bsNone
       Columns = <
         item
-          Width = 0
-        end
-        item
-          Caption = 'ID Base'
-          Tag = 1
-          Width = 0
-        end
-        item
-          Caption = 'Base'
           Width = 0
         end
         item

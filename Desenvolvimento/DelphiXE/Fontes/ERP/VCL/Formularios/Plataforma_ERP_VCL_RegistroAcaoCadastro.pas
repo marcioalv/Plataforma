@@ -69,13 +69,9 @@ type
     gbxOpcoes: TGroupBox;
     chkBloqueado: TCheckBox;
     chkAtivo: TCheckBox;
-    lblRegistroAcaoBase: TLabel;
-    edtRegistroAcaoBaseDescricao: TEdit;
-    edtRegistroAcaoBaseID: TEdit;
     lblCodigoCadastrado: TLabel;
     edtCodigoCadastrado: TEdit;
     edtCodigoCadastradoID: TEdit;
-    edtCodigoCadastradoBaseID: TEdit;
     gbxTipoAcao: TGroupBox;
     rbtAcaoCriacao: TRadioButton;
     rbtAcaoConsulta: TRadioButton;
@@ -114,7 +110,6 @@ type
     procedure mniExcluirClick(Sender: TObject);
     procedure mniNovoClick(Sender: TObject);
     procedure mniAtualizarClick(Sender: TObject);
-    procedure edtRegistroAcaoBaseDescricaoClick(Sender: TObject);
     procedure edtCodigoCadastradoClick(Sender: TObject);
   private
     procedure FormularioLimpar;
@@ -122,7 +117,7 @@ type
     procedure FormularioAtualizar;
     procedure FormularioNovo;
 
-    procedure FormularioPopular(argRegistroAcaoBaseID: Integer; argRegistroAcaoID: Integer);
+    procedure FormularioPopular(argRegistroAcaoID: Integer);
 
     procedure FormularioAlterar;
     procedure FormularioGravar;
@@ -131,9 +126,8 @@ type
     procedure FormularioCodigoSugerir;
     function  LogDadosGerar(argRegistroAcaoID: Integer = 0): string;
   public
-    pubDadosAtualizados  : Boolean;
-    pubRegistroAcaoBaseID: Integer;
-    pubRegistroAcaoID    : Integer;
+    pubDadosAtualizados: Boolean;
+    pubRegistroAcaoID  : Integer;
   end;
 
 var
@@ -164,9 +158,8 @@ begin
   //
   // Inicializa variáveis públicas.
   //
-  pubDadosAtualizados   := False;
-  pubRegistroAcaoBaseID := 0;
-  pubRegistroAcaoID     := 0;
+  pubDadosAtualizados := False;
+  pubRegistroAcaoID   := 0;
  
   //
   // Limpa os componentes do formulário.
@@ -192,10 +185,9 @@ begin
   //
   // Controla os componentes de exibição de cadastro.
   //
-  VCLEditClickControlar(edtCodigoCadastrado,          False);
-  VCLEditClickControlar(edtRegistroAcaoBaseDescricao, False);
-  VCLEditClickControlar(edtInsLocalDtHr,              False);
-  VCLEditClickControlar(edtUpdLocalDtHr,              False);
+  VCLEditClickControlar(edtCodigoCadastrado, False);
+  VCLEditClickControlar(edtInsLocalDtHr,     False);
+  VCLEditClickControlar(edtUpdLocalDtHr,     False);
   
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
@@ -211,7 +203,7 @@ begin
   //
   if pubRegistroAcaoID > 0 then
   begin
-    FormularioPopular(pubRegistroAcaoBaseID, pubRegistroAcaoID);
+    FormularioPopular(pubRegistroAcaoID);
     FormularioControlar(False);
     Exit;
   end;
@@ -269,14 +261,6 @@ begin
 end;
 
 //
-// Evento de click no componente "base da ação em registro".
-//
-procedure TPlataformaERPVCLRegistroAcaoCadastro.edtRegistroAcaoBaseDescricaoClick(Sender: TObject);
-begin
-  Plataforma_ERP_VCL_BaseCadastroExibir(StringIntegerConverter(edtRegistroAcaoBaseID.Text));
-end;
-
-//
 // Eventos do componente "código".
 //
 procedure TPlataformaERPVCLRegistroAcaoCadastro.edtCodigoEnter(Sender: TObject);
@@ -309,8 +293,7 @@ var
 begin
   locFormulario := TPlataformaERPVCLRegistroAcaoCadastro.Create(Self);
 
-  locFormulario.pubRegistroAcaoBaseID := StringIntegerConverter(edtCodigoCadastradoBaseID.Text);
-  locFormulario.pubRegistroAcaoID     := StringIntegerConverter(edtCodigoCadastradoID.Text);
+  locFormulario.pubRegistroAcaoID := StringIntegerConverter(edtCodigoCadastradoID.Text);
 
   locFormulario.ShowModal;
 
@@ -472,13 +455,10 @@ begin
 
   VCLEditLimpar(edtCodigoCadastrado);
   VCLEditLimpar(edtCodigoCadastradoID);
-  VCLEditLimpar(edtCodigoCadastradoBaseID);
 
   //
   // Limpa componentes da aba "auditoria".
   //
-  VCLEditLimpar(edtRegistroAcaoBaseID);
-  VCLEditLimpar(edtRegistroAcaoBaseDescricao);
   VCLEditLimpar(edtRegistroAcaoID);
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
@@ -515,9 +495,8 @@ begin
   //
   // Controla os componentes de exibição de cadastro.
   //
-  VCLEditClickControlar(edtRegistroAcaoBaseDescricao, True);
-  VCLEditClickControlar(edtInsLocalDtHr,              True);
-  VCLEditClickControlar(edtUpdLocalDtHr,              True);
+  VCLEditClickControlar(edtInsLocalDtHr, True);
+  VCLEditClickControlar(edtUpdLocalDtHr, True);
 
   //
   // Controla os itens de menu do formulário.
@@ -571,7 +550,7 @@ begin
   //
   // Popula componentes com as informações do cadastro.
   //
-  FormularioPopular(StringIntegerConverter(edtRegistroAcaoBaseID.Text), StringIntegerConverter(edtRegistroAcaoID.Text));
+  FormularioPopular(StringIntegerConverter(edtRegistroAcaoID.Text));
 
   //
   // Controla a exibição dos componentes.
@@ -592,10 +571,8 @@ begin
   //
   // Carrega conteúdo dos campos necessários.
   //
-  edtRegistroAcaoBaseID.Text        := IntegerStringConverter(gloBaseID, True);
-  edtRegistroAcaoBaseDescricao.Text := gloBaseDescricao;  
-  edtRegistroAcaoID.Text            := STR_NOVO;
-  chkAtivo.Checked                  := True;
+  edtRegistroAcaoID.Text := STR_NOVO;
+  chkAtivo.Checked       := True;
 
   //
   // Exibe o último código cadastrado.
@@ -616,7 +593,7 @@ end;
 //
 // Procedimento para popular os componentes com os dados de um cadastro.
 //
-procedure TPlataformaERPVCLRegistroAcaoCadastro.FormularioPopular(argRegistroAcaoBaseID: Integer; argRegistroAcaoID: Integer);
+procedure TPlataformaERPVCLRegistroAcaoCadastro.FormularioPopular(argRegistroAcaoID: Integer);
 const
   PROCEDIMENTO_NOME: string = 'FormularioPopular';
   ERRO_MENSAGEM    : string = 'Impossível consultar dados da ação em registro!';
@@ -665,31 +642,25 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                                 ');
-  locADOQuery.SQL.Add('  [base].[base_id]   AS [registro_acao_base_id],                       ');
-  locADOQuery.SQL.Add('  [base].[descricao] AS [registro_acao_base_descricao],                ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id],                                  ');  
-  locADOQuery.SQL.Add('  [registro_acao].[codigo],                                            ');
-  locADOQuery.SQL.Add('  [registro_acao].[descricao],                                         ');
-  locADOQuery.SQL.Add('  [registro_acao].[criacao],                                           ');
-  locADOQuery.SQL.Add('  [registro_acao].[consulta],                                          ');
-  locADOQuery.SQL.Add('  [registro_acao].[alteracao],                                         ');
-  locADOQuery.SQL.Add('  [registro_acao].[exclusao],                                          ');
-  locADOQuery.SQL.Add('  [registro_acao].[bloqueado],                                         ');
-  locADOQuery.SQL.Add('  [registro_acao].[ativo],                                             ');
-  locADOQuery.SQL.Add('  [registro_acao].[ins_local_dt_hr],                                   ');
-  locADOQuery.SQL.Add('  [registro_acao].[upd_local_dt_hr],                                   ');
-  locADOQuery.SQL.Add('  [registro_acao].[upd_contador]                                       ');  
-  locADOQuery.SQL.Add('FROM                                                                   ');
-  locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)                                        ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                      ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [registro_acao].[registro_acao_base_id]      ');
-  locADOQuery.SQL.Add('WHERE                                                                  ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_base_id] = :registro_acao_base_id AND ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id]      = :registro_acao_id          ');
+  locADOQuery.SQL.Add('SELECT                                                   ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id],                    ');  
+  locADOQuery.SQL.Add('  [registro_acao].[codigo],                              ');
+  locADOQuery.SQL.Add('  [registro_acao].[descricao],                           ');
+  locADOQuery.SQL.Add('  [registro_acao].[criacao],                             ');
+  locADOQuery.SQL.Add('  [registro_acao].[consulta],                            ');
+  locADOQuery.SQL.Add('  [registro_acao].[alteracao],                           ');
+  locADOQuery.SQL.Add('  [registro_acao].[exclusao],                            ');
+  locADOQuery.SQL.Add('  [registro_acao].[bloqueado],                           ');
+  locADOQuery.SQL.Add('  [registro_acao].[ativo],                               ');
+  locADOQuery.SQL.Add('  [registro_acao].[ins_local_dt_hr],                     ');
+  locADOQuery.SQL.Add('  [registro_acao].[upd_local_dt_hr],                     ');
+  locADOQuery.SQL.Add('  [registro_acao].[upd_contador]                         ');  
+  locADOQuery.SQL.Add('FROM                                                     ');
+  locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)                          ');
+  locADOQuery.SQL.Add('WHERE                                                    ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id] = :registro_acao_id ');
 
-  locADOQuery.Parameters.ParamByName('registro_acao_base_id').Value := argRegistroAcaoBaseID;
-  locADOQuery.Parameters.ParamByName('registro_acao_id').Value      := argRegistroAcaoID;
+  locADOQuery.Parameters.ParamByName('registro_acao_id').Value := argRegistroAcaoID;
 
   //
   // Executa query.
@@ -729,13 +700,10 @@ begin
     chkBloqueado.Checked := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked     := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
 
-    edtRegistroAcaoBaseID.Text        := IntegerStringConverter(locADOQuery.FieldByName('registro_acao_base_id').AsInteger, True);
-    edtRegistroAcaoBaseDescricao.Text := locADOQuery.FieldByName('registro_acao_base_descricao').AsString;
-  
     edtRegistroAcaoID.Text := IntegerStringConverter(locADOQuery.FieldByName('registro_acao_id').AsInteger, True);
-    edtInsLocalDtHr.Text      := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
-    edtUpdLocalDtHr.Text      := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
-    edtUpdContador.Text       := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
+    edtInsLocalDtHr.Text   := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
+    edtUpdLocalDtHr.Text   := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
+    edtUpdContador.Text    := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
   end; 
 
   //
@@ -782,23 +750,22 @@ var
   locRegistroAcaoLogMsg  : string;
   locRegistroAcaoLogDados: string;
 
-  locRegistroAcaoBaseID  : Integer;
-  locRegistroAcaoID      : Integer;
-  locCodigo              : string;
-  locDescricao           : string;
-  locCriacao             : Boolean;
-  locConsulta            : Boolean;
-  locAlteracao           : Boolean;
-  locExclusao            : Boolean;
-  locBloqueado           : Boolean;
-  locAtivo               : Boolean;
-  locInsLocalDtHr        : TDateTime;
-  locUpdLocalDtHr        : TDateTime;
-  locUsuarioBaseID       : Integer;
-  locUsuarioID           : Integer;
-  locUpdContador         : Integer;
-  locHostName            : string;
-  locUserName            : string;
+  locRegistroAcaoID: Integer;
+  locCodigo        : string;
+  locDescricao     : string;
+  locCriacao       : Boolean;
+  locConsulta      : Boolean;
+  locAlteracao     : Boolean;
+  locExclusao      : Boolean;
+  locBloqueado     : Boolean;
+  locAtivo         : Boolean;
+  locInsLocalDtHr  : TDateTime;
+  locUpdLocalDtHr  : TDateTime;
+  locUsuarioBaseID : Integer;
+  locUsuarioID     : Integer;
+  locUpdContador   : Integer;
+  locHostName      : string;
+  locUserName      : string;
 begin
   //
   // Determina se será um insert ou update.
@@ -811,21 +778,20 @@ begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locRegistroAcaoBaseID := StringIntegerConverter(edtRegistroAcaoBaseID.Text);
-  locRegistroAcaoID     := StringIntegerConverter(edtRegistroAcaoID.Text);
-  locCodigo             := StringTrim(edtCodigo.Text);
-  locDescricao          := StringTrim(edtDescricao.Text);
-  locCriacao            := rbtAcaoCriacao.Checked;
-  locConsulta           := rbtAcaoConsulta.Checked;
-  locAlteracao          := rbtAcaoAlteracao.Checked;
-  locExclusao           := rbtAcaoExclusao.Checked;
-  locBloqueado          := chkBloqueado.Checked;
-  locAtivo              := chkAtivo.Checked;
-  locUsuarioBaseID      := gloUsuarioBaseID;
-  locUsuarioID          := gloUsuarioID;
-  locHostName           := HostNameRecuperar;
-  locUserName           := UserNameRecuperar;
-  locUpdContador        := StringIntegerConverter(edtUpdContador.Text);
+  locRegistroAcaoID := StringIntegerConverter(edtRegistroAcaoID.Text);
+  locCodigo         := StringTrim(edtCodigo.Text);
+  locDescricao      := StringTrim(edtDescricao.Text);
+  locCriacao        := rbtAcaoCriacao.Checked;
+  locConsulta       := rbtAcaoConsulta.Checked;
+  locAlteracao      := rbtAcaoAlteracao.Checked;
+  locExclusao       := rbtAcaoExclusao.Checked;
+  locBloqueado      := chkBloqueado.Checked;
+  locAtivo          := chkAtivo.Checked;
+  locUsuarioBaseID  := gloUsuarioBaseID;
+  locUsuarioID      := gloUsuarioID;
+  locHostName       := HostNameRecuperar;
+  locUserName       := UserNameRecuperar;
+  locUpdContador    := StringIntegerConverter(edtUpdContador.Text);
 
   //
   // Consiste as informações.
@@ -892,18 +858,16 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                                                           ');
-  locADOQuery.SQL.Add('  1                                                                    ');
-  locADOQuery.SQL.Add('FROM                                                                   ');
-  locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)                                        ');
-  locADOQuery.SQL.Add('WHERE                                                                  ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_base_id] = :registro_acao_base_id AND ');
-  locADOQuery.SQL.Add('  [registro_acao].[codigo]                = :codigo                AND ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id]     <> :registro_acao_id          ');
+  locADOQuery.SQL.Add('SELECT TOP 1                                              ');
+  locADOQuery.SQL.Add('  1                                                       ');
+  locADOQuery.SQL.Add('FROM                                                      ');
+  locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)                           ');
+  locADOQuery.SQL.Add('WHERE                                                     ');
+  locADOQuery.SQL.Add('  [registro_acao].[codigo]            = :codigo       AND ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id] <> :registro_acao_id ');
 
-  locADOQuery.Parameters.ParamByName('registro_acao_base_id').Value := locRegistroAcaoBaseID;
-  locADOQuery.Parameters.ParamByName('codigo').Value                := locCodigo;
-  locADOQuery.Parameters.ParamByName('registro_acao_id').Value      := locRegistroAcaoID;
+  locADOQuery.Parameters.ParamByName('codigo').Value           := locCodigo;
+  locADOQuery.Parameters.ParamByName('registro_acao_id').Value := locRegistroAcaoID;
 
   try
     locADOQuery.Open;
@@ -940,16 +904,14 @@ begin
   begin
     locADOQuery.Close;
     locADOQuery.SQL.Clear;
-    locADOQuery.SQL.Add('SELECT                                                                 ');
-    locADOQuery.SQL.Add('  [registro_acao].[upd_contador]                                       ');
-    locADOQuery.SQL.Add('FROM                                                                   ');
-    locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)                                        ');
-    locADOQuery.SQL.Add('WHERE                                                                  ');
-    locADOQuery.SQL.Add('  [registro_acao].[registro_acao_base_id] = :registro_acao_base_id AND ');
-    locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id]      = :registro_acao_id          ');
+    locADOQuery.SQL.Add('SELECT                                                   ');
+    locADOQuery.SQL.Add('  [registro_acao].[upd_contador]                         ');
+    locADOQuery.SQL.Add('FROM                                                     ');
+    locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)                          ');
+    locADOQuery.SQL.Add('WHERE                                                    ');
+    locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id] = :registro_acao_id ');
 
-    locADOQuery.Parameters.ParamByName('registro_acao_base_id').Value := locRegistroAcaoBaseID;
-    locADOQuery.Parameters.ParamByName('registro_acao_id').Value      := locRegistroAcaoID;
+    locADOQuery.Parameters.ParamByName('registro_acao_id').Value := locRegistroAcaoID;
 
     try
       locADOQuery.Open;
@@ -1023,7 +985,6 @@ begin
   begin
     try
       locRegistroAcaoID := Plataforma_ERP_ADO_NumeradorBaseDeterminar(locADOConnection,
-                                                                      locRegistroAcaoBaseID, 
                                                                       NUMERADOR_REGISTRO_ACAO_ID);
     except
       on locExcecao: Exception do
@@ -1053,7 +1014,6 @@ begin
     // Insere dados.
     //
     locADOQuery.SQL.Add('INSERT INTO [registro_acao] (');
-    locADOQuery.SQL.Add('  [registro_acao_base_id],   ');
     locADOQuery.SQL.Add('  [registro_acao_id],        ');
     locADOQuery.SQL.Add('  [codigo],                  ');
     locADOQuery.SQL.Add('  [descricao],               ');
@@ -1070,7 +1030,6 @@ begin
     locADOQuery.SQL.Add('  [upd_contador]             ');  
     locADOQuery.SQL.Add(')                            ');
     locADOQuery.SQL.Add('VALUES (                     ');
-    locADOQuery.SQL.Add('  :registro_acao_base_id,    '); // [registro_acao_base_id].
     locADOQuery.SQL.Add('  :registro_acao_id,         '); // [registro_acao_id].
     locADOQuery.SQL.Add('  :codigo,                   '); // [codigo].
     locADOQuery.SQL.Add('  :descricao,                '); // [descricao].
@@ -1092,39 +1051,37 @@ begin
     //
     // Atualiza dados.
     //
-    locADOQuery.SQL.Add('UPDATE                                                 ');
-    locADOQuery.SQL.Add('  [registro_acao]                                      ');
-    locADOQuery.SQL.Add('SET                                                    ');
-    locADOQuery.SQL.Add('  [codigo]           = :codigo,                        ');
-    locADOQuery.SQL.Add('  [descricao]        = :descricao,                     ');
-    locADOQuery.SQL.Add('  [criacao]          = :criacao,                       ');
-    locADOQuery.SQL.Add('  [consulta]         = :consulta,                      ');
-    locADOQuery.SQL.Add('  [alteracao]        = :alteracao,                     ');
-    locADOQuery.SQL.Add('  [exclusao]         = :exclusao,                      ');
-    locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,                     ');
-    locADOQuery.SQL.Add('  [ativo]            = :ativo,                         ');
-    locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,                   ');
-    locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),                      ');
-    locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1              ');
-    locADOQuery.SQL.Add('WHERE                                                  ');
-    locADOQuery.SQL.Add('  [registro_acao_base_id] = :registro_acao_base_id AND ');
-    locADOQuery.SQL.Add('  [registro_acao_id]      = :registro_acao_id          ');
+    locADOQuery.SQL.Add('UPDATE                                    ');
+    locADOQuery.SQL.Add('  [registro_acao]                         ');
+    locADOQuery.SQL.Add('SET                                       ');
+    locADOQuery.SQL.Add('  [codigo]           = :codigo,           ');
+    locADOQuery.SQL.Add('  [descricao]        = :descricao,        ');
+    locADOQuery.SQL.Add('  [criacao]          = :criacao,          ');
+    locADOQuery.SQL.Add('  [consulta]         = :consulta,         ');
+    locADOQuery.SQL.Add('  [alteracao]        = :alteracao,        ');
+    locADOQuery.SQL.Add('  [exclusao]         = :exclusao,         ');
+    locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,        ');
+    locADOQuery.SQL.Add('  [ativo]            = :ativo,            ');
+    locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,      ');
+    locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),         ');
+    locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1 ');
+    locADOQuery.SQL.Add('WHERE                                     ');
+    locADOQuery.SQL.Add('  [registro_acao_id] = :registro_acao_id  ');
   end;
 
   //
   // Parâmetros.
   //
-  locADOQuery.Parameters.ParamByName('registro_acao_base_id').Value  := locRegistroAcaoBaseID;
-  locADOQuery.Parameters.ParamByName('registro_acao_id').Value       := locRegistroAcaoID;
-  locADOQuery.Parameters.ParamByName('codigo').Value                 := locCodigo;
-  locADOQuery.Parameters.ParamByName('descricao').Value              := locDescricao;
-  locADOQuery.Parameters.ParamByName('criacao').Value                := BooleanStringConverter(locCriacao);
-  locADOQuery.Parameters.ParamByName('consulta').Value               := BooleanStringConverter(locConsulta);
-  locADOQuery.Parameters.ParamByName('alteracao').Value              := BooleanStringConverter(locAlteracao);
-  locADOQuery.Parameters.ParamByName('exclusao').Value               := BooleanStringConverter(locExclusao);
-  locADOQuery.Parameters.ParamByName('bloqueado').Value              := BooleanStringConverter(locBloqueado);
-  locADOQuery.Parameters.ParamByName('ativo').Value                  := BooleanStringConverter(locAtivo);
-  locADOQuery.Parameters.ParamByName('local_dt_hr').Value            := Now;
+  locADOQuery.Parameters.ParamByName('registro_acao_id').Value := locRegistroAcaoID;
+  locADOQuery.Parameters.ParamByName('codigo').Value           := locCodigo;
+  locADOQuery.Parameters.ParamByName('descricao').Value        := locDescricao;
+  locADOQuery.Parameters.ParamByName('criacao').Value          := BooleanStringConverter(locCriacao);
+  locADOQuery.Parameters.ParamByName('consulta').Value         := BooleanStringConverter(locConsulta);
+  locADOQuery.Parameters.ParamByName('alteracao').Value        := BooleanStringConverter(locAlteracao);
+  locADOQuery.Parameters.ParamByName('exclusao').Value         := BooleanStringConverter(locExclusao);
+  locADOQuery.Parameters.ParamByName('bloqueado').Value        := BooleanStringConverter(locBloqueado);
+  locADOQuery.Parameters.ParamByName('ativo').Value            := BooleanStringConverter(locAtivo);
+  locADOQuery.Parameters.ParamByName('local_dt_hr').Value      := Now;
 
   try
     locADOQuery.ExecSQL;
@@ -1148,18 +1105,16 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                                 ');
-  locADOQuery.SQL.Add('  [registro_acao].[ins_local_dt_hr],                                   ');
-  locADOQuery.SQL.Add('  [registro_acao].[upd_local_dt_hr],                                   ');
-  locADOQuery.SQL.Add('  [registro_acao].[upd_contador]                                       ');
-  locADOQuery.SQL.Add('FROM                                                                   ');
-  locADOQuery.SQL.Add('  [registro_acao]                                                      ');
-  locADOQuery.SQL.Add('WHERE                                                                  ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_base_id] = :registro_acao_base_id AND ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id]      = :registro_acao_id          ');
+  locADOQuery.SQL.Add('SELECT                                                   ');
+  locADOQuery.SQL.Add('  [registro_acao].[ins_local_dt_hr],                     ');
+  locADOQuery.SQL.Add('  [registro_acao].[upd_local_dt_hr],                     ');
+  locADOQuery.SQL.Add('  [registro_acao].[upd_contador]                         ');
+  locADOQuery.SQL.Add('FROM                                                     ');
+  locADOQuery.SQL.Add('  [registro_acao]                                        ');
+  locADOQuery.SQL.Add('WHERE                                                    ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id] = :registro_acao_id ');
 
-  locADOQuery.Parameters.ParamByName('registro_acao_base_id').Value := locRegistroAcaoBaseID;
-  locADOQuery.Parameters.ParamByName('registro_acao_id').Value      := locRegistroAcaoID;
+  locADOQuery.Parameters.ParamByName('registro_acao_id').Value := locRegistroAcaoID;
 
   try
     locADOQuery.Open;
@@ -1262,15 +1217,13 @@ var
   locADOConnection       : TADOConnection;
   locADOQuery            : TADOQuery;
   locLogMensagem         : string;
-  locRegistroAcaoBaseID  : Integer;
   locRegistroAcaoID      : Integer;
   locRegistroAcaoLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locRegistroAcaoBaseID := StringIntegerConverter(edtRegistroAcaoBaseID.Text);
-  locRegistroAcaoID     := StringIntegerConverter(edtRegistroAcaoID.Text);
+  locRegistroAcaoID := StringIntegerConverter(edtRegistroAcaoID.Text);
 
   //
   // Log dados.
@@ -1337,14 +1290,12 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('DELETE FROM                                                            ');
-  locADOQuery.SQL.Add('  [registro_acao]                                                      ');
-  locADOQuery.SQL.Add('WHERE                                                                  ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_base_id] = :registro_acao_base_id AND ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id]      = :registro_acao_id          ');
+  locADOQuery.SQL.Add('DELETE FROM                                              ');
+  locADOQuery.SQL.Add('  [registro_acao]                                        ');
+  locADOQuery.SQL.Add('WHERE                                                    ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id] = :registro_acao_id ');
 
-  locADOQuery.Parameters.ParamByName('registro_acao_base_id').Value := locRegistroAcaoBaseID;
-  locADOQuery.Parameters.ParamByName('registro_acao_id').Value      := locRegistroAcaoID;
+  locADOQuery.Parameters.ParamByName('registro_acao_id').Value := locRegistroAcaoID;
 
   try
     locADOQuery.ExecSQL;
@@ -1421,14 +1372,12 @@ end;
 //
 procedure TPlataformaERPVCLRegistroAcaoCadastro.FormularioCancelar;
 var
-  locRegistroAcaoBaseID: Integer;
-  locRegistroAcaoID    : Integer;
+  locRegistroAcaoID: Integer;
 begin
   //
   // Carrega chave do registro que estava sendo editado.
   //
-  locRegistroAcaoBaseID := StringIntegerConverter(edtRegistroAcaoBaseID.Text);
-  locRegistroAcaoID     := StringIntegerConverter(edtRegistroAcaoID.Text);
+  locRegistroAcaoID := StringIntegerConverter(edtRegistroAcaoID.Text);
 
   //
   // Confirma com o usuário.
@@ -1445,7 +1394,7 @@ begin
   //
   // Popula somente os dados.
   //
-  FormularioPopular(locRegistroAcaoBaseID, locRegistroAcaoID);
+  FormularioPopular(locRegistroAcaoID);
 
   //
   // Componentes desligados para edição.
@@ -1461,16 +1410,10 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioCodigoSugerir';
   ERRO_MENSAGEM    : string = 'Impossível sugerir informações sobre o próximo código da ação em registro!';
 var
-  locADOConnection     : TADOConnection;
-  locADOQuery          : TADOQuery;
-  locLogMensagem       : string;
-  locRegistroAcaoBaseID: Integer;
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
 begin
-  //
-  // ID da base.
-  //
-  locRegistroAcaoBaseID := gloBaseID;
-
   //
   // Troca cursor.
   //
@@ -1480,7 +1423,6 @@ begin
   // Limpa componente.
   //
   VCLEditLimpar(edtCodigoCadastrado);
-  VCLEditLimpar(edtCodigoCadastradoBaseID);
   VCLEditLimpar(edtCodigoCadastradoID);
 
   //
@@ -1513,19 +1455,14 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                                                       ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_base_id],                         ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id],                              ');
-  locADOQuery.SQL.Add('  [registro_acao].[codigo]                                         ');
-  locADOQuery.SQL.Add('FROM                                                               ');
-  locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)                                    ');
-  locADOQuery.SQL.Add('WHERE                                                              ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_base_id] = :registro_acao_base_id ');
-  locADOQuery.SQL.Add('ORDER BY                                                           ');
-  locADOQuery.SQL.Add('  [registro_acao].[ins_server_dt_hr] DESC,                         ');
-  locADOQuery.SQL.Add('  [registro_acao].[codigo] DESC                                    ');
-
-  locADOQuery.Parameters.ParamByName('registro_acao_base_id').Value := locRegistroAcaoBaseID;
+  locADOQuery.SQL.Add('SELECT TOP 1                               ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id],      ');
+  locADOQuery.SQL.Add('  [registro_acao].[codigo]                 ');
+  locADOQuery.SQL.Add('FROM                                       ');
+  locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)            ');
+  locADOQuery.SQL.Add('ORDER BY                                   ');
+  locADOQuery.SQL.Add('  [registro_acao].[ins_server_dt_hr] DESC, ');
+  locADOQuery.SQL.Add('  [registro_acao].[codigo] DESC            ');
 
   //
   // Executa query.
@@ -1551,9 +1488,8 @@ begin
   //
   if locADOQuery.RecordCount > 0 then
   begin
-    edtCodigoCadastrado.Text       := locADOQuery.FieldByName('codigo').AsString;
-    edtCodigoCadastradoBaseID.Text := IntegerStringConverter(locADOQuery.FieldByName('registro_acao_base_id').AsInteger);
-    edtCodigoCadastradoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('registro_acao_id').AsInteger);
+    edtCodigoCadastrado.Text   := locADOQuery.FieldByName('codigo').AsString;
+    edtCodigoCadastradoID.Text := IntegerStringConverter(locADOQuery.FieldByName('registro_acao_id').AsInteger);
 
     VCLEditClickControlar(edtCodigoCadastrado, True);
   end;
@@ -1582,12 +1518,11 @@ begin
     locRegistroAcaoID := argRegistroAcaoID;
 
   Result := '';
-  LogDadosStringDescrever ('ID da base da ação em registro', edtRegistroAcaoBaseID.Text, Result);
-  LogDadosIntegerDescrever('ID da ação em registro',         locRegistroAcaoID,          Result);
-  LogDadosStringDescrever ('Código',                         edtCodigo.Text,                Result);
-  LogDadosStringDescrever ('Descrição',                      edtDescricao.Text,             Result);
-  LogDadosBooleanDescrever('Bloqueado',                      chkBloqueado.Checked,          Result);
-  LogDadosBooleanDescrever('Ativo',                          chkAtivo.Checked,              Result);
+  LogDadosIntegerDescrever('ID da ação em registro', locRegistroAcaoID,    Result);
+  LogDadosStringDescrever ('Código',                 edtCodigo.Text,       Result);
+  LogDadosStringDescrever ('Descrição',              edtDescricao.Text,    Result);
+  LogDadosBooleanDescrever('Bloqueado',              chkBloqueado.Checked, Result);
+  LogDadosBooleanDescrever('Ativo',                  chkAtivo.Checked,     Result);
 end;
 
 end.

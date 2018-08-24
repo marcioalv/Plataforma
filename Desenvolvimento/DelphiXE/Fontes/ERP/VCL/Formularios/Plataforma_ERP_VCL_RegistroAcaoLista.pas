@@ -115,13 +115,11 @@ uses
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_RegistroAcaoLista.pas';
 
-  LVW_LISTA_REGISTRO_ACAO_BASE_ID       : Integer = 0;
-  LVW_LISTA_REGISTRO_ACAO_BASE_DESCRICAO: Integer = 1;
-  LVW_LISTA_REGISTRO_ACAO_ID            : Integer = 2;
-  LVW_LISTA_CODIGO                      : Integer = 3;
-  LVW_LISTA_DESCRICAO                   : Integer = 4;
-  LVW_LISTA_BLOQUEADO                   : Integer = 5;
-  LVW_LISTA_ATIVO                       : Integer = 6;
+  LVW_LISTA_REGISTRO_ACAO_ID: Integer = 0;
+  LVW_LISTA_CODIGO          : Integer = 1;
+  LVW_LISTA_DESCRICAO       : Integer = 2;
+  LVW_LISTA_BLOQUEADO       : Integer = 3;
+  LVW_LISTA_ATIVO           : Integer = 4;
 
 //
 // Evento de criação do formulário.
@@ -396,18 +394,12 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
   ERRO_MENSAGEM    : string = 'Impossível atualizar lista de ações com registros!';
 var
-  locADOConnection     : TADOConnection;
-  locADOQuery          : TADOQuery;
-  locRegistroAcaoBaseID: Integer;
-  locLogMensagem       : string;
-  locListItem          : TListItem;
-  locFiltros           : Boolean;
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locListItem     : TListItem;
+  locFiltros      : Boolean;
 begin
-  //
-  // ID da base de dados.
-  //
-  locRegistroAcaoBaseID := gloBaseID;
-
   //
   // Troca cursor.
   //
@@ -449,22 +441,17 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                                  ');
-  locADOQuery.SQL.Add('  [base].[base_id]                   AS [registro_acao_base_id],        ');
-  locADOQuery.SQL.Add('  [base].[descricao]                 AS [registro_acao_base_descricao], ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id] AS [registro_acao_id],             ');
-  locADOQuery.SQL.Add('  [registro_acao].[codigo]           AS [codigo],                       ');
-  locADOQuery.SQL.Add('  [registro_acao].[descricao]        AS [descricao],                    ');
-  locADOQuery.SQL.Add('  [registro_acao].[bloqueado]        AS [bloqueado],                    ');
-  locADOQuery.SQL.Add('  [registro_acao].[ativo]            AS [ativo]                         ');
-  locADOQuery.SQL.Add('FROM                                                                    ');
-  locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)                                         ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                       ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [registro_acao].[registro_acao_base_id]       ');
-  locADOQuery.SQL.Add('WHERE                                                                   ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_base_id] = :registro_acao_base_id      ');
+  locADOQuery.SQL.Add('SELECT                                                      ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id] AS [registro_acao_id], ');
+  locADOQuery.SQL.Add('  [registro_acao].[codigo]           AS [codigo],           ');
+  locADOQuery.SQL.Add('  [registro_acao].[descricao]        AS [descricao],        ');
+  locADOQuery.SQL.Add('  [registro_acao].[bloqueado]        AS [bloqueado],        ');
+  locADOQuery.SQL.Add('  [registro_acao].[ativo]            AS [ativo]             ');
+  locADOQuery.SQL.Add('FROM                                                        ');
+  locADOQuery.SQL.Add('  [registro_acao] WITH (NOLOCK)                             ');
+  locADOQuery.SQL.Add('WHERE                                                       ');
+  locADOQuery.SQL.Add('  1 = 1                                                     ');
 
-  locADOQuery.Parameters.ParamByName('registro_acao_base_id').Value := locRegistroAcaoBaseID;
 
   //
   // Filtros.
@@ -590,8 +577,6 @@ begin
     
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('registro_acao_base_id').AsInteger));
-      locListItem.SubItems.Add(locADOQuery.FieldByName('registro_acao_base_descricao').AsString);
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('registro_acao_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('descricao').AsString);
@@ -638,31 +623,26 @@ end;
 //
 procedure TPlataformaERPVCLRegistroAcaoLista.FormularioCadastroExibir(argNovo: Boolean);
 var
-  locFormulario        : TPlataformaERPVCLRegistroAcaoCadastro;
-  locDadosAtualizados  : Boolean;
-  locIndice            : Integer;
-  locRegistroAcaoBaseID: Integer;
-  locRegistroAcaoID    : Integer;
+  locFormulario      : TPlataformaERPVCLRegistroAcaoCadastro;
+  locDadosAtualizados: Boolean;
+  locIndice          : Integer;
+  locRegistroAcaoID  : Integer;
 begin
   if argNovo then
   begin
-    locIndice             := VCL_NENHUM_INDICE;
-    locRegistroAcaoBaseID := 0;
-    locRegistroAcaoID     := 0;
+    locIndice         := VCL_NENHUM_INDICE;
+    locRegistroAcaoID := 0;
   end
   else
   begin  
     locIndice := VCLListViewIndiceItemRetornar(lvwLista);
     if locIndice <= VCL_NENHUM_INDICE then Exit;
-
-    locRegistroAcaoBaseID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_REGISTRO_ACAO_BASE_ID]);
-    locRegistroAcaoID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_REGISTRO_ACAO_ID]);
+    locRegistroAcaoID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_REGISTRO_ACAO_ID]);
   end;
 
   locFormulario := TPlataformaERPVCLRegistroAcaoCadastro.Create(Self);
 
-  locFormulario.pubRegistroAcaoBaseID := locRegistroAcaoBaseID;
-  locFormulario.pubRegistroAcaoID     := locRegistroAcaoID;
+  locFormulario.pubRegistroAcaoID := locRegistroAcaoID;
   
   locFormulario.ShowModal;
 

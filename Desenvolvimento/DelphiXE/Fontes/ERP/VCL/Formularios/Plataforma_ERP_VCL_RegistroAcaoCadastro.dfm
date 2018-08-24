@@ -4,7 +4,7 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'A'#231#245'es em registro'
-  ClientHeight = 395
+  ClientHeight = 393
   ClientWidth = 593
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -391,10 +391,6 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -559,26 +555,6 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
         Text = 'ID'
         Visible = False
       end
-      object edtCodigoCadastradoBaseID: TEdit
-        Left = 368
-        Top = 32
-        Width = 49
-        Height = 26
-        TabStop = False
-        Alignment = taCenter
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clGray
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        MaxLength = 25
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 6
-        Text = 'Base'
-        Visible = False
-      end
       object gbxTipoAcao: TGroupBox
         Left = 16
         Top = 136
@@ -650,13 +626,10 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 665
-      ExplicitHeight = 285
+      ExplicitLeft = 28
       object lblInsDtHt: TLabel
         Left = 16
-        Top = 80
+        Top = 72
         Width = 42
         Height = 14
         Caption = 'Cria'#231#227'o:'
@@ -668,8 +641,8 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
         ParentFont = False
       end
       object lblUpdDtHr: TLabel
-        Left = 248
-        Top = 80
+        Left = 16
+        Top = 128
         Width = 90
         Height = 14
         Caption = #218'ltima altera'#231#227'o:'
@@ -681,8 +654,8 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
         ParentFont = False
       end
       object lblUpdContador: TLabel
-        Left = 424
-        Top = 80
+        Left = 192
+        Top = 128
         Width = 61
         Height = 14
         Caption = 'Altera'#231#245'es:'
@@ -694,7 +667,7 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
         ParentFont = False
       end
       object lblRegistroAcaoID: TLabel
-        Left = 424
+        Left = 16
         Top = 16
         Width = 16
         Height = 14
@@ -706,22 +679,9 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
         Font.Style = []
         ParentFont = False
       end
-      object lblRegistroAcaoBase: TLabel
-        Left = 16
-        Top = 16
-        Width = 29
-        Height = 14
-        Caption = 'Base:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-      end
       object edtInsLocalDtHr: TEdit
         Left = 16
-        Top = 96
+        Top = 88
         Width = 169
         Height = 26
         TabStop = False
@@ -736,51 +696,14 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
         ParentShowHint = False
         ReadOnly = True
         ShowHint = False
-        TabOrder = 3
+        TabOrder = 1
         Text = '99/99/9999 99:99:99'
         OnClick = edtInsLocalDtHrClick
       end
       object edtUpdLocalDtHr: TEdit
-        Left = 248
-        Top = 96
-        Width = 161
-        Height = 26
-        TabStop = False
-        Alignment = taCenter
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 4
-        Text = '99/99/9999 99:99:99'
-        OnClick = edtUpdLocalDtHrClick
-      end
-      object edtUpdContador: TEdit
-        Left = 424
-        Top = 96
-        Width = 73
-        Height = 26
-        TabStop = False
-        Alignment = taCenter
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 5
-        Text = '999.999'
-      end
-      object edtRegistroAcaoID: TEdit
-        Left = 424
-        Top = 32
-        Width = 73
+        Left = 16
+        Top = 144
+        Width = 169
         Height = 26
         TabStop = False
         Alignment = taCenter
@@ -793,14 +716,16 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
         ParentFont = False
         ReadOnly = True
         TabOrder = 2
-        Text = '9.999'
+        Text = '99/99/9999 99:99:99'
+        OnClick = edtUpdLocalDtHrClick
       end
-      object edtRegistroAcaoBaseDescricao: TEdit
-        Left = 16
-        Top = 32
-        Width = 393
+      object edtUpdContador: TEdit
+        Left = 192
+        Top = 144
+        Width = 73
         Height = 26
         TabStop = False
+        Alignment = taCenter
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -808,20 +733,17 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
-        ParentShowHint = False
         ReadOnly = True
-        ShowHint = False
-        TabOrder = 1
-        Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
-        OnClick = edtRegistroAcaoBaseDescricaoClick
+        TabOrder = 3
+        Text = '999.999'
       end
-      object edtRegistroAcaoBaseID: TEdit
-        Left = 312
+      object edtRegistroAcaoID: TEdit
+        Left = 16
         Top = 32
-        Width = 65
+        Width = 73
         Height = 26
         TabStop = False
-        Alignment = taRightJustify
+        Alignment = taCenter
         Color = clInactiveBorder
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -831,8 +753,7 @@ object PlataformaERPVCLRegistroAcaoCadastro: TPlataformaERPVCLRegistroAcaoCadast
         ParentFont = False
         ReadOnly = True
         TabOrder = 0
-        Text = '999.999'
-        Visible = False
+        Text = '9.999'
       end
     end
   end

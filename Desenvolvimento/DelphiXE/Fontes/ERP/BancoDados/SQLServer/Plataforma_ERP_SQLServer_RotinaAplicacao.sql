@@ -15,8 +15,6 @@ BEGIN
   DECLARE @_ErrorSeverity     INT
   DECLARE @_ErrorState        INT
 
-  DECLARE @_BaseID            SMALLINT
-
   DECLARE @_NUMERADOR_CODIGO  VARCHAR(MAX) = 'rotina_aplicacao_id'
   DECLARE @_RotinaAplicacaoID INT
     
@@ -32,17 +30,6 @@ BEGIN
   IF OBJECT_ID('rotina_aplicacao') IS NULL
   BEGIN
     PRINT 'A tabela [rotina_aplicacao] não existe na modelagem do banco de dados!'
-    RETURN
-  END
-
-  --
-  -- Determina a base de dados da instalação da aplicação.
-  --
-  SET @_BaseID = (SELECT [aplicacao_base].[base_id] FROM [aplicacao_base])
-
-  IF @_BaseID IS NULL
-  BEGIN
-    PRINT 'O ID da base dessa instalação da aplicação ainda não foi definido na tabela [aplicacao_base]!'
     RETURN
   END
 
@@ -281,8 +268,7 @@ BEGIN
                    FROM
                      [rotina_aplicacao]
                    WHERE
-                     [rotina_aplicacao].[rotina_aplicacao_base_id] = @_BaseID AND
-                     [rotina_aplicacao].[chave]                    = @_Cursor_Chave)
+                     [rotina_aplicacao].[chave] = @_Cursor_Chave)
     BEGIN
       --
       -- Se a chave não existe então determina o próximo ID para a inserção!
@@ -290,9 +276,7 @@ BEGIN
       SET @_RotinaAplicacaoID = (SELECT
                                    MAX([rotina_aplicacao].[rotina_aplicacao_id])
                                  FROM
-                                   [rotina_aplicacao]
-                                 WHERE
-                                   [rotina_Aplicacao].[rotina_aplicacao_base_id] = @_BaseID)
+                                   [rotina_aplicacao])
 
       SET @_RotinaAplicacaoID = ISNULL(@_RotinaAplicacaoID, 0) + 1
 
@@ -301,7 +285,6 @@ BEGIN
       --
       BEGIN TRY
         INSERT INTO [rotina_aplicacao] (
-          [rotina_aplicacao_base_id],
           [rotina_aplicacao_id],
           [codigo],
           [descricao],
@@ -315,7 +298,6 @@ BEGIN
           [upd_contador]
         )
         VALUES (
-          @_BaseID,            --> [rotina_aplicacao_base_id].
           @_RotinaAplicacaoID, --> [rotina_aplicacao_id].
           @_Cursor_Codigo,     --> [codigo].
           @_Cursor_Descricao,  --> [descricao].
@@ -352,8 +334,7 @@ BEGIN
           [upd_server_dt_hr] = GETDATE(),
           [upd_contador]     = [upd_contador] + 1
         WHERE
-          [rotina_aplicacao_base_id] = @_BaseID AND
-          [chave]                    = @_Cursor_Chave
+          [chave] = @_Cursor_Chave
       END TRY
       BEGIN CATCH
         SELECT @_ErrorMessage = ERROR_MESSAGE(), @_ErrorSeverity = ERROR_SEVERITY(), @_ErrorState = ERROR_STATE()
@@ -378,9 +359,7 @@ BEGIN
     SET @_RotinaAplicacaoID = (SELECT
                                  MAX([rotina_aplicacao].[rotina_aplicacao_id])
                                FROM
-                                 [rotina_aplicacao]
-                               WHERE
-                                 [rotina_aplicacao].[rotina_aplicacao_base_id] = @_BaseID)
+                                 [rotina_aplicacao])
 
     SET @_RotinaAplicacaoID = ISNULL(@_RotinaAplicacaoID, 0)
     
@@ -389,11 +368,9 @@ BEGIN
                    FROM
                      [numerador_base]
                    WHERE
-                     [numerador_base].[base_id] = @_BaseID AND
-                     [numerador_base].[codigo]  = @_NUMERADOR_CODIGO)
+                     [numerador_base].[codigo] = @_NUMERADOR_CODIGO)
     BEGIN
       INSERT INTO [numerador_base] (
-        [base_id],
         [codigo],
         [atual_id],
         [bloqueado],
@@ -405,7 +382,6 @@ BEGIN
         [upd_contador]
       )
       VALUES (
-        @_BaseID,            --> [base_id].
         @_NUMERADOR_CODIGO,  --> [codigo].
         @_RotinaAplicacaoID, --> [atual_id].
         'N',                 --> [bloqueado].
@@ -427,8 +403,7 @@ BEGIN
         [upd_server_dt_hr] = GETDATE(),
         [upd_contador]     = [upd_contador] + 1
       WHERE
-        [base_id] = @_BaseID AND
-        [codigo]  = @_NUMERADOR_CODIGO        
+        [codigo] = @_NUMERADOR_CODIGO        
     END
   END TRY
   BEGIN CATCH

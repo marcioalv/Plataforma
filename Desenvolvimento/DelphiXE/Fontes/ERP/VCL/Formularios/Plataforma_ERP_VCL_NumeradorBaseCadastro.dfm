@@ -396,14 +396,10 @@ object PlataformaERPVCLNumeradorBaseCadastro: TPlataformaERPVCLNumeradorBaseCada
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabAuditoria
+    ActivePage = tabCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -433,7 +429,7 @@ object PlataformaERPVCLNumeradorBaseCadastro: TPlataformaERPVCLNumeradorBaseCada
       object edtCodigo: TEdit
         Left = 16
         Top = 32
-        Width = 289
+        Width = 425
         Height = 26
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -517,7 +513,7 @@ object PlataformaERPVCLNumeradorBaseCadastro: TPlataformaERPVCLNumeradorBaseCada
         end
       end
       object chkCadastroNovo: TCheckBox
-        Left = 360
+        Left = 216
         Top = 8
         Width = 97
         Height = 17
@@ -541,7 +537,7 @@ object PlataformaERPVCLNumeradorBaseCadastro: TPlataformaERPVCLNumeradorBaseCada
       ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
-        Top = 72
+        Top = 16
         Width = 42
         Height = 14
         Caption = 'Cria'#231#227'o:'
@@ -553,7 +549,7 @@ object PlataformaERPVCLNumeradorBaseCadastro: TPlataformaERPVCLNumeradorBaseCada
         ParentFont = False
       end
       object lblUpdDtHr: TLabel
-        Left = 200
+        Left = 16
         Top = 72
         Width = 90
         Height = 14
@@ -566,7 +562,7 @@ object PlataformaERPVCLNumeradorBaseCadastro: TPlataformaERPVCLNumeradorBaseCada
         ParentFont = False
       end
       object lblUpdContador: TLabel
-        Left = 376
+        Left = 192
         Top = 72
         Width = 61
         Height = 14
@@ -578,22 +574,9 @@ object PlataformaERPVCLNumeradorBaseCadastro: TPlataformaERPVCLNumeradorBaseCada
         Font.Style = []
         ParentFont = False
       end
-      object lblBase: TLabel
-        Left = 16
-        Top = 16
-        Width = 29
-        Height = 14
-        Caption = 'Base:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-      end
       object edtInsLocalDtHr: TEdit
         Left = 16
-        Top = 88
+        Top = 32
         Width = 169
         Height = 26
         TabStop = False
@@ -608,14 +591,14 @@ object PlataformaERPVCLNumeradorBaseCadastro: TPlataformaERPVCLNumeradorBaseCada
         ParentShowHint = False
         ReadOnly = True
         ShowHint = False
-        TabOrder = 2
+        TabOrder = 0
         Text = '99/99/9999 99:99:99'
         OnClick = edtInsLocalDtHrClick
       end
       object edtUpdLocalDtHr: TEdit
-        Left = 200
+        Left = 16
         Top = 88
-        Width = 161
+        Width = 169
         Height = 26
         TabStop = False
         Alignment = taCenter
@@ -627,12 +610,12 @@ object PlataformaERPVCLNumeradorBaseCadastro: TPlataformaERPVCLNumeradorBaseCada
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 3
+        TabOrder = 1
         Text = '99/99/9999 99:99:99'
         OnClick = edtUpdLocalDtHrClick
       end
       object edtUpdContador: TEdit
-        Left = 376
+        Left = 192
         Top = 88
         Width = 73
         Height = 26
@@ -646,47 +629,8 @@ object PlataformaERPVCLNumeradorBaseCadastro: TPlataformaERPVCLNumeradorBaseCada
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 4
+        TabOrder = 2
         Text = '999.999'
-      end
-      object edtBaseDescricao: TEdit
-        Left = 16
-        Top = 32
-        Width = 433
-        Height = 26
-        TabStop = False
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ParentShowHint = False
-        ReadOnly = True
-        ShowHint = False
-        TabOrder = 0
-        Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
-        OnClick = edtBaseDescricaoClick
-      end
-      object edtBaseID: TEdit
-        Left = 336
-        Top = 32
-        Width = 65
-        Height = 26
-        TabStop = False
-        Alignment = taRightJustify
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 1
-        Text = '999.999'
-        Visible = False
       end
     end
   end

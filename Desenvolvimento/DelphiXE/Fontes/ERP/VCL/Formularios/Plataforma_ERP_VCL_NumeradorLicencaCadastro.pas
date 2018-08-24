@@ -297,7 +297,7 @@ end;
 
 procedure TPlataformaERPVCLNumeradorLicencaCadastro.edtAtualIDKeyPress(Sender: TObject; var Key: Char);
 begin
-  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_NUMERICA_INTEIRA);
 end;
 
 procedure TPlataformaERPVCLNumeradorLicencaCadastro.edtAtualIDKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

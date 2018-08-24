@@ -166,7 +166,7 @@ object PlataformaERPVCLNumeradorBaseLista: TPlataformaERPVCLNumeradorBaseLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 542
+      Left = 530
       Top = 358
       Width = 80
       Height = 13
@@ -196,15 +196,6 @@ object PlataformaERPVCLNumeradorBaseLista: TPlataformaERPVCLNumeradorBaseLista
       BorderStyle = bsNone
       Columns = <
         item
-          Width = 0
-        end
-        item
-          Caption = 'Base ID'
-          Tag = 1
-          Width = 0
-        end
-        item
-          Caption = 'Base'
           Width = 0
         end
         item

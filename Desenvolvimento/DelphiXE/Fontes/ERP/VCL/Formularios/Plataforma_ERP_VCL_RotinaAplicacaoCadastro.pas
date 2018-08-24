@@ -71,13 +71,9 @@ type
     chkAtivo: TCheckBox;
     lblChave: TLabel;
     edtChave: TEdit;
-    lblRotinaAplicacaoBase: TLabel;
-    edtRotinaAplicacaoBaseDescricao: TEdit;
-    edtRotinaAplicacaoBaseID: TEdit;
     lblCodigoCadastrado: TLabel;
     edtCodigoCadastrado: TEdit;
     edtCodigoCadastradoID: TEdit;
-    edtCodigoCadastradoBaseID: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -114,7 +110,6 @@ type
     procedure edtChaveEnter(Sender: TObject);
     procedure edtChaveExit(Sender: TObject);
     procedure edtChaveKeyPress(Sender: TObject; var Key: Char);
-    procedure edtRotinaAplicacaoBaseDescricaoClick(Sender: TObject);
     procedure edtCodigoCadastradoClick(Sender: TObject);
   private
     procedure FormularioLimpar;
@@ -122,7 +117,7 @@ type
     procedure FormularioAtualizar;
     procedure FormularioNovo;
 
-    procedure FormularioPopular(argRotinaAplicacaoBaseID: Integer; argRotinaAplicacaoID: Integer);
+    procedure FormularioPopular(argRotinaAplicacaoID: Integer);
 
     procedure FormularioAlterar;
     procedure FormularioGravar;
@@ -131,9 +126,8 @@ type
     procedure FormularioCodigoSugerir;
     function  LogDadosGerar(argRotinaAplicacaoID: Integer = 0): string;
   public
-    pubDadosAtualizados     : Boolean;
-    pubRotinaAplicacaoBaseID: Integer;
-    pubRotinaAplicacaoID    : Integer;
+    pubDadosAtualizados : Boolean;
+    pubRotinaAplicacaoID: Integer;
   end;
 
 var
@@ -164,9 +158,8 @@ begin
   //
   // Inicializa variáveis públicas.
   //
-  pubDadosAtualizados      := False;
-  pubRotinaAplicacaoBaseID := 0;
-  pubRotinaAplicacaoID     := 0;
+  pubDadosAtualizados  := False;
+  pubRotinaAplicacaoID := 0;
  
   //
   // Limpa os componentes do formulário.
@@ -192,10 +185,9 @@ begin
   //
   // Controla os componentes de exibição de cadastro.
   //
-  VCLEditClickControlar(edtCodigoCadastrado,             False);
-  VCLEditClickControlar(edtRotinaAplicacaoBaseDescricao, False);
-  VCLEditClickControlar(edtInsLocalDtHr,                 False);
-  VCLEditClickControlar(edtUpdLocalDtHr,                 False);
+  VCLEditClickControlar(edtCodigoCadastrado, False);
+  VCLEditClickControlar(edtInsLocalDtHr,     False);
+  VCLEditClickControlar(edtUpdLocalDtHr,     False);
   
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
@@ -211,7 +203,7 @@ begin
   //
   if pubRotinaAplicacaoID > 0 then
   begin
-    FormularioPopular(pubRotinaAplicacaoBaseID, pubRotinaAplicacaoID);
+    FormularioPopular(pubRotinaAplicacaoID);
     FormularioControlar(False);
     Exit;
   end;
@@ -269,14 +261,6 @@ begin
 end;
 
 //
-// Evento de click no componente "base da rotina aplicação".
-//
-procedure TPlataformaERPVCLRotinaAplicacaoCadastro.edtRotinaAplicacaoBaseDescricaoClick(Sender: TObject);
-begin
-  Plataforma_ERP_VCL_BaseCadastroExibir(StringIntegerConverter(edtRotinaAplicacaoBaseID.Text));
-end;
-
-//
 // Eventos do componente "código".
 //
 procedure TPlataformaERPVCLRotinaAplicacaoCadastro.edtCodigoEnter(Sender: TObject);
@@ -309,8 +293,7 @@ var
 begin
   locFormulario := TPlataformaERPVCLRotinaAplicacaoCadastro.Create(Self);
 
-  locFormulario.pubRotinaAplicacaoBaseID := StringIntegerConverter(edtCodigoCadastradoBaseID.Text);
-  locFormulario.pubRotinaAplicacaoID     := StringIntegerConverter(edtCodigoCadastradoID.Text);
+  locFormulario.pubRotinaAplicacaoID := StringIntegerConverter(edtCodigoCadastradoID.Text);
 
   locFormulario.ShowModal;
 
@@ -485,13 +468,10 @@ begin
 
   VCLEditLimpar(edtCodigoCadastrado);
   VCLEditLimpar(edtCodigoCadastradoID);
-  VCLEditLimpar(edtCodigoCadastradoBaseID);
 
   //
   // Limpa componentes da aba "auditoria".
   //
-  VCLEditLimpar(edtRotinaAplicacaoBaseID);
-  VCLEditLimpar(edtRotinaAplicacaoBaseDescricao);
   VCLEditLimpar(edtRotinaAplicacaoID);
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
@@ -527,9 +507,8 @@ begin
   //
   // Controla os componentes de exibição de cadastro.
   //
-  VCLEditClickControlar(edtRotinaAplicacaoBaseDescricao, True);
-  VCLEditClickControlar(edtInsLocalDtHr,                 True);
-  VCLEditClickControlar(edtUpdLocalDtHr,                 True);
+  VCLEditClickControlar(edtInsLocalDtHr, True);
+  VCLEditClickControlar(edtUpdLocalDtHr, True);
 
   //
   // Controla os itens de menu do formulário.
@@ -583,7 +562,7 @@ begin
   //
   // Popula componentes com as informações do cadastro.
   //
-  FormularioPopular(StringIntegerConverter(edtRotinaAplicacaoBaseID.Text), StringIntegerConverter(edtRotinaAplicacaoID.Text));
+  FormularioPopular(StringIntegerConverter(edtRotinaAplicacaoID.Text));
 
   //
   // Controla a exibição dos componentes.
@@ -604,10 +583,8 @@ begin
   //
   // Carrega conteúdo dos campos necessários.
   //
-  edtRotinaAplicacaoBaseID.Text        := IntegerStringConverter(gloBaseID, True);
-  edtRotinaAplicacaoBaseDescricao.Text := gloBaseDescricao;  
-  edtRotinaAplicacaoID.Text            := STR_NOVO;
-  chkAtivo.Checked                     := True;
+  edtRotinaAplicacaoID.Text := STR_NOVO;
+  chkAtivo.Checked          := True;
 
   //
   // Exibe o último código cadastrado.
@@ -628,7 +605,7 @@ end;
 //
 // Procedimento para popular os componentes com os dados de um cadastro.
 //
-procedure TPlataformaERPVCLRotinaAplicacaoCadastro.FormularioPopular(argRotinaAplicacaoBaseID: Integer; argRotinaAplicacaoID: Integer);
+procedure TPlataformaERPVCLRotinaAplicacaoCadastro.FormularioPopular(argRotinaAplicacaoID: Integer);
 const
   PROCEDIMENTO_NOME: string = 'FormularioPopular';
   ERRO_MENSAGEM    : string = 'Impossível consultar dados da rotina da aplicação!';
@@ -677,28 +654,22 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                                          ');
-  locADOQuery.SQL.Add('  [base].[base_id]   AS [rotina_aplicacao_base_id],                             ');
-  locADOQuery.SQL.Add('  [base].[descricao] AS [rotina_aplicacao_base_descricao],                      ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id],                                     ');  
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo],                                                  ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[descricao],                                               ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[chave],                                                   ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[bloqueado],                                               ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[ativo],                                                   ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[ins_local_dt_hr],                                         ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[upd_local_dt_hr],                                         ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[upd_contador]                                             ');  
-  locADOQuery.SQL.Add('FROM                                                                            ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                              ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                               ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [rotina_aplicacao].[rotina_aplicacao_base_id]         ');
-  locADOQuery.SQL.Add('WHERE                                                                           ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id AND ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id]      = :rotina_aplicacao_id          ');
+  locADOQuery.SQL.Add('SELECT                                                            ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id],                       ');  
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo],                                    ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[descricao],                                 ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[chave],                                     ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[bloqueado],                                 ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[ativo],                                     ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[ins_local_dt_hr],                           ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[upd_local_dt_hr],                           ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[upd_contador]                               ');  
+  locADOQuery.SQL.Add('FROM                                                              ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                ');
+  locADOQuery.SQL.Add('WHERE                                                             ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id] = :rotina_aplicacao_id ');
 
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := argRotinaAplicacaoBaseID;
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value      := argRotinaAplicacaoID;
+  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value := argRotinaAplicacaoID;
 
   //
   // Executa query.
@@ -733,9 +704,6 @@ begin
     chkBloqueado.Checked := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked     := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
 
-    edtRotinaAplicacaoBaseID.Text        := IntegerStringConverter(locADOQuery.FieldByName('rotina_aplicacao_base_id').AsInteger, True);
-    edtRotinaAplicacaoBaseDescricao.Text := locADOQuery.FieldByName('rotina_aplicacao_base_descricao').AsString;
-  
     edtRotinaAplicacaoID.Text := IntegerStringConverter(locADOQuery.FieldByName('rotina_aplicacao_id').AsInteger, True);
     edtInsLocalDtHr.Text      := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
     edtUpdLocalDtHr.Text      := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
@@ -786,20 +754,19 @@ var
   locRotinaAplicacaoLogMsg  : string;
   locRotinaAplicacaoLogDados: string;
 
-  locRotinaAplicacaoBaseID: Integer;
-  locRotinaAplicacaoID  : Integer;
-  locCodigo             : string;
-  locDescricao          : string;
-  locChave              : string;
-  locBloqueado          : Boolean;
-  locAtivo              : Boolean;
-  locInsLocalDtHr       : TDateTime;
-  locUpdLocalDtHr       : TDateTime;
-  locUsuarioBaseID      : Integer;
-  locUsuarioID          : Integer;
-  locUpdContador        : Integer;
-  locHostName           : string;
-  locUserName           : string;
+  locRotinaAplicacaoID      : Integer;
+  locCodigo                 : string;
+  locDescricao              : string;
+  locChave                  : string;
+  locBloqueado              : Boolean;
+  locAtivo                  : Boolean;
+  locInsLocalDtHr           : TDateTime;
+  locUpdLocalDtHr           : TDateTime;
+  locUsuarioBaseID          : Integer;
+  locUsuarioID              : Integer;
+  locUpdContador            : Integer;
+  locHostName               : string;
+  locUserName               : string;
 begin
   //
   // Determina se será um insert ou update.
@@ -812,18 +779,17 @@ begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locRotinaAplicacaoBaseID := StringIntegerConverter(edtRotinaAplicacaoBaseID.Text);
-  locRotinaAplicacaoID     := StringIntegerConverter(edtRotinaAplicacaoID.Text);
-  locCodigo                := StringTrim(edtCodigo.Text);
-  locDescricao             := StringTrim(edtDescricao.Text);
-  locChave                 := StringTrim(edtChave.Text);
-  locBloqueado             := chkBloqueado.Checked;
-  locAtivo                 := chkAtivo.Checked;
-  locUsuarioBaseID         := gloUsuarioBaseID;
-  locUsuarioID             := gloUsuarioID;
-  locHostName              := HostNameRecuperar;
-  locUserName              := UserNameRecuperar;
-  locUpdContador           := StringIntegerConverter(edtUpdContador.Text);
+  locRotinaAplicacaoID := StringIntegerConverter(edtRotinaAplicacaoID.Text);
+  locCodigo            := StringTrim(edtCodigo.Text);
+  locDescricao         := StringTrim(edtDescricao.Text);
+  locChave             := StringTrim(edtChave.Text);
+  locBloqueado         := chkBloqueado.Checked;
+  locAtivo             := chkAtivo.Checked;
+  locUsuarioBaseID     := gloUsuarioBaseID;
+  locUsuarioID         := gloUsuarioID;
+  locHostName          := HostNameRecuperar;
+  locUserName          := UserNameRecuperar;
+  locUpdContador       := StringIntegerConverter(edtUpdContador.Text);
 
   //
   // Consiste as informações.
@@ -889,18 +855,16 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                                                                    ');
-  locADOQuery.SQL.Add('  1                                                                             ');
-  locADOQuery.SQL.Add('FROM                                                                            ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                              ');
-  locADOQuery.SQL.Add('WHERE                                                                           ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id AND ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo]                   = :codigo                   AND ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id]     <> :rotina_aplicacao_id          ');
+  locADOQuery.SQL.Add('SELECT TOP 1                                                       ');
+  locADOQuery.SQL.Add('  1                                                                ');
+  locADOQuery.SQL.Add('FROM                                                               ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                 ');
+  locADOQuery.SQL.Add('WHERE                                                              ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo]               = :codigo          AND ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id] <> :rotina_aplicacao_id ');
 
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := locRotinaAplicacaoBaseID;
-  locADOQuery.Parameters.ParamByName('codigo').Value                   := locCodigo;
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value      := locRotinaAplicacaoID;
+  locADOQuery.Parameters.ParamByName('codigo').Value              := locCodigo;
+  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value := locRotinaAplicacaoID;
 
   try
     locADOQuery.Open;
@@ -935,18 +899,16 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                                                                    ');
-  locADOQuery.SQL.Add('  1                                                                             ');
-  locADOQuery.SQL.Add('FROM                                                                            ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                              ');
-  locADOQuery.SQL.Add('WHERE                                                                           ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id AND ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[chave]                    = :chave                    AND ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id]     <> :rotina_aplicacao_id          ');
+  locADOQuery.SQL.Add('SELECT TOP 1                                                       ');
+  locADOQuery.SQL.Add('  1                                                                ');
+  locADOQuery.SQL.Add('FROM                                                               ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                 ');
+  locADOQuery.SQL.Add('WHERE                                                              ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[chave]                = :chave           AND ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id] <> :rotina_aplicacao_id ');
 
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := locRotinaAplicacaoBaseID;
-  locADOQuery.Parameters.ParamByName('chave').Value                    := locChave;
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value      := locRotinaAplicacaoID;
+  locADOQuery.Parameters.ParamByName('chave').Value               := locChave;
+  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value := locRotinaAplicacaoID;
 
   try
     locADOQuery.Open;
@@ -983,16 +945,14 @@ begin
   begin
     locADOQuery.Close;
     locADOQuery.SQL.Clear;
-    locADOQuery.SQL.Add('SELECT                                                                          ');
-    locADOQuery.SQL.Add('  [rotina_aplicacao].[upd_contador]                                             ');
-    locADOQuery.SQL.Add('FROM                                                                            ');
-    locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                              ');
-    locADOQuery.SQL.Add('WHERE                                                                           ');
-    locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id AND ');
-    locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id]      = :rotina_aplicacao_id          ');
+    locADOQuery.SQL.Add('SELECT                                                            ');
+    locADOQuery.SQL.Add('  [rotina_aplicacao].[upd_contador]                               ');
+    locADOQuery.SQL.Add('FROM                                                              ');
+    locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                ');
+    locADOQuery.SQL.Add('WHERE                                                             ');
+    locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id] = :rotina_aplicacao_id ');
 
-    locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := locRotinaAplicacaoBaseID;
-    locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value      := locRotinaAplicacaoID;
+    locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value := locRotinaAplicacaoID;
 
     try
       locADOQuery.Open;
@@ -1066,7 +1026,6 @@ begin
   begin
     try
       locRotinaAplicacaoID := Plataforma_ERP_ADO_NumeradorBaseDeterminar(locADOConnection,
-                                                                         locRotinaAplicacaoBaseID, 
                                                                          NUMERADOR_ROTINA_APLICACAO_ID);
     except
       on locExcecao: Exception do
@@ -1096,7 +1055,6 @@ begin
     // Insere dados.
     //
     locADOQuery.SQL.Add('INSERT INTO [rotina_aplicacao] (');
-    locADOQuery.SQL.Add('  [rotina_aplicacao_base_id],   ');
     locADOQuery.SQL.Add('  [rotina_aplicacao_id],        ');
     locADOQuery.SQL.Add('  [codigo],                     ');
     locADOQuery.SQL.Add('  [descricao],                  ');
@@ -1110,7 +1068,6 @@ begin
     locADOQuery.SQL.Add('  [upd_contador]                ');  
     locADOQuery.SQL.Add(')                               ');
     locADOQuery.SQL.Add('VALUES (                        ');
-    locADOQuery.SQL.Add('  :rotina_aplicacao_base_id,    '); // [rotina_aplicacao_base_id].
     locADOQuery.SQL.Add('  :rotina_aplicacao_id,         '); // [rotina_aplicacao_id].
     locADOQuery.SQL.Add('  :codigo,                      '); // [codigo].
     locADOQuery.SQL.Add('  :descricao,                   '); // [descricao].
@@ -1129,33 +1086,31 @@ begin
     //
     // Atualiza dados.
     //
-    locADOQuery.SQL.Add('UPDATE                                                       ');
-    locADOQuery.SQL.Add('  [rotina_aplicacao]                                         ');
-    locADOQuery.SQL.Add('SET                                                          ');
-    locADOQuery.SQL.Add('  [codigo]           = :codigo,                              ');
-    locADOQuery.SQL.Add('  [descricao]        = :descricao,                           ');
-    locADOQuery.SQL.Add('  [chave]            = :chave,                               ');
-    locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,                           ');
-    locADOQuery.SQL.Add('  [ativo]            = :ativo,                               ');
-    locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,                         ');
-    locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),                            ');
-    locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1                    ');
-    locADOQuery.SQL.Add('WHERE                                                        ');
-    locADOQuery.SQL.Add('  [rotina_aplicacao_base_id] = :rotina_aplicacao_base_id AND ');
-    locADOQuery.SQL.Add('  [rotina_aplicacao_id]      = :rotina_aplicacao_id          ');
+    locADOQuery.SQL.Add('UPDATE                                         ');
+    locADOQuery.SQL.Add('  [rotina_aplicacao]                           ');
+    locADOQuery.SQL.Add('SET                                            ');
+    locADOQuery.SQL.Add('  [codigo]           = :codigo,                ');
+    locADOQuery.SQL.Add('  [descricao]        = :descricao,             ');
+    locADOQuery.SQL.Add('  [chave]            = :chave,                 ');
+    locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,             ');
+    locADOQuery.SQL.Add('  [ativo]            = :ativo,                 ');
+    locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,           ');
+    locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),              ');
+    locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1      ');
+    locADOQuery.SQL.Add('WHERE                                          ');
+    locADOQuery.SQL.Add('  [rotina_aplicacao_id] = :rotina_aplicacao_id ');
   end;
 
   //
   // Parâmetros.
   //
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value  := locRotinaAplicacaoBaseID;
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value       := locRotinaAplicacaoID;
-  locADOQuery.Parameters.ParamByName('codigo').Value                    := locCodigo;
-  locADOQuery.Parameters.ParamByName('descricao').Value                 := locDescricao;
-  locADOQuery.Parameters.ParamByName('chave').Value                     := locChave;
-  locADOQuery.Parameters.ParamByName('bloqueado').Value                 := BooleanStringConverter(locBloqueado);
-  locADOQuery.Parameters.ParamByName('ativo').Value                     := BooleanStringConverter(locAtivo);
-  locADOQuery.Parameters.ParamByName('local_dt_hr').Value               := Now;
+  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value := locRotinaAplicacaoID;
+  locADOQuery.Parameters.ParamByName('codigo').Value              := locCodigo;
+  locADOQuery.Parameters.ParamByName('descricao').Value           := locDescricao;
+  locADOQuery.Parameters.ParamByName('chave').Value               := locChave;
+  locADOQuery.Parameters.ParamByName('bloqueado').Value           := BooleanStringConverter(locBloqueado);
+  locADOQuery.Parameters.ParamByName('ativo').Value               := BooleanStringConverter(locAtivo);
+  locADOQuery.Parameters.ParamByName('local_dt_hr').Value         := Now;
 
   try
     locADOQuery.ExecSQL;
@@ -1179,18 +1134,16 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                                          ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[ins_local_dt_hr],                                         ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[upd_local_dt_hr],                                         ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[upd_contador]                                             ');
-  locADOQuery.SQL.Add('FROM                                                                            ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao]                                                            ');
-  locADOQuery.SQL.Add('WHERE                                                                           ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id AND ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id]      = :rotina_aplicacao_id          ');
+  locADOQuery.SQL.Add('SELECT                                                            ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[ins_local_dt_hr],                           ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[upd_local_dt_hr],                           ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[upd_contador]                               ');
+  locADOQuery.SQL.Add('FROM                                                              ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao]                                              ');
+  locADOQuery.SQL.Add('WHERE                                                             ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id] = :rotina_aplicacao_id ');
 
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := locRotinaAplicacaoBaseID;
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value      := locRotinaAplicacaoID;
+  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value := locRotinaAplicacaoID;
 
   try
     locADOQuery.Open;
@@ -1293,15 +1246,13 @@ var
   locADOConnection          : TADOConnection;
   locADOQuery               : TADOQuery;
   locLogMensagem            : string;
-  locRotinaAplicacaoBaseID  : Integer;
   locRotinaAplicacaoID      : Integer;
   locRotinaAplicacaoLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locRotinaAplicacaoBaseID := StringIntegerConverter(edtRotinaAplicacaoBaseID.Text);
-  locRotinaAplicacaoID     := StringIntegerConverter(edtRotinaAplicacaoID.Text);
+  locRotinaAplicacaoID := StringIntegerConverter(edtRotinaAplicacaoID.Text);
 
   //
   // Log dados.
@@ -1344,7 +1295,6 @@ begin
   locADOQuery.Connection     := locADOConnection;
   locADOQuery.CommandTimeout := gloTimeOutNormal;
 
-{
   //
   // Verifica se existem registros na tabela de usuário que impediriam a exclusão.
   //
@@ -1359,11 +1309,9 @@ begin
   locADOQuery.SQL.Add('       [perfil_usuario_rotina_aplicacao].[perfil_usuario_base_id] = [perfil_usuario].[perfil_usuario_base_id] AND ');
   locADOQuery.SQL.Add('       [perfil_usuario_rotina_aplicacao].[perfil_usuario_id]      = [perfil_usuario].[perfil_usuario_id]          ');
   locADOQuery.SQL.Add('WHERE                                                                                                             ');
-  locADOQuery.SQL.Add('  [perfil_usuario_rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id AND                    ');
-  locADOQuery.SQL.Add('  [perfil_usuario_rotina_aplicacao].[rotina_aplicacao_id]      = :rotina_aplicacao_id                             ');
+  locADOQuery.SQL.Add('  [perfil_usuario_rotina_aplicacao].[rotina_aplicacao_id] = :rotina_aplicacao_id                                  ');
 
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := locRotinaAplicacaoBaseID;
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value      := locRotinaAplicacaoID;
+  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value := locRotinaAplicacaoID;
 
   try
     locADOQuery.Open;
@@ -1393,7 +1341,6 @@ begin
     VCLConsistenciaExibir(ERRO_MENSAGEM, locLogMensagem, ERRO_MENSAGEM_CONSISTENCIA_EXCLUSAO);
     Exit;
   end;
-}
 
   //
   // Inicia transação com o banco de dados.
@@ -1419,14 +1366,12 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('DELETE FROM                                                                     ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao]                                                            ');
-  locADOQuery.SQL.Add('WHERE                                                                           ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id AND ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id]      = :rotina_aplicacao_id          ');
+  locADOQuery.SQL.Add('DELETE FROM                                                       ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao]                                              ');
+  locADOQuery.SQL.Add('WHERE                                                             ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id] = :rotina_aplicacao_id ');
 
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := locRotinaAplicacaoBaseID;
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value      := locRotinaAplicacaoID;
+  locADOQuery.Parameters.ParamByName('rotina_aplicacao_id').Value := locRotinaAplicacaoID;
 
   try
     locADOQuery.ExecSQL;
@@ -1503,14 +1448,12 @@ end;
 //
 procedure TPlataformaERPVCLRotinaAplicacaoCadastro.FormularioCancelar;
 var
-  locRotinaAplicacaoBaseID: Integer;
-  locRotinaAplicacaoID    : Integer;
+  locRotinaAplicacaoID: Integer;
 begin
   //
   // Carrega chave do registro que estava sendo editado.
   //
-  locRotinaAplicacaoBaseID := StringIntegerConverter(edtRotinaAplicacaoBaseID.Text);
-  locRotinaAplicacaoID     := StringIntegerConverter(edtRotinaAplicacaoID.Text);
+  locRotinaAplicacaoID := StringIntegerConverter(edtRotinaAplicacaoID.Text);
 
   //
   // Confirma com o usuário.
@@ -1527,7 +1470,7 @@ begin
   //
   // Popula somente os dados.
   //
-  FormularioPopular(locRotinaAplicacaoBaseID, locRotinaAplicacaoID);
+  FormularioPopular(locRotinaAplicacaoID);
 
   //
   // Componentes desligados para edição.
@@ -1543,16 +1486,10 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioCodigoSugerir';
   ERRO_MENSAGEM    : string = 'Impossível sugerir informações sobre o próximo código da rotina da aplicação!';
 var
-  locADOConnection        : TADOConnection;
-  locADOQuery             : TADOQuery;
-  locLogMensagem          : string;
-  locRotinaAplicacaoBaseID: Integer;
+  locADOConnection : TADOConnection;
+  locADOQuery      : TADOQuery;
+  locLogMensagem   : string;
 begin
-  //
-  // ID da base.
-  //
-  locRotinaAplicacaoBaseID := gloBaseID;
-
   //
   // Troca cursor.
   //
@@ -1562,7 +1499,6 @@ begin
   // Limpa componente.
   //
   VCLEditLimpar(edtCodigoCadastrado);
-  VCLEditLimpar(edtCodigoCadastradoBaseID);
   VCLEditLimpar(edtCodigoCadastradoID);
 
   //
@@ -1595,19 +1531,14 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                                                                ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id],                            ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id],                                 ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo]                                               ');
-  locADOQuery.SQL.Add('FROM                                                                        ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                          ');
-  locADOQuery.SQL.Add('WHERE                                                                       ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_base_id] = :rotina_aplicacao_base_id ');
-  locADOQuery.SQL.Add('ORDER BY                                                                    ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[ins_server_dt_hr] DESC,                               ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo] DESC                                          ');
-
-  locADOQuery.Parameters.ParamByName('rotina_aplicacao_base_id').Value := locRotinaAplicacaoBaseID;
+  locADOQuery.SQL.Add('SELECT TOP 1                                  ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[rotina_aplicacao_id],   ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo]                 ');
+  locADOQuery.SQL.Add('FROM                                          ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)            ');
+  locADOQuery.SQL.Add('ORDER BY                                      ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[ins_server_dt_hr] DESC, ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[codigo] DESC            ');
 
   //
   // Executa query.
@@ -1633,9 +1564,8 @@ begin
   //
   if locADOQuery.RecordCount > 0 then
   begin
-    edtCodigoCadastrado.Text       := locADOQuery.FieldByName('codigo').AsString;
-    edtCodigoCadastradoBaseID.Text := IntegerStringConverter(locADOQuery.FieldByName('rotina_aplicacao_base_id').AsInteger);
-    edtCodigoCadastradoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('rotina_aplicacao_id').AsInteger);
+    edtCodigoCadastrado.Text   := locADOQuery.FieldByName('codigo').AsString;
+    edtCodigoCadastradoID.Text := IntegerStringConverter(locADOQuery.FieldByName('rotina_aplicacao_id').AsInteger);
 
     VCLEditClickControlar(edtCodigoCadastrado, True);
   end;
@@ -1664,13 +1594,12 @@ begin
     locRotinaAplicacaoID := argRotinaAplicacaoID;
 
   Result := '';
-  LogDadosStringDescrever ('ID da base da rotina da aplicação', edtRotinaAplicacaoBaseID.Text, Result);
-  LogDadosIntegerDescrever('ID da rotina da aplicação',         locRotinaAplicacaoID,          Result);
-  LogDadosStringDescrever ('Código',                            edtCodigo.Text,                Result);
-  LogDadosStringDescrever ('Descrição',                         edtDescricao.Text,             Result);
-  LogDadosStringDescrever ('Chave',                             edtChave.Text,                 Result);
-  LogDadosBooleanDescrever('Bloqueado',                         chkBloqueado.Checked,          Result);
-  LogDadosBooleanDescrever('Ativo',                             chkAtivo.Checked,              Result);
+  LogDadosIntegerDescrever('ID da rotina da aplicação', locRotinaAplicacaoID, Result);
+  LogDadosStringDescrever ('Código',                    edtCodigo.Text,       Result);
+  LogDadosStringDescrever ('Descrição',                 edtDescricao.Text,    Result);
+  LogDadosStringDescrever ('Chave',                     edtChave.Text,        Result);
+  LogDadosBooleanDescrever('Bloqueado',                 chkBloqueado.Checked, Result);
+  LogDadosBooleanDescrever('Ativo',                     chkAtivo.Checked,     Result);
 end;
 
 end.
