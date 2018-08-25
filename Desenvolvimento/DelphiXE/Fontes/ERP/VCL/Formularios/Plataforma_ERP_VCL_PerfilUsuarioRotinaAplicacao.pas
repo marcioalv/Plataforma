@@ -51,6 +51,8 @@ type
     imlIcones: TImageList;
     btnTodosSelecionar: TBitBtn;
     btnTodosDeselecionar: TBitBtn;
+    btnExpandir: TBitBtn;
+    btnContrair: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure mniGravarClick(Sender: TObject);
@@ -64,8 +66,12 @@ type
     procedure tvwRotinasDblClick(Sender: TObject);
     procedure btnTodosSelecionarClick(Sender: TObject);
     procedure btnTodosDeselecionarClick(Sender: TObject);
+    procedure btnExpandirClick(Sender: TObject);
+    procedure btnContrairClick(Sender: TObject);
+    procedure tvwRotinasClick(Sender: TObject);
   private
-    priListaDados: array of Integer;
+    priListaDados    : array of Integer;
+    priTreeViewIndice: Integer;
     procedure FormularioLimpar;
     procedure FormularioPopular;
     procedure FormularioGravar;
@@ -116,6 +122,12 @@ begin
   pubPerfilUsuarioBaseID := 0;
   pubPerfilUsuarioID     := 0;
   pubUpdContador         := 0;
+
+  //
+  // Inicializa variáveis privadas.
+  //
+  priListaDados     := nil;
+  priTreeViewIndice := VCL_NENHUM_INDICE;
 end;
 
 //
@@ -164,10 +176,23 @@ end;
 //
 // Eventos do componente "treeview".
 //
+procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.tvwRotinasClick(Sender: TObject);
+begin
+  if tvwRotinas.Selected <> nil then
+  begin
+    priTreeViewIndice := tvwRotinas.Selected.AbsoluteIndex;
+  end;
+end;
+
 procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.tvwRotinasDblClick(Sender: TObject);
 var
   locTreeNode: TTreeNode;
 begin
+  if tvwRotinas.Selected <> nil then
+  begin
+    priTreeViewIndice := tvwRotinas.Selected.AbsoluteIndex;
+  end;
+
   locTreeNode := tvwRotinas.Selected;
 
   if locTreeNode.getFirstChild = nil then
@@ -193,6 +218,7 @@ begin
   if tvwRotinas.Selected = nil then Exit;
   TreeViewNosMarcar(tvwRotinas.Selected, True);
   TreeViewImagemDeterminar;
+  VCLTreeViewItemPosicionar(tvwRotinas, priTreeViewIndice);
 end;
 
 //
@@ -203,6 +229,24 @@ begin
   if tvwRotinas.Selected = nil then Exit;
   TreeViewNosMarcar(tvwRotinas.Selected, False);
   TreeViewImagemDeterminar;
+  VCLTreeViewItemPosicionar(tvwRotinas, priTreeViewIndice);
+end;
+
+//
+// Expande a visualização.
+//
+procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.btnExpandirClick(Sender: TObject);
+begin
+  tvwRotinas.FullExpand;
+  VCLTreeViewItemPosicionar(tvwRotinas, 0);
+end;
+
+//
+// Contrai a visualização.
+//
+procedure TPlataformaERPVCLPerfilUsuarioRotinaAplicacao.btnContrairClick(Sender: TObject);
+begin
+  tvwRotinas.FullCollapse;
 end;
 
 //
@@ -468,8 +512,8 @@ begin
   if tvwRotinas.Items.Count > 0 then
   begin
     tvwRotinas.FullExpand;
-    tvwRotinas.Items.Item[0].Selected := True;
-    tvwRotinas.SetFocus;
+    priTreeViewIndice := 0;
+    VCLTreeViewItemPosicionar(tvwRotinas, priTreeViewIndice);
   end;
 end;
 

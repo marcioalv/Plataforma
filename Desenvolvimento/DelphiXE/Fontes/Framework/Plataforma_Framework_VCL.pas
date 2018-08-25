@@ -215,6 +215,8 @@ procedure VCLTreeViewLimpar(argComponente: TTreeView);
 
 procedure VCLTreeViewIconeDeterminar(argTreeNode: TTreeNode; argIconeIndice: Integer);
 
+procedure VCLTreeViewItemPosicionar(argTreeView: TTreeView; argIndice: Integer);
+
 
 {*************************************************************************************************}
 implementation
@@ -1827,6 +1829,17 @@ begin
   argTreeNode.ImageIndex         := argIconeIndice;
   argTreeNode.ExpandedImageIndex := argIconeIndice;
   argTreeNode.SelectedIndex      := argIconeIndice;
+end;
+
+//
+// VCLTreeViewItemPosicionar.
+//
+procedure VCLTreeViewItemPosicionar(argTreeView: TTreeView; argIndice: Integer);
+begin
+  argTreeView.Items.Item[argIndice].Selected := True;
+  argTreeView.Items.Item[argIndice].Focused;
+  argTreeView.Items.Item[argIndice].MakeVisible;
+  argTreeView.SetFocus;
 end;
 
 end.

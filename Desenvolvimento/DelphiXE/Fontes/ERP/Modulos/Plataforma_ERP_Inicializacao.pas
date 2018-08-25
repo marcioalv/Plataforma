@@ -283,13 +283,22 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                       ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[chave]                 ');
-  locADOQuery.SQL.Add('FROM                                         ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)           ');
-  locADOQuery.SQL.Add('WHERE                                        ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[bloqueado] = ''N'' AND ');
-  locADOQuery.SQL.Add('  [rotina_aplicacao].[ativo]     = ''S''     ');
+  locADOQuery.SQL.Add('SELECT                                                                                                    ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[chave]                                                                              ');
+  locADOQuery.SQL.Add('FROM                                                                                                      ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao] WITH (NOLOCK)                                                                        ');
+  locADOQuery.SQL.Add('  INNER JOIN [perfil_usuario_rotina_aplicacao] WITH (NOLOCK)                                              ');
+  locADOQuery.SQL.Add('    ON [perfil_usuario_rotina_aplicacao].[rotina_aplicacao_id] = [rotina_aplicacao].[rotina_aplicacao_id] ');
+  locADOQuery.SQL.Add('WHERE                                                                                                     ');
+  locADOQuery.SQL.Add('  [perfil_usuario_rotina_aplicacao].[licenca_id]             = :licenca_id             AND                ');
+  locADOQuery.SQL.Add('  [perfil_usuario_rotina_aplicacao].[perfil_usuario_base_id] = :perfil_usuario_base_id AND                ');
+  locADOQuery.SQL.Add('  [perfil_usuario_rotina_aplicacao].[perfil_usuario_id]      = :perfil_usuario_id      AND                ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[bloqueado]                             = ''N''                   AND                ');
+  locADOQuery.SQL.Add('  [rotina_aplicacao].[ativo]                                 = ''S''                                      ');
+
+  locADOQuery.Parameters.ParamByName('licenca_id').Value             := gloLicencaID;
+  locADOQuery.Parameters.ParamByName('perfil_usuario_base_id').Value := gloUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('perfil_usuario_id').Value      := gloUsuarioID;
                                                               
   //
   // Executa query.
