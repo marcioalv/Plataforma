@@ -145,6 +145,12 @@ function Plataforma_ERP_UsuarioRotina(argRotina: string): Boolean;
 var
   locContador: Integer;
 begin
+  if gloUsuarioAdministrador then
+  begin
+    Result := True;
+    Exit;
+  end;
+  
   Result := False;
   for locContador := 0 to (Length(gloUsuarioRotinas) - 1) do
   begin

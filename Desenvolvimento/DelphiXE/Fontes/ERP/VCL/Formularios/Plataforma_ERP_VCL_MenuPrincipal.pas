@@ -324,21 +324,31 @@ end;
 //
 procedure TPlataformaERPVCLMenuPrincipal.FormularioInicializar;
 begin
+  //
   // Determina o path onde a aplicação está rodando.
+  //
   gloAppPath := PathExtrair(Application.ExeName);
 
+  //
   // Gera o hashcode de execução da aplicação.
+  //
   Plataforma_ERP_HashCodInicializar;
- 
+
+  //
   // Inicializa o log local da aplicação.
+  //
   Plataforma_ERP_LogInicializar;
 
+  //
   // Define os parâmetros de conexão ao banco de dados.
+  //
   gloConexaoADOString := 'Provider=SQLOLEDB.1;Persist Security Info=True;Trusted_Connection=True;Data Source=LocalHost\SQLExpress;User ID=sa;Password=abc123;Initial Catalog=PlataformaERP;Connection Timeout=10;';
   gloConexaoTimeOut   := 10;
 
-  // Define os timeouts.
-  gloTimeOutNormal := 60;
+  //
+  // Define os timeouts de execução de querys.
+  //
+  Plataforma_ERP_TimeOutsInicializar;
 
   // Define a base.
   gloBaseID        := 1;

@@ -273,6 +273,7 @@ begin
   locADOQuery.SQL.Add('  [usuario].[senha_exigir],                           ');
   locADOQuery.SQL.Add('  [usuario].[senha_trocar],                           ');
   locADOQuery.SQL.Add('  [usuario].[senha],                                  ');
+  locADOQuery.SQL.Add('  [usuario].[administrador],                          ');
   locADOQuery.SQL.Add('  [usuario].[bloqueado],                              ');
   locADOQuery.SQL.Add('  [usuario].[ativo]                                   ');
   locADOQuery.SQL.Add('FROM                                                  ');
@@ -434,10 +435,11 @@ begin
   //
   // Autentica usuário.
   //
-  gloUsuarioBaseID := locADOQuery.FieldByName('usuario_base_id').AsInteger;
-  gloUsuarioID     := locADOQuery.FieldByName('usuario_id').AsInteger;
-  gloUsuarioLogon  := locADOQuery.FieldByName('logon').AsString;
-  gloUsuarioNome   := locADOQuery.FieldByName('nome').AsString;
+  gloUsuarioBaseID        := locADOQuery.FieldByName('usuario_base_id').AsInteger;
+  gloUsuarioID            := locADOQuery.FieldByName('usuario_id').AsInteger;
+  gloUsuarioLogon         := locADOQuery.FieldByName('logon').AsString;
+  gloUsuarioNome          := locADOQuery.FieldByName('nome').AsString;
+  gloUsuarioAdministrador := StringBooleanConverter(locADOQuery.FieldByName('administrador').AsString);
   
   //
   // Finaliza.

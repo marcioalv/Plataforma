@@ -18,26 +18,30 @@ uses
   Plataforma_Framework_Log;
 
 var
-  gloAppHashCode     : string;
-  gloAppPath         : string;
+  gloAppHashCode: string;
+  gloAppPath    : string;
 
-  gloLocalLog        : TPlataformaFrameworkLog;
+  gloLocalLog: TPlataformaFrameworkLog;
 
+  gloTimeOutRapido   : Integer;
   gloTimeOutNormal   : Integer;
+  gloTimeOutExtendido: Integer;
+  gloTimeOutDemorado : Integer;
 
-  gloBaseID          : Integer;
-  gloBaseCodigo      : string;
-  gloBaseDescricao   : string;
+  gloBaseID       : Integer;
+  gloBaseCodigo   : string;
+  gloBaseDescricao: string;
 
   gloLicencaID       : Integer;
   gloLicencaCodigo   : string;
   gloLicencaDescricao: string;
 
-  gloUsuarioBaseID   : Integer;
-  gloUsuarioID       : Integer;
-  gloUsuarioLogon    : string;
-  gloUsuarioNome     : string;
-  gloUsuarioRotinas  : array of string;
+  gloUsuarioBaseID       : Integer;
+  gloUsuarioID           : Integer;
+  gloUsuarioLogon        : string;
+  gloUsuarioNome         : string;
+  gloUsuarioAdministrador: Boolean;
+  gloUsuarioRotinas      : array of string;
 
   gloConexaoADOString: string;
   gloConexaoTimeOut  : Integer;
