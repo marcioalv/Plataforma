@@ -26,6 +26,7 @@ procedure Plataforma_ERP_TimeOutsInicializar;
 function  Plataforma_ERP_UsuarioInicializar: Boolean;
 function  Plataforma_ERP_UsuarioSenhaTrocaVerificar: Boolean;
 procedure Plataforma_ERP_UsuarioRotinasPopular;
+procedure Plataforma_ERP_UsuarioTrocar;
 
 implementation
 
@@ -241,6 +242,7 @@ begin
   // A senha deve ser trocada.
   //
   locFormulario := TPlataformaERPVCLUsuarioSenhaTrocar.Create(nil);
+  locFormulario.pubExigeSenhaAtual := False;
   locFormulario.ShowModal;
 
   Result := (not locFormulario.pubClicouFechar);
@@ -363,6 +365,61 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+end;
+
+//
+// Procedimento para trocar de usuário logado no sistema.
+//
+procedure Plataforma_ERP_UsuarioTrocar;
+var
+  locUsuarioBaseID       : Integer;
+  locUsuarioID           : Integer;
+  locUsuarioLogon        : string;
+  locUsuarioNome         : string;
+  locUsuarioAdministrador: Boolean;
+  locUsuarioRotinas      : array of string;
+  locContador            : Integer;
+begin
+  //
+  // Memoriza usuário atual logado.
+  //
+  locUsuarioBaseID        := gloUsuarioBaseID;
+  locUsuarioID            := gloUsuarioID;
+  locUsuarioLogon         := gloUsuarioLogon;
+  locUsuarioNome          := gloUsuarioNome;
+  locUsuarioAdministrador := gloUsuarioAdministrador;
+
+  locUsuarioRotinas := nil;
+  if gloUsuarioRotinas <> nil then
+  begin
+    SetLength(locUsuarioRotinas, Length(gloUsuarioRotinas));
+    for locContador := 0 to Length(gloUsuarioRotinas) - 1 do
+    begin
+      locUsuarioRotinas[locContador] := gloUsuarioRotinas[locContador];
+    end;
+  end;
+
+  //
+  // Exibe tela de logon.
+  //
+  if not Plataforma_ERP_UsuarioInicializar then
+  begin
+    gloUsuarioBaseID        := locUsuarioBaseID;
+    gloUsuarioID            := locUsuarioID;
+    gloUsuarioLogon         := locUsuarioLogon;
+    gloUsuarioNome          := locUsuarioNome;
+    gloUsuarioAdministrador := locUsuarioAdministrador;
+
+    gloUsuarioRotinas := nil;
+    if locUsuarioRotinas <> nil then
+    begin
+      SetLength(gloUsuarioRotinas, Length(locUsuarioRotinas));
+      for locContador := 0 to Length(locUsuarioRotinas) do
+      begin
+        gloUsuarioRotinas[locContador] := locUsuarioRotinas[locContador];
+      end;
+    end;
+  end;
 end;
 
 end.

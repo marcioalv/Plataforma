@@ -28,6 +28,7 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     Align = alClient
     Center = True
     Stretch = True
+    OnClick = Image1Click
     ExplicitLeft = 440
     ExplicitTop = 224
     ExplicitWidth = 105
@@ -46,11 +47,24 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     ShowCaption = False
     TabOrder = 0
     object lblHostName: TLabel
-      Left = 8
-      Top = 16
+      Left = 152
+      Top = 14
       Width = 96
       Height = 13
       Caption = 'ComputerHostName'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGray
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lblAppUserName: TLabel
+      Left = 16
+      Top = 14
+      Width = 101
+      Height = 13
+      Caption = 'ApplicationUserName'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clGray
       Font.Height = -11
@@ -64,6 +78,17 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     Top = 80
     object mniAplicacao: TMenuItem
       Caption = '&Aplica'#231#227'o'
+      object mniUsuarioTrocar: TMenuItem
+        Caption = 'Trocar usu'#225'rio'
+        OnClick = mniUsuarioTrocarClick
+      end
+      object mniUsuarioSenhaTrocar: TMenuItem
+        Caption = 'Trocar senha usu'#225'rio'
+        OnClick = mniUsuarioSenhaTrocarClick
+      end
+      object N1: TMenuItem
+        Caption = '-'
+      end
       object mniConfiguracoes: TMenuItem
         Caption = 'Configura'#231#245'es'
         object mniResolucaoTela: TMenuItem

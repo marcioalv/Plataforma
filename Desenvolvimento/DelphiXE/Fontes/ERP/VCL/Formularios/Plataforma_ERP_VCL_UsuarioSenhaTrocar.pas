@@ -38,28 +38,30 @@ type
     btnFechar: TBitBtn;
     btnMinimizar: TBitBtn;
     panFormulario: TPanel;
-    lblSenha: TLabel;
-    lblSenhaConf: TLabel;
+    lblSenhaNova: TLabel;
+    lblSenhaNovaConf: TLabel;
     imgSenhaErrada: TImage;
     imgSenhaCorreta: TImage;
     chkSenhaExibir: TCheckBox;
-    edtSenha: TEdit;
-    edtSenhaConf: TEdit;
+    edtSenhaNova: TEdit;
+    edtSenhaNovaConf: TEdit;
     btnGravar: TBitBtn;
     mnuFormulario: TMainMenu;
     mniGravar: TMenuItem;
     mniMinimizar: TMenuItem;
     mniFechar: TMenuItem;
-    Label1: TLabel;
+    lblUsuario: TLabel;
     edtUsuario: TEdit;
+    lblSenhaAtual: TLabel;
+    edtSenhaAtual: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure edtSenhaEnter(Sender: TObject);
-    procedure edtSenhaExit(Sender: TObject);
-    procedure edtSenhaKeyPress(Sender: TObject; var Key: Char);
-    procedure edtSenhaConfEnter(Sender: TObject);
-    procedure edtSenhaConfExit(Sender: TObject);
-    procedure edtSenhaConfKeyPress(Sender: TObject; var Key: Char);
+    procedure edtSenhaNovaEnter(Sender: TObject);
+    procedure edtSenhaNovaExit(Sender: TObject);
+    procedure edtSenhaNovaKeyPress(Sender: TObject; var Key: Char);
+    procedure edtSenhaNovaConfEnter(Sender: TObject);
+    procedure edtSenhaNovaConfExit(Sender: TObject);
+    procedure edtSenhaNovaConfKeyPress(Sender: TObject; var Key: Char);
     procedure mniGravarClick(Sender: TObject);
     procedure mniMinimizarClick(Sender: TObject);
     procedure mniFecharClick(Sender: TObject);
@@ -68,17 +70,22 @@ type
     procedure btnFecharClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure chkSenhaExibirClick(Sender: TObject);
-    procedure edtSenhaKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure edtSenhaConfKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtSenhaNovaKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtSenhaNovaConfKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtSenhaAtualEnter(Sender: TObject);
+    procedure edtSenhaAtualExit(Sender: TObject);
+    procedure edtSenhaAtualKeyPress(Sender: TObject; var Key: Char);
   private
-    priLicencaID    : Integer;
-    priUsuarioBaseID: Integer;
-    priUsuarioID    : Integer;
+    priLicencaID      : Integer;
+    priUsuarioBaseID  : Integer;
+    priUsuarioID      : Integer;
     procedure FormularioLimpar;
+    procedure FormularioComponentesExibir;
     procedure FormularioControlar;
     procedure FormularioGravar;
   public
-    pubClicouFechar: Boolean;
+    pubClicouFechar   : Boolean;
+    pubExigeSenhaAtual: Boolean;
   end;
 
 var
@@ -113,7 +120,8 @@ begin
   //
   // Inicialização das variáveis públicas.
   //
-  pubClicouFechar := True;
+  pubClicouFechar    := True;
+  pubExigeSenhaAtual := False;
 end;
 
 //
@@ -132,6 +140,11 @@ begin
   FormularioLimpar;
 
   //
+  // Exibir os componentes do formulário.
+  //
+  FormularioComponentesExibir;
+
+  //
   // Controlar comportamento dos componentes do formulário.
   //
   FormularioControlar;
@@ -139,7 +152,10 @@ begin
   //
   // Foco no componente apropriado.
   //
-  edtSenha.SetFocus;
+  if pubExigeSenhaAtual then
+    edtSenhaAtual.SetFocus
+  else
+    edtSenhaNova.SetFocus;
 end;
 
 //
@@ -169,50 +185,68 @@ begin
 end;
 
 //
-// Eventos do componente "senha".
+// Eventos do componente "senha atual".
 //
-procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaAtualEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtSenha) then Exit;
+  if not VCLEditEntrar(edtSenhaAtual) then Exit;
 end;
 
-procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaAtualKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaAtualExit(Sender: TObject);
 begin
-  FormularioControlar;
-end;
-
-procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaExit(Sender: TObject);
-begin
-  if not VCLEditSair(edtSenha) then Exit;
+  if not VCLEditSair(edtSenhaAtual) then Exit;
 end;
 
 //
-// Eventos do componente "confirmação senha".
+// Eventos do componente "nova senha".
 //
-procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaConfEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaNovaEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtSenhaConf) then Exit;
+  if not VCLEditEntrar(edtSenhaNova) then Exit;
 end;
 
-
-procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaConfKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaNovaKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaConfKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaNovaKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   FormularioControlar;
 end;
 
-procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaConfExit(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaNovaExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtSenhaConf) then Exit;
+  if not VCLEditSair(edtSenhaNova) then Exit;
+end;
+
+//
+// Eventos do componente "confirmação nova senha".
+//
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaNovaConfEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtSenhaNovaConf) then Exit;
+end;
+
+
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaNovaConfKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaNovaConfKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  FormularioControlar;
+end;
+
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.edtSenhaNovaConfExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtSenhaNovaConf) then Exit;
 end;
 
 //
@@ -253,9 +287,36 @@ end;
 procedure TPlataformaERPVCLUsuarioSenhaTrocar.FormularioLimpar;
 begin
   edtUsuario.Text := gloUsuarioNome;
-  VCLEditLimpar    (edtSenha);
-  VCLEditLimpar    (edtSenhaConf);
+  VCLEditLimpar    (edtSenhaAtual);
+  VCLEditLimpar    (edtSenhaNova);
+  VCLEditLimpar    (edtSenhaNovaConf);
   VCLCheckBoxLimpar(chkSenhaExibir);
+end;
+
+//
+// Procedimento para exibir os componentes do formulário conforme o tipo de exibição.
+//
+procedure TPlataformaERPVCLUsuarioSenhaTrocar.FormularioComponentesExibir;
+begin
+  if not pubExigeSenhaAtual then
+  begin
+    lblSenhaAtual.Visible := False;
+    edtSenhaAtual.Visible := False;
+
+    lblUsuario.Top := lblUsuario.Top + 24;
+    edtUsuario.Top := edtUsuario.Top + 24;
+
+    lblSenhaNova.Top := lblSenhaNova.Top - 32;
+    edtSenhaNova.Top := edtSenhaNova.Top - 32;
+
+    lblSenhaNovaConf.Top := lblSenhaNovaConf.Top - 32;
+    edtSenhaNovaConf.Top := edtSenhaNovaConf.Top - 32;
+
+    imgSenhaErrada.Top  := imgSenhaErrada.Top - 32;
+    imgSenhaCorreta.Top := imgSenhaCorreta.Top - 32;
+
+    chkSenhaExibir.Top := chkSenhaExibir.Top - 32;
+  end;
 end;
 
 //
@@ -269,9 +330,9 @@ begin
   imgSenhaErrada.Visible  := False;
   imgSenhaCorreta.Visible := False;
 
-  if (StringTrim(edtSenha.Text) <> '') or (StringTrim(edtSenhaConf.Text) <> '') then
+  if (StringTrim(edtSenhaNova.Text) <> '') or (StringTrim(edtSenhaNovaConf.Text) <> '') then
   begin
-    if edtSenha.Text = edtSenhaConf.Text then
+    if edtSenhaNova.Text = edtSenhaNovaConf.Text then
     begin
       imgSenhaCorreta.Visible := True;
     end
@@ -286,13 +347,15 @@ begin
   //
   if not chkSenhaExibir.Checked then
   begin
-    edtSenha.PasswordChar     := '*';
-    edtSenhaConf.PasswordChar := '*';
+    edtSenhaAtual.PasswordChar    := '*';
+    edtSenhaNova.PasswordChar     := '*';
+    edtSenhaNovaConf.PasswordChar := '*';
   end
   else
   begin
-    edtSenha.PasswordChar     := #0;
-    edtSenhaConf.PasswordChar := #0;
+    edtSenhaAtual.PasswordChar    := #0;
+    edtSenhaNova.PasswordChar     := #0;
+    edtSenhaNovaConf.PasswordChar := #0;
   end;
 end;
 
@@ -312,8 +375,9 @@ var
   locUsuarioBaseID   : Integer;
   locUsuarioID       : Integer;
                      
-  locSenha           : string;
-  locSenhaConf       : string;
+  locSenhaAtual      : string;
+  locSenhaNova       : string;
+  locSenhaNovaConf   : string;
 
   locRegistroAcao    : Byte;
   locRegistroAcaoID  : Integer;
@@ -332,8 +396,9 @@ begin
   locUsuarioBaseID    := priUsuarioBaseID;
   locUsuarioID        := priUsuarioID;
 
-  locSenha            := edtSenha.Text;
-  locSenhaConf        := edtSenhaConf.Text;
+  locSenhaAtual       := edtSenhaAtual.Text;
+  locSenhaNova        := edtSenhaNova.Text;
+  locSenhaNovaConf    := edtSenhaNovaConf.Text;
 
   locHostName         := HostNameRecuperar;
   locUserName         := UserNameRecuperar;
@@ -343,9 +408,9 @@ begin
   //
   // A senha não pode ser em branco.
   //
-  if (StringTrim(locSenha) = '') and (StringTrim(locSenhaConf) = '') then
+  if (StringTrim(locSenhaNova) = '') and (StringTrim(locSenhaNovaConf) = '') then
   begin
-    VCLConsistenciaExibir('Uma senha deve obrigatoriamente ser informada!');
+    VCLConsistenciaExibir('Uma nova senha deve obrigatoriamente ser informada!');
     //edtSenha.SetFocus;
     Exit;
   end;
@@ -353,9 +418,9 @@ begin
   //
   // A digitação da confirmação da senha deve conferir.
   //
-  if locSenha <> locSenhaConf then
+  if locSenhaNova <> locSenhaNovaConf then
   begin
-    VCLConsistenciaExibir('A confirmação da senha não confere com a primeira digitação!');
+    VCLConsistenciaExibir('A confirmação da nova senha não confere com a primeira digitação!');
     //edtSenha.SetFocus;
     Exit;
   end;
@@ -364,7 +429,7 @@ begin
   // Log de dados.
   //
   locUsuarioLogDados := '';
-  LogDadosStringDescrever ('Senha', locSenha, locUsuarioLogDados);
+  LogDadosStringDescrever ('Senha', locSenhaNova, locUsuarioLogDados);
 
   //
   // Troca cursor.
@@ -395,6 +460,57 @@ begin
   locADOQuery                := TADOQuery.Create(Self);
   locADOQuery.Connection     := locADOConnection;
   locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Verifica senha atual do usuário.
+  //
+  if pubExigeSenhaAtual then
+  begin
+    locADOQuery.Close;
+    locADOQuery.SQL.Clear;
+    locADOQuery.SQL.Add('SELECT                                               ');
+    locADOQuery.SQL.Add('  [usuario].[senha]                                  ');
+    locADOQuery.SQL.Add('FROM                                                 ');
+    locADOQuery.SQL.Add('  [usuario] WITH (NOLOCK)                            ');
+    locADOQuery.SQL.Add('WHERE                                                ');
+    locADOQuery.SQL.Add('  [usuario].[licenca_id]      = :licenca_id      AND ');
+    locADOQuery.SQL.Add('  [usuario].[usuario_base_id] = :usuario_base_id AND ');
+    locADOQuery.SQL.Add('  [usuario].[usuario_id]      = :usuario_id          ');
+
+    locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
+    locADOQuery.Parameters.ParamByName('usuario_base_id').Value := locUsuarioBaseID;
+    locADOQuery.Parameters.ParamByName('usuario_id').Value      := locUsuarioID;
+ 
+    try
+      locADOQuery.Open;
+    except
+      on locExcecao: Exception do
+      begin
+        locADOQuery.Close;
+        FreeAndNil(locADOQuery);
+        locADOConnection.Close;
+        FreeAndNil(locADOConnection);
+        locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para selecionar um registro na tabela [usuario]!';
+        Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+        VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+        Exit
+      end;
+    end;
+
+    if locADOQuery.RecordCount > 0 then
+    begin
+      if locADOQuery.FieldByName('senha').AsString <> locSenhaAtual then
+      begin
+        locADOQuery.Close;
+        FreeAndNil(locADOQuery);
+        locADOConnection.Close;
+        FreeAndNil(locADOConnection);
+        VCLConsistenciaExibir('A senha atual informada não confere!');
+        edtSenhaAtual.SetFocus;
+        Exit;
+      end;
+    end;
+  end;
 
   //
   // Determina o ID da ação e a mensagem para o log do registro.
@@ -464,7 +580,7 @@ begin
   locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
   locADOQuery.Parameters.ParamByName('usuario_base_id').Value := locUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('usuario_id').Value      := locUsuarioID;
-  locADOQuery.Parameters.ParamByName('senha').Value           := locSenha;
+  locADOQuery.Parameters.ParamByName('senha').Value           := locSenhaNova;
   locADOQuery.Parameters.ParamByName('local_dt_hr').Value     := Now;
 
   try

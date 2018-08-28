@@ -51,6 +51,10 @@ type
     Panel1: TPanel;
     lblHostName: TLabel;
     mniRegistroAcao: TMenuItem;
+    mniUsuarioTrocar: TMenuItem;
+    N1: TMenuItem;
+    mniUsuarioSenhaTrocar: TMenuItem;
+    lblAppUserName: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
@@ -64,6 +68,9 @@ type
     procedure mniNumeradorBaseClick(Sender: TObject);
     procedure mniNumeradorLicencaClick(Sender: TObject);
     procedure mniRegistroAcaoClick(Sender: TObject);
+    procedure mniUsuarioTrocarClick(Sender: TObject);
+    procedure mniUsuarioSenhaTrocarClick(Sender: TObject);
+    procedure Image1Click(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -85,6 +92,7 @@ uses
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
   Plataforma_ERP_Inicializacao,
+  Plataforma_ERP_VCL_UsuarioSenhaTrocar,
   Plataforma_ERP_VCL_LogLocalLista,
   Plataforma_ERP_VCL_UsuarioLista,
   Plataforma_ERP_VCL_PerfilUsuarioLista,
@@ -142,6 +150,30 @@ end;
 {--------------------------------------------------------------------------------------------------}
 { ITENS DE MENU                                                                                    }
 {--------------------------------------------------------------------------------------------------}
+
+//
+// Evento de click na opção "senha usuário".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniUsuarioTrocarClick(Sender: TObject);
+begin
+  Plataforma_ERP_UsuarioTrocar;
+  FormularioInformacoesDeterminar;
+  FormularioMenuConstruir;
+end;
+
+//
+// Evento de click na opção "trocar senha usuário".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniUsuarioSenhaTrocarClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLUsuarioSenhaTrocar;
+begin
+  locFormulario := TPlataformaERPVCLUsuarioSenhaTrocar.Create(Self);
+  locFormulario.pubExigeSenhaAtual := True;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
 
 //
 // Evento de click na opção de menu "resolução 1.024 x 768".
@@ -269,8 +301,35 @@ end;
 //
 procedure TPlataformaERPVCLMenuPrincipal.FormularioInformacoesDeterminar;
 begin
+  //
+  // Caption do formulário.
+  //
   Caption := 'Plataforma ERP';
-  lblHostName.Caption := HostNameRecuperar + '\' + UserNameRecuperar;
+
+  //
+  // Usuário da aplicação.
+  //
+  if gloUsuarioID = 0 then
+  begin
+    lblAppUserName.Visible := False;
+    lblAppUserName.Caption := '';
+  end
+  else
+  begin
+    lblAppUserName.Visible := True;
+    lblAppUserName.Left    := 16;
+    lblAppUserName.Caption := 'Usuário: ' + gloUsuarioNome;    
+  end;
+
+  //
+  // Computador e usuário de rede.
+  //
+  if gloUsuarioID = 0 then
+    lblHostName.Left := 16
+  else
+    lblHostName.Left := lblAppUserName.Left + lblAppUserName.Width + 32;
+  
+  lblHostName.Caption := 'Computador: ' + HostNameRecuperar + '\' + UserNameRecuperar;
 end;
 
 //
@@ -319,6 +378,11 @@ begin
                           (mniLogsAplicacao.Visible);
 end;
 
+procedure TPlataformaERPVCLMenuPrincipal.Image1Click(Sender: TObject);
+begin
+
+end;
+
 //
 // Procedimento para inicializar a aplicação de ERP.
 //
@@ -364,6 +428,11 @@ begin
   // Logon do usuário.
   //
   if not Plataforma_ERP_UsuarioInicializar then Close;
+
+  //
+  // Status bar.
+  //
+  FormularioInformacoesDeterminar;
 
   //
   // Ajusta itens de menu.
