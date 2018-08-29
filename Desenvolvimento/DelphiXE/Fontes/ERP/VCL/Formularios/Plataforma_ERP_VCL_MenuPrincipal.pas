@@ -103,6 +103,7 @@ uses
   Plataforma_ERP_VCL_RotinaAplicacaoLista,
   Plataforma_ERP_VCL_RegistroAcaoLista,
   Plataforma_ERP_VCL_BaseLista,
+  Plataforma_ERP_VCL_LicencaLista,
   Plataforma_ERP_VCL_NumeradorLicencaLista,
   Plataforma_ERP_VCL_NumeradorBaseLista;
 
@@ -297,8 +298,13 @@ begin
 end;
 
 procedure TPlataformaERPVCLMenuPrincipal.mniLicencasClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLLicencaLista;
 begin
-  Exit;
+  locFormulario := TPlataformaERPVCLLicencaLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 procedure TPlataformaERPVCLMenuPrincipal.mniBasesClick(Sender: TObject);

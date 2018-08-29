@@ -26,7 +26,6 @@ uses
   Plataforma_ERP_VCL_Generico in '..\Formularios\Plataforma_ERP_VCL_Generico.pas',
   Plataforma_ERP_VCL_TiposUsuariosFiltro in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosFiltro.pas' {PlataformaERPVCLTiposUsuariosFiltro},
   Plataforma_ERP_VCL_TiposUsuariosSelecao in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosSelecao.pas' {PlataformaERPVCLTiposUsuariosSelecao},
-  Plataforma_ERP_VCL_LicencaCadastro in '..\Formularios\Plataforma_ERP_VCL_LicencaCadastro.pas' {PlataformaERPVCLLicencaCadastro},
   Plataforma_ERP_VCL_TiposUsuariosCodigo in '..\Formularios\Plataforma_ERP_VCL_TiposUsuariosCodigo.pas' {PlataformaERPVCLTiposUsuariosCodigo},
   Plataforma_ERP_VCL_DataExibicao in '..\Formularios\Plataforma_ERP_VCL_DataExibicao.pas' {PlataformaERPVCLDataExibicao},
   Plataforma_ERP_VCL_DataSelecao in '..\Formularios\Plataforma_ERP_VCL_DataSelecao.pas' {PlataformaERPVCLDataSelecao},
@@ -55,7 +54,10 @@ uses
   Plataforma_ERP_VCL_PerfilUsuarioRotinaAplicacao in '..\Formularios\Plataforma_ERP_VCL_PerfilUsuarioRotinaAplicacao.pas' {PlataformaERPVCLPerfilUsuarioRotinaAplicacao},
   Plataforma_ERP_VCL_BaseLista in '..\Formularios\Plataforma_ERP_VCL_BaseLista.pas' {PlataformaERPVCLBaseLista},
   Plataforma_ERP_VCL_BaseFiltro in '..\Formularios\Plataforma_ERP_VCL_BaseFiltro.pas' {PlataformaERPVCLBaseFiltro},
-  Plataforma_ERP_VCL_BaseCadastro in '..\Formularios\Plataforma_ERP_VCL_BaseCadastro.pas' {PlataformaERPVCLBaseCadastro};
+  Plataforma_ERP_VCL_BaseCadastro in '..\Formularios\Plataforma_ERP_VCL_BaseCadastro.pas' {PlataformaERPVCLBaseCadastro},
+  Plataforma_ERP_VCL_LicencaFiltro in '..\Formularios\Plataforma_ERP_VCL_LicencaFiltro.pas' {PlataformaERPVCLLicencaFiltro},
+  Plataforma_ERP_VCL_LicencaCadastro in '..\Formularios\Plataforma_ERP_VCL_LicencaCadastro.pas' {PlataformaERPVCLLicencaCadastro},
+  Plataforma_ERP_VCL_LicencaLista in '..\Formularios\Plataforma_ERP_VCL_LicencaLista.pas' {PlataformaERPVCLLicencaLista};
 
 {$R *.res}
 
@@ -63,8 +65,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
-  Application.CreateForm(TPlataformaERPVCLBaseLista, PlataformaERPVCLBaseLista);
-  Application.CreateForm(TPlataformaERPVCLBaseFiltro, PlataformaERPVCLBaseFiltro);
-  Application.CreateForm(TPlataformaERPVCLBaseCadastro, PlataformaERPVCLBaseCadastro);
+  Application.CreateForm(TPlataformaERPVCLLicencaCadastro, PlataformaERPVCLLicencaCadastro);
+  Application.CreateForm(TPlataformaERPVCLLicencaLista, PlataformaERPVCLLicencaLista);
   Application.Run;
 end.
