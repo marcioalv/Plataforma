@@ -38,6 +38,7 @@ const
   MENSAGEM_REGISTRO_ACAO_ALTERADO     : string = 'Registro atualizado com sucesso!';
 
 const
+  NUMERADOR_BASE_ID            : string = 'base_id';
   NUMERADOR_REGISTRO_ACAO_ID   : string = 'registro_acao_id';
   NUMERADOR_ROTINA_APLICACAO_ID: string = 'rotina_aplicacao_id';
   NUMERADOR_PERFIL_USUARIO_ID  : string = 'perfil_usuario_id';

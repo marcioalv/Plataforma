@@ -28,20 +28,19 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     Align = alClient
     Center = True
     Stretch = True
-    OnClick = Image1Click
     ExplicitLeft = 440
     ExplicitTop = 224
     ExplicitWidth = 105
     ExplicitHeight = 105
   end
-  object Panel1: TPanel
+  object panStatusBar: TPanel
     Left = 0
     Top = 384
     Width = 727
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
-    Caption = 'Panel1'
+    Caption = 'panStatusBar'
     Color = clMenuBar
     ParentBackground = False
     ShowCaption = False
@@ -86,7 +85,7 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
         Caption = 'Trocar senha usu'#225'rio'
         OnClick = mniUsuarioSenhaTrocarClick
       end
-      object N1: TMenuItem
+      object mniAplicacaoSeparador1: TMenuItem
         Caption = '-'
       end
       object mniConfiguracoes: TMenuItem
@@ -134,6 +133,14 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
         object mniRegistroAcao: TMenuItem
           Caption = 'A'#231#245'es com registros'
           OnClick = mniRegistroAcaoClick
+        end
+        object mniLicencas: TMenuItem
+          Caption = 'Licen'#231'as'
+          OnClick = mniLicencasClick
+        end
+        object mniBases: TMenuItem
+          Caption = 'Bases'
+          OnClick = mniBasesClick
         end
       end
       object mniLogsAplicacao: TMenuItem

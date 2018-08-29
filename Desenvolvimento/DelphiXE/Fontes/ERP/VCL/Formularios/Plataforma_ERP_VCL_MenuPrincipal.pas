@@ -48,13 +48,15 @@ type
     mniNumeradores: TMenuItem;
     mniNumeradorBase: TMenuItem;
     mniNumeradorLicenca: TMenuItem;
-    Panel1: TPanel;
+    panStatusBar: TPanel;
     lblHostName: TLabel;
     mniRegistroAcao: TMenuItem;
     mniUsuarioTrocar: TMenuItem;
-    N1: TMenuItem;
+    mniAplicacaoSeparador1: TMenuItem;
     mniUsuarioSenhaTrocar: TMenuItem;
     lblAppUserName: TLabel;
+    mniBases: TMenuItem;
+    mniLicencas: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogUsoLocalClick(Sender: TObject);
@@ -70,7 +72,8 @@ type
     procedure mniRegistroAcaoClick(Sender: TObject);
     procedure mniUsuarioTrocarClick(Sender: TObject);
     procedure mniUsuarioSenhaTrocarClick(Sender: TObject);
-    procedure Image1Click(Sender: TObject);
+    procedure mniBasesClick(Sender: TObject);
+    procedure mniLicencasClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -99,6 +102,7 @@ uses
   Plataforma_ERP_VCL_TiposUsuariosLista,
   Plataforma_ERP_VCL_RotinaAplicacaoLista,
   Plataforma_ERP_VCL_RegistroAcaoLista,
+  Plataforma_ERP_VCL_BaseLista,
   Plataforma_ERP_VCL_NumeradorLicencaLista,
   Plataforma_ERP_VCL_NumeradorBaseLista;
 
@@ -292,6 +296,21 @@ begin
   FreeAndNil(locFormulario);
 end;
 
+procedure TPlataformaERPVCLMenuPrincipal.mniLicencasClick(Sender: TObject);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLMenuPrincipal.mniBasesClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLBaseLista;
+begin
+  locFormulario := TPlataformaERPVCLBaseLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
 {--------------------------------------------------------------------------------------------------}
 { PROCEDIMENTOS E FUNÇÕES                                                                          }
 {--------------------------------------------------------------------------------------------------}
@@ -363,24 +382,25 @@ begin
   //
   mniRotinasAplicacao.Visible := Plataforma_ERP_UsuarioRotina('ERP_ROTINA_APLICACAO_LISTA');
   mniRegistroAcao.Visible     := Plataforma_ERP_UsuarioRotina('ERP_REGISTRO_ACAO_LISTA');
+  mniLicencas.Visible         := Plataforma_ERP_UsuarioRotina('ERP_LICENCA_LISTA');
+  mniBases.Visible            := Plataforma_ERP_UsuarioRotina('ERP_BASE_LISTA');
 
   mniInstalacao.Visible := (mniNumeradores.Visible) or
                            (mniRotinasAplicacao.Visible) or
-                           (mniRegistroAcao.Visible);
+                           (mniRegistroAcao.Visible) or
+                           (mniLicencas.Visible) or
+                           (mniBases.Visible);
   
 
   //
   // Aplicação.
   //
-  mniAplicacao.Visible := (mniConfiguracoes.Visible)  or
-                          (mniControleAcesso.Visible) or
-                          (mniInstalacao.Visible)     or
+  mniAplicacao.Visible := (mniUsuarioTrocar.Visible)      or
+                          (mniUsuarioSenhaTrocar.Visible) or 
+                          (mniConfiguracoes.Visible)      or
+                          (mniControleAcesso.Visible)     or
+                          (mniInstalacao.Visible)         or
                           (mniLogsAplicacao.Visible);
-end;
-
-procedure TPlataformaERPVCLMenuPrincipal.Image1Click(Sender: TObject);
-begin
-
 end;
 
 //
