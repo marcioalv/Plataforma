@@ -367,6 +367,7 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = []
+      MaxLength = 50
       ParentFont = False
       PasswordChar = '*'
       TabOrder = 3
@@ -386,6 +387,7 @@ object PlataformaERPVCLUsuarioSenha: TPlataformaERPVCLUsuarioSenha
       Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = []
+      MaxLength = 50
       ParentFont = False
       PasswordChar = '*'
       TabOrder = 4

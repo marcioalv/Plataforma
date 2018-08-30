@@ -116,6 +116,7 @@ implementation
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
+  Plataforma_Framework_Criptografia,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_Generico;
@@ -593,31 +594,34 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioConfirmar';
   ERRO_MENSAGEM    : string = 'Impossível gravar informações sobre a senha do usuário!';
 var
-  locADOConnection   : TADOConnection;
-  locADOQuery        : TADOQuery;
-  locLogMensagem     : string;
+  locADOConnection     : TADOConnection;
+  locADOQuery          : TADOQuery;
+  locLogMensagem       : string;
 
-  locLicencaID       : Integer;
-  locUsuarioBaseID   : Integer;
-  locUsuarioID       : Integer;
+  locCriptografia      : TCriptografia;
+  locSenhaCriptografada: string;
+
+  locLicencaID         : Integer;
+  locUsuarioBaseID     : Integer;
+  locUsuarioID         : Integer;
                      
-  locSenhaExigir     : Boolean;
-  locSenhaTrocar     : Boolean;
-  locSenhaInformar   : Boolean;
-  locSenha           : string;
-  locSenhaConf       : string;
+  locSenhaExigir       : Boolean;
+  locSenhaTrocar       : Boolean;
+  locSenhaInformar     : Boolean;
+  locSenha             : string;
+  locSenhaConf         : string;
                      
-  locUpdContador     : Integer;
+  locUpdContador       : Integer;
                      
-  locRegistroAcao    : Byte;
-  locRegistroAcaoID  : Integer;
-  locUsuarioLogSq    : Integer;
-  locUsuarioLogMsg   : string;
-  locUsuarioLogDados : string;
-  locHostName        : string;
-  locUserName        : string;
-  locLogUsuarioBaseID: Integer;
-  locLogUsuarioID    : Integer;
+  locRegistroAcao      : Byte;
+  locRegistroAcaoID    : Integer;
+  locUsuarioLogSq      : Integer;
+  locUsuarioLogMsg     : string;
+  locUsuarioLogDados   : string;
+  locHostName          : string;
+  locUserName          : string;
+  locLogUsuarioBaseID  : Integer;
+  locLogUsuarioID      : Integer;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
@@ -680,6 +684,13 @@ begin
   end;
 
   //
+  // Criptografar.
+  //
+  locCriptografia := TCriptografia.Create;
+  locSenhaCriptografada := locCriptografia.Criptografar(locSenha);
+  FreeAndNil(locCriptografia);
+
+  //
   // Confirma gravação com o usuário.
   //
   if not VCLQuestionamentoExibir('Deseja realmente atualizar estas configurações de senha do usuário?') then Exit;
@@ -688,10 +699,10 @@ begin
   // Log de dados.
   //
   locUsuarioLogDados := '';
-  LogDadosBooleanDescrever('Exigir senha',        locSenhaExigir,   locUsuarioLogDados);
-  LogDadosBooleanDescrever('Trocar senha',        locSenhaTrocar,   locUsuarioLogDados);
-  LogDadosBooleanDescrever('Informar nova senha', locSenhaInformar, locUsuarioLogDados);
-  LogDadosStringDescrever ('Senha',               locSenha,         locUsuarioLogDados);
+  LogDadosBooleanDescrever('Exigir senha',        locSenhaExigir,        locUsuarioLogDados);
+  LogDadosBooleanDescrever('Trocar senha',        locSenhaTrocar,        locUsuarioLogDados);
+  LogDadosBooleanDescrever('Informar nova senha', locSenhaInformar,      locUsuarioLogDados);
+  LogDadosStringDescrever ('Senha',               locSenhaCriptografada, locUsuarioLogDados);
 
   //
   // Troca cursor.
@@ -825,7 +836,7 @@ begin
 
   if locSenhaInformar then
   begin
-    locADOQuery.SQL.Add('[senha] = :senha, ');
+    locADOQuery.SQL.Add(' [senha] = :senha, ');
   end;
   
   locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,      ');
@@ -847,7 +858,7 @@ begin
 
   if locSenhaInformar then
   begin
-    locADOQuery.Parameters.ParamByName('senha').Value  := locSenha;
+    locADOQuery.Parameters.ParamByName('senha').Value  := locSenhaCriptografada;
   end;
 
   locADOQuery.Parameters.ParamByName('local_dt_hr').Value := Now;

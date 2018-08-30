@@ -82,6 +82,7 @@ implementation
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
+  Plataforma_Framework_Criptografia,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico;
 
@@ -202,13 +203,15 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioConfirmar';
   ERRO_MENSAGEM    : string = 'Impossível consultar dados do usuário!';
 var
-  locADOConnection: TADOConnection;
-  locADOQuery     : TADOQuery;
-  locLogMensagem  : string;
-  locLicencaID    : Integer;
-  locLogon        : string;
-  locSenha        : string;
-  locQtdeAtivo    : Integer;
+  locADOConnection        : TADOConnection;
+  locADOQuery             : TADOQuery;
+  locCriptografia         : TCriptografia;
+  locLogMensagem          : string;
+  locLicencaID            : Integer;
+  locLogon                : string;
+  locSenha                : string;
+  locQtdeAtivo            : Integer;
+  locSenhaDescriptografada: string;
 begin
   //
   // Carrega variáveis.
@@ -414,13 +417,20 @@ begin
     VCLConsistenciaExibir('O usuário "' + locLogon + '" está bloqueado!');
     TentativasAcessoValidar;
     edtUsuario.SetFocus;
-    Exit;
+    Exit;    
   end;
+
+  //
+  // Descriptografa senha.
+  //
+  locCriptografia := TCriptografia.Create;
+  locSenhaDescriptografada := locCriptografia.Descriptografar(locADOQuery.FieldByName('senha').AsString);
+  FreeAndNil(locCriptografia);
 
   //
   // Confere as senhas.
   //
-  if locSenha <> locADOQuery.FieldByName('senha').AsString then
+  if locSenha <> locSenhaDescriptografada then
   begin
     locADOQuery.Close;
     FreeAndNil(locADOQuery);

@@ -31301,6 +31301,7 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
     Font.Height = -15
     Font.Name = 'Tahoma'
     Font.Style = []
+    MaxLength = 50
     ParentFont = False
     TabOrder = 0
     Text = 'edtUsuario'
@@ -31318,6 +31319,7 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
     Font.Height = -15
     Font.Name = 'Tahoma'
     Font.Style = []
+    MaxLength = 50
     ParentFont = False
     PasswordChar = '*'
     TabOrder = 1

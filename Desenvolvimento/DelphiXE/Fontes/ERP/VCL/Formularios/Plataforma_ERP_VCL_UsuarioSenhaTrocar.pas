@@ -98,6 +98,7 @@ implementation
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
+  Plataforma_Framework_Criptografia,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_Generico;
@@ -367,27 +368,31 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioConfirmar';
   ERRO_MENSAGEM    : string = 'Impossível gravar informações sobre a senha do usuário!';
 var
-  locADOConnection   : TADOConnection;
-  locADOQuery        : TADOQuery;
-  locLogMensagem     : string;
+  locADOConnection        : TADOConnection;
+  locADOQuery             : TADOQuery;
+  locLogMensagem          : string;
 
-  locLicencaID       : Integer;
-  locUsuarioBaseID   : Integer;
-  locUsuarioID       : Integer;
+  locCriptografia         : TCriptografia;
+  locSenhaDescriptografada: string;
+  locSenhaCriptografada   : string;
+
+  locLicencaID            : Integer;
+  locUsuarioBaseID        : Integer;
+  locUsuarioID            : Integer;
                      
-  locSenhaAtual      : string;
-  locSenhaNova       : string;
-  locSenhaNovaConf   : string;
+  locSenhaAtual           : string;
+  locSenhaNova            : string;
+  locSenhaNovaConf        : string;
 
-  locRegistroAcao    : Byte;
-  locRegistroAcaoID  : Integer;
-  locUsuarioLogSq    : Integer;
-  locUsuarioLogMsg   : string;
-  locUsuarioLogDados : string;
-  locHostName        : string;
-  locUserName        : string;
-  locLogUsuarioBaseID: Integer;
-  locLogUsuarioID    : Integer;
+  locRegistroAcao         : Byte;
+  locRegistroAcaoID       : Integer;
+  locUsuarioLogSq         : Integer;
+  locUsuarioLogMsg        : string;
+  locUsuarioLogDados      : string;
+  locHostName             : string;
+  locUserName             : string;
+  locLogUsuarioBaseID     : Integer;
+  locLogUsuarioID         : Integer;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
@@ -432,6 +437,11 @@ begin
   LogDadosStringDescrever ('Senha', locSenhaNova, locUsuarioLogDados);
 
   //
+  // Instância objeto de conexão com o banco de dados.
+  //
+  locCriptografia := TCriptografia.Create;  
+
+  //
   // Troca cursor.
   //
   VCLCursorTrocar(True);
@@ -446,6 +456,7 @@ begin
   except
     on locExcecao: Exception do
     begin
+      FreeAndNil(locCriptografia);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
@@ -486,6 +497,7 @@ begin
     except
       on locExcecao: Exception do
       begin
+        FreeAndNil(locCriptografia);
         locADOQuery.Close;
         FreeAndNil(locADOQuery);
         locADOConnection.Close;
@@ -499,8 +511,11 @@ begin
 
     if locADOQuery.RecordCount > 0 then
     begin
-      if locADOQuery.FieldByName('senha').AsString <> locSenhaAtual then
+      locSenhaDescriptografada := locCriptografia.Descriptografar(locADOQuery.FieldByName('senha').AsString);
+    
+      if locSenhaDescriptografada <> locSenhaAtual then
       begin
+        FreeAndNil(locCriptografia);
         locADOQuery.Close;
         FreeAndNil(locADOQuery);
         locADOConnection.Close;
@@ -523,6 +538,7 @@ begin
   except
     on locExcecao: Exception do
     begin
+      FreeAndNil(locCriptografia);
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
@@ -534,6 +550,11 @@ begin
   end;
 
   //
+  // Criptografa nova senha.
+  //
+  locSenhaCriptografada := locCriptografia.Criptografar(locSenhaNova);
+
+  //
   // Inicia transação com o banco de dados.
   //
   try
@@ -541,6 +562,7 @@ begin
   except
     on locExcecao: Exception do
     begin
+      FreeAndNil(locCriptografia);
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
@@ -580,7 +602,7 @@ begin
   locADOQuery.Parameters.ParamByName('licenca_id').Value      := locLicencaID;
   locADOQuery.Parameters.ParamByName('usuario_base_id').Value := locUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('usuario_id').Value      := locUsuarioID;
-  locADOQuery.Parameters.ParamByName('senha').Value           := locSenhaNova;
+  locADOQuery.Parameters.ParamByName('senha').Value           := locSenhaCriptografada;
   locADOQuery.Parameters.ParamByName('local_dt_hr').Value     := Now;
 
   try
@@ -589,6 +611,7 @@ begin
     on locExcecao: Exception do
     begin
       locADOConnection.RollbackTrans;
+      FreeAndNil(locCriptografia);
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
@@ -624,6 +647,7 @@ begin
     on locExcecao: Exception do
     begin
       locADOConnection.RollbackTrans;
+      FreeAndNil(locCriptografia);
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
@@ -702,6 +726,7 @@ begin
     on locExcecao: Exception do
     begin
       locADOConnection.RollbackTrans;
+      FreeAndNil(locCriptografia);
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
@@ -722,6 +747,7 @@ begin
     on locExcecao: Exception do
     begin
       locADOConnection.RollbackTrans;
+      FreeAndNil(locCriptografia);
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
@@ -736,6 +762,7 @@ begin
   //
   // Finaliza.
   //
+  FreeAndNil(locCriptografia);
   locADOQuery.Close;
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
