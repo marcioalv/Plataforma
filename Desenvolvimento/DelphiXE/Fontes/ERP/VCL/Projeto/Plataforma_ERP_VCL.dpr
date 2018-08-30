@@ -5,7 +5,6 @@ program Plataforma_ERP_VCL;
 uses
   Vcl.Forms,
   Plataforma_ERP_VCL_MenuPrincipal in '..\Formularios\Plataforma_ERP_VCL_MenuPrincipal.pas' {PlataformaERPVCLMenuPrincipal},
-  Plataforma_ERP_VCL_AplicativoRotinaCadastro in '..\Formularios\Plataforma_ERP_VCL_AplicativoRotinaCadastro.pas' {PlataformaERPVCLAplicativoRotinaCadastro},
   Plataforma_Framework_Log in '..\..\..\Framework\Plataforma_Framework_Log.pas',
   Plataforma_ERP_Inicializacao in '..\..\Modulos\Plataforma_ERP_Inicializacao.pas',
   Plataforma_ERP_Global in '..\..\Modulos\Plataforma_ERP_Global.pas',
@@ -58,7 +57,8 @@ uses
   Plataforma_ERP_VCL_LicencaFiltro in '..\Formularios\Plataforma_ERP_VCL_LicencaFiltro.pas' {PlataformaERPVCLLicencaFiltro},
   Plataforma_ERP_VCL_LicencaCadastro in '..\Formularios\Plataforma_ERP_VCL_LicencaCadastro.pas' {PlataformaERPVCLLicencaCadastro},
   Plataforma_ERP_VCL_LicencaLista in '..\Formularios\Plataforma_ERP_VCL_LicencaLista.pas' {PlataformaERPVCLLicencaLista},
-  Plataforma_Framework_Criptografia in '..\..\..\Framework\Plataforma_Framework_Criptografia.pas';
+  Plataforma_Framework_Criptografia in '..\..\..\Framework\Plataforma_Framework_Criptografia.pas',
+  Plataforma_ERP_VCL_BaseConfiguracao in '..\Formularios\Plataforma_ERP_VCL_BaseConfiguracao.pas' {PlataformaERPVCLBaseConfiguracao};
 
 {$R *.res}
 
@@ -66,7 +66,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
-  Application.CreateForm(TPlataformaERPVCLLicencaCadastro, PlataformaERPVCLLicencaCadastro);
-  Application.CreateForm(TPlataformaERPVCLLicencaLista, PlataformaERPVCLLicencaLista);
   Application.Run;
 end.

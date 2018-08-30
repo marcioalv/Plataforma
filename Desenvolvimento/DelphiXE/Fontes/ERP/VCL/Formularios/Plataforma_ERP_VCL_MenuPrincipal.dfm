@@ -77,25 +77,22 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     Top = 80
     object mniAplicacao: TMenuItem
       Caption = '&Aplica'#231#227'o'
-      object mniUsuarioTrocar: TMenuItem
+      object mniTrocarUsuario: TMenuItem
         Caption = 'Trocar usu'#225'rio'
-        OnClick = mniUsuarioTrocarClick
+        OnClick = mniTrocarUsuarioClick
       end
-      object mniUsuarioSenhaTrocar: TMenuItem
+      object mniTrocarSenhaUsuario: TMenuItem
         Caption = 'Trocar senha usu'#225'rio'
-        OnClick = mniUsuarioSenhaTrocarClick
+        OnClick = mniTrocarSenhaUsuarioClick
       end
       object mniAplicacaoSeparador1: TMenuItem
         Caption = '-'
       end
       object mniConfiguracoes: TMenuItem
         Caption = 'Configura'#231#245'es'
-        object mniResolucaoTela: TMenuItem
-          Caption = 'Resolu'#231#227'o de tela'
-          object mni1250x700: TMenuItem
-            Caption = '1.250 x 700'
-            OnClick = mni1250x700Click
-          end
+        object mniResolucaoTela1250x700: TMenuItem
+          Caption = 'Resolu'#231#227'o tela: 1.250px x 700px'
+          OnClick = mniResolucaoTela1250x700Click
         end
       end
       object mniControleAcesso: TMenuItem
@@ -115,7 +112,30 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
       end
       object mniInstalacao: TMenuItem
         Caption = 'Instala'#231#227'o'
-        object mniNumeradores: TMenuItem
+        object mniConfiguracaoBaseDados: TMenuItem
+          Caption = 'Configura'#231#227'o base de dados'
+          OnClick = mniConfiguracaoBaseDadosClick
+        end
+        object mniInstalacaoCadastros: TMenuItem
+          Caption = 'Cadastros'
+          object mniLicencas: TMenuItem
+            Caption = 'Licen'#231'as'
+            OnClick = mniLicencasClick
+          end
+          object mniBases: TMenuItem
+            Caption = 'Bases de dados'
+            OnClick = mniBasesClick
+          end
+          object mniRotinasAplicacao: TMenuItem
+            Caption = 'Rotinas aplica'#231#227'o'
+            OnClick = mniRotinasAplicacaoClick
+          end
+          object mniRegistroAcao: TMenuItem
+            Caption = 'A'#231#245'es com registros'
+            OnClick = mniRegistroAcaoClick
+          end
+        end
+        object mniInstalacaoNumeradores: TMenuItem
           Caption = 'Numeradores'
           object mniNumeradorBase: TMenuItem
             Caption = 'Base'
@@ -126,28 +146,12 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
             OnClick = mniNumeradorLicencaClick
           end
         end
-        object mniRotinasAplicacao: TMenuItem
-          Caption = 'Rotinas aplica'#231#227'o'
-          OnClick = mniRotinasAplicacaoClick
-        end
-        object mniRegistroAcao: TMenuItem
-          Caption = 'A'#231#245'es com registros'
-          OnClick = mniRegistroAcaoClick
-        end
-        object mniLicencas: TMenuItem
-          Caption = 'Licen'#231'as'
-          OnClick = mniLicencasClick
-        end
-        object mniBases: TMenuItem
-          Caption = 'Bases'
-          OnClick = mniBasesClick
-        end
       end
-      object mniLogsAplicacao: TMenuItem
+      object mniLogs: TMenuItem
         Caption = 'Logs'
-        object mniLogUsoLocal: TMenuItem
-          Caption = 'Log detalhado local do computador'
-          OnClick = mniLogUsoLocalClick
+        object mniLogLocal: TMenuItem
+          Caption = 'Log local'
+          OnClick = mniLogLocalClick
         end
       end
     end

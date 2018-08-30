@@ -32,48 +32,50 @@ type
   TPlataformaERPVCLMenuPrincipal = class(TForm)
     mnuFormulario: TMainMenu;
     mniAplicacao: TMenuItem;
-    mniLogsAplicacao: TMenuItem;
-    mniLogUsoLocal: TMenuItem;
+    mniLogs: TMenuItem;
+    mniLogLocal: TMenuItem;
     mniControleAcesso: TMenuItem;
     mniTiposUsuarios: TMenuItem;
     Image1: TImage;
     mniUsuarios: TMenuItem;
     mniConfiguracoes: TMenuItem;
-    mniResolucaoTela: TMenuItem;
-    mni1250x700: TMenuItem;
+    mniResolucaoTela1250x700: TMenuItem;
     timInicializacao: TTimer;
     mniPerfisUsuario: TMenuItem;
     mniRotinasAplicacao: TMenuItem;
     mniInstalacao: TMenuItem;
-    mniNumeradores: TMenuItem;
+    mniInstalacaoNumeradores: TMenuItem;
     mniNumeradorBase: TMenuItem;
     mniNumeradorLicenca: TMenuItem;
     panStatusBar: TPanel;
     lblHostName: TLabel;
     mniRegistroAcao: TMenuItem;
-    mniUsuarioTrocar: TMenuItem;
+    mniTrocarUsuario: TMenuItem;
     mniAplicacaoSeparador1: TMenuItem;
-    mniUsuarioSenhaTrocar: TMenuItem;
+    mniTrocarSenhaUsuario: TMenuItem;
     lblAppUserName: TLabel;
     mniBases: TMenuItem;
     mniLicencas: TMenuItem;
+    mniConfiguracaoBaseDados: TMenuItem;
+    mniInstalacaoCadastros: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure mniLogUsoLocalClick(Sender: TObject);
+    procedure mniLogLocalClick(Sender: TObject);
     procedure mniTiposUsuariosClick(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure mniUsuariosClick(Sender: TObject);
-    procedure mni1250x700Click(Sender: TObject);
+    procedure mniResolucaoTela1250x700Click(Sender: TObject);
     procedure timInicializacaoTimer(Sender: TObject);
     procedure mniPerfisUsuarioClick(Sender: TObject);
     procedure mniRotinasAplicacaoClick(Sender: TObject);
     procedure mniNumeradorBaseClick(Sender: TObject);
     procedure mniNumeradorLicencaClick(Sender: TObject);
     procedure mniRegistroAcaoClick(Sender: TObject);
-    procedure mniUsuarioTrocarClick(Sender: TObject);
-    procedure mniUsuarioSenhaTrocarClick(Sender: TObject);
+    procedure mniTrocarUsuarioClick(Sender: TObject);
+    procedure mniTrocarSenhaUsuarioClick(Sender: TObject);
     procedure mniBasesClick(Sender: TObject);
     procedure mniLicencasClick(Sender: TObject);
+    procedure mniConfiguracaoBaseDadosClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -100,6 +102,7 @@ uses
   Plataforma_ERP_VCL_UsuarioLista,
   Plataforma_ERP_VCL_PerfilUsuarioLista,
   Plataforma_ERP_VCL_TiposUsuariosLista,
+  Plataforma_ERP_VCL_BaseConfiguracao,
   Plataforma_ERP_VCL_RotinaAplicacaoLista,
   Plataforma_ERP_VCL_RegistroAcaoLista,
   Plataforma_ERP_VCL_BaseLista,
@@ -159,7 +162,7 @@ end;
 //
 // Evento de click na opção "senha usuário".
 //
-procedure TPlataformaERPVCLMenuPrincipal.mniUsuarioTrocarClick(Sender: TObject);
+procedure TPlataformaERPVCLMenuPrincipal.mniTrocarUsuarioClick(Sender: TObject);
 begin
   Plataforma_ERP_UsuarioTrocar;
   FormularioInformacoesDeterminar;
@@ -169,7 +172,7 @@ end;
 //
 // Evento de click na opção "trocar senha usuário".
 //
-procedure TPlataformaERPVCLMenuPrincipal.mniUsuarioSenhaTrocarClick(Sender: TObject);
+procedure TPlataformaERPVCLMenuPrincipal.mniTrocarSenhaUsuarioClick(Sender: TObject);
 var
   locFormulario: TPlataformaERPVCLUsuarioSenhaTrocar;
 begin
@@ -183,7 +186,7 @@ end;
 //
 // Evento de click na opção de menu "resolução 1.024 x 768".
 //
-procedure TPlataformaERPVCLMenuPrincipal.mni1250x700Click(Sender: TObject);
+procedure TPlataformaERPVCLMenuPrincipal.mniResolucaoTela1250x700Click(Sender: TObject);
 begin
   Self.WindowState := wsNormal;
   Self.Width       := 1250;
@@ -194,7 +197,7 @@ end;
 //
 // Evento de click na opção "Log detalhado local do computador".
 //
-procedure TPlataformaERPVCLMenuPrincipal.mniLogUsoLocalClick(Sender: TObject);
+procedure TPlataformaERPVCLMenuPrincipal.mniLogLocalClick(Sender: TObject);
 var
   locFormulario: TPlataformaERPVCLLogLocalLista;
 begin
@@ -276,6 +279,16 @@ end;
 {-------------------------------------------------------------------------------------------------}
 { INSTALAÇÃO                                                                                      }
 {-------------------------------------------------------------------------------------------------}
+
+procedure TPlataformaERPVCLMenuPrincipal.mniConfiguracaoBaseDadosClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLBaseConfiguracao;
+begin
+  locFormulario := TPlataformaERPVCLBaseConfiguracao.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
 
 procedure TPlataformaERPVCLMenuPrincipal.mniNumeradorBaseClick(Sender: TObject);
 var
@@ -361,52 +374,87 @@ end;
 // Procedimento para construir o menu e seus itens.
 //
 procedure TPlataformaERPVCLMenuPrincipal.FormularioMenuConstruir;
+var
+  locAplicacao_TrocarUsuario                        : Boolean;
+  locAplicacao_TrocarSenhaUsuario                   : Boolean;
+  locAplicacao_Configuracoes_ResolucaoTela1250x700  : Boolean;
+  locAplicacao_ControleAcesso_Usuarios              : Boolean;
+  locAplicacao_ControleAcesso_Perfis                : Boolean;
+  locAplicacao_ControleAcesso_TiposUsuarios         : Boolean;
+  locAplicacao_Instalacao_ConfiguracaoBaseDados     : Boolean;
+  locAplicacao_Instalacao_Cadastros_Licencas        : Boolean;
+  locAplicacao_Instalacao_Cadastros_BasesDados      : Boolean;
+  locAplicacao_Instalacao_Cadastros_RotinasAplicacao: Boolean;
+  locAplicacao_Instalacao_Cadastros_AcaoRegistros   : Boolean;
+  locAplicacao_Instalacao_Numeradores_Base          : Boolean;
+  locAplicacao_Instalacao_Numeradores_Licenca       : Boolean;
+  locAplicacao_Logs_LogLocal                        : Boolean;  
 begin
+  {-----------------------------------------------------------------------------------------------}
+  { Aplicação                                                                                     }
+  {-----------------------------------------------------------------------------------------------}
+
+  //
+  // Itens de menu acessíveis.
+  //
+  locAplicacao_TrocarUsuario                         := True;
+  locAplicacao_TrocarSenhaUsuario                    := True;
+  locAplicacao_Configuracoes_ResolucaoTela1250x700   := True;
+  locAplicacao_ControleAcesso_Usuarios               := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA');
+  locAplicacao_ControleAcesso_Perfis                 := Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA');
+  locAplicacao_ControleAcesso_TiposUsuarios          := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
+  locAplicacao_Instalacao_ConfiguracaoBaseDados      := True;
+  locAplicacao_Instalacao_Cadastros_Licencas         := Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_LICENCA_LISTA');
+  locAplicacao_Instalacao_Cadastros_BasesDados       := Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_BASE_LISTA');
+  locAplicacao_Instalacao_Cadastros_RotinasAplicacao := Plataforma_ERP_UsuarioRotina('ERP_ROTINA_APLICACAO_LISTA');
+  locAplicacao_Instalacao_Cadastros_AcaoRegistros    := Plataforma_ERP_UsuarioRotina('ERP_REGISTRO_ACAO_LISTA');
+  locAplicacao_Instalacao_Numeradores_Base           := Plataforma_ERP_UsuarioRotina('ERP_BASE_LISTA');
+  locAplicacao_Instalacao_Numeradores_Licenca        := Plataforma_ERP_UsuarioRotina('ERP_LICENCA_LISTA');
+  locAplicacao_Logs_LogLocal                         := True;
+
+  //
+  // Configurações.
+  //
+  mniConfiguracoes.Visible := locAplicacao_Configuracoes_ResolucaoTela1250x700;
+    mniResolucaoTela1250x700.Visible := locAplicacao_Configuracoes_ResolucaoTela1250x700;
+
   //
   // Controle de acesso.
   //
-  mniUsuarios.Visible         := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_LISTA');
-  mniPerfisUsuario.Visible    := Plataforma_ERP_UsuarioRotina('ERP_PERFIL_USUARIO_LISTA');
-  mniTiposUsuarios.Visible    := Plataforma_ERP_UsuarioRotina('ERP_TIPO_USUARIO_LISTA');
+  mniControleAcesso.Visible := locAplicacao_ControleAcesso_Usuarios or
+                               locAplicacao_ControleAcesso_Perfis   or
+                               locAplicacao_ControleAcesso_TiposUsuarios;
 
-  mniControleAcesso.Visible := (mniUsuarios.Visible) or
-                               (mniPerfisUsuario.Visible) or
-                               (mniTiposUsuarios.Visible);
-
-  //
-  // Numeradores.
-  //
-  mniNumeradorBase.Visible    := Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_BASE_LISTA');
-  mniNumeradorLicenca.Visible := Plataforma_ERP_UsuarioRotina('ERP_NUMERADOR_LICENCA_LISTA');
-
-  mniNumeradores.Visible := (mniNumeradorBase.Visible) or
-                            (mniNumeradorLicenca.Visible);
-
+    mniUsuarios.Visible      := locAplicacao_ControleAcesso_Usuarios;
+    mniPerfisUsuario.Visible := locAplicacao_ControleAcesso_Perfis;
+    mniTiposUsuarios.Visible := locAplicacao_ControleAcesso_TiposUsuarios;
 
   //
   // Instalação.
   //
-  mniRotinasAplicacao.Visible := Plataforma_ERP_UsuarioRotina('ERP_ROTINA_APLICACAO_LISTA');
-  mniRegistroAcao.Visible     := Plataforma_ERP_UsuarioRotina('ERP_REGISTRO_ACAO_LISTA');
-  mniLicencas.Visible         := Plataforma_ERP_UsuarioRotina('ERP_LICENCA_LISTA');
-  mniBases.Visible            := Plataforma_ERP_UsuarioRotina('ERP_BASE_LISTA');
+  mniInstalacao.Visible := locAplicacao_Instalacao_ConfiguracaoBaseDados      or
+                           locAplicacao_Instalacao_Cadastros_Licencas         or
+                           locAplicacao_Instalacao_Cadastros_BasesDados       or
+                           locAplicacao_Instalacao_Cadastros_RotinasAplicacao or
+                           locAplicacao_Instalacao_Cadastros_AcaoRegistros;
 
-  mniInstalacao.Visible := (mniNumeradores.Visible) or
-                           (mniRotinasAplicacao.Visible) or
-                           (mniRegistroAcao.Visible) or
-                           (mniLicencas.Visible) or
-                           (mniBases.Visible);
-  
+    mniConfiguracaoBaseDados.Visible := locAplicacao_Instalacao_ConfiguracaoBaseDados;
+    
+    mniInstalacaoCadastros.Visible := locAplicacao_Instalacao_Cadastros_Licencas         or
+                                      locAplicacao_Instalacao_Cadastros_BasesDados       or
+                                      locAplicacao_Instalacao_Cadastros_RotinasAplicacao or
+                                      locAplicacao_Instalacao_Cadastros_AcaoRegistros;
+
+      mniLicencas.Visible         := locAplicacao_Instalacao_Cadastros_Licencas;
+      mniBases.Visible            := locAplicacao_Instalacao_Cadastros_BasesDados;
+      mniRotinasAplicacao.Visible := locAplicacao_Instalacao_Cadastros_RotinasAplicacao;
+      mniRegistroAcao.Visible     := locAplicacao_Instalacao_Cadastros_AcaoRegistros;
 
   //
-  // Aplicação.
+  // Logs.
   //
-  mniAplicacao.Visible := (mniUsuarioTrocar.Visible)      or
-                          (mniUsuarioSenhaTrocar.Visible) or 
-                          (mniConfiguracoes.Visible)      or
-                          (mniControleAcesso.Visible)     or
-                          (mniInstalacao.Visible)         or
-                          (mniLogsAplicacao.Visible);
+  mniLogs.Visible := locAplicacao_Logs_LogLocal;
+    mniLogLocal.Visible := locAplicacao_Logs_LogLocal;
 end;
 
 //
