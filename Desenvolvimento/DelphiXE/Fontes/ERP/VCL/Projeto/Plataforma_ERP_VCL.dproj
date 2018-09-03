@@ -288,6 +288,11 @@
             <Form>PlataformaERPVCLBaseConfiguracao</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_AcessoConexaoConfiguracao.pas">
+            <Form>PlataformaERPVCLAcessoConexaoConfiguracao</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\..\..\Framework\Plataforma_Framework_ArquivoIni.pas"/>
         <RcItem Include="..\..\..\..\..\Imagem\Background\Formulario\FORM_BACKGROUND_DEFAULT.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>FORM_BACKGROUND_DEFAULT</ResourceId>

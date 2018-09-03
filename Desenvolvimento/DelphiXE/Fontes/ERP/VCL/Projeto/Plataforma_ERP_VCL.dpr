@@ -58,7 +58,9 @@ uses
   Plataforma_ERP_VCL_LicencaCadastro in '..\Formularios\Plataforma_ERP_VCL_LicencaCadastro.pas' {PlataformaERPVCLLicencaCadastro},
   Plataforma_ERP_VCL_LicencaLista in '..\Formularios\Plataforma_ERP_VCL_LicencaLista.pas' {PlataformaERPVCLLicencaLista},
   Plataforma_Framework_Criptografia in '..\..\..\Framework\Plataforma_Framework_Criptografia.pas',
-  Plataforma_ERP_VCL_BaseConfiguracao in '..\Formularios\Plataforma_ERP_VCL_BaseConfiguracao.pas' {PlataformaERPVCLBaseConfiguracao};
+  Plataforma_ERP_VCL_BaseConfiguracao in '..\Formularios\Plataforma_ERP_VCL_BaseConfiguracao.pas' {PlataformaERPVCLBaseConfiguracao},
+  Plataforma_ERP_VCL_AcessoConexaoConfiguracao in '..\Formularios\Plataforma_ERP_VCL_AcessoConexaoConfiguracao.pas' {PlataformaERPVCLAcessoConexaoConfiguracao},
+  Plataforma_Framework_ArquivoIni in '..\..\..\Framework\Plataforma_Framework_ArquivoIni.pas';
 
 {$R *.res}
 
@@ -66,5 +68,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
+  Application.CreateForm(TPlataformaERPVCLAcessoConexaoConfiguracao, PlataformaERPVCLAcessoConexaoConfiguracao);
   Application.Run;
 end.

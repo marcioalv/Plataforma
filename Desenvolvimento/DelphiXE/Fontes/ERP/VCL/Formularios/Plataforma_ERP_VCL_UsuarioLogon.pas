@@ -63,6 +63,7 @@ type
     procedure edtSenhaKeyPress(Sender: TObject; var Key: Char);
     procedure mniAcessarClick(Sender: TObject);
     procedure mniFecharClick(Sender: TObject);
+    procedure mniConexaoBaseDadosClick(Sender: TObject);
   private
     priTentativas: Integer;
     procedure FormularioLimpar;
@@ -84,7 +85,8 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_Framework_Criptografia,
   Plataforma_ERP_Global,
-  Plataforma_ERP_Generico;
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_AcessoConexaoConfiguracao;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_UsuarioLogon.pas';
@@ -130,6 +132,16 @@ end;
 procedure TPlataformaERPVCLUsuarioLogon.mniAcessarClick(Sender: TObject);
 begin
   FormularioConfirmar;
+end;
+
+procedure TPlataformaERPVCLUsuarioLogon.mniConexaoBaseDadosClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLAcessoConexaoConfiguracao;
+begin
+  locFormulario := TPlataformaERPVCLAcessoConexaoConfiguracao.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 procedure TPlataformaERPVCLUsuarioLogon.mniFecharClick(Sender: TObject);

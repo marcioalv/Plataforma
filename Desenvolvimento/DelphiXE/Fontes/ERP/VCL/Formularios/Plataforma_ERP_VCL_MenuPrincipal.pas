@@ -58,6 +58,9 @@ type
     mniLicencas: TMenuItem;
     mniConfiguracaoBaseDados: TMenuItem;
     mniInstalacaoCadastros: TMenuItem;
+    lblCalendario: TLabel;
+    lblHorario: TLabel;
+    timStatusBar: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogLocalClick(Sender: TObject);
@@ -76,6 +79,7 @@ type
     procedure mniBasesClick(Sender: TObject);
     procedure mniLicencasClick(Sender: TObject);
     procedure mniConfiguracaoBaseDadosClick(Sender: TObject);
+    procedure timStatusBarTimer(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -153,6 +157,14 @@ procedure TPlataformaERPVCLMenuPrincipal.timInicializacaoTimer(Sender: TObject);
 begin
   timInicializacao.Enabled := False;
   FormularioInicializar;
+end;
+
+//
+// Evento de timer para a atualização do statusbar.
+//
+procedure TPlataformaERPVCLMenuPrincipal.timStatusBarTimer(Sender: TObject);
+begin
+  FormularioInformacoesDeterminar;
 end;
 
 {--------------------------------------------------------------------------------------------------}
@@ -345,6 +357,26 @@ begin
   Caption := 'Plataforma ERP';
 
   //
+  // Calendário.
+  //
+  lblCalendario.Left    := 16;
+  lblCalendario.Caption := DiaSemanaDeterminar(Now) + ', ' + FormatDateTime('dd', Now) + ' de ' + NomeMesDeterminar(Now) + ' de ' + FormatDateTime('yyyy', Now);
+
+  //
+  // Horário.
+  //
+  lblHorario.Left    := lblCalendario.Left + lblCalendario.Width + 32;
+  lblHorario.Caption := FormatDateTime('hh:mm', Now) + ' ' + AmPmDeterminar(Now);
+
+
+  //
+  // Nome do computador e usuário de rede.
+  //
+  lblHostName.Left    := lblHorario.Left + lblHorario.Width + 32;
+  lblHostName.Caption := 'Computador: ' + HostNameRecuperar + '\' + UserNameRecuperar;
+
+
+  //
   // Usuário da aplicação.
   //
   if gloUsuarioID = 0 then
@@ -355,19 +387,9 @@ begin
   else
   begin
     lblAppUserName.Visible := True;
-    lblAppUserName.Left    := 16;
+    lblAppUserName.Left    := lblHostName.Left + lblHostName.Width + 32;
     lblAppUserName.Caption := 'Usuário: ' + gloUsuarioNome;    
   end;
-
-  //
-  // Computador e usuário de rede.
-  //
-  if gloUsuarioID = 0 then
-    lblHostName.Left := 16
-  else
-    lblHostName.Left := lblAppUserName.Left + lblAppUserName.Width + 32;
-  
-  lblHostName.Caption := 'Computador: ' + HostNameRecuperar + '\' + UserNameRecuperar;
 end;
 
 //
@@ -433,10 +455,14 @@ begin
   // Instalação.
   //
   mniInstalacao.Visible := locAplicacao_Instalacao_ConfiguracaoBaseDados      or
+
                            locAplicacao_Instalacao_Cadastros_Licencas         or
                            locAplicacao_Instalacao_Cadastros_BasesDados       or
                            locAplicacao_Instalacao_Cadastros_RotinasAplicacao or
-                           locAplicacao_Instalacao_Cadastros_AcaoRegistros;
+                           locAplicacao_Instalacao_Cadastros_AcaoRegistros    or
+
+                           locAplicacao_Instalacao_Numeradores_Base           or
+                           locAplicacao_Instalacao_Numeradores_Licenca;
 
     mniConfiguracaoBaseDados.Visible := locAplicacao_Instalacao_ConfiguracaoBaseDados;
     
@@ -450,11 +476,30 @@ begin
       mniRotinasAplicacao.Visible := locAplicacao_Instalacao_Cadastros_RotinasAplicacao;
       mniRegistroAcao.Visible     := locAplicacao_Instalacao_Cadastros_AcaoRegistros;
 
+    mniInstalacaoNumeradores.Visible := locAplicacao_Instalacao_Numeradores_Base or
+                                        locAplicacao_Instalacao_Numeradores_Licenca;
+
+      mniNumeradorBase.Visible    := locAplicacao_Instalacao_Numeradores_Base;
+      mniNumeradorLicenca.Visible := locAplicacao_Instalacao_Numeradores_Licenca;
+
   //
   // Logs.
   //
   mniLogs.Visible := locAplicacao_Logs_LogLocal;
     mniLogLocal.Visible := locAplicacao_Logs_LogLocal;
+
+  //
+  // Aplicacao.
+  //
+  mniAplicacao.Visible := locAplicacao_TrocarUsuario      or
+                          locAplicacao_TrocarSenhaUsuario or
+                          mniConfiguracoes.Visible        or
+                          mniControleAcesso.Visible       or
+                          mniInstalacao.Visible           or
+                          mniLogs.Visible;
+  
+  mniTrocarUsuario.Visible      := locAplicacao_TrocarUsuario;
+  mniTrocarSenhaUsuario.Visible := locAplicacao_TrocarSenhaUsuario;    
 end;
 
 //

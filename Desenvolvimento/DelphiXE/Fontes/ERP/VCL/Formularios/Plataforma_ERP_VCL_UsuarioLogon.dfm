@@ -31457,6 +31457,7 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
       Caption = 'Configura'#231#245'es'
       object mniConexaoBaseDados: TMenuItem
         Caption = 'Conex'#227'o de acesso '#224' base de dados'
+        OnClick = mniConexaoBaseDadosClick
       end
       object mniLicencaAplicacao: TMenuItem
         Caption = 'Licen'#231'a de uso da aplica'#231#227'o'

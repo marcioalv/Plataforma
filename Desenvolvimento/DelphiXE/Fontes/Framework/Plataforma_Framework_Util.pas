@@ -82,6 +82,8 @@ function DiaSemanaDeterminar(argData: TDateTime): string;
 
 function NomeMesDeterminar(argData: TDateTime): string;
 
+function AmPmDeterminar(argData: TDateTime): string;
+
 function DateTimeHorarioInicial(argData: TDateTime): TDateTime;
                                    
 function DateTimeHorarioFinal(argData: TDateTime): TDateTime;
@@ -256,6 +258,17 @@ begin
   if locMes = 10 then Result := OUTUBRO;
   if locMes = 11 then Result := NOVEMBRO;
   if locMes = 12 then Result := DEZEMBRO;
+end;
+
+//
+//
+//
+function AmPmDeterminar(argData: TDateTime): string;
+begin
+  if StrToInt(FormatDateTime('hh', Now)) < 12 then
+    Result := 'am'
+  else
+    Result := 'pm';
 end;
 
 //

@@ -65,7 +65,12 @@ GO
 -- Configurações da base de dados instalada.
 --
 CREATE TABLE [dbo].[aplicacao_base] (
-  [base_id] SMALLINT NOT NULL,
+  [base_id]          SMALLINT NOT NULL,
+  [ins_local_dt_hr]  DATETIME NOT NULL,
+  [ins_server_dt_hr] DATETIME NOT NULL,
+  [upd_local_dt_hr]  DATETIME NULL,
+  [upd_server_dt_hr] DATETIME NULL,
+  [upd_contador]     INT      NOT NULL,
   CONSTRAINT [aplicacao_base_pk] PRIMARY KEY CLUSTERED ([base_id])
 )
 
@@ -439,7 +444,7 @@ GO
 --
 -- Base de dados da instalação da aplicação.
 --
-INSERT INTO [aplicacao_base] VALUES (1)
+INSERT INTO [aplicacao_base] VALUES (1, GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 
 --
@@ -497,13 +502,13 @@ INSERT INTO [numerador_licenca] VALUES (1, 1, 'tipo_usuario_id', 3, 'N', 'S', GE
 --
 -- Usuário.
 --
-INSERT INTO [usuario]     VALUES (1, 1, 1, '000.001', 'Administrador do sistema', 'administrador', 1, 1, 'S', 'N', '123', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [usuario]     VALUES (1, 1, 1, '000.001', 'Administrador do sistema', 'administrador', 1, 1, 'S', 'N', '00311üûù§,ì', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [usuario_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
-INSERT INTO [usuario]     VALUES (1, 1, 2, '000.002', 'Marcio Alves', 'marcio.alves', 1, 1, 'S', 'N', '123', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [usuario]     VALUES (1, 1, 2, '000.002', 'Marcio Alves', 'marcio.alves', 1, 1, 'S', 'N', '00311üûù§,ì', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [usuario_log] VALUES (1, 1, 2, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
-INSERT INTO [usuario]     VALUES (1, 1, 3, '000.003', 'Fernanda Margarete Vieira', 'fernanda.vieira', 1, 1, 'S', 'N', '123', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [usuario]     VALUES (1, 1, 3, '000.003', 'Fernanda Margarete Vieira', 'fernanda.vieira', 1, 1, 'S', 'N', '00311üûù§,ì', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [usuario_log] VALUES (1, 1, 3, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
 INSERT INTO [numerador_licenca] VALUES (1, 1, 'usuario_id', 3, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
