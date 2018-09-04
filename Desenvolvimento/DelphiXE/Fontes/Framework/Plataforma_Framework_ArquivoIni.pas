@@ -225,7 +225,7 @@ procedure ArquivoIniDateTimeGravar(argArquivo  : string;
                                    argParametro: string;
                                    argValor    : TDateTime);
 begin
-  ArquivoIniStringGravar(argArquivo, argSessao, argParametro, DateTimeStringConverter(argValor, 'yyyy-mm-dd'));
+  ArquivoIniStringGravar(argArquivo, argSessao, argParametro, DateTimeStringConverter(argValor, 'yyyy-mm-dd hh:nn:ss.zzz'));
 end;
 
 //

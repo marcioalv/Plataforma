@@ -140,6 +140,10 @@ function StringCurrencyConverter(argValor: string): Currency;
 
 function PathExtrair(argArquivo: string): string;
 
+function PathArquivoExisteDeterminar(argPathArquivo: string): Boolean;
+
+procedure PathCriar(argCaminho: string);
+
 function ListaArquivosRetornar(argCaminho: string; argArquivo: string; argSubPastas: Boolean): TStringList;
 
 function DataFormatar(argData: string): string;
@@ -827,6 +831,36 @@ function PathExtrair(argArquivo: string): string;
 begin
   Result := ExtractFilePath(argArquivo);
   Result := Copy(Result, 1, Length(Result) - 1);
+end;
+
+//
+// PathArquivoExisteDeterminar.
+//
+function PathArquivoExisteDeterminar(argPathArquivo: string): Boolean;
+var
+  locSearchRec  : TSearchRec;
+begin
+  Result := False;
+  argPathArquivo := PathExtrair(argPathArquivo);
+  if FindFirst(argPathArquivo, faAnyFile, locSearchRec) = 0 then
+  begin
+    Result := True;
+  end;
+end;
+
+//
+// PathCriar.
+//
+procedure PathCriar(argCaminho: string);
+begin
+  try
+    ForceDirectories(PathExtrair(argCaminho));
+  except
+    on locErro: Exception do
+    begin
+      raise Exception.Create(locErro.Message);
+    end;
+  end;
 end;
 
 //

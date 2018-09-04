@@ -20,27 +20,6 @@ uses
   Winapi.Windows,
   Vcl.Forms;
 
-procedure Plataforma_ERP_HashCodInicializar;
-procedure Plataforma_ERP_LogInicializar;
-procedure Plataforma_ERP_TimeOutsInicializar;
-function  Plataforma_ERP_UsuarioInicializar: Boolean;
-function  Plataforma_ERP_UsuarioSenhaTrocaVerificar: Boolean;
-procedure Plataforma_ERP_UsuarioRotinasPopular;
-procedure Plataforma_ERP_UsuarioTrocar;
-
-implementation
-
-uses
-  Plataforma_Framework_Util,
-  Plataforma_Framework_Log,
-  Plataforma_ERP_Global,
-  Plataforma_ERP_Generico,
-  Plataforma_ERP_VCL_UsuarioLogon,
-  Plataforma_ERP_VCL_UsuarioSenhaTrocar;
-
-const
-  FONTE_NOME: string = 'Plataforma_ERP_Inicializacao.pas';
-
 const
   ARQUIVO_INI_CONEXAO_GERAL                      : string = 'GERAL';
   ARQUIVI_INI_CONEXAO_GERAL_QUANTIDADE           : string = 'QUANTIDADE_CONEXOES';
@@ -63,6 +42,28 @@ const
   ARQUIVO_INI_CONEXAO_PARAMETRO_INS_DT_HR        : string = 'INS_DT_HR';
   ARQUIVO_INI_CONEXAO_PARAMETRO_INS_USER         : string = 'INS_USER';
   ARQUIVO_INI_CONEXAO_PARAMETRO_INS_HOST         : string = 'INS_HOST';  
+
+procedure Plataforma_ERP_HashCodInicializar;
+procedure Plataforma_ERP_LogInicializar;
+procedure Plataforma_ERP_ArquivoConfiguracaoInicializar;
+procedure Plataforma_ERP_TimeOutsInicializar;
+function  Plataforma_ERP_UsuarioInicializar: Boolean;
+function  Plataforma_ERP_UsuarioSenhaTrocaVerificar: Boolean;
+procedure Plataforma_ERP_UsuarioRotinasPopular;
+procedure Plataforma_ERP_UsuarioTrocar;
+
+implementation
+
+uses
+  Plataforma_Framework_Util,
+  Plataforma_Framework_Log,
+  Plataforma_ERP_Global,
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_UsuarioLogon,
+  Plataforma_ERP_VCL_UsuarioSenhaTrocar;
+
+const
+  FONTE_NOME: string = 'Plataforma_ERP_Inicializacao.pas';
 
 //
 // Procedimento para inicializar o hashcode da aplicação.
@@ -90,6 +91,14 @@ begin
   gloLocalLog.FileNameDaily('Plataforma_ERP_VCL');
 
   Plataforma_ERP_Logar(False, 'Módulo de log inicializado com sucesso!');
+end;
+
+//
+// Procedimento para iniciar o arquivo de configuração da aplicação.
+//
+procedure Plataforma_ERP_ArquivoConfiguracaoInicializar;
+begin
+  gloConfiguracaoArquivo := gloAppPath + '\Configuracao\Plataforma_ERP_VCL.ini';
 end;
 
 //

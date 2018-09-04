@@ -20,8 +20,10 @@ uses
 var
   gloAppHashCode: string;
   gloAppPath    : string;
-
+  
   gloLocalLog: TPlataformaFrameworkLog;
+
+  gloConfiguracaoArquivo: string;
 
   gloTimeOutRapido   : Integer;
   gloTimeOutNormal   : Integer;

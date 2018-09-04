@@ -57,13 +57,13 @@ type
     imgEditar: TImage;
     imgRemover: TImage;
     imgFormulario: TImage;
-    imgConfirmar: TImage;
-    imgCancelar: TImage;
     btnTestar: TBitBtn;
     mniMinimizar: TMenuItem;
     mniGravar: TMenuItem;
     mniTestar: TMenuItem;
     imgBackground: TImage;
+    btnConfirmar: TBitBtn;
+    btnCancelar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -109,6 +109,12 @@ type
     procedure imgSubirClick(Sender: TObject);
     procedure imgDescerClick(Sender: TObject);
     procedure imgTodosDescerClick(Sender: TObject);
+    procedure btnTestarClick(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     procedure FormularioLimpar(argCompleto: Boolean);
     procedure FormularioControlar(argEdicao: Boolean);
@@ -120,13 +126,21 @@ type
     procedure FormularioCancelar;
     procedure FormularioItemSelecionar;
 
-//    procedure FormularioMovimentar(argMovimento: Byte);
+    procedure FormularioItemAtualizar(argItem      : Integer;
+                                      argTitulo    : string;
+                                      argServidor  : string;
+                                      argPorta     : Integer;
+                                      argInstancia : string;
+                                      argUsuario   : string;
+                                      argSenha     : string;
+                                      argBancoDados: string;
+                                      argTimeOut   : Integer);
 
-//    procedure FormularioTestar;    
-
-//    procedure FormularioGravar;
+    procedure FormularioGravar;
+    procedure FormularioTestar;
   public
-    pubClicouSair: Boolean;
+    pubDadosAtualizados: Boolean;
+    pubClicouSair      : Boolean;
   end;
 
 var
@@ -141,13 +155,10 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_Framework_Criptografia,
   Plataforma_Framework_ArquivoIni,
+  Plataforma_ERP_Global,
+  Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_Generico,
-  Plataforma_ERP_Inicializacao;  
-
-//  Plataforma_Framework_Conexao,
-//  Plataforma_ERP_Principal_Unit_ArquivoInicializacao,
-//  Plataforma_ERP_VCL_AcessoConexaoConfiguracaoLocalizacao,
-//  Plataforma_ERP_Principal_VCL_ConexaoTeste,
+  Plataforma_ERP_Inicializacao;
 
 const
   LVW_COLUNA_ITEM       : Integer = 0;
@@ -163,12 +174,21 @@ const
 //
 // Evento de criação do formulário.
 //
+procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if pubDadosAtualizados then
+  begin
+    if not VCLQuestionamentoExibir('Deseja realmente sair sem gravar os dados?') then Action := caNone;
+  end;
+end;
+
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis públicas.
   //
-  pubClicouSair := True;
+  pubDadosAtualizados := False;
+  pubClicouSair       := True;
 end;
 
 //
@@ -202,7 +222,10 @@ end;
 //
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormKeyPress(Sender: TObject; var Key: Char);
 begin
-  if Key = ESC then Close;
+  if Key = ESC then
+  begin
+    if edtTitulo.ReadOnly then Close;
+  end;
 end;
 
 //
@@ -210,17 +233,17 @@ end;
 //
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.mniTestarClick(Sender: TObject);
 begin
-  Exit;
+  FormularioTestar;
 end;
 
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.mniAtualizarClick(Sender: TObject);
 begin
-  Exit;
+  FormularioAtualizar;
 end;
 
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.mniGravarClick(Sender: TObject);
 begin
-  Exit;
+  FormularioGravar;
 end;
 
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.mniMinimizarClick(Sender: TObject);
@@ -239,6 +262,16 @@ end;
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.lvwListaChange(Sender: TObject; Item: TListItem; Change: TItemChange);
 begin
   FormularioItemSelecionar;
+end;
+
+procedure TPlataformaERPVCLAcessoConexaoConfiguracao.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  VCLListViewZebrar(Sender, Item);
+end;
+
+procedure TPlataformaERPVCLAcessoConexaoConfiguracao.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  VCLListViewZebrar(Sender, Item);
 end;
 
 //
@@ -271,22 +304,22 @@ end;
 
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.imgTodosSubirClick(Sender: TObject);
 begin
-  VCLListViewLinhaMover(lvwLista, VCL_MOVIMENTO_SUBIR_TODOS);
+  VCLListViewLinhaMover(lvwLista, VCL_MOVIMENTO_SUBIR_TODOS, LVW_COLUNA_ITEM);
 end;
 
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.imgSubirClick(Sender: TObject);
 begin
-  VCLListViewLinhaMover(lvwLista, VCL_MOVIMENTO_SUBIR);
+  VCLListViewLinhaMover(lvwLista, VCL_MOVIMENTO_SUBIR, LVW_COLUNA_ITEM);
 end;
 
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.imgDescerClick(Sender: TObject);
 begin
-  VCLListViewLinhaMover(lvwLista, VCL_MOVIMENTO_DESCER)
+  VCLListViewLinhaMover(lvwLista, VCL_MOVIMENTO_DESCER, LVW_COLUNA_ITEM)
 end;
 
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.imgTodosDescerClick(Sender: TObject);
 begin
-  VCLListViewLinhaMover(lvwLista, VCL_MOVIMENTO_DESCER_TODOS)
+  VCLListViewLinhaMover(lvwLista, VCL_MOVIMENTO_DESCER_TODOS, LVW_COLUNA_ITEM)
 end;
 
 //
@@ -434,11 +467,35 @@ begin
 end;
 
 //
+// Evento de click no botão "confirmar".
+//
+procedure TPlataformaERPVCLAcessoConexaoConfiguracao.btnConfirmarClick(Sender: TObject);
+begin
+  FormularioConfirmar;
+end;
+
+//
+// Evento de click no botão "cancelar".
+//
+procedure TPlataformaERPVCLAcessoConexaoConfiguracao.btnCancelarClick(Sender: TObject);
+begin
+  FormularioCancelar;
+end;
+
+//
+// Evento de click no botão "testar".
+//
+procedure TPlataformaERPVCLAcessoConexaoConfiguracao.btnTestarClick(Sender: TObject);
+begin
+  FormularioTestar;
+end;
+
+//
 // Evento de click no botão "gravar".
 //
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.btnGravarClick(Sender: TObject);
 begin
-  Exit;
+  FormularioGravar;
 end;
 
 //
@@ -508,10 +565,10 @@ begin
   // Itens do menu.
   //
   mniTestar.Visible    := locDadosPopulados;
-  mniAtualizar.Visible := True;
+  mniAtualizar.Visible := (not argEdicao);
   mniGravar.Visible    := (not argEdicao) and locDadosPopulados;
   mniMinimizar.Visible := True;
-  mniFechar.Visible    := True;
+  mniFechar.Visible    := (not argEdicao);
 
   //
   // Botões do panel principal.
@@ -525,8 +582,8 @@ begin
   imgEditar.Visible    := (not argEdicao) and locDadosPopulados;
   imgRemover.Visible   := (not argEdicao) and locDadosPopulados;
 
-  imgConfirmar.Visible := argEdicao;
-  imgCancelar.Visible  := argEdicao;
+  btnConfirmar.Visible := argEdicao;
+  btnCancelar.Visible  := argEdicao;
   
   //
   // Botões do formulário.
@@ -581,6 +638,11 @@ begin
   VCLListViewItemRemover(lvwLista, locIndice, LVW_COLUNA_ITEM);
 
   //
+  // Dados atualizados no formulário.
+  //
+  pubDadosAtualizados := True;
+
+  //
   // Controlar componentes.
   //
   FormularioControlar(False);
@@ -604,63 +666,57 @@ end;
 //
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormularioConfirmar;
 var
-  locIndice            : Integer;
-  locListItem          : TListItem;
+  locItem              : Integer;
+  locTitulo            : string;
+  locServidor          : string;
+  locPorta             : Integer;
+  locInstancia         : string;
+  locUsuario           : string;
+  locSenha             : string;
+  locBancoDados        : string;
+  locTimeOut           : Integer;
   locCriptografia      : TCriptografia;
   locSenhaCriptografada: string;
+  locIndice            : Integer;
+  locListItem          : TListItem;
 begin
+  //
+  // Carrega variáveis com o conteúdo dos componentes.
+  //
+  locItem       := StringIntegerConverter(edtItem.Text);
+  locTitulo     := StringTrim(edtTitulo.Text);
+  locServidor   := StringTrim(edtServidor.Text);
+  locPorta      := StringIntegerConverter(edtPorta.Text);
+  locInstancia  := StringTrim(edtInstancia.Text);
+  locUsuario    := StringTrim(edtUsuario.Text);
+  locSenha      := StringTrim(edtSenha.Text);
+  locBancoDados := StringTrim(edtBancoDados.Text);
+  locTimeOut    := StringIntegerConverter(edtTimeOut.Text);
+
   //
   // Determina a senha criptografada.
   //
   locCriptografia       := TCriptografia.Create;
   locSenhaCriptografada := locCriptografia.Criptografar(edtSenha.Text);
   FreeAndNil(locCriptografia);
+  
+  //
+  // Insere linha na lista.
+  //
+  FormularioItemAtualizar(locItem,
+                          locTitulo,
+                          locServidor,
+                          locPorta,
+                          locInstancia,
+                          locUsuario,
+                          locSenhaCriptografada,
+                          locBancoDados,
+                          locTimeOut);
 
   //
-  // Pelo sequencial do item determina se um novo ou uma alteração.
+  // Dados atualizados no formulário.
   //
-  if StringIntegerConverter(edtItem.Text) > lvwLista.Items.Count then
-  begin
-    //
-    // Determina o índice do listview.
-    //
-    locIndice := StringIntegerConverter(edtItem.Text);
-
-    //
-    // Insere nova linha na lista.
-    //
-    locListItem := lvwLista.Items.Add;
-    locListItem.Caption := '';
-    locListItem.SubItems.Add(edtItem.Text);
-    locListItem.SubItems.Add(edtTitulo.Text);
-    locListItem.SubItems.Add(edtServidor.Text);        
-    locListItem.SubItems.Add(edtPorta.Text);    
-    locListItem.SubItems.Add(edtInstancia.Text);
-    locListItem.SubItems.Add(edtUsuario.Text);
-    locListItem.SubItems.Add(locSenhaCriptografada);
-    locListItem.SubItems.Add(edtBancoDados.Text);
-    locListItem.SubItems.Add(edtTimeOut.Text);
-  end
-  else
-  begin
-    //
-    // Determina o índice do listview.
-    //
-    locIndice := StringIntegerConverter(edtItem.Text) - 1;
-
-    //
-    // Atualiza informações na lista.
-    //
-    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_ITEM]        := edtItem.Text;
-    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_TITULO]      := edtTitulo.Text;
-    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_SERVIDOR]    := edtServidor.Text;
-    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_PORTA]       := edtPorta.Text;
-    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_INSTANCIA]   := edtInstancia.Text;    
-    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_USUARIO]     := edtUsuario.Text;
-    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_SENHA]       := locSenhaCriptografada;
-    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_BANCO_DADOS] := edtBancoDados.Text;    
-    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_TIME_OUT]    := edtTimeOut.Text;    
-  end;
+  pubDadosAtualizados := True;
 
   //
   // Controla componentes do formulário.
@@ -763,14 +819,90 @@ begin
 end;
 
 //
+// Procedimento para atualizar um item da lista.
+//
+procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormularioItemAtualizar(argItem      : Integer;
+                                                                             argTitulo    : string;
+                                                                             argServidor  : string;
+                                                                             argPorta     : Integer;
+                                                                             argInstancia : string;
+                                                                             argUsuario   : string;
+                                                                             argSenha     : string;
+                                                                             argBancoDados: string;
+                                                                             argTimeOut   : Integer);
+var
+  locIndice  : Integer;
+  locListItem: TListItem;
+begin
+  //
+  // Pelo sequencial do item determina se um novo ou uma alteração.
+  //
+  if argItem > lvwLista.Items.Count then
+  begin
+    //
+    // Determina o índice do listview.
+    //
+    locIndice := StringIntegerConverter(edtItem.Text);
+
+    //
+    // Insere nova linha na lista.
+    //
+    locListItem := lvwLista.Items.Add;
+    locListItem.Caption := '';
+    locListItem.SubItems.Add(IntegerStringConverter(argItem));
+    locListItem.SubItems.Add(argTitulo);
+    locListItem.SubItems.Add(argServidor);
+    locListItem.SubItems.Add(IntegerStringConverter(argPorta));
+    locListItem.SubItems.Add(argInstancia);
+    locListItem.SubItems.Add(argUsuario);
+    locListItem.SubItems.Add(argSenha);
+    locListItem.SubItems.Add(argBancoDados);
+    locListItem.SubItems.Add(IntegerStringConverter(argTimeOut));
+  end
+  else
+  begin
+    //
+    // Determina o índice do listview.
+    //
+    locIndice := argItem - 1;
+
+    //
+    // Atualiza informações na lista.
+    //
+    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_ITEM]        := IntegerStringConverter(argItem);
+    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_TITULO]      := argTitulo;
+    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_SERVIDOR]    := argServidor;
+    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_PORTA]       := IntegerStringConverter(argPorta);
+    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_INSTANCIA]   := argInstancia;
+    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_USUARIO]     := argUsuario;
+    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_SENHA]       := argSenha;
+    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_BANCO_DADOS] := argBancoDados;
+    lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_COLUNA_TIME_OUT]    := IntegerStringConverter(argTimeOut);
+  end;
+end;
+
+//
 // Procedimento para atualizar os dados do formulário.
 //
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormularioAtualizar(argSolicitarConfirmacao: Boolean = True);
+const
+  PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados do arquivo de configuração da aplicação!';
 var
-  locSessao    : string;
-  locQuantidade: Integer;
-  locContador  : Integer;
-  locListItem  : TListItem;
+  locLogMensagem: string;
+  locSessao     : string;
+  locQuantidade : Integer;
+  locContador   : Integer;
+  locItem       : Integer;
+  locTitulo     : string;
+  locServidor   : string;
+  locPorta      : Integer;
+  locInstancia  : string;
+  locUsuario    : string;
+  locSenha      : string;
+  locBancoDados : string;
+  locTimeOut    : Integer;
+  locListItem   : TListItem;
 begin
   //
   // Confirma execução com o usuário.
@@ -793,17 +925,24 @@ begin
   //
   // Verifica se o arquivo de configuração existe na pasta adequada.
   //
-  if not PathArquivoExisteDeterminar(gloPathArquivoConfiguracao) then Exit;
+  if not PathArquivoExisteDeterminar(gloConfiguracaoArquivo) then
+  begin
+    VCLCursorTrocar;
+    Exit;
+  end;
 
   //
   // Lê a quantidade de conexões existente no arquivo de configuração.
   //
   try
-    locQuantidade := ArquivoIniIntegerRecuperar(gloPathArquivoConfiguracao, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVI_INI_CONEXAO_GERAL_QUANTIDADE);
+    locQuantidade := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVI_INI_CONEXAO_GERAL_QUANTIDADE);
   except
-    on locErro: Exception do
+    on locExcecao: Exception do
     begin
-      raise Exception.Create(locErro.Message);
+      locLogMensagem := 'Erro ao ler a quantidade de conexões configuradas no arquivo de configuração da aplicação!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
     end;
   end;
 
@@ -815,60 +954,35 @@ begin
     //
     // Formata o nome da sessão.
     //
-    locSessao := ARQUIVO_INI_CONEXAO_SESSAO + '_' + StringPreencher(IntegerStringConverter(locContador + 1), 4, '0', ESQUERDA);
+    locSessao := ARQUIVO_INI_CONEXAO_SESSAO + '_' + StringPreencher(IntegerStringConverter(locContador + 1), 4, '0');
 
     //
     // Carrega os dados da conexão.
     //
-    ConexaoLimpar(locConexao);
-    locConexao.Item        := ArquivoIniIntegerRecuperar(gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_ITEM);
-    locConexao.Titulo      := ArquivoIniStringRecuperar (gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_TITULO);
-    locConexao.Modo        := ArquivoIniStringRecuperar (gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_MODO);
-    locConexao.ChaveCodigo := ArquivoIniStringRecuperar (gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_CHAVE_CODIGO);
-    locConexao.ChaveID     := ArquivoIniIntegerRecuperar(gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_CHAVE_ID);
-    locConexao.BaseID      := ArquivoIniIntegerRecuperar(gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_BASE_ID);
-    locConexao.SGBD        := ArquivoIniStringRecuperar (gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_SGBD);
-    locConexao.Driver      := ArquivoIniStringRecuperar (gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_DRIVER);
-    locConexao.Servidor    := ArquivoIniStringRecuperar (gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_SERVIDOR);
-    locConexao.Porta       := ArquivoIniIntegerRecuperar(gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_PORTA);
-    locConexao.Instancia   := ArquivoIniStringRecuperar (gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_INSTANCIA);
-    locConexao.Usuario     := ArquivoIniStringRecuperar (gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_USUARIO);
-    locConexao.Senha       := ArquivoIniStringRecuperar (gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_SENHA);
-    locConexao.BancoDados  := ArquivoIniStringRecuperar (gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_BANCO_DADOS);
-    locConexao.TimeOut     := ArquivoIniIntegerRecuperar(gloPathArquivoConfiguracao, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_TIME_OUT);
-
-    //
-    // Consiste filtros.
-    //
-    if argItemInicial > 0 then
-    begin
-      if locConexao.Item < argItemInicial then Continue;
-    end;
-
-    if argItemFinal > 0 then
-    begin
-      if locConexao.Item > argItemFinal then Continue;
-    end;
-
-    if argTitulo <> '' then
-    begin
-      if not StringLocalizar(StringFoneticaDeterminar(locConexao.Titulo), StringFoneticaDeterminar(argTitulo)) then Continue;
+    try
+      locItem       := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_ITEM);
+      locTitulo     := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_TITULO);
+      locServidor   := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_SERVIDOR);
+      locPorta      := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_PORTA);
+      locInstancia  := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_INSTANCIA);
+      locUsuario    := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_USUARIO);
+      locSenha      := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_SENHA);
+      locBancoDados := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_BANCO_DADOS);
+      locTimeOut    := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_TIME_OUT);
+    except
+      on locExcecao: Exception do
+      begin
+        locLogMensagem := 'Erro ao ler parâmetros das conexões com o banco de daos do arquivo de configuração da aplicação!';
+        Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+        VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+        Exit;
+      end;
     end;
 
     //
-    // Determina o índice do array depois que uma nova linha for inserida.
+    // Insere linha na lista.
     //
-    locIndice := Length(Result);
-
-    //
-    // Insere uma nova linha no registro.
-    //
-    SetLength(Result, locIndice + 1);
-
-    //
-    // Popula os campos do registro dessa nova linha do array.
-    //
-    Result[locIndice] := locConexao;
+    FormularioItemAtualizar(locItem, locTitulo, locServidor, locPorta, locInstancia, locUsuario, locSenha, locBancoDados, locTimeOut);
   end;  
 
   //
@@ -888,14 +1002,27 @@ begin
   VCLListViewFocar(lvwLista);
 end;
 
-{
 //
 // Procedimento para gravar as configurações de acesso ao banco de dados.
 //
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormularioGravar;
+const
+  PROCEDIMENTO_NOME: string = 'FormularioGravar';
+  ERRO_MENSAGEM    : string = 'Impossível gravar dados no arquivo de configuração da aplicação!';
 var
-  locContador: Integer;
-  locIndice  : Integer;
+  locLogMensagem: string;
+  locQuantidade : Integer;
+  locSessao     : string;
+  locContador   : Integer;
+  locItem       : Integer;
+  locTitulo     : string;
+  locServidor   : string;
+  locPorta      : Integer;
+  locInstancia  : string;
+  locUsuario    : string;
+  locSenha      : string;
+  locBancoDados : string;
+  locTimeOut    : Integer;
 begin
   //
   // Confirma gravação.
@@ -903,42 +1030,139 @@ begin
   if not VCLQuestionamentoExibir('Deseja realmente gravar?') then Exit;
 
   //
-  // Monta lista de conexões.
+  // Troca o cursor.
   //
-  for locContador := 0 to (lvwLista.Items.Count - 1) do
+  VCLCursorTrocar(True);
+
+  //
+  // Se o arquivo de configuração não existir na pasta adequada então cria os diretórios.
+  //
+  if not PathArquivoExisteDeterminar(gloConfiguracaoArquivo) then
   begin
     //
-    // Insere dados no array.
+    // Somente os diretórios estão sendo criados.
     //
-    locListaConexoes[locIndice].Item        := StringIntegerConverter(lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_ITEM]);
-    locListaConexoes[locIndice].Titulo      := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_TITULO];
-    locListaConexoes[locIndice].Modo        := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_MODO];
-    locListaConexoes[locIndice].ChaveCodigo := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_CODIGO];
-    locListaConexoes[locIndice].ChaveID     := StringIntegerConverter(lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_CHAVE_ID]);
-    locListaConexoes[locIndice].BaseID      := StringIntegerConverter(lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_BASE_ID]);
-    locListaConexoes[locIndice].SGBD        := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_SGBD];
-    locListaConexoes[locIndice].Driver      := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_DRIVER];
-    locListaConexoes[locIndice].Servidor    := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_SERVIDOR];
-    locListaConexoes[locIndice].Porta       := StringIntegerConverter(lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_PORTA]);
-    locListaConexoes[locIndice].Instancia   := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_INSTANCIA];
-    locListaConexoes[locIndice].Usuario     := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_USUARIO];
-    locListaConexoes[locIndice].Senha       := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_SENHA];
-    locListaConexoes[locIndice].BancoDados  := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_BANCO_DADOS];
-    locListaConexoes[locIndice].TimeOut     := StringIntegerConverter(lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_TIME_OUT]);
+    try
+      PathCriar(gloConfiguracaoArquivo);
+    except
+      on locExcecao: Exception do
+      begin
+        locLogMensagem := 'Erro ao criar o path de arquivos de configuração da aplicação!';
+        Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+        VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+        Exit;
+      end;
+    end;
   end;
 
   //
-  // Grava informações.
+  // Remove todas as configurações de conexão antes de inserí-las.
   //
   try
-    ListaConexoesLocaisGravar(locListaConexoes);
+    locQuantidade := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVI_INI_CONEXAO_GERAL_QUANTIDADE);
   except
-    on locErro: Exception do
+    on locExcecao: Exception do
     begin
-      VCLErroExibir('Impossível gravar dados sobre as configurações de conexões de acesso à aplicação!', locErro.Message);
+      locLogMensagem := 'Erro ao ler a quantidade de configurações de conexão existentes atualmente no arquivo de configuração da aplicação!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
     end;
   end;
+
+  if locQuantidade > 0 then
+  begin
+    for locContador := 1 to locQuantidade do
+    begin
+      locSessao := ARQUIVO_INI_CONEXAO_SESSAO + '_' + StringPreencher(IntegerStringConverter(locContador + 1), 4, '0');
+      try
+        ArquivoIniSessaoExcluir(gloConfiguracaoArquivo, locSessao);
+      except
+        on locExcecao: Exception do
+        begin
+          locLogMensagem := 'Erro ao excluir as sessões existentes no arquivo de configuração para as conexões com o banco de dados!';
+          Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+          VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+          Exit;
+        end;
+      end;
+    end;
+  end;
+
+  //
+  // Determina a quantidade de conexões na lista.
+  //
+  locQuantidade := lvwLista.Items.Count;
+
+  //
+  // Grava a nova quantidade de conexões existente no arquivo de configuração.
+  //
+  try
+    ArquivoIniIntegerGravar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVI_INI_CONEXAO_GERAL_QUANTIDADE, locQuantidade);
+  except
+    on locExcecao: Exception do
+    begin
+      locLogMensagem := 'Erro ao gravar a quantidade de conexões configuradas no arquivo de configuração para as conexões com o banco de dados!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Inicia laço para gravar cada uma das configurações de conexão do arquivo de configuração.
+  //
+  for locContador := 0 to (locQuantidade - 1) do
+  begin
+    //
+    // Formata o nome da sessão.
+    //
+    locSessao := ARQUIVO_INI_CONEXAO_SESSAO + '_' + StringPreencher(IntegerStringConverter(locContador + 1), 4, '0');
+
+    //
+    // Carrega os dados da conexão.
+    //
+    locItem       := StringIntegerConverter(lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_ITEM]);
+    locTitulo     := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_TITULO];
+    locServidor   := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_SERVIDOR];
+    locPorta      := StringIntegerConverter(lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_PORTA]);
+    locInstancia  := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_INSTANCIA];
+    locUsuario    := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_USUARIO];
+    locSenha      := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_SENHA];
+    locBancoDados := lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_BANCO_DADOS];
+    locTimeOut    := StringIntegerConverter(lvwLista.Items.Item[locContador].SubItems.Strings[LVW_COLUNA_TIME_OUT]);
+
+    //
+    // Grava cada uma das conexões da lista.
+    //
+    try
+      ArquivoIniIntegerGravar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_ITEM,        locItem);
+      ArquivoIniStringGravar  (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_TITULO,      locTitulo);
+      ArquivoIniStringGravar  (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_SERVIDOR,    locServidor);
+      ArquivoIniIntegerGravar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_PORTA,       locPorta);
+      ArquivoIniStringGravar  (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_INSTANCIA,   locInstancia);
+      ArquivoIniStringGravar  (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_USUARIO,     locUsuario);
+      ArquivoIniStringGravar  (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_SENHA,       locSenha);
+      ArquivoIniStringGravar  (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_BANCO_DADOS, locBancoDados);
+      ArquivoIniIntegerGravar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_TIME_OUT,    locTimeOut);
+      ArquivoIniDateTimeGravar(gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_INS_DT_HR,   Now);
+      ArquivoIniStringGravar  (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_INS_USER,    UserNameRecuperar);
+      ArquivoIniStringGravar  (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_INS_HOST,    HostNameRecuperar);
+    except
+      on locExcecao: Exception do
+      begin
+        locLogMensagem := 'Erro ao gravar as informações sobre as conexões configuradas no arquivo de configuração para as conexões com o banco de dados!';
+        Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+        VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+        Exit;
+      end;
+    end;
+  end;
+
+  //
+  // Troca o cursor.
+  //
+  VCLCursorTrocar;
 
   //
   // Fecha formulário.
@@ -946,5 +1170,13 @@ begin
   pubClicouSair := False;  
   Close;
 end;
-}
+
+//
+// Procedimento para testar uma configuração de acesso ao banco de dados.
+//
+procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormularioTestar;
+begin
+  Exit;
+end;
+
 end.

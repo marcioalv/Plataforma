@@ -523,6 +523,11 @@ begin
   Plataforma_ERP_LogInicializar;
 
   //
+  // Inicializa o arquivo de configuração da aplicação.
+  //
+  Plataforma_ERP_ArquivoConfiguracaoInicializar;
+
+  //
   // Define os parâmetros de conexão ao banco de dados.
   //
   gloConexaoADOString := 'Provider=SQLOLEDB.1;Persist Security Info=True;Trusted_Connection=True;Data Source=LocalHost\SQLExpress;User ID=sa;Password=abc123;Initial Catalog=PlataformaERP;Connection Timeout=10;';
