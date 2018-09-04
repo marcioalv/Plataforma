@@ -50,6 +50,8 @@ type
     mniNaoSeiLogon: TMenuItem;
     mniConexaoBaseDados: TMenuItem;
     mniLicencaAplicacao: TMenuItem;
+    lblConexaoTitulo: TLabel;
+    lblConexaoItem: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
@@ -64,11 +66,13 @@ type
     procedure mniAcessarClick(Sender: TObject);
     procedure mniFecharClick(Sender: TObject);
     procedure mniConexaoBaseDadosClick(Sender: TObject);
+    procedure lblConexaoTituloClick(Sender: TObject);
   private
     priTentativas: Integer;
     procedure FormularioLimpar;
     procedure FormularioConfirmar;
     procedure TentativasAcessoValidar;
+    procedure ConexaoDeterminar;    
   public
     pubClicouFechar: Boolean;
   end;
@@ -86,7 +90,8 @@ uses
   Plataforma_Framework_Criptografia,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
-  Plataforma_ERP_VCL_AcessoConexaoConfiguracao;
+  Plataforma_ERP_VCL_AcessoConexaoConfiguracao,
+  Plataforma_ERP_VCL_AcessoConexaoSelecao;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_UsuarioLogon.pas';
@@ -113,6 +118,7 @@ end;
 procedure TPlataformaERPVCLUsuarioLogon.FormShow(Sender: TObject);
 begin
   FormularioLimpar;
+  ConexaoDeterminar;
 
   edtUsuario.Text := 'marcio.alves';
   edtSenha.Text   := '123';
@@ -196,6 +202,26 @@ end;
 procedure TPlataformaERPVCLUsuarioLogon.btnFecharClick(Sender: TObject);
 begin
   Close;
+end;
+
+//
+// Evento de click no label de conexão.
+//
+procedure TPlataformaERPVCLUsuarioLogon.lblConexaoTituloClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLAcessoConexaoSelecao;
+begin
+  if lblConexaoItem.Caption = '' then
+  begin
+    mniConexaoBaseDadosClick(Sender);
+  end
+  else
+  begin
+    locFormulario := TPlataformaERPVCLAcessoConexaoSelecao.Create(Self);
+    locFormulario.ShowModal;
+    locFormulario.Release;
+    FreeAndNil(locFormulario);
+  end;
 end;
 
 //
@@ -489,6 +515,54 @@ begin
     VCLConsistenciaExibir('Foram realizadas 3 tentativas de acesso fracassadas!', 'Por segurança o aplicativo será encerrado!');
     Close;
   end;
+end;
+
+//
+// Procedimento para determinar a conexão à base de dados.
+//
+procedure TPlataformaERPVCLUsuarioLogon.ConexaoDeterminar;
+var
+  locConexaoQtde: Integer;
+begin
+  locConexaoQtde := 2;
+
+  if locConexaoQtde <= 0 then
+  begin
+    lblConexaoItem.Caption := '';
+  
+    lblConexaoTitulo.Cursor     := crHandPoint;
+    lblConexaoTitulo.Font.Color := RGB(218, 36, 44);
+    lblConexaoTitulo.Font.Style := [fsUnderline];
+    lblConexaoTitulo.Caption    := 'Nenhuma conexão de acesso à base de dados configurada!';
+
+    edtUsuario.Visible   := False;
+    edtSenha.Visible     := False;
+    btnConfirmar.Visible := False;
+  end;
+
+  if locConexaoQtde = 1 then
+  begin
+    lblConexaoTitulo.Cursor     := crDefault;
+    lblConexaoTitulo.Font.Color := RGB(46, 89, 137);
+    lblConexaoTitulo.Font.Style := [];
+    lblConexaoTitulo.Caption    := 'Bergerson Produção';
+
+    edtUsuario.Visible   := True;
+    edtSenha.Visible     := True;
+    btnConfirmar.Visible := True;    
+  end;
+
+  if locConexaoQtde >= 2 then
+  begin
+    lblConexaoTitulo.Cursor     := crHandPoint;
+    lblConexaoTitulo.Font.Color := RGB(46, 89, 137);
+    lblConexaoTitulo.Font.Style := [fsUnderline];
+    lblConexaoTitulo.Caption    := 'Bergerson Produção';
+
+    edtUsuario.Visible   := True;
+    edtSenha.Visible     := True;
+    btnConfirmar.Visible := True;    
+  end;  
 end;
 
 end.

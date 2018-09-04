@@ -31291,6 +31291,22 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
     Proportional = True
     Stretch = True
   end
+  object lblConexaoTitulo: TLabel
+    Left = 32
+    Top = 408
+    Width = 176
+    Height = 13
+    Caption = 'Conex'#227'o de acesso '#224' base de dados'
+    OnClick = lblConexaoTituloClick
+  end
+  object lblConexaoItem: TLabel
+    Left = 32
+    Top = 424
+    Width = 75
+    Height = 13
+    Caption = 'lblConexaoItem'
+    Visible = False
+  end
   object edtUsuario: TEdit
     Left = 80
     Top = 299
@@ -31442,8 +31458,8 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
   object mnuFormulario: TMainMenu
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
-    Left = 128
-    Top = 392
+    Left = 384
+    Top = 184
     object mniPrecisoAjuda: TMenuItem
       Caption = 'Preciso de ajuda'
       object mniEsqueciSenha: TMenuItem

@@ -15,7 +15,7 @@ uses
   Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, Vcl.Menus, Vcl.Buttons, Vcl.Imaging.pngimage;
 
 const
   LVW_COLUNA_ITEM  : Integer = 0;
@@ -25,19 +25,18 @@ type
   TPlataformaERPVCLAcessoConexaoSelecao = class(TForm)
     panFormulario: TPanel;
     lvwLista: TListView;
-    btnAtualizar: TButton;
-    btnFiltrar: TButton;
-    btnSair: TButton;
-    btnSelecionar: TButton;
-    lblQtdeLinhas: TLabel;
-    lblFiltrosAplicados: TLabel;
-    btnConfigurar: TButton;
-    procedure btnAtualizarClick(Sender: TObject);
+    imgFormulario: TImage;
+    imgBackground: TImage;
+    btnFechar: TBitBtn;
+    btnMinimizar: TBitBtn;
+    btnSelecionar: TBitBtn;
+    mnuFormulario: TMainMenu;
+    mniFechar: TMenuItem;
+    mniMinimizar: TMenuItem;
+    mniSelecionar: TMenuItem;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure btnFiltrarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnSelecionarClick(Sender: TObject);
-    procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
@@ -45,22 +44,19 @@ type
     procedure lvwListaKeyPress(Sender: TObject; var Key: Char);
     procedure lvwListaColumnClick(Sender: TObject; Column: TListColumn);
     procedure lvwListaCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
-    procedure btnConfigurarClick(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure btnMinimizarClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure mniSelecionarClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
   private
     priListViewColuna    : Integer;
     priListViewAscendente: Boolean;
     
-    priFiltroItemInicial : Integer;
-    priFiltroItemFinal   : Integer;
-    priFiltroTitulo      : string;
-
     procedure ComponentesLimpar;
     procedure ComponentesControlar;
     procedure FormularioSelecionar;
-    procedure FormularioFiltrar;
     procedure FormularioAtualizar;
-    procedure FormularioConfigurar;
-    procedure FormularioSair;
   public
     pubClicouSair: Boolean;
     pubItem      : Integer;
@@ -74,7 +70,8 @@ implementation
 
 uses
   Plataforma_Framework_Util,
-  Plataforma_Framework_VCL;
+  Plataforma_Framework_VCL,
+  Plataforma_ERP_VCL_Generico;
 
 {$R *.dfm}
 
@@ -89,21 +86,12 @@ begin
   priListViewColuna     := 0;
   priListViewAscendente := True;
   
-  priFiltroItemInicial := 0;
-  priFiltroItemFinal   := 0;
-  priFiltroTitulo      := '';
-
   //
   // Inicializa variáveis públicas.
   //
   pubClicouSair := True;
   pubItem       := 0;
   pubTitulo     := '';
-
-  //
-  // Inicializa alguns componentes.
-  //
-  lblQtdeLinhas.Caption := VCL_MSG_ATUALIZAR;
 end;
 
 //
@@ -111,6 +99,11 @@ end;
 //
 procedure TPlataformaERPVCLAcessoConexaoSelecao.FormShow(Sender: TObject);
 begin
+  //
+  // Background do formulário.
+  //
+  Plataforma_ERP_VCL_FormularioBackground(imgBackground);
+
   //
   // Carrega lista de conexões cadastradas.
   //
@@ -123,6 +116,24 @@ end;
 procedure TPlataformaERPVCLAcessoConexaoSelecao.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
+end;
+
+//
+// Eventos de click nos itens do menu.
+//
+procedure TPlataformaERPVCLAcessoConexaoSelecao.mniSelecionarClick(Sender: TObject);
+begin
+  FormularioSelecionar;
+end;
+
+procedure TPlataformaERPVCLAcessoConexaoSelecao.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+procedure TPlataformaERPVCLAcessoConexaoSelecao.mniFecharClick(Sender: TObject);
+begin
+  Close;
 end;
 
 //
@@ -158,99 +169,51 @@ begin
   if Key = ENTER then lvwListaDblClick(Sender);
 end;
 
-{+------------------------------------------------------------------------------------------------+}
-{| btnSelecionarClick                                                                             |}
-{+------------------------------------------------------------------------------------------------+}
-{| Evento de click no botão btnSelecionar.                                                        |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
+//
+// Evento de click no botão "selecionar".
+//
 procedure TPlataformaERPVCLAcessoConexaoSelecao.btnSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
 
-{+------------------------------------------------------------------------------------------------+}
-{| btnFiltrarClick                                                                                |}
-{+------------------------------------------------------------------------------------------------+}
-{| Evento de click no botão btnFiltrar.                                                           |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
-procedure TPlataformaERPVCLAcessoConexaoSelecao.btnFiltrarClick(Sender: TObject);
+//
+// Evento de click no botão "minimizar'.
+//
+procedure TPlataformaERPVCLAcessoConexaoSelecao.btnMinimizarClick(Sender: TObject);
 begin
-  FormularioFiltrar;
+  VCLSDIMinimizar;
 end;
 
-{+------------------------------------------------------------------------------------------------+}
-{| btnAtualizarClick                                                                              |}
-{+------------------------------------------------------------------------------------------------+}
-{| Evento de click no botão btnAtualizar.                                                         |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
-procedure TPlataformaERPVCLAcessoConexaoSelecao.btnAtualizarClick(Sender: TObject);
+//
+// Evento de click no botão "fechar".
+//
+procedure TPlataformaERPVCLAcessoConexaoSelecao.btnFecharClick(Sender: TObject);
 begin
-  FormularioAtualizar;
+  Close;
 end;
 
-{+------------------------------------------------------------------------------------------------+}
-{| btnConfigurarClick                                                                             |}
-{+------------------------------------------------------------------------------------------------+}
-{| Evento de click no botão btnConfigurar.                                                        |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
-procedure TPlataformaERPVCLAcessoConexaoSelecao.btnConfigurarClick(Sender: TObject);
-begin
-  FormularioConfigurar;
-end;
-
-{+------------------------------------------------------------------------------------------------+}
-{| btnSairClick                                                                                   |}
-{+------------------------------------------------------------------------------------------------+}
-{| Evento de click no botão btnSair.                                                              |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
-procedure TPlataformaERPVCLAcessoConexaoSelecao.btnSairClick(Sender: TObject);
-begin
-  FormularioSair;
-end;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// ÁREA DE PROCEDIMENTOS E FUNÇÕES                                                                //
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-{+------------------------------------------------------------------------------------------------+}
-{| ComponentesLimpar                                                                              |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
+//
+// Procedimento para limpar os componentes do formulário.
+//
 procedure TPlataformaERPVCLAcessoConexaoSelecao.ComponentesLimpar;
 begin
-  lblQtdeLinhas.Caption       := '';
-  lblFiltrosAplicados.Visible := False;
   VCLListViewLimpar(lvwLista);
-
   ComponentesControlar;
 end;
 
-{+------------------------------------------------------------------------------------------------+}
-{| ComponentesControlar                                                                           |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
+//
+// Procedimento para controlar a exibição dos componentes do formulário.
+//
 procedure TPlataformaERPVCLAcessoConexaoSelecao.ComponentesControlar;
 begin
-  btnSelecionar.Visible := (lvwLista.Items.Count > 0);
+  mniSelecionar.Visible := (lvwLista.Items.Count > 0);
+  btnSelecionar.Visible := mniSelecionar.Visible;
 end;
 
-{+------------------------------------------------------------------------------------------------+}
-{| FormularioSelecionar                                                                           |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
+//
+// Procedimento para selecionar uma das conexões configuradas.
+//
 procedure TPlataformaERPVCLAcessoConexaoSelecao.FormularioSelecionar;
 var
   locIndice: Integer;
@@ -282,73 +245,13 @@ begin
   Close;
 end;
 
-{+------------------------------------------------------------------------------------------------+}
-{| FormularioFiltrar                                                                              |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
-procedure TPlataformaERPVCLAcessoConexaoSelecao.FormularioFiltrar;
-var
-  locFormulario: TPlataformaERPPrincipalVCLAcessoConexaoFiltro;
-  locClicouSair: Boolean;
-begin
-  //
-  // Cria o formulário.
-  //
-  locFormulario := TPlataformaERPPrincipalVCLAcessoConexaoFiltro.Create(Self);
-
-  //
-  // Passa o conteúdo dos filtros memorizados.
-  //
-  locFormulario.pubFiltroItemInicial := priFiltroItemInicial;
-  locFormulario.pubFiltroItemFinal   := priFiltroItemFinal;
-  locFormulario.pubFiltroTitulo      := priFiltroTitulo;
-  
-  //
-  // Exibe o formulário de filtros.
-  //
-  locFormulario.ShowModal;
-
-  //
-  // Carrega informações sobre o retorno.
-  //
-  locClicouSair := locFormulario.pubClicouSair;
-
-  if not locClicouSair then
-  begin
-    //
-    // Memoriza os novos filtros informados pelo usuário.
-    //
-    priFiltroItemInicial := locFormulario.pubFiltroItemInicial;
-    priFiltroItemFinal   := locFormulario.pubFiltroItemFinal;
-    priFiltroTitulo      := locFormulario.pubFiltroTitulo;
-  end;
-
-  //
-  // Garante que o formulário foi fechado.
-  //  
-  locFormulario.Release;
-  FreeAndNil(locFormulario);
-
-  //
-  // Executa a atualização da lista com os novos filtros.
-  //
-  if not locClicouSair then
-  begin
-    FormularioAtualizar;
-  end;
-end;
-
-{+------------------------------------------------------------------------------------------------+}
-{| FormularioAtualizar                                                                            |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
+//
+// Procedimento para atualizar a lista de conexões configuradas.
+//
 procedure TPlataformaERPVCLAcessoConexaoSelecao.FormularioAtualizar;
 var
-  locListaConexoes: TListaConexoes;
-  locContador     : Integer;
-  locListItem     : TListItem;
+  locContador: Integer;
+  locListItem: TListItem;
 begin
   //
   // Troca o cursor.
@@ -359,63 +262,6 @@ begin
   // Limpa componentes.
   //
   ComponentesLimpar;
-
-  //
-  // Indica se algum filtro foi informado.
-  //
-  if (priFiltroItemInicial <> 0) or
-     (priFiltroItemFinal   <> 0) or
-     (priFiltroTitulo      <> '') then
-  begin
-    lblFiltrosAplicados.Visible := True;
-  end;
-
-  //
-  // Carrega lista de conexoes configuradas.
-  //
-  try
-    locListaConexoes := ListaConexoesLocaisCarregar(priFiltroItemInicial,
-                                                    priFiltroItemFinal,
-                                                    priFiltroTitulo);
-  except
-    on locErro: Exception do
-    begin
-      VCLCursorTrocar;
-      VCLErroExibir('Ocorreu algum erro ao carregar os dados da lista!',
-                    locErro.Message);
-      Exit;
-    end;
-  end;
-
-  //
-  // Carrega listview com a lista de conexões.
-  //
-  if locListaConexoes <> nil then
-  begin
-    for locContador := 0 to (Length(locListaConexoes) - 1) do
-    begin
-      //
-      // Insere linha no listview.
-      //
-      locListItem         := lvwLista.Items.Add;
-      locListItem.Caption := '';
-      locListItem.SubItems.Add(IntegerStringConverter(locListaConexoes[locContador].Item));
-      locListItem.SubItems.Add(locListaConexoes[locContador].Titulo);
-      locListItem.SubItems.Add(locListaConexoes[locContador].SGBD);
-      locListItem.SubItems.Add(locListaConexoes[locContador].Servidor);
-      locListItem.SubItems.Add(IntegerStringConverter(locListaConexoes[locContador].Porta));
-      locListItem.SubItems.Add(locListaConexoes[locContador].Instancia);
-      locListItem.SubItems.Add(locListaConexoes[locContador].Usuario);
-      locListItem.SubItems.Add(locListaConexoes[locContador].Senha);
-      locListItem.SubItems.Add(locListaConexoes[locContador].BancoDados);
-      locListItem.SubItems.Add(IntegerStringConverter(locListaConexoes[locContador].TimeOut));
-    end;
-  end;
-
-  //
-  // Atualiza a quantidade de itens da lista.
-  //
-  VCLLabelQtdeLinhasExibir(lblQtdeLinhas, lvwLista, lblFiltrosAplicados.Visible);
 
   //
   // Controla a exibição dos componentes.
@@ -431,39 +277,6 @@ begin
   // Foco no listview.
   //
   VCLListViewFocar(lvwLista);
-end;
-
-{+------------------------------------------------------------------------------------------------+}
-{| FormularioConfigurar                                                                           |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
-procedure TPlataformaERPVCLAcessoConexaoSelecao.FormularioConfigurar;
-var
-  locFormulario: TPlataformaERPPrincipalVCLAcessoConexaoConfiguracao;
-begin
-  //
-  // Exibe formulário para configuração de conexões.
-  //
-  locFormulario := TPlataformaERPPrincipalVCLAcessoConexaoConfiguracao.Create(Self);
-  locFormulario.ShowModal;
-  locFormulario.Release;
-  FreeAndNil(locFormulario);
-
-  //
-  // Atualiza a lista de conexões disponíveis.
-  //
-  FormularioAtualizar;
-end;
-
-{+------------------------------------------------------------------------------------------------+}
-{| FormularioSair                                                                                 |}
-{+------------------------------------------------------------------------------------------------+}
-{| Criado em 26/Fevereiro/2018 por Marcio Alves.                                                  |}
-{+------------------------------------------------------------------------------------------------+}
-procedure TPlataformaERPVCLAcessoConexaoSelecao.FormularioSair;
-begin
-  Close;
 end;
 
 end.
