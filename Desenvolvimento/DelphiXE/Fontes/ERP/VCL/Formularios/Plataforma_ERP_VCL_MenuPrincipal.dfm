@@ -103,6 +103,10 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     Top = 80
     object mniAplicacao: TMenuItem
       Caption = '&Aplica'#231#227'o'
+      object mniLogoff: TMenuItem
+        Caption = 'Logoff'
+        OnClick = mniLogoffClick
+      end
       object mniTrocarUsuario: TMenuItem
         Caption = 'Trocar usu'#225'rio'
         OnClick = mniTrocarUsuarioClick
@@ -179,6 +183,13 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
           Caption = 'Log local'
           OnClick = mniLogLocalClick
         end
+      end
+      object mniAplicacaoSeparador2: TMenuItem
+        Caption = '-'
+      end
+      object mniEncerrar: TMenuItem
+        Caption = 'Encerrar'
+        OnClick = mniEncerrarClick
       end
     end
   end

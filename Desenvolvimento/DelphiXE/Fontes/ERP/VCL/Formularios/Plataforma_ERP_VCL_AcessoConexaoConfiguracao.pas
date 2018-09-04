@@ -158,7 +158,8 @@ uses
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_Generico,
-  Plataforma_ERP_Inicializacao;
+  Plataforma_ERP_Inicializacao,
+  Plataforma_ERP_VCL_ConexaoTeste;
 
 const
   LVW_COLUNA_ITEM       : Integer = 0;
@@ -677,8 +678,6 @@ var
   locTimeOut           : Integer;
   locCriptografia      : TCriptografia;
   locSenhaCriptografada: string;
-  locIndice            : Integer;
-  locListItem          : TListItem;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
@@ -726,7 +725,7 @@ begin
   //
   // Foco no listview.
   //
-  VCLListViewItemPosicionar(lvwLista, locIndice);
+  VCLListViewItemPosicionar(lvwLista, locItem - 1);
   VCLListViewFocar(lvwLista);
 end;
 
@@ -761,18 +760,9 @@ end;
 //
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormularioItemSelecionar;
 var  
-  locIndice            : Integer;
-  locItem              : Integer;
-  locTitulo            : string;
-  locServidor          : string;
-  locPorta             : Integer;
-  locInstancia         : string;
-  locUsuario           : string;
-  locSenha             : string;
-  locBancoDados        : string;
-  locTimeOut           : Integer;
-  locCriptografia      : TCriptografia;
-  locSenhaCriptografada: string;
+  locIndice      : Integer;
+  locCriptografia: TCriptografia;
+  locSenha       : string;
 begin
   //
   // Limpa os componentes de edição.
@@ -840,11 +830,6 @@ begin
   if argItem > lvwLista.Items.Count then
   begin
     //
-    // Determina o índice do listview.
-    //
-    locIndice := StringIntegerConverter(edtItem.Text);
-
-    //
     // Insere nova linha na lista.
     //
     locListItem := lvwLista.Items.Add;
@@ -902,7 +887,6 @@ var
   locSenha      : string;
   locBancoDados : string;
   locTimeOut    : Integer;
-  locListItem   : TListItem;
 begin
   //
   // Confirma execução com o usuário.
@@ -1175,8 +1159,19 @@ end;
 // Procedimento para testar uma configuração de acesso ao banco de dados.
 //
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormularioTestar;
+var
+  locFormulario: TPlataformaERPVCLConexaoTeste;
 begin
-  Exit;
+  locFormulario := TPlataformaERPVCLConexaoTeste.Create(Self);
+  locFormulario.pubServidor   := StringTrim(edtServidor.Text);
+  locFormulario.pubPorta      := StringIntegerConverter(edtPorta.Text);
+  locFormulario.pubInstancia  := StringTrim(edtInstancia.Text);
+  locFormulario.pubUsuario    := StringTrim(edtUsuario.Text);
+  locFormulario.pubSenha      := StringTrim(edtSenha.Text);
+  locFormulario.pubBancoDados := StringTrim(edtBancoDados.Text);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 end.

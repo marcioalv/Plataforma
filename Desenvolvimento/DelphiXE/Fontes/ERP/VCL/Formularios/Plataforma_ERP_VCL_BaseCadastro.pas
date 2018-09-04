@@ -941,7 +941,7 @@ begin
   end;  
 
   // 
-  // Determina o próximo ID da ação em registro.
+  // Determina o próximo ID da base.
   //
   if locInsert then
   begin

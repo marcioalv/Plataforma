@@ -413,7 +413,6 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitHeight = 269
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -582,6 +581,9 @@ object PlataformaERPVCLBaseCadastro: TPlataformaERPVCLBaseCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
       ExplicitHeight = 269
       object lblInsDtHt: TLabel
         Left = 16

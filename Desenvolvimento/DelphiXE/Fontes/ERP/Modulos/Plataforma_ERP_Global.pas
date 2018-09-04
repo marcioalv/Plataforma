@@ -45,8 +45,15 @@ var
   gloUsuarioAdministrador: Boolean;
   gloUsuarioRotinas      : array of string;
 
-  gloConexaoADOString: string;
-  gloConexaoTimeOut  : Integer;
+  gloConexaoTitulo    : string;
+  gloConexaoServidor  : string;
+  gloConexaoPorta     : Integer;
+  gloConexaoInstancia : string;
+  gloConexaoUsuario   : string;
+  gloConexaoSenha     : string;
+  gloConexaoBancoDados: string;
+  gloConexaoTimeOut   : Integer;
+  gloConexaoADOString : string;
 
 implementation
 

@@ -60,7 +60,9 @@ uses
   Plataforma_Framework_Criptografia in '..\..\..\Framework\Plataforma_Framework_Criptografia.pas',
   Plataforma_ERP_VCL_BaseConfiguracao in '..\Formularios\Plataforma_ERP_VCL_BaseConfiguracao.pas' {PlataformaERPVCLBaseConfiguracao},
   Plataforma_ERP_VCL_AcessoConexaoConfiguracao in '..\Formularios\Plataforma_ERP_VCL_AcessoConexaoConfiguracao.pas' {PlataformaERPVCLAcessoConexaoConfiguracao},
-  Plataforma_Framework_ArquivoIni in '..\..\..\Framework\Plataforma_Framework_ArquivoIni.pas';
+  Plataforma_Framework_ArquivoIni in '..\..\..\Framework\Plataforma_Framework_ArquivoIni.pas',
+  Plataforma_ERP_VCL_ConexaoTeste in '..\Formularios\Plataforma_ERP_VCL_ConexaoTeste.pas' {PlataformaERPVCLConexaoTeste},
+  Plataforma_ERP_VCL_AcessoConexaoSelecao in '..\Formularios\Plataforma_ERP_VCL_AcessoConexaoSelecao.pas' {PlataformaERPVCLAcessoConexaoSelecao};
 
 {$R *.res}
 
@@ -69,5 +71,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
   Application.CreateForm(TPlataformaERPVCLAcessoConexaoConfiguracao, PlataformaERPVCLAcessoConexaoConfiguracao);
+  Application.CreateForm(TPlataformaERPVCLConexaoTeste, PlataformaERPVCLConexaoTeste);
+  Application.CreateForm(TPlataformaERPVCLAcessoConexaoSelecao, PlataformaERPVCLAcessoConexaoSelecao);
   Application.Run;
 end.

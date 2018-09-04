@@ -293,6 +293,14 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\..\..\Framework\Plataforma_Framework_ArquivoIni.pas"/>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_ConexaoTeste.pas">
+            <Form>PlataformaERPVCLConexaoTeste</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Formularios\Plataforma_ERP_VCL_AcessoConexaoSelecao.pas">
+            <Form>PlataformaERPVCLAcessoConexaoSelecao</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="..\..\..\..\..\Imagem\Background\Formulario\FORM_BACKGROUND_DEFAULT.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>FORM_BACKGROUND_DEFAULT</ResourceId>

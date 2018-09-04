@@ -50,7 +50,7 @@ procedure Plataforma_ERP_TimeOutsInicializar;
 function  Plataforma_ERP_UsuarioInicializar: Boolean;
 function  Plataforma_ERP_UsuarioSenhaTrocaVerificar: Boolean;
 procedure Plataforma_ERP_UsuarioRotinasPopular;
-procedure Plataforma_ERP_UsuarioTrocar;
+function  Plataforma_ERP_UsuarioTrocar(argLogoff: Boolean): Boolean;
 
 implementation
 
@@ -402,7 +402,7 @@ end;
 //
 // Procedimento para trocar de usuário logado no sistema.
 //
-procedure Plataforma_ERP_UsuarioTrocar;
+function Plataforma_ERP_UsuarioTrocar(argLogoff: Boolean): Boolean;
 var
   locUsuarioBaseID       : Integer;
   locUsuarioID           : Integer;
@@ -436,6 +436,18 @@ begin
   //
   if not Plataforma_ERP_UsuarioInicializar then
   begin
+    //
+    // Se logoff e o usuário não foi informado então encerra a aplicação.
+    //
+    if argLogoff then
+    begin
+      Result := False;
+      Exit;
+    end;
+  
+    //
+    // Carrega informações do usuário anterior.
+    //
     gloUsuarioBaseID        := locUsuarioBaseID;
     gloUsuarioID            := locUsuarioID;
     gloUsuarioLogon         := locUsuarioLogon;
@@ -452,6 +464,11 @@ begin
       end;
     end;
   end;
+
+  //
+  // Tudo OK com o usuário.
+  //
+  Result := True;
 end;
 
 end.

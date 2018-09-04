@@ -61,6 +61,9 @@ type
     lblCalendario: TLabel;
     lblHorario: TLabel;
     timStatusBar: TTimer;
+    mniAplicacaoSeparador2: TMenuItem;
+    mniEncerrar: TMenuItem;
+    mniLogoff: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogLocalClick(Sender: TObject);
@@ -80,6 +83,8 @@ type
     procedure mniLicencasClick(Sender: TObject);
     procedure mniConfiguracaoBaseDadosClick(Sender: TObject);
     procedure timStatusBarTimer(Sender: TObject);
+    procedure mniEncerrarClick(Sender: TObject);
+    procedure mniLogoffClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -172,11 +177,27 @@ end;
 {--------------------------------------------------------------------------------------------------}
 
 //
+// Evento de click na opção "logoff".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniLogoffClick(Sender: TObject);
+begin
+  if not Plataforma_ERP_UsuarioTrocar(True) then
+  begin
+    Close;
+  end
+  else
+  begin
+    FormularioInformacoesDeterminar;
+    FormularioMenuConstruir;
+  end;
+end;
+
+//
 // Evento de click na opção "senha usuário".
 //
 procedure TPlataformaERPVCLMenuPrincipal.mniTrocarUsuarioClick(Sender: TObject);
 begin
-  Plataforma_ERP_UsuarioTrocar;
+  Plataforma_ERP_UsuarioTrocar(False);
   FormularioInformacoesDeterminar;
   FormularioMenuConstruir;
 end;
@@ -340,6 +361,11 @@ begin
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);
+end;
+
+procedure TPlataformaERPVCLMenuPrincipal.mniEncerrarClick(Sender: TObject);
+begin
+  Close;
 end;
 
 {--------------------------------------------------------------------------------------------------}
@@ -530,8 +556,16 @@ begin
   //
   // Define os parâmetros de conexão ao banco de dados.
   //
-  gloConexaoADOString := 'Provider=SQLOLEDB.1;Persist Security Info=True;Trusted_Connection=True;Data Source=LocalHost\SQLExpress;User ID=sa;Password=abc123;Initial Catalog=PlataformaERP;Connection Timeout=10;';
-  gloConexaoTimeOut   := 10;
+  gloConexaoTitulo     := 'Plataforma Desenvolvimento';
+  gloConexaoServidor   := 'LocalHost';
+  gloConexaoPorta      := 0;
+  gloConexaoInstancia  := 'SQLExpress';
+  gloConexaoUsuario    := 'sa';
+  gloConexaoSenha      := 'abc123';
+  gloConexaoBancoDados := 'PlataformaERP';
+  gloConexaoTimeOut    := 10;
+
+  gloConexaoADOString := ADOConnectionStringGerar(gloConexaoServidor, gloConexaoInstancia, gloConexaoPorta, gloConexaoUsuario, gloConexaoSenha, gloConexaoBancoDados);
 
   //
   // Define os timeouts de execução de querys.

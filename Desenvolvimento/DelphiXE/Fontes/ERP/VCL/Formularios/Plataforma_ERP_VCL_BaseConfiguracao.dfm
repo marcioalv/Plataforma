@@ -12,9 +12,11 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   Menu = mnuFormulario
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -159,6 +161,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
+    OnClick = btnGravarClick
   end
   object btnCancelar: TBitBtn
     Left = 312
@@ -239,6 +242,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     ParentShowHint = False
     ShowHint = True
     TabOrder = 1
+    OnClick = btnCancelarClick
   end
   object btnMinimizar: TBitBtn
     Left = 256
@@ -311,6 +315,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     ParentShowHint = False
     ShowHint = True
     TabOrder = 2
+    OnClick = btnMinimizarClick
   end
   object btnAlterar: TBitBtn
     Left = 200
@@ -391,6 +396,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     ParentShowHint = False
     ShowHint = True
     TabOrder = 3
+    OnClick = btnAlterarClick
   end
   object btnFechar: TBitBtn
     Left = 312
@@ -453,20 +459,21 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     ParentShowHint = False
     ShowHint = True
     TabOrder = 4
+    OnClick = btnFecharClick
   end
-  object Panel1: TPanel
+  object panFormulario: TPanel
     Left = 56
     Top = 16
     Width = 305
     Height = 209
     BevelKind = bkTile
     BevelOuter = bvNone
-    Caption = 'Panel1'
+    Caption = 'panFormulario'
     Color = clWindow
     ParentBackground = False
     ShowCaption = False
     TabOrder = 5
-    object Label1: TLabel
+    object lblBaseID: TLabel
       Left = 24
       Top = 24
       Width = 111
@@ -518,10 +525,10 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
       Font.Style = []
       ParentFont = False
     end
-    object Edit1: TEdit
+    object edtBaseID: TEdit
       Left = 24
       Top = 40
-      Width = 161
+      Width = 249
       Height = 26
       Alignment = taRightJustify
       Font.Charset = DEFAULT_CHARSET
@@ -533,6 +540,9 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
       ParentFont = False
       TabOrder = 0
       Text = '999'
+      OnEnter = edtBaseIDEnter
+      OnExit = edtBaseIDExit
+      OnKeyPress = edtBaseIDKeyPress
     end
     object edtInsLocalDtHr: TEdit
       Left = 24
@@ -598,21 +608,27 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     Top = 240
     object mniAtualizar: TMenuItem
       Caption = 'Atualizar'
+      OnClick = mniAtualizarClick
     end
     object mniAlterar: TMenuItem
       Caption = 'Alterar'
+      OnClick = mniAlterarClick
     end
     object mniGravar: TMenuItem
       Caption = 'Gravar'
+      OnClick = mniGravarClick
     end
     object mniMinimizar: TMenuItem
       Caption = 'Minimizar'
+      OnClick = mniMinimizarClick
     end
     object mniCancelar: TMenuItem
       Caption = 'Cancelar'
+      OnClick = mniCancelarClick
     end
     object mniFechar: TMenuItem
       Caption = 'Fechar'
+      OnClick = mniFecharClick
     end
   end
 end

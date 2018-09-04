@@ -158,6 +158,13 @@ procedure LogDadosStringDescrever (argCampo: string; argValor: string;  var outR
 procedure LogDadosIntegerDescrever(argCampo: string; argValor: Integer; var outRetorno: string);
 procedure LogDadosBooleanDescrever(argCampo: string; argValor: Boolean; var outRetorno: string);
 
+function ADOConnectionStringGerar(argServidor  : string;
+                                  argInstancia : string;
+                                  argPorta     : Integer;
+                                  argUsuario   : string;
+                                  argSenha     : string;
+                                  argBancoDados: string): string;
+
 implementation
 
 //
@@ -1053,6 +1060,124 @@ end;
 procedure LogDadosBooleanDescrever(argCampo: string; argValor: Boolean; var outRetorno: string);
 begin
   LogDadosStringDescrever(argCampo, BooleanStringConverter(argValor), outRetorno);
+end;
+
+//
+// ADOConnectionStringGerar.
+//
+function ADOConnectionStringGerar(argServidor  : string;                                  
+                                  argInstancia : string;
+                                  argPorta     : Integer;
+                                  argUsuario   : string;
+                                  argSenha     : string;
+                                  argBancoDados: string): string;
+var
+  locDriver    : string;
+  locEndereco  : string;
+  locUsuario   : string;
+  locSenha     : string;
+  locBancoDados: string;
+begin
+  //
+  // Consistências.
+  //
+  if StringTrim(argServidor) = '' then
+  begin
+    raise Exception.Create('O nome do servidor do banco de dados da conexão deve ser informado!');
+  end;
+
+  if StringTrim(argUsuario) = '' then
+  begin
+    raise Exception.Create('O usuário para conexão ao banco de dados deve ser informado!');
+  end;
+
+  if StringTrim(argBancoDados) = '' then
+  begin
+    raise Exception.Create('O nome do banco de dados (catálogo) no servidor deve ser informado!');
+  end;
+
+  //
+  // Driver.
+  //
+  locDriver := 'SQLOLEDB.1';
+
+  //
+  // Endereço.
+  //
+  locEndereco := argServidor;
+
+  if argInstancia <> '' then
+  begin
+    locEndereco := locEndereco + '\' + argInstancia;
+  end;
+
+  //
+  // Porta.
+  //
+  if argPorta > 0 then
+  begin
+    locEndereco := 'tcp:' + locEndereco;
+    locEndereco := locEndereco + ',' + IntToStr(argPorta);
+  end;
+
+  //
+  // Usuário.
+  //
+  locUsuario := argUsuario;
+
+  //
+  // Senha.
+  //
+  locSenha := argSenha;
+
+  //
+  // Banco de dados.
+  //
+  locBancoDados := argBancoDados;
+
+  //
+  // Retorna string de conexão.
+  //
+  Result := '';
+
+  // Driver.
+  if locDriver <> '' then
+  begin
+    if Result <> '' then Result := Result + ';';
+    Result := Result + 'Provider=' + locDriver;
+  end;
+
+  // Endereço.
+  if locEndereco <> '' then
+  begin
+    if Result <> '' then Result := Result + ';';
+    Result := Result + 'Address=' + locEndereco;
+  end;
+
+  // Usuário.
+  if locUsuario <> '' then
+  begin
+    if Result <> '' then Result := Result + ';';
+    Result := Result + 'UID=' + locUsuario;
+  end;
+
+  // Senha.
+  if locSenha <> '' then
+  begin
+    if Result <> '' then Result := Result + ';';
+    Result := Result + 'PWD=' + locSenha;
+  end;
+
+  // Banco de dados.
+  if locBancoDados <> '' then
+  begin
+    if Result <> '' then Result := Result + ';';
+    Result := Result + 'Database=' + locBancoDados;
+  end;
+
+  // Conexão confiável se SQLServer.
+  if Result <> '' then Result := Result + ';';  
+  Result := Result + 'Trusted_Connection=True';
 end;
 
 end.
