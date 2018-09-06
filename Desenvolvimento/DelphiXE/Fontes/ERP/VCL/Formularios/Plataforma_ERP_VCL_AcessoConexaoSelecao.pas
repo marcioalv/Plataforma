@@ -15,11 +15,10 @@ uses
   Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
-  Vcl.ExtCtrls, Vcl.Menus, Vcl.Buttons, Vcl.Imaging.pngimage;
-
-const
-  LVW_COLUNA_ITEM  : Integer = 0;
-  LVW_COLUNA_TITULO: Integer = 1;
+  Vcl.ExtCtrls,
+  Vcl.Menus,
+  Vcl.Buttons,
+  Vcl.Imaging.pngimage;
 
 type
   TPlataformaERPVCLAcessoConexaoSelecao = class(TForm)
@@ -53,14 +52,14 @@ type
     priListViewColuna    : Integer;
     priListViewAscendente: Boolean;
     
-    procedure ComponentesLimpar;
-    procedure ComponentesControlar;
+    procedure FormularioLimpar;
+    procedure FormularioControlar;
     procedure FormularioSelecionar;
     procedure FormularioAtualizar;
   public
-    pubClicouSair: Boolean;
-    pubItem      : Integer;
-    pubTitulo    : string;
+    pubClicouFechar: Boolean;
+    pubItem        : Integer;
+    pubTitulo      : string;
   end;
 
 var
@@ -71,7 +70,15 @@ implementation
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
-  Plataforma_ERP_VCL_Generico;
+  Plataforma_Framework_ArquivoIni,
+  Plataforma_ERP_Global,
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_Generico,
+  Plataforma_ERP_Inicializacao;
+
+const
+  LVW_COLUNA_ITEM  : Integer = 0;
+  LVW_COLUNA_TITULO: Integer = 1;
 
 {$R *.dfm}
 
@@ -89,9 +96,9 @@ begin
   //
   // Inicializa variáveis públicas.
   //
-  pubClicouSair := True;
-  pubItem       := 0;
-  pubTitulo     := '';
+  pubClicouFechar := True;
+  pubItem         := 0;
+  pubTitulo       := '';
 end;
 
 //
@@ -196,16 +203,16 @@ end;
 //
 // Procedimento para limpar os componentes do formulário.
 //
-procedure TPlataformaERPVCLAcessoConexaoSelecao.ComponentesLimpar;
+procedure TPlataformaERPVCLAcessoConexaoSelecao.FormularioLimpar;
 begin
   VCLListViewLimpar(lvwLista);
-  ComponentesControlar;
+  FormularioControlar;
 end;
 
 //
 // Procedimento para controlar a exibição dos componentes do formulário.
 //
-procedure TPlataformaERPVCLAcessoConexaoSelecao.ComponentesControlar;
+procedure TPlataformaERPVCLAcessoConexaoSelecao.FormularioControlar;
 begin
   mniSelecionar.Visible := (lvwLista.Items.Count > 0);
   btnSelecionar.Visible := mniSelecionar.Visible;
@@ -237,7 +244,7 @@ begin
   //
   // Usuário não clicou em sair.
   //
-  pubClicouSair := False;
+  pubClicouFechar := False;
 
   //
   // Fecha formulário.
@@ -249,9 +256,17 @@ end;
 // Procedimento para atualizar a lista de conexões configuradas.
 //
 procedure TPlataformaERPVCLAcessoConexaoSelecao.FormularioAtualizar;
+const
+  PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados do arquivo de configuração da aplicação!';
 var
-  locContador: Integer;
-  locListItem: TListItem;
+  locLogMensagem: string;
+  locSessao     : string;
+  locQuantidade : Integer;
+  locContador   : Integer;
+  locItem       : Integer;
+  locTitulo     : string;
+  locListItem   : TListItem;
 begin
   //
   // Troca o cursor.
@@ -261,21 +276,81 @@ begin
   //
   // Limpa componentes.
   //
-  ComponentesLimpar;
+  FormularioLimpar;
 
   //
-  // Controla a exibição dos componentes.
+  // Verifica se o arquivo de configuração existe na pasta adequada.
   //
-  ComponentesControlar;
+  if not FileExists(gloConfiguracaoArquivo) then
+  begin
+    VCLCursorTrocar;
+    Exit;
+  end;
+
+  //
+  // Lê a quantidade de conexões existente no arquivo de configuração.
+  //
+  try
+    locQuantidade := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVO_INI_CONEXAO_GERAL_QUANTIDADE);
+  except
+    on locExcecao: Exception do
+    begin
+      locLogMensagem := 'Erro ao ler a quantidade de conexões configuradas no arquivo de configuração da aplicação!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Inicia laço para ler cada uma das configurações de conexão do arquivo de configuração.
+  //
+  for locContador := 0 to (locQuantidade - 1) do
+  begin
+    //
+    // Formata o nome da sessão.
+    //
+    locSessao := ARQUIVO_INI_CONEXAO_SESSAO + '_' + StringPreencher(IntegerStringConverter(locContador + 1), 4, '0');
+
+    //
+    // Carrega os dados da conexão.
+    //
+    try
+      locItem       := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_ITEM);
+      locTitulo     := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_TITULO);
+    except
+      on locExcecao: Exception do
+      begin
+        locLogMensagem := 'Erro ao ler parâmetros das conexões com o banco de daos do arquivo de configuração da aplicação!';
+        Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+        VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+        Exit;
+      end;
+    end;
+
+    //
+    // Insere linha na lista.
+    //
+    locListItem         := lvwLista.Items.Add;
+    locListItem.Caption := '';
+    locListItem.SubItems.Add(IntegerStringConverter(locItem));
+    locListItem.SubItems.Add(locTitulo);
+  end;  
 
   //
   // Troca o cursor.
   //
-  VCLCursorTrocar;
+  VCLCursorTrocar;  
+
+  //
+  // Controlar os componentes.
+  //
+  FormularioControlar;
 
   //
   // Foco no listview.
   //
+  VCLListViewItemPosicionar(lvwLista, 0);
   VCLListViewFocar(lvwLista);
 end;
 

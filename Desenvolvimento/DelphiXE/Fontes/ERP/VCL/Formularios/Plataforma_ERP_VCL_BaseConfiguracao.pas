@@ -72,6 +72,8 @@ type
     procedure edtBaseIDEnter(Sender: TObject);
     procedure edtBaseIDExit(Sender: TObject);
     procedure edtBaseIDKeyPress(Sender: TObject; var Key: Char);
+    procedure edtInsLocalDtHrClick(Sender: TObject);
+    procedure edtUpdLocalDtHrClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEdicao: Boolean);
@@ -119,6 +121,11 @@ begin
   // Exibir dados.
   //
   FormularioAtualizar;
+
+  //
+  // Foco no botão fechar.
+  //
+  btnFechar.SetFocus;
 end;
 
 //
@@ -181,6 +188,22 @@ begin
 end;
 
 //
+// Evento do componente "Data e hora da criação".
+//
+procedure TPlataformaERPVCLBaseConfiguracao.edtInsLocalDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtInsLocalDtHr.Text));
+end;
+
+//
+// Evento do componente "Data e hora da última alteração".
+//
+procedure TPlataformaERPVCLBaseConfiguracao.edtUpdLocalDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtUpdLocalDtHr.Text));
+end;
+
+//
 // Evento de click no botão "alterar".
 //
 procedure TPlataformaERPVCLBaseConfiguracao.btnAlterarClick(Sender: TObject);
@@ -236,6 +259,12 @@ end;
 //
 procedure TPlataformaERPVCLBaseConfiguracao.FormularioControlar(argEdicao: Boolean);
 begin
+  //
+  // Componentes que exibem informações adicionais.
+  //
+  VCLEditClickControlar(edtInsLocalDtHr, True);
+  VCLEditClickControlar(edtUpdLocalDtHr, True);
+
   //
   // Componentes.
   //
@@ -352,7 +381,13 @@ begin
     edtInsLocalDtHr.Text   := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
     edtUpdLocalDtHr.Text   := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
     edtUpdContador.Text    := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
-  end; 
+  end;
+
+  //
+  // Componentes que exibem informações adicionais.
+  //
+  VCLEditClickControlar(edtInsLocalDtHr, True);
+  VCLEditClickControlar(edtUpdLocalDtHr, True);
 
   //
   // Finaliza.
@@ -382,31 +417,27 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioGravar';
   ERRO_MENSAGEM    : string = 'Impossível gravar dados da configuração da base!';
 var
-  locADOConnection       : TADOConnection;
-  locADOQuery            : TADOQuery;
-  locLogMensagem         : string;
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
 
   locRegistroAcao        : Byte;
   locRegistroAcaoLogMsg  : string;
   locRegistroAcaoLogDados: string;
 
-  locInsert        : Boolean;
-  locBaseID        : Integer;
-  locUsuarioBaseID : Integer;
-  locUsuarioID     : Integer;
-  locUpdContador   : Integer;
-  locHostName      : string;
-  locUserName      : string;
+  locInsert     : Boolean;
+  locBaseID     : Integer;
+  locUpdContador: Integer;
+  locHostName   : string;
+  locUserName   : string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locBaseID        := StringIntegerConverter(edtBaseID.Text);
-  locUsuarioBaseID := gloUsuarioBaseID;
-  locUsuarioID     := gloUsuarioID;
-  locHostName      := HostNameRecuperar;
-  locUserName      := UserNameRecuperar;
-  locUpdContador   := StringIntegerConverter(edtUpdContador.Text);
+  locBaseID      := StringIntegerConverter(edtBaseID.Text);
+  locHostName    := HostNameRecuperar;
+  locUserName    := UserNameRecuperar;
+  locUpdContador := StringIntegerConverter(edtUpdContador.Text);
 
   //
   // Confirma gravação com o usuário.

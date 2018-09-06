@@ -4,6 +4,7 @@ unit Plataforma_ERP_VCL_ConexaoTeste;
 interface
 
 uses
+  Data.Win.ADODB,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -27,7 +28,6 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
-    priTimeOutGeral: Integer;
     procedure TesteExecutar;
   public
     pubServidor  : string;
@@ -45,9 +45,7 @@ implementation
 
 uses
   Plataforma_Framework_Util,
-//  Plataforma_Framework_Conexao,
   Plataforma_Framework_VCL;
-
 
 {$R *.dfm}
 
@@ -56,11 +54,6 @@ uses
 //
 procedure TPlataformaERPVCLConexaoTeste.FormCreate(Sender: TObject);
 begin
-  //
-  // Inicializa variáveis privadas.
-  //
-  priTimeOutGeral := 15;
-
   //
   // Inicializa variáveis públicas.
   //
@@ -112,8 +105,7 @@ end;
 //
 procedure TPlataformaERPVCLConexaoTeste.TesteExecutar;
 var
-  locSucesso : Boolean;
-  locMensagem: string;
+  locADOConnection: TADOConnection;
 begin
   //
   // Muda cursor.
@@ -121,24 +113,21 @@ begin
   VCLCursorTrocar(True);
 
   //
-  // Configura o timeout geral para o teste.
-  //
-  //pubConexao.TimeOut := priTimeOutGeral;
-
-  //
   // Executar teste.
   //
-  //ADOConexaoTestar(pubConexao, locSucesso, locMensagem);
-
-  //
-  // Falha no teste.  
-  if not locSucesso then
-  begin
-    VCLCursorTrocar;
-    Hide;
-    VCLConsistenciaExibir('Não foi possível estabeler uma conexão com os dados informados!', locMensagem);
-    Close;
-    Exit;
+  try
+    locADOConnection                   := TADOConnection.Create(Self);
+    locADOConnection.ConnectionString  := ADOConnectionStringGerar(pubServidor, pubInstancia, pubPorta, pubUsuario, pubSenha, pubBancoDados);
+    locADOConnection.ConnectionTimeout := 15;
+    locADOConnection.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      Hide;
+      VCLConsistenciaExibir('Não foi possível estabeler uma conexão com os dados informados!', locExcecao.Message);
+      Close;
+      Exit;
+    end;
   end;
 
   //

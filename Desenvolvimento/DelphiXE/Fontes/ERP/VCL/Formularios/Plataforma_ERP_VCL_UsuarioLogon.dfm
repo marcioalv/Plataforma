@@ -4,7 +4,7 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Logon de usu'#225'rio'
-  ClientHeight = 458
+  ClientHeight = 481
   ClientWidth = 433
   Color = clWindow
   Font.Charset = DEFAULT_CHARSET
@@ -25,7 +25,7 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
     Left = 0
     Top = 0
     Width = 433
-    Height = 458
+    Height = 481
     Align = alClient
     Center = True
     Picture.Data = {
@@ -30870,8 +30870,8 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
       61996C61996C61996C61996C61996C61996C61996C61996C61996C61996C6199
       6C61996C61996C61996C61996C61996C61996C61996C61996C61996C61996C61
       996C61996C61996C61996C61996C61000000}
-    ExplicitLeft = -32
-    ExplicitHeight = 463
+    Stretch = True
+    ExplicitTop = -8
   end
   object imgUsuario: TImage
     Left = 32
@@ -31292,16 +31292,16 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
     Stretch = True
   end
   object lblConexaoTitulo: TLabel
-    Left = 32
-    Top = 408
+    Left = 40
+    Top = 432
     Width = 176
     Height = 13
     Caption = 'Conex'#227'o de acesso '#224' base de dados'
     OnClick = lblConexaoTituloClick
   end
   object lblConexaoItem: TLabel
-    Left = 32
-    Top = 424
+    Left = 40
+    Top = 448
     Width = 75
     Height = 13
     Caption = 'lblConexaoItem'
@@ -31345,8 +31345,8 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
     OnKeyPress = edtSenhaKeyPress
   end
   object btnFechar: TBitBtn
-    Left = 360
-    Top = 392
+    Left = 368
+    Top = 416
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -31400,8 +31400,8 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
     OnClick = btnFecharClick
   end
   object btnConfirmar: TBitBtn
-    Left = 304
-    Top = 392
+    Left = 312
+    Top = 416
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -31454,6 +31454,22 @@ object PlataformaERPVCLUsuarioLogon: TPlataformaERPVCLUsuarioLogon
     Layout = blGlyphTop
     TabOrder = 2
     OnClick = btnConfirmarClick
+  end
+  object chkMemorizar: TCheckBox
+    Left = 80
+    Top = 392
+    Width = 225
+    Height = 17
+    Cursor = crHandPoint
+    TabStop = False
+    Caption = 'Memorizar estas informa'#231#245'es de acesso?'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 4
   end
   object mnuFormulario: TMainMenu
     BiDiMode = bdLeftToRight

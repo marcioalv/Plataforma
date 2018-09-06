@@ -160,7 +160,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 0
+    TabOrder = 2
     OnClick = btnGravarClick
   end
   object btnCancelar: TBitBtn
@@ -241,7 +241,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 1
+    TabOrder = 3
     OnClick = btnCancelarClick
   end
   object btnMinimizar: TBitBtn
@@ -314,7 +314,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 2
+    TabOrder = 4
     OnClick = btnMinimizarClick
   end
   object btnAlterar: TBitBtn
@@ -395,7 +395,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 3
+    TabOrder = 1
     OnClick = btnAlterarClick
   end
   object btnFechar: TBitBtn
@@ -458,7 +458,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 4
+    TabOrder = 5
     OnClick = btnFecharClick
   end
   object panFormulario: TPanel
@@ -472,7 +472,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
     Color = clWindow
     ParentBackground = False
     ShowCaption = False
-    TabOrder = 5
+    TabOrder = 0
     object lblBaseID: TLabel
       Left = 24
       Top = 24
@@ -563,6 +563,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
       ShowHint = False
       TabOrder = 1
       Text = '99/99/9999 99:99:99'
+      OnClick = edtInsLocalDtHrClick
     end
     object edtUpdLocalDtHr: TEdit
       Left = 24
@@ -581,6 +582,7 @@ object PlataformaERPVCLBaseConfiguracao: TPlataformaERPVCLBaseConfiguracao
       ReadOnly = True
       TabOrder = 2
       Text = '99/99/9999 99:99:99'
+      OnClick = edtUpdLocalDtHrClick
     end
     object edtUpdContador: TEdit
       Left = 200

@@ -52,6 +52,7 @@ type
     mniLicencaAplicacao: TMenuItem;
     lblConexaoTitulo: TLabel;
     lblConexaoItem: TLabel;
+    chkMemorizar: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
@@ -72,7 +73,10 @@ type
     procedure FormularioLimpar;
     procedure FormularioConfirmar;
     procedure TentativasAcessoValidar;
-    procedure ConexaoDeterminar;    
+    procedure ConexaoDeterminar;
+    procedure DadosConexaoPopular;
+    procedure UltimoAcessoPopular;
+    procedure UltimoAcessoGravar;
   public
     pubClicouFechar: Boolean;
   end;
@@ -87,6 +91,7 @@ implementation
 uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
+  Plataforma_Framework_ArquivoIni,
   Plataforma_Framework_Criptografia,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
@@ -118,10 +123,8 @@ end;
 procedure TPlataformaERPVCLUsuarioLogon.FormShow(Sender: TObject);
 begin
   FormularioLimpar;
+  UltimoAcessoPopular;
   ConexaoDeterminar;
-
-  edtUsuario.Text := 'marcio.alves';
-  edtSenha.Text   := '123';
 end;
 
 //
@@ -148,6 +151,8 @@ begin
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);
+
+  DadosConexaoPopular
 end;
 
 procedure TPlataformaERPVCLUsuarioLogon.mniFecharClick(Sender: TObject);
@@ -209,7 +214,9 @@ end;
 //
 procedure TPlataformaERPVCLUsuarioLogon.lblConexaoTituloClick(Sender: TObject);
 var
-  locFormulario: TPlataformaERPVCLAcessoConexaoSelecao;
+  locFormulario : TPlataformaERPVCLAcessoConexaoSelecao;
+  locClicouFechar: Boolean;
+  locItem        : Integer;
 begin
   if lblConexaoItem.Caption = '' then
   begin
@@ -219,8 +226,18 @@ begin
   begin
     locFormulario := TPlataformaERPVCLAcessoConexaoSelecao.Create(Self);
     locFormulario.ShowModal;
+
+    locClicouFechar := locFormulario.pubClicouFechar;
+    locItem         := locFormulario.pubItem;
+
     locFormulario.Release;
     FreeAndNil(locFormulario);
+
+    if not locClicouFechar then
+    begin
+      lblConexaoItem.Caption := IntToStr(locItem);
+      DadosConexaoPopular;
+    end;
   end;
 end;
 
@@ -499,6 +516,11 @@ begin
   VCLCursorTrocar;
 
   //
+  // Memoriza dados do último acesso.
+  //
+  UltimoAcessoGravar;
+
+  //
   // Retorna.
   //
   pubClicouFechar := False;
@@ -521,10 +543,24 @@ end;
 // Procedimento para determinar a conexão à base de dados.
 //
 procedure TPlataformaERPVCLUsuarioLogon.ConexaoDeterminar;
+const
+  PROCEDIMENTO_NOME: string = 'ConexaoDeterminar';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados da conexão à base de dados!';
 var
+  locLogMensagem: string;
   locConexaoQtde: Integer;
 begin
-  locConexaoQtde := 2;
+  try
+    locConexaoQtde := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVO_INI_CONEXAO_GERAL_QUANTIDADE);
+  except
+    on locExcecao: Exception do
+    begin
+      locLogMensagem := 'Impossível ler informações sobre as conexões de acesso configuradas no arquivo de inicialização!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
 
   if locConexaoQtde <= 0 then
   begin
@@ -545,7 +581,6 @@ begin
     lblConexaoTitulo.Cursor     := crDefault;
     lblConexaoTitulo.Font.Color := RGB(46, 89, 137);
     lblConexaoTitulo.Font.Style := [];
-    lblConexaoTitulo.Caption    := 'Bergerson Produção';
 
     edtUsuario.Visible   := True;
     edtSenha.Visible     := True;
@@ -557,12 +592,148 @@ begin
     lblConexaoTitulo.Cursor     := crHandPoint;
     lblConexaoTitulo.Font.Color := RGB(46, 89, 137);
     lblConexaoTitulo.Font.Style := [fsUnderline];
-    lblConexaoTitulo.Caption    := 'Bergerson Produção';
 
     edtUsuario.Visible   := True;
     edtSenha.Visible     := True;
     btnConfirmar.Visible := True;    
   end;  
+end;
+
+//
+// Procedimento para popular os daos da conexão.
+//
+procedure TPlataformaERPVCLUsuarioLogon.DadosConexaoPopular;
+const
+  PROCEDIMENTO_NOME: string = 'DadosConexaoPopular';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados da conexão à base de dados!';
+var
+  locLogMensagem : string;
+  locSessao      : string;
+  locCriptografia: TCriptografia;
+begin
+  locSessao := ARQUIVO_INI_CONEXAO_SESSAO + '_' + StringPreencher(lblConexaoItem.Caption, 4, '0');
+  
+  try
+    lblConexaoTitulo.Caption := ArquivoIniStringRecuperar(gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_TITULO);
+
+    gloConexaoTitulo     := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_TITULO);
+    gloConexaoServidor   := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_SERVIDOR);
+    gloConexaoPorta      := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_PORTA);
+    gloConexaoInstancia  := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_INSTANCIA);
+    gloConexaoUsuario    := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_USUARIO);
+    gloConexaoSenha      := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_SENHA);
+    gloConexaoBancoDados := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_BANCO_DADOS);
+    gloConexaoTimeOut    := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, locSessao, ARQUIVO_INI_CONEXAO_PARAMETRO_TIME_OUT);
+
+    locCriptografia := TCriptografia.Create;
+    gloConexaoSenha := locCriptografia.Descriptografar(gloConexaoSenha);
+    FreeAndNil(locCriptografia);
+
+    gloConexaoADOString := ADOConnectionStringGerar(gloConexaoServidor, gloConexaoInstancia, gloConexaoPorta, gloConexaoUsuario, gloConexaoSenha, gloConexaoBancoDados);
+  except
+    on locExcecao: Exception do
+    begin
+      locLogMensagem := 'Impossível ler informações sobre as conexões de acesso configuradas no arquivo de inicialização!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;  
+end;
+
+//
+// Procedimento para carregar as informações sobre o último acesso.
+//
+procedure TPlataformaERPVCLUsuarioLogon.UltimoAcessoPopular;
+const
+  PROCEDIMENTO_NOME: string = 'UltimoAcessoPopular';
+  ERRO_MENSAGEM    : string = 'Impossível popular dados sobre o último acesso!';
+var
+  locLogMensagem: string;
+begin
+  //
+  // Troca o cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Limpa componentes.
+  //
+  FormularioLimpar;
+
+  //
+  // Verifica se o arquivo de configuração existe na pasta adequada.
+  //
+  if not FileExists(gloConfiguracaoArquivo) then
+  begin
+    VCLCursorTrocar;
+    Exit;
+  end;
+
+  //
+  // Parâmetros de última conexão.
+  //
+  try
+    edtUsuario.Text        := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, ARQUIVO_INI_ULTIMO_ACESSO_SESSAO, ARQUIVO_INI_ULTIMO_ACESSO_USUARIO);
+    chkMemorizar.Checked   := ArquivoIniBooleanRecuperar(gloConfiguracaoArquivo, ARQUIVO_INI_ULTIMO_ACESSO_SESSAO, ARQUIVO_INI_ULTIMO_ACESSO_MEMORIZAR);
+    lblConexaoItem.Caption := ArquivoIniStringRecuperar (gloConfiguracaoArquivo, ARQUIVO_INI_ULTIMO_ACESSO_SESSAO, ARQUIVO_INI_ULTIMO_ACESSO_CONEXAO_ITEM);
+  except
+    on locExcecao: Exception do
+    begin
+      locLogMensagem := 'Problemas ao ler a memorização do último acesso!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Dados da conexão.
+  //
+  DadosConexaoPopular;
+
+  //
+  // Troca o cursor.
+  //
+  VCLCursorTrocar;
+
+  //
+  // Foco no componente correto.
+  //
+  if edtUsuario.Text <> '' then edtSenha.SetFocus;
+end;
+
+//
+// Procedimento para gravar os dados do último acesso.
+//
+procedure TPlataformaERPVCLUsuarioLogon.UltimoAcessoGravar;
+const
+  PROCEDIMENTO_NOME: string = 'UltimoAcessoGravar';
+  ERRO_MENSAGEM    : string = 'Impossível gravar dados sobre o último acesso!';
+var
+  locLogMensagem: string;
+begin
+  //
+  // O último acesso deve ser gravado?
+  //
+  if not chkMemorizar.Checked then Exit;
+
+  //
+  // Grava cada uma das conexões da lista.
+  //
+  try
+    ArquivoIniStringGravar (gloConfiguracaoArquivo, ARQUIVO_INI_ULTIMO_ACESSO_SESSAO, ARQUIVO_INI_ULTIMO_ACESSO_USUARIO,      edtUsuario.Text);
+    ArquivoIniBooleanGravar(gloConfiguracaoArquivo, ARQUIVO_INI_ULTIMO_ACESSO_SESSAO, ARQUIVO_INI_ULTIMO_ACESSO_MEMORIZAR,    chkMemorizar.Checked);
+    ArquivoIniStringGravar (gloConfiguracaoArquivo, ARQUIVO_INI_ULTIMO_ACESSO_SESSAO, ARQUIVO_INI_ULTIMO_ACESSO_CONEXAO_ITEM, lblConexaoItem.Caption);
+  except
+    on locExcecao: Exception do
+    begin
+      locLogMensagem := 'Ocorreu algum problema ao gravar a memorização dos dados do último acesso!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
 end;
 
 end.

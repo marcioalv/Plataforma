@@ -139,8 +139,8 @@ type
     procedure FormularioGravar;
     procedure FormularioTestar;
   public
-    pubDadosAtualizados: Boolean;
-    pubClicouSair      : Boolean;
+    pubDadosAlterados: Boolean;
+    pubClicouFechar  : Boolean;
   end;
 
 var
@@ -175,21 +175,13 @@ const
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  if pubDadosAtualizados then
-  begin
-    if not VCLQuestionamentoExibir('Deseja realmente sair sem gravar os dados?') then Action := caNone;
-  end;
-end;
-
 procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis públicas.
   //
-  pubDadosAtualizados := False;
-  pubClicouSair       := True;
+  pubDadosAlterados := False;
+  pubClicouFechar   := True;
 end;
 
 //
@@ -226,6 +218,17 @@ begin
   if Key = ESC then
   begin
     if edtTitulo.ReadOnly then Close;
+  end;
+end;
+
+//
+// Evento de fechamento do formulário.
+//
+procedure TPlataformaERPVCLAcessoConexaoConfiguracao.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if pubDadosAlterados then
+  begin
+    if not VCLQuestionamentoExibir('Deseja realmente sair sem gravar os dados?') then Action := caNone;
   end;
 end;
 
@@ -641,7 +644,7 @@ begin
   //
   // Dados atualizados no formulário.
   //
-  pubDadosAtualizados := True;
+  pubDadosAlterados := True;
 
   //
   // Controlar componentes.
@@ -715,7 +718,7 @@ begin
   //
   // Dados atualizados no formulário.
   //
-  pubDadosAtualizados := True;
+  pubDadosAlterados := True;
 
   //
   // Controla componentes do formulário.
@@ -919,7 +922,7 @@ begin
   // Lê a quantidade de conexões existente no arquivo de configuração.
   //
   try
-    locQuantidade := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVI_INI_CONEXAO_GERAL_QUANTIDADE);
+    locQuantidade := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVO_INI_CONEXAO_GERAL_QUANTIDADE);
   except
     on locExcecao: Exception do
     begin
@@ -1043,7 +1046,7 @@ begin
   // Remove todas as configurações de conexão antes de inserí-las.
   //
   try
-    locQuantidade := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVI_INI_CONEXAO_GERAL_QUANTIDADE);
+    locQuantidade := ArquivoIniIntegerRecuperar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVO_INI_CONEXAO_GERAL_QUANTIDADE);
   except
     on locExcecao: Exception do
     begin
@@ -1082,7 +1085,7 @@ begin
   // Grava a nova quantidade de conexões existente no arquivo de configuração.
   //
   try
-    ArquivoIniIntegerGravar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVI_INI_CONEXAO_GERAL_QUANTIDADE, locQuantidade);
+    ArquivoIniIntegerGravar(gloConfiguracaoArquivo, ARQUIVO_INI_CONEXAO_GERAL, ARQUIVO_INI_CONEXAO_GERAL_QUANTIDADE, locQuantidade);
   except
     on locExcecao: Exception do
     begin
@@ -1151,7 +1154,8 @@ begin
   //
   // Fecha formulário.
   //
-  pubClicouSair := False;  
+  pubClicouFechar   := False;  
+  pubDadosAlterados := False;
   Close;
 end;
 
