@@ -367,10 +367,12 @@ CREATE TABLE [dbo].[usuario] (
   [logon]                VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [tipo_usuario_base_id] SMALLINT                                  NOT NULL,
   [tipo_usuario_id]      TINYINT                                   NOT NULL,
+  [vigencia]             CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [vigencia_ini_dt_hr]   DATETIME                                  NULL,
+  [vigencia_fim_dt_hr]   DATETIME                                  NULL,
   [senha_exigir]         CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [senha_trocar]         CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [senha]                VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [automato]             CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [administrador]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]                CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
@@ -385,7 +387,6 @@ CREATE TABLE [dbo].[usuario] (
 
   CONSTRAINT [usuario_ck_exigir_senha]  CHECK ([senha_exigir]  IN ('S', 'N')),
   CONSTRAINT [usuario_ck_trocar_senha]  CHECK ([senha_trocar]  IN ('S', 'N')),
-  CONSTRAINT [usuario_ck_automato]      CHECK ([automato]      IN ('S', 'N')),
   CONSTRAINT [usuario_ck_administrador] CHECK ([administrador] IN ('S', 'N')),
   CONSTRAINT [usuario_ck_bloqueado]     CHECK ([bloqueado]     IN ('S', 'N')),
   CONSTRAINT [usuario_ck_ativo]         CHECK ([ativo]         IN ('S', 'N')),
@@ -502,13 +503,13 @@ INSERT INTO [numerador_licenca] VALUES (1, 1, 'tipo_usuario_id', 3, 'N', 'S', GE
 --
 -- Usuário.
 --
-INSERT INTO [usuario]     VALUES (1, 1, 1, '000.001', 'Administrador do sistema', 'administrador', 1, 1, 'S', 'N', '00311üûù§,ì', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [usuario]     VALUES (1, 1, 1, '000.001', 'Administrador do sistema', 'administrador', 1, 1, 'N', NULL, NULL, 'S', 'N', '00311üûù§,ì', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [usuario_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
-INSERT INTO [usuario]     VALUES (1, 1, 2, '000.002', 'Marcio Alves', 'marcio.alves', 1, 1, 'S', 'N', '00311üûù§,ì', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [usuario]     VALUES (1, 1, 2, '000.002', 'Marcio Alves', 'marcio.alves', 1, 1, 'N', NULL, NULL, 'S', 'N', '00311üûù§,ì', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [usuario_log] VALUES (1, 1, 2, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
-INSERT INTO [usuario]     VALUES (1, 1, 3, '000.003', 'Fernanda Margarete Vieira', 'fernanda.vieira', 1, 1, 'S', 'N', '00311üûù§,ì', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [usuario]     VALUES (1, 1, 3, '000.003', 'Fernanda Margarete Vieira', 'fernanda.vieira', 1, 1, 'N', NULL, NULL, 'S', 'N', '00311üûù§,ì', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [usuario_log] VALUES (1, 1, 3, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
 INSERT INTO [numerador_licenca] VALUES (1, 1, 'usuario_id', 3, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)

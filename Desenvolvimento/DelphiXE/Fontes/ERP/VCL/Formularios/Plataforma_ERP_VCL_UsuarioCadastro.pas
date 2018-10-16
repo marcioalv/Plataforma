@@ -30,7 +30,7 @@ uses
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
   Vcl.ComCtrls,
-  Vcl.Menus;
+  Vcl.Menus, Vcl.Mask, Vcl.WinXCtrls;
 
 type
   TPlataformaERPVCLUsuarioCadastro = class(TForm)
@@ -86,8 +86,6 @@ type
     gbxOpcoes: TGroupBox;
     chkBloqueado: TCheckBox;
     chkAtivo: TCheckBox;
-    chkAutomato: TCheckBox;
-    chkAdministrador: TCheckBox;
     lblLogon: TLabel;
     edtLogon: TEdit;
     btnSenha: TBitBtn;
@@ -101,6 +99,17 @@ type
     mniLog: TMenuItem;
     mniPerfis: TMenuItem;
     mniCadastros: TMenuItem;
+    tabConfiguracao: TTabSheet;
+    Label1: TLabel;
+    imgAdministradorOff: TImage;
+    imgAdministradorOn: TImage;
+    chkVigencia: TCheckBox;
+    lblVigenciaPeriodo: TLabel;
+    medVigenciaIniDtHr: TMaskEdit;
+    lblVigenciaAte: TLabel;
+    medVigenciaFimDtHr: TMaskEdit;
+    imgVigenciaIniDtHr: TImage;
+    imgVigenciaFimDtHr: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -147,12 +156,6 @@ type
     procedure edtLogonEnter(Sender: TObject);
     procedure edtLogonExit(Sender: TObject);
     procedure edtLogonKeyPress(Sender: TObject; var Key: Char);
-    procedure chkAutomatoEnter(Sender: TObject);
-    procedure chkAutomatoExit(Sender: TObject);
-    procedure chkAutomatoKeyPress(Sender: TObject; var Key: Char);
-    procedure chkAdministradorEnter(Sender: TObject);
-    procedure chkAdministradorExit(Sender: TObject);
-    procedure chkAdministradorKeyPress(Sender: TObject; var Key: Char);
     procedure mniSenhaClick(Sender: TObject);
     procedure btnSenhaClick(Sender: TObject);
     procedure mniLogClick(Sender: TObject);
@@ -164,9 +167,23 @@ type
     procedure lvwPerfilKeyPress(Sender: TObject; var Key: Char);
     procedure mniPerfisClick(Sender: TObject);
     procedure btnPerfisClick(Sender: TObject);
+    procedure imgAdministradorOnClick(Sender: TObject);
+    procedure imgAdministradorOffClick(Sender: TObject);
+    procedure medVigenciaIniDtHrEnter(Sender: TObject);
+    procedure medVigenciaIniDtHrExit(Sender: TObject);
+    procedure medVigenciaIniDtHrKeyPress(Sender: TObject; var Key: Char);
+    procedure medVigenciaIniDtHrKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure medVigenciaFimDtHrEnter(Sender: TObject);
+    procedure medVigenciaFimDtHrExit(Sender: TObject);
+    procedure medVigenciaFimDtHrKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure medVigenciaFimDtHrKeyPress(Sender: TObject; var Key: Char);
+    procedure imgVigenciaIniDtHrClick(Sender: TObject);
+    procedure imgVigenciaFimDtHrClick(Sender: TObject);
+    procedure chkVigenciaClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
+    procedure FormularioControlarVigencia;
     procedure FormularioPerfis;
     procedure FormularioLogExibir;
 
@@ -216,8 +233,10 @@ uses
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_UsuarioCadastro.pas';
 
-  TAB_CADASTRO : Byte = 0;
-  TAB_AUDITORIA: Byte = 1;
+  TAB_CADASTRO    : Byte = 0;
+  TAB_CONFIGURACAO: Byte = 1;
+  TAB_PERFIL      : Byte = 2;
+  TAB_AUDITORIA   : Byte = 3;
 
   LVW_PERFIL_USUARIO_LICENCA_ID: Integer = 0;
   LVW_PERFIL_USUARIO_BASE_ID   : Integer = 1;
@@ -500,40 +519,22 @@ begin
 end;
 
 //
-// Eventos do componente "autômato".
-//
-procedure TPlataformaERPVCLUsuarioCadastro.chkAutomatoEnter(Sender: TObject);
-begin
-  if not VCLCheckBoxEntrar(chkAutomato) then Exit;
-end;
-
-procedure TPlataformaERPVCLUsuarioCadastro.chkAutomatoKeyPress(Sender: TObject; var Key: Char);
-begin
-  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
-end;
-
-procedure TPlataformaERPVCLUsuarioCadastro.chkAutomatoExit(Sender: TObject);
-begin
-  if not VCLCheckBoxSair(chkAutomato) then Exit;
-end;
-
-//
 // Eventos do componente "administrador".
 //
-procedure TPlataformaERPVCLUsuarioCadastro.chkAdministradorEnter(Sender: TObject);
+procedure TPlataformaERPVCLUsuarioCadastro.imgAdministradorOffClick(Sender: TObject);
 begin
-  if not VCLCheckBoxEntrar(chkAdministrador) then Exit;
+  if not chkVigencia.Enabled then Exit;
+  imgAdministradorOff.Visible := False;
+  imgAdministradorOn.Visible  := True;
 end;
 
-procedure TPlataformaERPVCLUsuarioCadastro.chkAdministradorKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLUsuarioCadastro.imgAdministradorOnClick(Sender: TObject);
 begin
-  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
+  if not chkVigencia.Enabled then Exit;
+  imgAdministradorOff.Visible := True;
+  imgAdministradorOn.Visible  := False;
 end;
 
-procedure TPlataformaERPVCLUsuarioCadastro.chkAdministradorExit(Sender: TObject);
-begin
-  if not VCLCheckBoxSair(chkAdministrador) then Exit;
-end;
 
 //
 // Eventos do componente "bloqueado".
@@ -569,6 +570,72 @@ end;
 procedure TPlataformaERPVCLUsuarioCadastro.chkAtivoExit(Sender: TObject);
 begin
   if not VCLCheckBoxSair(chkAtivo) then Exit;
+end;
+
+//
+// Vigência.
+//
+procedure TPlataformaERPVCLUsuarioCadastro.chkVigenciaClick(Sender: TObject);
+begin
+  FormularioControlarVigencia;
+end;
+
+//
+// Data inicial de vigência.
+//
+procedure TPlataformaERPVCLUsuarioCadastro.medVigenciaIniDtHrEnter(Sender: TObject);
+begin
+  if not VCLMaskEditEntrar(medVigenciaIniDtHr) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.medVigenciaIniDtHrKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.medVigenciaIniDtHrKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medVigenciaIniDtHr);
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.medVigenciaIniDtHrExit(Sender: TObject);
+begin
+  if not VCLMaskEditSair(medVigenciaIniDtHr) then Exit;
+  if not VCLMaskEditDataValidar(medVigenciaIniDtHr) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.imgVigenciaIniDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataSelecionar(medVigenciaIniDtHr);
+end;
+
+//
+// Data final de vigência.
+//
+procedure TPlataformaERPVCLUsuarioCadastro.medVigenciaFimDtHrEnter(Sender: TObject);
+begin
+  if not VCLMaskEditEntrar(medVigenciaFimDtHr) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.medVigenciaFimDtHrKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.medVigenciaFimDtHrKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medVigenciaFimDtHr); 
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.medVigenciaFimDtHrExit(Sender: TObject);
+begin
+  if not VCLMaskEditSair(medVigenciaFimDtHr) then Exit;
+  if not VCLMaskEditDataValidar(medVigenciaFimDtHr) then Exit;
+end;
+
+procedure TPlataformaERPVCLUsuarioCadastro.imgVigenciaFimDtHrClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataSelecionar(medVigenciaFimDtHr);
 end;
 
 //
@@ -748,10 +815,16 @@ begin
   VCLEditLimpar    (edtTipoUsuarioCodigo);
   VCLEditLimpar    (edtTipoUsuarioDescricao);
   VCLEditLimpar    (edtLogon);
-  VCLCheckBoxLimpar(chkAutomato);
-  VCLCheckBoxLimpar(chkAdministrador);
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
+
+  VCLCheckBoxLimpar(chkVigencia);
+  VCLMaskEditLimpar(medVigenciaIniDtHr);
+  VCLMaskEditLimpar(medVigenciaFimDtHr);
+  FormularioControlarVigencia;
+
+  imgAdministradorOff.Visible := True;
+  imgAdministradorOn.Visible  := False;
 
   VCLEditLimpar(edtCodigoCadastrado);
   VCLEditLimpar(edtCodigoCadastradoBaseID);
@@ -797,6 +870,21 @@ begin
   VCLEditControlar(edtLogon,             argEditar);
   gbxOpcoes.Enabled := argEditar;
 
+  chkVigencia.Enabled := argEditar;
+  VCLMaskEditControlar(medVigenciaIniDtHr, argEditar);
+  VCLMaskEditControlar(medVigenciaFimDtHr, argEditar);  
+
+  if not argEditar then
+  begin
+    imgAdministradorOff.Cursor := crDefault;
+    imgAdministradorOn.Cursor  := crDefault;
+  end
+  else
+  begin
+    imgAdministradorOff.Cursor := crHandPoint;
+    imgAdministradorOn.Cursor  := crHandPoint;
+  end;
+
   //
   // Exibe o último código cadastrado somente se for um novo cadastro.
   //
@@ -835,9 +923,10 @@ begin
   //
   // Permissões de acesso por usuário.
   //
-  tabCadastro.TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_CADASTRO');
-  tabPerfil.TabVisible    := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_PERFIL');
-  tabAuditoria.TabVisible := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_AUDITORIA');
+  tabCadastro.TabVisible     := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_CADASTRO');
+  tabConfiguracao.TabVisible := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_CONFIGURACAO');
+  tabPerfil.TabVisible       := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_PERFIL');
+  tabAuditoria.TabVisible    := Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ABA_AUDITORIA');
 
   mniSenha.Visible     := (mniSenha.Visible)     and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_SENHA'));
   mniAtualizar.Visible := (mniAtualizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_USUARIO_CADASTRO_ATUALIZAR'));
@@ -884,6 +973,23 @@ begin
   if (not locDadosPopulados) and (argEditar) then Self.Caption := Self.Caption + ' - novo cadastro';
   if locDadosPopulados and argEditar         then Self.Caption := Self.Caption + ' - alterando cadastro'   + locIdentificador;
   if locDadosPopulados and (not argEditar)   then Self.Caption := Self.Caption + ' - consultando cadastro' + locIdentificador;
+end;
+
+//
+// Procedimento para controlar a exibição dos componentes de acordo com a vigência.
+//
+procedure TPlataformaERPVCLUsuarioCadastro.FormularioControlarVigencia;
+var
+  locVigencia: Boolean;
+begin
+  locVigencia := chkVigencia.Checked;
+
+  VCLLabelHabilitar(lblVigenciaPeriodo,    locVigencia);
+  VCLMaskEditHabilitar(medVigenciaIniDtHr, locVigencia);
+  imgVigenciaIniDtHr.Visible := locVigencia;
+  VCLLabelHabilitar(lblVigenciaAte,        locVigencia);
+  VCLMaskEditHabilitar(medVigenciaFimDtHr, locVigencia);
+  imgVigenciaFimDtHr.Visible := locVigencia;  
 end;
 
 //
@@ -1209,8 +1315,10 @@ begin
   locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id]      AS [tipo_usuario_id],                       ');
   locADOQuery.SQL.Add('  [tipo_usuario].[codigo]               AS [tipo_usuario_codigo],                   ');
   locADOQuery.SQL.Add('  [tipo_usuario].[descricao]            AS [tipo_usuario_descricao],                ');
+  locADOQuery.SQL.Add('  [usuario].[vigencia],                                                             ');
+  locADOQuery.SQL.Add('  [usuario].[vigencia_ini_dt_hr],                                                   ');
+  locADOQuery.SQL.Add('  [usuario].[vigencia_fim_dt_hr],                                                   '); 
   locADOQuery.SQL.Add('  [usuario].[logon],                                                                ');
-  locADOQuery.SQL.Add('  [usuario].[automato],                                                             ');
   locADOQuery.SQL.Add('  [usuario].[administrador],                                                        ');
   locADOQuery.SQL.Add('  [usuario].[bloqueado],                                                            ');
   locADOQuery.SQL.Add('  [usuario].[ativo],                                                                ');
@@ -1273,10 +1381,16 @@ begin
 
     edtLogon.Text := locADOQuery.FieldByName('logon').AsString;
     
-    chkAutomato.Checked      := StringBooleanConverter(locADOQuery.FieldByName('automato').AsString);
-    chkAdministrador.Checked := StringBooleanConverter(locADOQuery.FieldByName('administrador').AsString);
     chkBloqueado.Checked     := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked         := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
+
+    chkVigencia.Checked     := StringBooleanConverter(locADOQuery.FieldByName('vigencia').AsString);
+    medVigenciaIniDtHr.Text := DateTimeStringConverter(locADOQuery.FieldByName('vigencia_ini_dt_hr').AsDateTime, 'dd/mm/yyyy');
+    medVigenciaFimDtHr.Text := DateTimeStringConverter(locADOQuery.FieldByName('vigencia_fim_dt_hr').AsDateTime, 'dd/mm/yyyy');
+    FormularioControlarVigencia;
+
+    imgAdministradorOff.Visible := (not StringBooleanConverter(locADOQuery.FieldByName('administrador').AsString));
+    imgAdministradorOn.Visible  := (not imgAdministradorOff.Visible);
 
     edtLicencaID.Text            := locADOQuery.FieldByName('licenca_id').AsString;
     edtLicencaDescricao.Text     := locADOQuery.FieldByName('licenca_descricao').AsString;
@@ -1486,7 +1600,9 @@ var
   locTipoUsuarioBaseID: Integer;
   locTipoUsuarioID    : Integer;
   locLogon            : string;
-  locAutomato         : Boolean;
+  locVigencia         : Boolean;
+  locVigenciaIniDtHr  : TDateTime;
+  locVigenciaFimDtHr  : TDateTime;
   locAdministrador    : Boolean;
   locBloqueado        : Boolean;
   locAtivo            : Boolean;
@@ -1516,9 +1632,11 @@ begin
   locNome              := StringTrim(edtNome.Text);
   locTipoUsuarioBaseID := StringIntegerConverter(edtTipoUsuarioBaseID.Text);
   locTipoUsuarioID     := StringIntegerConverter(edtTipoUsuarioID.Text);
+  locVigencia          := chkVigencia.Checked;
+  locVigenciaIniDtHr   := StringDateTimeConverter(medVigenciaIniDtHr.Text);
+  locVigenciaFimDtHr   := StringDateTimeConverter(medVigenciaFimDtHr.Text);
+  locAdministrador     := imgAdministradorOn.Visible;  
   locLogon             := StringTrim(edtLogon.Text);
-  locAutomato          := chkAutomato.Checked;
-  locAdministrador     := chkAdministrador.Checked;
   locBloqueado         := chkBloqueado.Checked;
   locAtivo             := chkAtivo.Checked;
   locLogUsuarioBaseID  := gloUsuarioBaseID;
@@ -1526,6 +1644,15 @@ begin
   locHostName          := HostNameRecuperar;
   locUserName          := UserNameRecuperar;
   locUpdContador       := StringIntegerConverter(edtUpdContador.Text);
+
+  //
+  // Ajusta detelhe da vigência.
+  //
+  if not locVigencia then
+  begin
+    locVigenciaIniDtHr := 0;
+    locVigenciaFimDtHr := 0;
+  end;
 
   //
   // Consiste as informações.
@@ -1549,6 +1676,30 @@ begin
     VCLConsistenciaExibir('O tipo do usuário deve ser selecionado!');
     VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtTipoUsuarioCodigo);
     Exit;
+  end;
+
+  if locVigencia then
+  begin
+    if locVigenciaIniDtHr <= 0 then
+    begin
+      VCLConsistenciaExibir('a data inicial da vigência deve ser informada!');
+      VCLPageControlFocar(pagFormulario, TAB_CONFIGURACAO, medVigenciaIniDtHr);
+      Exit;
+    end;
+
+    if locVigenciaFimDtHr <= 0 then
+    begin
+      VCLConsistenciaExibir('a data final da vigência deve ser informada!');
+      VCLPageControlFocar(pagFormulario, TAB_CONFIGURACAO, medVigenciaFimDtHr);
+      Exit;
+    end;    
+
+    if locVigenciaFimDtHr < locVigenciaIniDtHr then
+    begin
+      VCLConsistenciaExibir('a data final da vigência não deve ser anterior a data inicial!');
+      VCLPageControlFocar(pagFormulario, TAB_CONFIGURACAO, medVigenciaIniDtHr);
+      Exit;
+    end;        
   end;
 
   //
@@ -1782,10 +1933,12 @@ begin
     locADOQuery.SQL.Add('  [logon],                ');
     locADOQuery.SQL.Add('  [tipo_usuario_base_id], ');
     locADOQuery.SQL.Add('  [tipo_usuario_id],      ');
+    locADOQuery.SQL.Add('  [vigencia],             ');
+    locADOQuery.SQL.Add('  [vigencia_ini_dt_hr],   ');
+    locADOQuery.SQL.Add('  [vigencia_fim_dt_hr],   ');
     locADOQuery.SQL.Add('  [senha_exigir],         ');
     locADOQuery.SQL.Add('  [senha_trocar],         ');
     locADOQuery.SQL.Add('  [senha],                ');
-    locADOQuery.SQL.Add('  [automato],             ');
     locADOQuery.SQL.Add('  [administrador],        ');
     locADOQuery.SQL.Add('  [bloqueado],            ');
     locADOQuery.SQL.Add('  [ativo],                ');
@@ -1804,10 +1957,12 @@ begin
     locADOQuery.SQL.Add('  :logon,                 '); // [logon].
     locADOQuery.SQL.Add('  :tipo_usuario_base_id,  '); // [tipo_usuario_base_id].
     locADOQuery.SQL.Add('  :tipo_usuario_id,       '); // [tipo_usuario_id].
+    locADOQuery.SQL.Add('  :vigencia,              '); // [vigencia].
+    locADOQuery.SQL.Add('  :vigencia_ini_dt_hr,    '); // [vigencia_ini_dt_hr].
+    locADOQuery.SQL.Add('  :vigencia_fim_dt_hr,    '); // [vigencia_fim_dt_hr].
     locADOQuery.SQL.Add('  ''S'',                  '); // [senha_exigir].
     locADOQuery.SQL.Add('  ''N'',                  '); // [senha_trocar].
     locADOQuery.SQL.Add('  '''',                   '); // [senha].
-    locADOQuery.SQL.Add('  :automato,              '); // [automato].
     locADOQuery.SQL.Add('  :administrador,         '); // [administrador].
     locADOQuery.SQL.Add('  :bloqueado,             '); // [bloqueado].
     locADOQuery.SQL.Add('  :ativo,                 '); // [ativo].
@@ -1830,8 +1985,10 @@ begin
     locADOQuery.SQL.Add('  [nome]                 = :nome,                 ');
     locADOQuery.SQL.Add('  [logon]                = :logon,                ');
     locADOQuery.SQL.Add('  [tipo_usuario_base_id] = :tipo_usuario_base_id, ');
-    locADOQuery.SQL.Add('  [tipo_usuario_id]      = :tipo_usuario_id,      ');        
-    locADOQuery.SQL.Add('  [automato]             = :automato,             ');
+    locADOQuery.SQL.Add('  [tipo_usuario_id]      = :tipo_usuario_id,      ');
+    locADOQuery.SQL.Add('  [vigencia]             = :vigencia,             ');
+    locADOQuery.SQL.Add('  [vigencia_ini_dt_hr]   = :vigencia_ini_dt_hr,   ');
+    locADOQuery.SQL.Add('  [vigencia_fim_dt_hr]   = :vigencia_fim_dt_hr,   ');
     locADOQuery.SQL.Add('  [administrador]        = :administrador,        ');
     locADOQuery.SQL.Add('  [bloqueado]            = :bloqueado,            ');
     locADOQuery.SQL.Add('  [ativo]                = :ativo,                ');
@@ -1855,7 +2012,9 @@ begin
   locADOQuery.Parameters.ParamByName('logon').Value                := locLogon;
   locADOQuery.Parameters.ParamByName('tipo_usuario_base_id').Value := locTipoUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value      := locTipoUsuarioID;
-  locADOQuery.Parameters.ParamByName('automato').Value             := BooleanStringConverter(locAutomato);
+  locADOQuery.Parameters.ParamByName('vigencia').Value             := BooleanStringConverter(locVigencia);
+  locADOQuery.Parameters.ParamByName('vigencia_ini_dt_hr').Value   := locVigenciaIniDtHr;
+  locADOQuery.Parameters.ParamByName('vigencia_fim_dt_hr').Value   := locVigenciaFimDtHr;
   locADOQuery.Parameters.ParamByName('administrador').Value        := BooleanStringConverter(locAdministrador);
   locADOQuery.Parameters.ParamByName('bloqueado').Value            := BooleanStringConverter(locBloqueado);
   locADOQuery.Parameters.ParamByName('ativo').Value                := BooleanStringConverter(locAtivo);
@@ -2489,9 +2648,11 @@ begin
   LogDadosStringDescrever ('Tipo usuário ID',        edtTipoUsuarioID.Text,        Result);
   LogDadosStringDescrever ('Tipo usuário código',    edtTipoUsuarioCodigo.Text,    Result);
   LogDadosStringDescrever ('Tipo usuário descrição', edtTipoUsuarioDescricao.Text, Result);
-  LogDadosStringDescrever ('logon',                  edtLogon.Text,                Result);
-  LogDadosBooleanDescrever('automato',               chkAutomato.Checked,          Result);
-  LogDadosBooleanDescrever('administrador',          chkAdministrador.Checked,     Result);  
+  LogDadosStringDescrever ('Logon',                  edtLogon.Text,                Result);
+  LogDadosStringDescrever ('Vigência',               '',                           Result); // ARRUMAR!
+  LogDadosStringDescrever ('Vigência inicial',       '',                           Result);
+  LogDadosStringDescrever ('Vigência final',         '',                           Result);
+  LogDadosBooleanDescrever('Administrador',          False,                        Result);  
   LogDadosBooleanDescrever('Bloqueado',              chkBloqueado.Checked,         Result);
   LogDadosBooleanDescrever('Ativo',                  chkAtivo.Checked,             Result);
 end;

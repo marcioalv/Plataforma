@@ -117,6 +117,9 @@ procedure VCLEditSelecaoControlar(argComponente: TEdit; argImage: TImage; argLig
 procedure VCLToggleSwitchLigar(argComponente: TToggleSwitch; argLigar: Boolean);
 function  VCLToggleSwitchRecuperar(argComponente: TToggleSwitch): Boolean;
 
+procedure VCLLabelHabilitar(argComponente: TLabel; argLigar: Boolean);
+procedure VCLMaskEditHabilitar(argComponente: TMaskEdit; argLigar: Boolean);
+
 //
 // Entrada/Saída componentes.
 //
@@ -750,6 +753,38 @@ procedure VCLMemoControlar(argComponente: TMemo; argLigar: Boolean);
 begin
   argComponente.ReadOnly := (not argLigar);
   argComponente.TabStop  := argLigar;
+end;
+
+//
+// VCLLabelHabilitar.
+//
+procedure VCLLabelHabilitar(argComponente: TLabel; argLigar: Boolean);
+begin
+  if not argLigar then
+  begin
+    argComponente.Font.Color := clGrayText;
+  end
+  else
+  begin
+    argComponente.Font.Color := clBlack;
+  end;
+end;
+
+//
+// VCLMaskEditHabilitar.
+//
+procedure VCLMaskEditHabilitar(argComponente: TMaskEdit; argLigar: Boolean);
+begin
+  VCLMaskEditControlar(argComponente, argLigar);
+
+  if not argLigar then
+  begin
+    argComponente.Font.Color := clGrayText;
+  end
+  else
+  begin
+    argComponente.Font.Color := clBlack;
+  end;
 end;
 
 //
