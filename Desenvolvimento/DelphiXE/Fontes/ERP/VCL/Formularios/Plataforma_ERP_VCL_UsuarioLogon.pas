@@ -331,6 +331,9 @@ begin
   locADOQuery.SQL.Add('  [usuario].[senha_exigir],                           ');
   locADOQuery.SQL.Add('  [usuario].[senha_trocar],                           ');
   locADOQuery.SQL.Add('  [usuario].[senha],                                  ');
+  locADOQuery.SQL.Add('  [usuario].[vigencia],                               ');
+  locADOQuery.SQL.Add('  [usuario].[vigencia_ini_dt_hr],                     ');
+  locADOQuery.SQL.Add('  [usuario].[vigencia_fim_dt_hr],                     ');  
   locADOQuery.SQL.Add('  [usuario].[administrador],                          ');
   locADOQuery.SQL.Add('  [usuario].[bloqueado],                              ');
   locADOQuery.SQL.Add('  [usuario].[ativo]                                   ');
@@ -472,7 +475,26 @@ begin
     VCLConsistenciaExibir('O usuário "' + locLogon + '" está bloqueado!');
     TentativasAcessoValidar;
     edtUsuario.SetFocus;
-    Exit;    
+    Exit;
+  end;
+
+  //
+  // Se o usuário estiver forma de vigência.
+  //
+  if StringBooleanConverter(locADOQuery.FieldByName('vigencia').AsString) then
+  begin
+    if (Now < locADOQuery.FieldByName('vigencia_ini_dt_hr').AsDateTime) or
+       (now > locADOQuery.FieldByName('vigencia_fim_dt_hr').AsDateTime) then
+    begin        
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      VCLConsistenciaExibir('O usuário "' + locLogon + '" está com a vigência de seu acesso fora do período permitido!');
+      TentativasAcessoValidar;
+      edtUsuario.SetFocus;
+      Exit;
+    end;
   end;
 
   //

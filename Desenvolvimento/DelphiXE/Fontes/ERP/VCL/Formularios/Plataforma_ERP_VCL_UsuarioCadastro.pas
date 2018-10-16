@@ -1958,8 +1958,27 @@ begin
     locADOQuery.SQL.Add('  :tipo_usuario_base_id,  '); // [tipo_usuario_base_id].
     locADOQuery.SQL.Add('  :tipo_usuario_id,       '); // [tipo_usuario_id].
     locADOQuery.SQL.Add('  :vigencia,              '); // [vigencia].
-    locADOQuery.SQL.Add('  :vigencia_ini_dt_hr,    '); // [vigencia_ini_dt_hr].
-    locADOQuery.SQL.Add('  :vigencia_fim_dt_hr,    '); // [vigencia_fim_dt_hr].
+
+    // [vigencia_ini_dt_hr].
+    if locVigenciaIniDtHr > 0 then
+    begin
+      locADOQuery.SQL.Add(' :vigencia_ini_dt_hr, ');
+    end
+    else
+    begin
+      locADOQuery.SQL.Add(' NULL, ');
+    end;
+
+    // [vigencia_fim_dt_hr].
+    if locVigenciaFimDtHr > 0 then
+    begin    
+      locADOQuery.SQL.Add(' :vigencia_fim_dt_hr, ');
+    end
+    else
+    begin    
+      locADOQuery.SQL.Add(' NULL, ');
+    end;
+    
     locADOQuery.SQL.Add('  ''S'',                  '); // [senha_exigir].
     locADOQuery.SQL.Add('  ''N'',                  '); // [senha_trocar].
     locADOQuery.SQL.Add('  '''',                   '); // [senha].
@@ -1987,8 +2006,25 @@ begin
     locADOQuery.SQL.Add('  [tipo_usuario_base_id] = :tipo_usuario_base_id, ');
     locADOQuery.SQL.Add('  [tipo_usuario_id]      = :tipo_usuario_id,      ');
     locADOQuery.SQL.Add('  [vigencia]             = :vigencia,             ');
-    locADOQuery.SQL.Add('  [vigencia_ini_dt_hr]   = :vigencia_ini_dt_hr,   ');
-    locADOQuery.SQL.Add('  [vigencia_fim_dt_hr]   = :vigencia_fim_dt_hr,   ');
+
+    if locVigenciaIniDtHr > 0 then
+    begin
+      locADOQuery.SQL.Add(' [vigencia_ini_dt_hr]  = :vigencia_ini_dt_hr, ');
+    end
+    else
+    begin
+      locADOQuery.SQL.Add(' [vigencia_ini_dt_hr]  = NULL,');
+    end;
+
+    if locVigenciaFimDtHr > 0 then
+    begin
+      locADOQuery.SQL.Add(' [vigencia_fim_dt_hr] = :vigencia_fim_dt_hr, ');
+    end
+    else
+    begin
+      locADOQuery.SQL.Add(' [vigencia_fim_dt_hr] = NULL, ');
+    end;
+    
     locADOQuery.SQL.Add('  [administrador]        = :administrador,        ');
     locADOQuery.SQL.Add('  [bloqueado]            = :bloqueado,            ');
     locADOQuery.SQL.Add('  [ativo]                = :ativo,                ');
@@ -2013,8 +2049,8 @@ begin
   locADOQuery.Parameters.ParamByName('tipo_usuario_base_id').Value := locTipoUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('tipo_usuario_id').Value      := locTipoUsuarioID;
   locADOQuery.Parameters.ParamByName('vigencia').Value             := BooleanStringConverter(locVigencia);
-  locADOQuery.Parameters.ParamByName('vigencia_ini_dt_hr').Value   := locVigenciaIniDtHr;
-  locADOQuery.Parameters.ParamByName('vigencia_fim_dt_hr').Value   := locVigenciaFimDtHr;
+  if locVigenciaIniDtHr > 0 then locADOQuery.Parameters.ParamByName('vigencia_ini_dt_hr').Value := locVigenciaIniDtHr;
+  if locVigenciaFimDtHr > 0 then locADOQuery.Parameters.ParamByName('vigencia_fim_dt_hr').Value := locVigenciaFimDtHr;
   locADOQuery.Parameters.ParamByName('administrador').Value        := BooleanStringConverter(locAdministrador);
   locADOQuery.Parameters.ParamByName('bloqueado').Value            := BooleanStringConverter(locBloqueado);
   locADOQuery.Parameters.ParamByName('ativo').Value                := BooleanStringConverter(locAtivo);
@@ -2649,10 +2685,10 @@ begin
   LogDadosStringDescrever ('Tipo usuário código',    edtTipoUsuarioCodigo.Text,    Result);
   LogDadosStringDescrever ('Tipo usuário descrição', edtTipoUsuarioDescricao.Text, Result);
   LogDadosStringDescrever ('Logon',                  edtLogon.Text,                Result);
-  LogDadosStringDescrever ('Vigência',               '',                           Result); // ARRUMAR!
-  LogDadosStringDescrever ('Vigência inicial',       '',                           Result);
-  LogDadosStringDescrever ('Vigência final',         '',                           Result);
-  LogDadosBooleanDescrever('Administrador',          False,                        Result);  
+  LogDadosBooleanDescrever ('Vigência',              chkVigencia.Checked,          Result);
+  LogDadosStringDescrever ('Vigência inicial',       medVigenciaIniDtHr.Text,      Result);
+  LogDadosStringDescrever ('Vigência final',         medVigenciaFimDtHr.Text,      Result);
+  LogDadosBooleanDescrever('Administrador',          imgAdministradorOn.Visible,   Result);
   LogDadosBooleanDescrever('Bloqueado',              chkBloqueado.Checked,         Result);
   LogDadosBooleanDescrever('Ativo',                  chkAtivo.Checked,             Result);
 end;
