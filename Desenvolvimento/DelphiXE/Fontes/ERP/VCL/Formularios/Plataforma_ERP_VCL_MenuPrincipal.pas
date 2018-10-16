@@ -26,7 +26,7 @@ uses
   Vcl.Dialogs,
   Vcl.Menus,
   Vcl.ExtCtrls,
-  Vcl.StdCtrls;
+  Vcl.StdCtrls, System.ImageList, Vcl.ImgList;
 
 type
   TPlataformaERPVCLMenuPrincipal = class(TForm)
@@ -64,6 +64,8 @@ type
     mniAplicacaoSeparador2: TMenuItem;
     mniEncerrar: TMenuItem;
     mniLogoff: TMenuItem;
+    mniCompras: TMenuItem;
+    mniFornecedores: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogLocalClick(Sender: TObject);
@@ -85,6 +87,8 @@ type
     procedure timStatusBarTimer(Sender: TObject);
     procedure mniEncerrarClick(Sender: TObject);
     procedure mniLogoffClick(Sender: TObject);
+    procedure mniFornecedoresClick(Sender: TObject);
+    procedure Image1Click(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -175,6 +179,14 @@ end;
 {--------------------------------------------------------------------------------------------------}
 { ITENS DE MENU                                                                                    }
 {--------------------------------------------------------------------------------------------------}
+
+//
+// Evento de click na opção "Fornecedores".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniFornecedoresClick(Sender: TObject);
+begin
+  Exit;
+end;
 
 //
 // Evento de click na opção "logoff".
@@ -526,6 +538,11 @@ begin
   
   mniTrocarUsuario.Visible      := locAplicacao_TrocarUsuario;
   mniTrocarSenhaUsuario.Visible := locAplicacao_TrocarSenhaUsuario;    
+end;
+
+procedure TPlataformaERPVCLMenuPrincipal.Image1Click(Sender: TObject);
+begin
+
 end;
 
 //

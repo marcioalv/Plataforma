@@ -11,6 +11,7 @@ IF OBJECT_ID('tipo_usuario_log_fk_log_usuario')   IS NOT NULL ALTER TABLE [tipo_
 IF OBJECT_ID('perfil_usuario_log_fk_log_usuario') IS NOT NULL ALTER TABLE [perfil_usuario_log]  DROP CONSTRAINT [perfil_usuario_log_fk_log_usuario]
 IF OBJECT_ID('numerador_licenca_fk_ins_usuario')  IS NOT NULL ALTER TABLE [numerador_licenca]   DROP CONSTRAINT [numerador_licenca_fk_ins_usuario]
 IF OBJECT_ID('numerador_licenca_fk_upd_usuario')  IS NOT NULL ALTER TABLE [numerador_licenca]   DROP CONSTRAINT [numerador_licenca_fk_upd_usuario]
+GO
 
 --
 -- Apaga tabelas.

@@ -28,6 +28,7 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
     Align = alClient
     Center = True
     Stretch = True
+    OnClick = Image1Click
     ExplicitLeft = 440
     ExplicitTop = 224
     ExplicitWidth = 105
@@ -101,6 +102,13 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
   object mnuFormulario: TMainMenu
     Left = 280
     Top = 80
+    object mniCompras: TMenuItem
+      Caption = 'Compras'
+      object mniFornecedores: TMenuItem
+        Caption = 'Fornecedores'
+        OnClick = mniFornecedoresClick
+      end
+    end
     object mniAplicacao: TMenuItem
       Caption = '&Aplica'#231#227'o'
       object mniLogoff: TMenuItem
