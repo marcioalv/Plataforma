@@ -16,6 +16,7 @@ GO
 --
 -- Apaga tabelas.
 --
+IF OBJECT_ID('pessoa')                          IS NOT NULL DROP TABLE [pessoa]
 IF OBJECT_ID('usuario_perfil')                  IS NOT NULL DROP TABLE [usuario_perfil]
 IF OBJECT_ID('usuario_log')                     IS NOT NULL DROP TABLE [usuario_log]
 IF OBJECT_ID('usuario')                         IS NOT NULL DROP TABLE [usuario]
@@ -444,6 +445,39 @@ CREATE TABLE [dbo].[usuario_perfil] (
 GO
 
 --
+-- Pessoa.
+--
+CREATE TABLE [pessoa] (
+  [pessoa_id]        TINYINT                                   NOT NULL,
+  [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]        VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [fisica]           CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [juridica]         CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [governo]          CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]  DATETIME                                  NOT NULL,
+  [ins_server_dt_hr] DATETIME                                  NOT NULL,
+  [upd_local_dt_hr]  DATETIME                                  NULL,
+  [upd_server_dt_hr] DATETIME                                  NULL,
+  [upd_contador]     INT                                       NOT NULL,
+  
+  CONSTRAINT [pessoa_pk]        PRIMARY KEY CLUSTERED ([pessoa_id]),
+  CONSTRAINT [pessoa_ix_codigo] UNIQUE ([codigo]),
+
+  CONSTRAINT [pessoa_ck_fisica]    CHECK ([fisica]    IN ('S', 'N')),
+  CONSTRAINT [pessoa_ck_juridica]  CHECK ([juridica]  IN ('S', 'N')),
+  CONSTRAINT [pessoa_ck_governo]   CHECK ([governo]   IN ('S', 'N')),
+  CONSTRAINT [pessoa_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [pessoa_ck_ativo]     CHECK ([ativo]     IN ('S', 'N'))
+)
+GO
+
+-------------------------------------------------------------------------------------------------------------
+-- DADOS TESTE ----------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+
+--
 -- Base de dados da instalação da aplicação.
 --
 INSERT INTO [aplicacao_base] VALUES (1, GETDATE(), GETDATE(), NULL, NULL, 0)
@@ -523,3 +557,13 @@ ALTER TABLE [perfil_usuario_log] ADD CONSTRAINT [perfil_usuario_log_fk_log_usuar
 
 ALTER TABLE [numerador_licenca] ADD CONSTRAINT [numerador_licenca_fk_ins_usuario] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id])
 ALTER TABLE [numerador_licenca] ADD CONSTRAINT [numerador_licenca_fk_upd_usuario] FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id])
+
+--
+-- Pessoa.
+--
+INSERT INTO [pessoa] VALUES (1, 'F', 'Física',   'S', 'N', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [pessoa] VALUES (2, 'J', 'Jurídica', 'N', 'S', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [pessoa] VALUES (3, 'G', 'Governo',  'N', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+
+
