@@ -301,6 +301,14 @@
             <Form>PlataformaERPVCLAcessoConexaoSelecao</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\Formularios\Entidade\Plataforma_ERP_VCL_PessoaLista.pas">
+            <Form>PlataformaERPVCLPessoaLista</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Formularios\Entidade\Plataforma_ERP_VCL_PessoaCadastro.pas">
+            <Form>PlataformaERPVCLPessoaCadastro</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="..\..\..\..\..\Imagem\Background\Formulario\FORM_BACKGROUND_DEFAULT.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>FORM_BACKGROUND_DEFAULT</ResourceId>

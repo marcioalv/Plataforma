@@ -1770,6 +1770,7 @@ begin
     end;
   end;
 
+  
   if argListView.Items.Count = 1 then
   begin
     if not argFiltrosAplicados then

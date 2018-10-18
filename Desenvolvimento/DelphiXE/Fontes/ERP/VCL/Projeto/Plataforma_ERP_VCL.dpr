@@ -62,7 +62,9 @@ uses
   Plataforma_ERP_VCL_AcessoConexaoConfiguracao in '..\Formularios\Plataforma_ERP_VCL_AcessoConexaoConfiguracao.pas' {PlataformaERPVCLAcessoConexaoConfiguracao},
   Plataforma_Framework_ArquivoIni in '..\..\..\Framework\Plataforma_Framework_ArquivoIni.pas',
   Plataforma_ERP_VCL_ConexaoTeste in '..\Formularios\Plataforma_ERP_VCL_ConexaoTeste.pas' {PlataformaERPVCLConexaoTeste},
-  Plataforma_ERP_VCL_AcessoConexaoSelecao in '..\Formularios\Plataforma_ERP_VCL_AcessoConexaoSelecao.pas' {PlataformaERPVCLAcessoConexaoSelecao};
+  Plataforma_ERP_VCL_AcessoConexaoSelecao in '..\Formularios\Plataforma_ERP_VCL_AcessoConexaoSelecao.pas' {PlataformaERPVCLAcessoConexaoSelecao},
+  Plataforma_ERP_VCL_PessoaLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_PessoaLista.pas' {PlataformaERPVCLPessoaLista},
+  Plataforma_ERP_VCL_PessoaCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PessoaCadastro.pas' {PlataformaERPVCLPessoaCadastro};
 
 {$R *.res}
 
@@ -73,5 +75,7 @@ begin
   Application.CreateForm(TPlataformaERPVCLAcessoConexaoConfiguracao, PlataformaERPVCLAcessoConexaoConfiguracao);
   Application.CreateForm(TPlataformaERPVCLConexaoTeste, PlataformaERPVCLConexaoTeste);
   Application.CreateForm(TPlataformaERPVCLAcessoConexaoSelecao, PlataformaERPVCLAcessoConexaoSelecao);
+  Application.CreateForm(TPlataformaERPVCLPessoaLista, PlataformaERPVCLPessoaLista);
+  Application.CreateForm(TPlataformaERPVCLPessoaCadastro, PlataformaERPVCLPessoaCadastro);
   Application.Run;
 end.

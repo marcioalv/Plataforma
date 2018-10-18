@@ -42,6 +42,7 @@ const
   NUMERADOR_LICENCA_ID         : string = 'licenca_id';
   NUMERADOR_REGISTRO_ACAO_ID   : string = 'registro_acao_id';
   NUMERADOR_ROTINA_APLICACAO_ID: string = 'rotina_aplicacao_id';
+  NUMERADOR_PESSOA_ID          : string = 'pessoa_id';
   NUMERADOR_PERFIL_USUARIO_ID  : string = 'perfil_usuario_id';
   NUMERADOR_TIPO_USUARIO_ID    : string = 'tipo_usuario_id';
   NUMERADOR_USUARIO_ID         : string = 'usuario_id';

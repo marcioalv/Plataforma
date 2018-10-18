@@ -172,6 +172,10 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
             Caption = 'A'#231#245'es com registros'
             OnClick = mniRegistroAcaoClick
           end
+          object mniPessoas: TMenuItem
+            Caption = 'Pessoas'
+            OnClick = mniPessoasClick
+          end
         end
         object mniInstalacaoNumeradores: TMenuItem
           Caption = 'Numeradores'

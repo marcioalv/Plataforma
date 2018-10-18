@@ -26,7 +26,9 @@ uses
   Vcl.Dialogs,
   Vcl.Menus,
   Vcl.ExtCtrls,
-  Vcl.StdCtrls, System.ImageList, Vcl.ImgList;
+  Vcl.StdCtrls,
+  System.ImageList,
+  Vcl.ImgList;
 
 type
   TPlataformaERPVCLMenuPrincipal = class(TForm)
@@ -66,6 +68,7 @@ type
     mniLogoff: TMenuItem;
     mniCompras: TMenuItem;
     mniFornecedores: TMenuItem;
+    mniPessoas: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogLocalClick(Sender: TObject);
@@ -89,6 +92,7 @@ type
     procedure mniLogoffClick(Sender: TObject);
     procedure mniFornecedoresClick(Sender: TObject);
     procedure Image1Click(Sender: TObject);
+    procedure mniPessoasClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -118,6 +122,7 @@ uses
   Plataforma_ERP_VCL_BaseConfiguracao,
   Plataforma_ERP_VCL_RotinaAplicacaoLista,
   Plataforma_ERP_VCL_RegistroAcaoLista,
+  Plataforma_ERP_VCL_PessoaLista,
   Plataforma_ERP_VCL_BaseLista,
   Plataforma_ERP_VCL_LicencaLista,
   Plataforma_ERP_VCL_NumeradorLicencaLista,
@@ -316,6 +321,19 @@ var
   locFormulario: TPlataformaERPVCLRegistroAcaoLista;
 begin
   locFormulario := TPlataformaERPVCLRegistroAcaoLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "pessoas".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniPessoasClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLPessoaLista;
+begin
+  locFormulario := TPlataformaERPVCLPessoaLista.Create(Self);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

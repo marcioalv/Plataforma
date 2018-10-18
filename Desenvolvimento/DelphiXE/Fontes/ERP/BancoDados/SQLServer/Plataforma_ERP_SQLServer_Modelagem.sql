@@ -566,4 +566,7 @@ INSERT INTO [pessoa] VALUES (2, 'J', 'Jurídica', 'N', 'S', 'N', 'N', 'S', GETDAT
 INSERT INTO [pessoa] VALUES (3, 'G', 'Governo',  'N', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 
+INSERT INTO [numerador_base] VALUES ('pessoa_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+
 
