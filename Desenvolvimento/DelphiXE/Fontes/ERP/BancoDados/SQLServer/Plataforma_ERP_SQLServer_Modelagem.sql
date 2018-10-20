@@ -16,6 +16,7 @@ GO
 --
 -- Apaga tabelas.
 --
+IF OBJECT_ID('regime_tributario')               IS NOT NULL DROP TABLE [regime_tributario]
 IF OBJECT_ID('pessoa')                          IS NOT NULL DROP TABLE [pessoa]
 IF OBJECT_ID('usuario_perfil')                  IS NOT NULL DROP TABLE [usuario_perfil]
 IF OBJECT_ID('usuario_log')                     IS NOT NULL DROP TABLE [usuario_log]
@@ -473,6 +474,37 @@ CREATE TABLE [pessoa] (
 )
 GO
 
+--
+-- Regime tributário.
+--
+CREATE TABLE [regime_tributario] (
+  [regime_tributario_id] TINYINT                                   NOT NULL,
+  [codigo]               VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [simples]              CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [real]                 CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [presumido]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [arbitrado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]                CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]      DATETIME                                  NOT NULL,
+  [ins_server_dt_hr]     DATETIME                                  NOT NULL,
+  [upd_local_dt_hr]      DATETIME                                  NULL,
+  [upd_server_dt_hr]     DATETIME                                  NULL,
+  [upd_contador]         INT                                       NOT NULL,
+  
+  CONSTRAINT [regime_tributario_pk]        PRIMARY KEY CLUSTERED ([regime_tributario_id]),
+  CONSTRAINT [regime_tributario_ix_codigo] UNIQUE ([codigo]),
+
+  CONSTRAINT [regime_tributario_ck_simples]   CHECK ([simples]   IN ('S', 'N')),
+  CONSTRAINT [regime_tributario_ck_real]      CHECK ([real]      IN ('S', 'N')),
+  CONSTRAINT [regime_tributario_ck_presumido] CHECK ([presumido] IN ('S', 'N')),
+  CONSTRAINT [regime_tributario_ck_arbitrado] CHECK ([arbitrado] IN ('S', 'N')),
+  CONSTRAINT [regime_tributario_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [regime_tributario_ck_ativo]     CHECK ([ativo]     IN ('S', 'N'))
+)
+GO
+
 -------------------------------------------------------------------------------------------------------------
 -- DADOS TESTE ----------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
@@ -565,8 +597,19 @@ INSERT INTO [pessoa] VALUES (1, 'F', 'Física',   'S', 'N', 'N', 'N', 'S', GETDAT
 INSERT INTO [pessoa] VALUES (2, 'J', 'Jurídica', 'N', 'S', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [pessoa] VALUES (3, 'G', 'Governo',  'N', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
-
 INSERT INTO [numerador_base] VALUES ('pessoa_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
+
+--
+-- Regime triburário.
+--
+INSERT INTO [regime_tributario] VALUES (1, '1', 'Simples nacional', 'S', 'N', 'N', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [regime_tributario] VALUES (2, '2', 'Lucro real',       'N', 'S', 'N', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [regime_tributario] VALUES (3, '3', 'Lucro resumido',   'N', 'N', 'S', 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [regime_tributario] VALUES (4, '4', 'Lucro arbitrado',  'N', 'N', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+INSERT INTO [numerador_base] VALUES ('regime_tributario_id', 4, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+
 
 

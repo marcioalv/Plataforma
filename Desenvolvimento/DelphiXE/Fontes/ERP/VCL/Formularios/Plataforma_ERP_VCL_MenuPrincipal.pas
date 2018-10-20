@@ -69,6 +69,7 @@ type
     mniCompras: TMenuItem;
     mniFornecedores: TMenuItem;
     mniPessoas: TMenuItem;
+    mniRegimeTributario: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogLocalClick(Sender: TObject);
@@ -93,6 +94,7 @@ type
     procedure mniFornecedoresClick(Sender: TObject);
     procedure Image1Click(Sender: TObject);
     procedure mniPessoasClick(Sender: TObject);
+    procedure mniRegimeTributarioClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -123,6 +125,7 @@ uses
   Plataforma_ERP_VCL_RotinaAplicacaoLista,
   Plataforma_ERP_VCL_RegistroAcaoLista,
   Plataforma_ERP_VCL_PessoaLista,
+  Plataforma_ERP_VCL_RegimeTributarioLista,
   Plataforma_ERP_VCL_BaseLista,
   Plataforma_ERP_VCL_LicencaLista,
   Plataforma_ERP_VCL_NumeradorLicencaLista,
@@ -334,6 +337,19 @@ var
   locFormulario: TPlataformaERPVCLPessoaLista;
 begin
   locFormulario := TPlataformaERPVCLPessoaLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "regime tributário".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniRegimeTributarioClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLRegimeTributarioLista;
+begin
+  locFormulario := TPlataformaERPVCLRegimeTributarioLista.Create(Self);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

@@ -1,16 +1,16 @@
 //
-// Arquivo..: Plataforma_ERP_VCL_PessoaCadastro.pas
+// Arquivo..: Plataforma_ERP_VCL_RegimeTributarioCadastro.pas
 // Projeto..: ERP
 // Fonte....: Formulário VCL
 // Criação..: 14/Agosto/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário com o cadastro da pessoa.
+// Descrição: Formulário com o cadastro do regime tributário.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
 //
 
-unit Plataforma_ERP_VCL_PessoaCadastro;
+unit Plataforma_ERP_VCL_RegimeTributarioCadastro;
 
 interface
 
@@ -33,7 +33,7 @@ uses
   Vcl.Menus;
 
 type
-  TPlataformaERPVCLPessoaCadastro = class(TForm)
+  TPlataformaERPVCLRegimeTributarioCadastro = class(TForm)
     imgFormulario: TImage;
     pagFormulario: TPageControl;
     tabCadastro: TTabSheet;
@@ -54,8 +54,8 @@ type
     btnCancelar: TBitBtn;
     btnAlterar: TBitBtn;
     btnNovo: TBitBtn;
-    lblPessoaID: TLabel;
-    edtPessoaID: TEdit;
+    lblRegimeTributarioID: TLabel;
+    edtRegimeTributarioID: TEdit;
     imgBackground: TImage;
     mnuFormulario: TMainMenu;
     mniFechar: TMenuItem;
@@ -73,9 +73,10 @@ type
     edtCodigoCadastrado: TEdit;
     edtCodigoCadastradoID: TEdit;
     gbxTipos: TGroupBox;
-    chkFisica: TCheckBox;
-    chkJuridica: TCheckBox;
-    chkGoverno: TCheckBox;
+    chkSimples: TCheckBox;
+    chkReal: TCheckBox;
+    chkPresumido: TCheckBox;
+    chkArbitrado: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -110,15 +111,18 @@ type
     procedure mniNovoClick(Sender: TObject);
     procedure mniAtualizarClick(Sender: TObject);
     procedure edtCodigoCadastradoClick(Sender: TObject);
-    procedure chkFisicaEnter(Sender: TObject);
-    procedure chkFisicaExit(Sender: TObject);
-    procedure chkFisicaKeyPress(Sender: TObject; var Key: Char);
-    procedure chkJuridicaEnter(Sender: TObject);
-    procedure chkJuridicaExit(Sender: TObject);
-    procedure chkJuridicaKeyPress(Sender: TObject; var Key: Char);
-    procedure chkGovernoEnter(Sender: TObject);
-    procedure chkGovernoExit(Sender: TObject);
-    procedure chkGovernoKeyPress(Sender: TObject; var Key: Char);
+    procedure chkSimplesEnter(Sender: TObject);
+    procedure chkSimplesExit(Sender: TObject);
+    procedure chkSimplesKeyPress(Sender: TObject; var Key: Char);
+    procedure chkRealEnter(Sender: TObject);
+    procedure chkRealExit(Sender: TObject);
+    procedure chkRealKeyPress(Sender: TObject; var Key: Char);
+    procedure chkPresumidoEnter(Sender: TObject);
+    procedure chkPresumidoExit(Sender: TObject);
+    procedure chkPresumidoKeyPress(Sender: TObject; var Key: Char);
+    procedure chkArbitradoEnter(Sender: TObject);
+    procedure chkArbitradoExit(Sender: TObject);
+    procedure chkArbitradoKeyPress(Sender: TObject; var Key: Char);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -134,12 +138,12 @@ type
     procedure FormularioCodigoSugerir;
     function  LogDadosGerar(argPessoaID: Integer = 0): string;
   public
-    pubDadosAtualizados: Boolean;
-    pubPessoaID        : Integer;
+    pubDadosAtualizados  : Boolean;
+    pubRegimeTributarioID: Integer;
   end;
 
 var
-  PlataformaERPVCLPessoaCadastro: TPlataformaERPVCLPessoaCadastro;
+  PlataformaERPVCLRegimeTributarioCadastro: TPlataformaERPVCLRegimeTributarioCadastro;
 
 implementation
 
@@ -153,7 +157,7 @@ uses
   Plataforma_ERP_VCL_Generico;
 
 const
-  FONTE_NOME: string = 'Plataforma_ERP_VCL_PessoaCadastro.pas';
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_RegimeTributarioCadastro.pas';
 
   TAB_CADASTRO : Byte = 0;
   TAB_AUDITORIA: Byte = 1;
@@ -161,13 +165,13 @@ const
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormCreate(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis públicas.
   //
-  pubDadosAtualizados  := False;
-  pubPessoaID := 0;
+  pubDadosAtualizados   := False;
+  pubRegimeTributarioID := 0;
  
   //
   // Limpa os componentes do formulário.
@@ -183,7 +187,7 @@ end;
 //
 // Evento de exibição do formulário.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormShow(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormShow(Sender: TObject);
 begin
   //
   // Background do formulário.
@@ -200,7 +204,7 @@ begin
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
   //
-  if pubPessoaID = 0 then
+  if pubRegimeTributarioID = 0 then
   begin
     FormularioNovo;
     Exit;
@@ -209,9 +213,9 @@ begin
   //
   // Se foi passada uma chave então popula formulário.
   //
-  if pubPessoaID > 0 then
+  if pubRegimeTributarioID > 0 then
   begin
-    FormularioPopular(pubPessoaID);
+    FormularioPopular(pubRegimeTributarioID);
     FormularioControlar(False);
     Exit;
   end;
@@ -220,7 +224,7 @@ end;
 //
 // Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
 end;
@@ -228,42 +232,42 @@ end;
 //
 // Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLPessoaCadastro.mniAtualizarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.mniAtualizarClick(Sender: TObject);
 begin
   FormularioAtualizar;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.mniNovoClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.mniNovoClick(Sender: TObject);
 begin
   FormularioNovo;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.mniExcluirClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.mniExcluirClick(Sender: TObject);
 begin
   FormularioExcluir;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.mniAlterarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.mniAlterarClick(Sender: TObject);
 begin
   FormularioAlterar;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.mniGravarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.mniGravarClick(Sender: TObject);
 begin
   FormularioGravar;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.mniCancelarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.mniCancelarClick(Sender: TObject);
 begin
   FormularioCancelar;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.mniMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.mniMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.mniFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.mniFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -271,22 +275,22 @@ end;
 //
 // Eventos do componente "código".
 //
-procedure TPlataformaERPVCLPessoaCadastro.edtCodigoEnter(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtCodigoEnter(Sender: TObject);
 begin
   if not VCLEditEntrar(edtCodigo) then Exit;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.edtCodigoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtCodigoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.edtCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   Exit;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.edtCodigoExit(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtCodigoExit(Sender: TObject);
 begin
   if not VCLEditSair(edtCodigo) then Exit;
 end;
@@ -294,14 +298,14 @@ end;
 //
 // Evento de click no código sugerido.
 //
-procedure TPlataformaERPVCLPessoaCadastro.edtCodigoCadastradoClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtCodigoCadastradoClick(Sender: TObject);
 var
-  locFormulario      : TPlataformaERPVCLPessoaCadastro;
+  locFormulario      : TPlataformaERPVCLRegimeTributarioCadastro;
   locDadosAtualizados: Boolean;
 begin
-  locFormulario := TPlataformaERPVCLPessoaCadastro.Create(Self);
+  locFormulario := TPlataformaERPVCLRegimeTributarioCadastro.Create(Self);
 
-  locFormulario.pubPessoaID := StringIntegerConverter(edtPessoaID.Text);
+  locFormulario.pubRegimeTributarioID := StringIntegerConverter(edtRegimeTributarioID.Text);
 
   locFormulario.ShowModal;
 
@@ -319,94 +323,112 @@ end;
 //
 // Eventos do componente "descrição".
 //
-procedure TPlataformaERPVCLPessoaCadastro.edtDescricaoEnter(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtDescricaoEnter(Sender: TObject);
 begin
   if not VCLEditEntrar(edtDescricao) then Exit;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.edtDescricaoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtDescricaoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.edtDescricaoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtDescricaoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   Exit;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.edtDescricaoExit(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtDescricaoExit(Sender: TObject);
 begin
   if not VCLEditSair(edtDescricao) then Exit;
 end;
 
 //
-// Eventos do componente "física".
+// Eventos do componente "simples".
 //
-procedure TPlataformaERPVCLPessoaCadastro.chkFisicaEnter(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkSimplesEnter(Sender: TObject);
 begin
-  if not VCLCheckBoxEntrar(chkFisica) then Exit;
+  if not VCLCheckBoxEntrar(chkSimples) then Exit;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.chkFisicaKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkSimplesKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.chkFisicaExit(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkSimplesExit(Sender: TObject);
 begin
-  if not VCLCheckBoxSair(chkFisica) then Exit;
+  if not VCLCheckBoxSair(chkSimples) then Exit;
 end;
 
 //
-// Eventos do componente "jurídica".
+// Eventos do componente "real".
 //
-procedure TPlataformaERPVCLPessoaCadastro.chkJuridicaEnter(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkRealEnter(Sender: TObject);
 begin
-  if not VCLCheckBoxEntrar(chkJuridica) then Exit;
+  if not VCLCheckBoxEntrar(chkReal) then Exit;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.chkJuridicaKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkRealKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.chkJuridicaExit(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkRealExit(Sender: TObject);
 begin
-  if not VCLCheckBoxSair(chkJuridica) then Exit;
+  if not VCLCheckBoxSair(chkReal) then Exit;
 end;
 
 //
-// Eventos do componente "governo".
+// Eventos do componente "presumido".
 //
-procedure TPlataformaERPVCLPessoaCadastro.chkGovernoEnter(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkPresumidoEnter(Sender: TObject);
 begin
-  if not VCLCheckBoxEntrar(chkGoverno) then Exit;
+  if not VCLCheckBoxEntrar(chkPresumido) then Exit;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.chkGovernoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkPresumidoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.chkGovernoExit(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkPresumidoExit(Sender: TObject);
 begin
-  if not VCLCheckBoxSair(chkGoverno) then Exit;
+  if not VCLCheckBoxSair(chkPresumido) then Exit;
+end;
+
+//
+// Eventos do componente "arbitrado".
+//
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkArbitradoEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkArbitrado) then Exit;
+end;
+
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkArbitradoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
+end;
+
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkArbitradoExit(Sender: TObject);
+begin
+  if not VCLCheckBoxSair(chkArbitrado) then Exit;
 end;
 
 //
 // Eventos do componente "bloqueado".
 //
-procedure TPlataformaERPVCLPessoaCadastro.chkBloqueadoEnter(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkBloqueadoEnter(Sender: TObject);
 begin
   if not VCLCheckBoxEntrar(chkBloqueado) then Exit;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.chkBloqueadoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkBloqueadoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.chkBloqueadoExit(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkBloqueadoExit(Sender: TObject);
 begin
   if not VCLCheckBoxSair(chkBloqueado) then Exit;
 end;
@@ -414,17 +436,17 @@ end;
 //
 // Eventos do componente "ativo".
 //
-procedure TPlataformaERPVCLPessoaCadastro.chkAtivoEnter(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkAtivoEnter(Sender: TObject);
 begin
   if not VCLCheckBoxEntrar(chkAtivo) then Exit;
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.chkAtivoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkAtivoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
 end;
 
-procedure TPlataformaERPVCLPessoaCadastro.chkAtivoExit(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.chkAtivoExit(Sender: TObject);
 begin
   if not VCLCheckBoxSair(chkAtivo) then Exit;
 end;
@@ -432,7 +454,7 @@ end;
 //
 // Evento de click na data de criação.
 //
-procedure TPlataformaERPVCLPessoaCadastro.edtInsLocalDtHrClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtInsLocalDtHrClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtInsLocalDtHr.Text));
 end;
@@ -440,7 +462,7 @@ end;
 //
 // Evento de click na data da última alteração.
 //
-procedure TPlataformaERPVCLPessoaCadastro.edtUpdLocalDtHrClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.edtUpdLocalDtHrClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtUpdLocalDtHr.Text));
 end;
@@ -448,7 +470,7 @@ end;
 //
 // Evento de click no botão "novo".
 //
-procedure TPlataformaERPVCLPessoaCadastro.btnNovoClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.btnNovoClick(Sender: TObject);
 begin
   FormularioNovo;
 end;
@@ -456,7 +478,7 @@ end;
 //
 // Evento de click no botão "alterar".
 //
-procedure TPlataformaERPVCLPessoaCadastro.btnAlterarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.btnAlterarClick(Sender: TObject);
 begin
   FormularioAlterar;
 end;
@@ -464,7 +486,7 @@ end;
 //
 // Evento de click no botão "gravar".
 //
-procedure TPlataformaERPVCLPessoaCadastro.btnGravarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.btnGravarClick(Sender: TObject);
 begin
   FormularioGravar;
 end;
@@ -472,7 +494,7 @@ end;
 //
 // Evento de click no botão "minimizar".
 //
-procedure TPlataformaERPVCLPessoaCadastro.btnMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.btnMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
@@ -480,7 +502,7 @@ end;
 //
 // Evento de click no botão "cancelar".
 //
-procedure TPlataformaERPVCLPessoaCadastro.btnCancelarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.btnCancelarClick(Sender: TObject);
 begin
   FormularioCancelar;
 end;
@@ -488,7 +510,7 @@ end;
 //
 // Evento de click no botão "fechar".
 //
-procedure TPlataformaERPVCLPessoaCadastro.btnFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.btnFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -496,7 +518,7 @@ end;
 //
 // Procedimento para limpar os componentes do formulário.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormularioLimpar;
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioLimpar;
 begin 
   //
   // Posiciona pagecontrole na primeira aba.
@@ -507,10 +529,11 @@ begin
   VCLEditLimpar    (edtCodigo);
   VCLEditLimpar    (edtDescricao);
 
-  VCLCheckBoxLimpar(chkFisica);
-  VCLCheckBoxLimpar(chkJuridica);
-  VCLCheckBoxLimpar(chkGoverno);
-  
+  VCLCheckBoxLimpar(chkSimples);
+  VCLCheckBoxLimpar(chkReal);
+  VCLCheckBoxLimpar(chkPresumido);
+  VCLCheckBoxLimpar(chkArbitrado);
+
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
 
@@ -520,7 +543,7 @@ begin
   //
   // Limpa componentes da aba "auditoria".
   //
-  VCLEditLimpar(edtPessoaID);
+  VCLEditLimpar(edtRegimeTributarioID);
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
   VCLEditLimpar(edtUpdContador);
@@ -529,7 +552,7 @@ end;
 //
 // Procedimento para controlar os componentes do formulário.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormularioControlar(argEditar: Boolean);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioControlar(argEditar: Boolean);
 var
   locDadosPopulados: Boolean;
   locIdentificador : string;
@@ -537,7 +560,7 @@ begin
   //
   // Determina se existem dados populados no formulário.
   //
-  locDadosPopulados := (StringIntegerConverter(edtPessoaID.Text) > 0);
+  locDadosPopulados := (StringIntegerConverter(edtRegimeTributarioID.Text) > 0);
 
   //
   // Controla os componentes do formulário.
@@ -575,13 +598,13 @@ begin
   //
   // Permissões de acesso por usuário.
   //
-  tabCadastro.TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_PESSOA_CADASTRO_ABA_CADASTRO');
-  tabAuditoria.TabVisible := Plataforma_ERP_UsuarioRotina('ERP_PESSOA_CADASTRO_ABA_AUDITORIA');
-      
-  mniAtualizar.Visible := (mniAtualizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_PESSOA_CADASTRO_ATUALIZAR'));
-  mniNovo.Visible      := (mniNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_PESSOA_CADASTRO_NOVO'));
-  mniExcluir.Visible   := (mniExcluir.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_PESSOA_CADASTRO_EXCLUIR'));
-  mniAlterar.Visible   := (mniAlterar.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_PESSOA_CADASTRO_ALTERAR'));
+  tabCadastro.TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_REGIME_TRIBUTARIO_CADASTRO_ABA_CADASTRO');
+  tabAuditoria.TabVisible := Plataforma_ERP_UsuarioRotina('ERP_REGIME_TRIBUTARIO_CADASTRO_ABA_AUDITORIA');
+
+  mniAtualizar.Visible := (mniAtualizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_REGIME_TRIBUTARIO_CADASTRO_ATUALIZAR'));
+  mniNovo.Visible      := (mniNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_REGIME_TRIBUTARIO_CADASTRO_NOVO'));
+  mniExcluir.Visible   := (mniExcluir.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_REGIME_TRIBUTARIO_CADASTRO_EXCLUIR'));
+  mniAlterar.Visible   := (mniAlterar.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_REGIME_TRIBUTARIO_CADASTRO_ALTERAR'));
 
   //
   // Botões.
@@ -596,7 +619,7 @@ begin
   //
   // Ajusta o título do formulário.
   //
-  Self.Caption     := 'Pessoa';
+  Self.Caption     := 'Regime tributário';
   locIdentificador := ': ' + edtDescricao.Text;
 
   if (not locDadosPopulados) and (argEditar) then Self.Caption := Self.Caption + ' - novo cadastro';
@@ -607,12 +630,12 @@ end;
 //
 // Procedimento para atualizar os dados populados nos componentes do formulário.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormularioAtualizar;
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioAtualizar;
 begin
   //
   // Popula componentes com as informações do cadastro.
   //
-  FormularioPopular(StringIntegerConverter(edtPessoaID.Text));
+  FormularioPopular(StringIntegerConverter(edtRegimeTributarioID.Text));
 
   //
   // Controla a exibição dos componentes.
@@ -623,7 +646,7 @@ end;
 //
 // Procedimento para iniciar a digitação de dados de um novo cadastro.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormularioNovo;
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioNovo;
 begin
   //
   // Limpa os componentes do formulário.
@@ -633,7 +656,7 @@ begin
   //
   // Carrega conteúdo dos campos necessários.
   //
-  edtPessoaID.Text := STR_NOVO;
+  edtRegimeTributarioID.Text := STR_NOVO;
   chkAtivo.Checked := True;
 
   //
@@ -655,10 +678,10 @@ end;
 //
 // Procedimento para popular os componentes com os dados de um cadastro.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormularioPopular(argPessoaID: Integer);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioPopular(argPessoaID: Integer);
 const
   PROCEDIMENTO_NOME: string = 'FormularioPopular';
-  ERRO_MENSAGEM    : string = 'Impossível consultar dados da pessoa!';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados do regime tributário!';
 var
   locADOConnection: TADOConnection;
   locADOQuery     : TADOQuery;
@@ -704,24 +727,25 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                              ');
-  locADOQuery.SQL.Add('  [pessoa].[pessoa_id],             ');
-  locADOQuery.SQL.Add('  [pessoa].[codigo],                ');
-  locADOQuery.SQL.Add('  [pessoa].[descricao],             ');
-  locADOQuery.SQL.Add('  [pessoa].[fisica],                ');
-  locADOQuery.SQL.Add('  [pessoa].[juridica],              ');
-  locADOQuery.SQL.Add('  [pessoa].[governo],               ');
-  locADOQuery.SQL.Add('  [pessoa].[bloqueado],             ');
-  locADOQuery.SQL.Add('  [pessoa].[ativo],                 ');
-  locADOQuery.SQL.Add('  [pessoa].[ins_local_dt_hr],       ');
-  locADOQuery.SQL.Add('  [pessoa].[upd_local_dt_hr],       ');
-  locADOQuery.SQL.Add('  [pessoa].[upd_contador]           ');  
-  locADOQuery.SQL.Add('FROM                                ');
-  locADOQuery.SQL.Add('  [pessoa] WITH (NOLOCK)            ');
-  locADOQuery.SQL.Add('WHERE                               ');
-  locADOQuery.SQL.Add('  [pessoa].[pessoa_id] = :pessoa_id ');
+  locADOQuery.SQL.Add('SELECT                                                               ');
+  locADOQuery.SQL.Add('  [regime_tributario].[regime_tributario_id],                        ');
+  locADOQuery.SQL.Add('  [regime_tributario].[codigo],                                      ');
+  locADOQuery.SQL.Add('  [regime_tributario].[descricao],                                   ');
+  locADOQuery.SQL.Add('  [regime_tributario].[simples],                                     ');
+  locADOQuery.SQL.Add('  [regime_tributario].[real],                                        ');
+  locADOQuery.SQL.Add('  [regime_tributario].[presumido],                                   ');
+  locADOQuery.SQL.Add('  [regime_tributario].[arbitrado],                                   ');
+  locADOQuery.SQL.Add('  [regime_tributario].[bloqueado],                                   ');
+  locADOQuery.SQL.Add('  [regime_tributario].[ativo],                                       ');
+  locADOQuery.SQL.Add('  [regime_tributario].[ins_local_dt_hr],                             ');
+  locADOQuery.SQL.Add('  [regime_tributario].[upd_local_dt_hr],                             ');
+  locADOQuery.SQL.Add('  [regime_tributario].[upd_contador]                                 ');
+  locADOQuery.SQL.Add('FROM                                                                 ');
+  locADOQuery.SQL.Add('  [regime_tributario] WITH (NOLOCK)                                  ');
+  locADOQuery.SQL.Add('WHERE                                                                ');
+  locADOQuery.SQL.Add('  [regime_tributario].[regime_tributario_id] = :regime_tributario_id ');
 
-  locADOQuery.Parameters.ParamByName('pessoa_id').Value := argPessoaID;
+  locADOQuery.Parameters.ParamByName('regime_tributario_id').Value := argRegimeTributarioID;
 
   //
   // Executa query.
@@ -735,7 +759,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [pessoa]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [regime_tributario]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -753,17 +777,18 @@ begin
     edtCodigo.Text       := locADOQuery.FieldByName('codigo').AsString;
     edtDescricao.Text    := locADOQuery.FieldByName('descricao').AsString;
 
-    chkFisica.Checked    := StringBooleanConverter(locADOQuery.FieldByName('fisica').AsString);
-    chkJuridica.Checked  := StringBooleanConverter(locADOQuery.FieldByName('juridica').AsString);
-    chkGoverno.Checked   := StringBooleanConverter(locADOQuery.FieldByName('governo').AsString);
+    chkSimples.Checked   := StringBooleanConverter(locADOQuery.FieldByName('simples').AsString);
+    chkReal.Checked      := StringBooleanConverter(locADOQuery.FieldByName('real').AsString);
+    chkPresumido.Checked := StringBooleanConverter(locADOQuery.FieldByName('presumido').AsString);
+    chkArbitrado.Checked := StringBooleanConverter(locADOQuery.FieldByName('arbitrado').AsString);
 
     chkBloqueado.Checked := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked     := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
 
-    edtPessoaID.Text     := IntegerStringConverter(locADOQuery.FieldByName('pessoa_id').AsInteger, True);
-    edtInsLocalDtHr.Text := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
-    edtUpdLocalDtHr.Text := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
-    edtUpdContador.Text  := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
+    edtRegimeTributarioID.Text := IntegerStringConverter(locADOQuery.FieldByName('regime_tributario_id').AsInteger, True);
+    edtInsLocalDtHr.Text       := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
+    edtUpdLocalDtHr.Text       := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
+    edtUpdContador.Text        := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
   end; 
 
   //
@@ -779,7 +804,7 @@ end;
 //
 // Procedimento para alterar os dados do formulário.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormularioAlterar;
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioAlterar;
 begin
   //
   // Componentes ligados para edição.
@@ -795,41 +820,42 @@ end;
 //
 // Procedimento para gravar os dados do formulário.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormularioGravar;
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioGravar;
 const
   PROCEDIMENTO_NOME: string = 'FormularioGravar';
-  ERRO_MENSAGEM    : string = 'Impossível gravar dados da pessoa!';
+  ERRO_MENSAGEM    : string = 'Impossível gravar dados do regime tributário!';
 var
-  locADOConnection : TADOConnection;
-  locADOQuery      : TADOQuery;
-  locLogMensagem   : string;
+  locADOConnection           : TADOConnection;
+  locADOQuery                : TADOQuery;
+  locLogMensagem             : string;
 
-  locInsert        : Boolean;
-  locRegistroAcao  : Byte;
-  locPessoaLogSq   : Integer;
-  locPessoaLogMsg  : string;
-  locPessoaLogDados: string;
+  locInsert                  : Boolean;
+  locRegistroAcao            : Byte;
+  locRegimeTributarioLogSq   : Integer;
+  locRegimeTributarioLogMsg  : string;
+  locRegimeTributarioLogDados: string;
 
-  locPessoaID      : Integer;
-  locCodigo        : string;
-  locDescricao     : string;
-  locFisica        : Boolean;
-  locJuridica      : Boolean;
-  locGoverno       : Boolean;
-  locBloqueado     : Boolean;
-  locAtivo         : Boolean;
-  locInsLocalDtHr  : TDateTime;
-  locUpdLocalDtHr  : TDateTime;
-  locUsuarioBaseID : Integer;
-  locUsuarioID     : Integer;
-  locUpdContador   : Integer;
-  locHostName      : string;
-  locUserName      : string;
+  locRegimeTributarioID      : Integer;
+  locCodigo                  : string;
+  locDescricao               : string;
+  locSimples                 : Boolean;
+  locReal                    : Boolean;
+  locPresumido               : Boolean;
+  locArbitrado               : Boolean;
+  locBloqueado               : Boolean;
+  locAtivo                   : Boolean;
+  locInsLocalDtHr            : TDateTime;
+  locUpdLocalDtHr            : TDateTime;
+  locUsuarioBaseID           : Integer;
+  locUsuarioID               : Integer;
+  locUpdContador             : Integer;
+  locHostName                : string;
+  locUserName                : string;
 begin
   //
   // Determina se será um insert ou update.
   //
-  if edtPessoaID.Text = STR_NOVO then
+  if edtRegimeTributarioID.Text = STR_NOVO then
     locInsert := True
   else
     locInsert := False;
@@ -837,33 +863,34 @@ begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locPessoaID      := StringIntegerConverter(edtPessoaID.Text);
-  locCodigo        := StringTrim(edtCodigo.Text);
-  locDescricao     := StringTrim(edtDescricao.Text);
-  locFisica        := chkFisica.Checked;
-  locJuridica      := chkJuridica.Checked;
-  locGoverno       := chkGoverno.Checked;  
-  locBloqueado     := chkBloqueado.Checked;
-  locAtivo         := chkAtivo.Checked;
-  locUsuarioBaseID := gloUsuarioBaseID;
-  locUsuarioID     := gloUsuarioID;
-  locHostName      := HostNameRecuperar;
-  locUserName      := UserNameRecuperar;
-  locUpdContador   := StringIntegerConverter(edtUpdContador.Text);
+  locRegimeTributarioID := StringIntegerConverter(edtRegimeTributarioID.Text);
+  locCodigo             := StringTrim(edtCodigo.Text);
+  locDescricao          := StringTrim(edtDescricao.Text);
+  locSimples            := chkSimples.Checked;
+  locReal               := chkReal.Checked;
+  locPresumido          := chkPresumido.Checked;
+  locArbitrado          := chkArbitrado.Checked;
+  locBloqueado          := chkBloqueado.Checked;
+  locAtivo              := chkAtivo.Checked;
+  locUsuarioBaseID      := gloUsuarioBaseID;
+  locUsuarioID          := gloUsuarioID;
+  locHostName           := HostNameRecuperar;
+  locUserName           := UserNameRecuperar;
+  locUpdContador        := StringIntegerConverter(edtUpdContador.Text);
 
   //
   // Consiste as informações.
   //
   if locCodigo = '' then
   begin
-    VCLConsistenciaExibir('O código da pessoa deve ser informado!');
+    VCLConsistenciaExibir('O código do regime tributário deve ser informado!');
     VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCodigo);
     Exit;
   end;
 
   if locDescricao = '' then
   begin
-    VCLConsistenciaExibir('A descrição da pessoa deve ser informada!');
+    VCLConsistenciaExibir('A descrição do regime tributário deve ser informada!');
     VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtDescricao);
     Exit;
   end;
@@ -908,16 +935,16 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                          ');
-  locADOQuery.SQL.Add('  1                                   ');
-  locADOQuery.SQL.Add('FROM                                  ');
-  locADOQuery.SQL.Add('  [pessoa] WITH (NOLOCK)              ');
-  locADOQuery.SQL.Add('WHERE                                 ');
-  locADOQuery.SQL.Add('  [pessoa].[codigo]     = :codigo AND ');
-  locADOQuery.SQL.Add('  [pessoa].[pessoa_id] <> :pessoa_id  ');
+  locADOQuery.SQL.Add('SELECT TOP 1                                                          ');
+  locADOQuery.SQL.Add('  1                                                                   ');
+  locADOQuery.SQL.Add('FROM                                                                  ');
+  locADOQuery.SQL.Add('  [regime_tributario] WITH (NOLOCK)                                   ');
+  locADOQuery.SQL.Add('WHERE                                                                 ');
+  locADOQuery.SQL.Add('  [regime_tributario].[codigo]     = :codigo AND                      ');
+  locADOQuery.SQL.Add('  [regime_tributario].[regime_tributario_id] <> :regime_tributario_id ');
 
-  locADOQuery.Parameters.ParamByName('codigo').Value    := locCodigo;
-  locADOQuery.Parameters.ParamByName('pessoa_id').Value := locPessoaID;
+  locADOQuery.Parameters.ParamByName('codigo').Value               := locCodigo;
+  locADOQuery.Parameters.ParamByName('regime_tributario_id').Value := locRegimeTributarioID;
 
   try
     locADOQuery.Open;
@@ -928,7 +955,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar o mesmo código de pessoa em um outro registro!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar o mesmo código de regime tributário em um outro registro!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -941,7 +968,7 @@ begin
     FreeAndNil(locADOQuery);
     locADOConnection.Close;
     FreeAndNil(locADOConnection);
-    locLogMensagem := 'O código "' + locCodigo + '" informado para a pessoa já existe em algum outro cadastro!';
+    locLogMensagem := 'O código "' + locCodigo + '" informado para o regime tributário já existe em algum outro cadastro!';
     Plataforma_ERP_Logar(False, ERRO_MENSAGEM, locLogMensagem, FONTE_NOME, PROCEDIMENTO_NOME);
     VCLConsistenciaExibir(ERRO_MENSAGEM, locLogMensagem);
     Exit;
@@ -954,14 +981,14 @@ begin
   begin
     locADOQuery.Close;
     locADOQuery.SQL.Clear;
-    locADOQuery.SQL.Add('SELECT                              ');
-    locADOQuery.SQL.Add('  [pessoa].[upd_contador]           ');
-    locADOQuery.SQL.Add('FROM                                ');
-    locADOQuery.SQL.Add('  [pessoa] WITH (NOLOCK)            ');
-    locADOQuery.SQL.Add('WHERE                               ');
-    locADOQuery.SQL.Add('  [pessoa].[pessoa_id] = :pessoa_id ');
+    locADOQuery.SQL.Add('SELECT                                                               ');
+    locADOQuery.SQL.Add('  [regime_tributario].[upd_contador]                                 ');
+    locADOQuery.SQL.Add('FROM                                                                 ');
+    locADOQuery.SQL.Add('  [regime_tributario] WITH (NOLOCK)                                  ');
+    locADOQuery.SQL.Add('WHERE                                                                ');
+    locADOQuery.SQL.Add('  [regime_tributario].[regime_tributario_id] = :regime_tributario_id ');
 
-    locADOQuery.Parameters.ParamByName('pessoa_id').Value := locPessoaID;
+    locADOQuery.Parameters.ParamByName('regime_tributario_id').Value := locRegimeTributarioID;
 
     try
       locADOQuery.Open;
@@ -972,7 +999,7 @@ begin
         FreeAndNil(locADOQuery);
         locADOConnection.Close;
         FreeAndNil(locADOConnection);
-        locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar se o contador de atualizações confere na tabela [pessoa]!';
+        locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar se o contador de atualizações confere na tabela [regime_tributario]!';
         Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
         VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
         Exit
@@ -1000,13 +1027,13 @@ begin
   //
   if locInsert then
   begin
-    locRegistroAcao := REGISTRO_ACAO_CRIACAO;
-    locPessoaLogMsg := MENSAGEM_REGISTRO_ACAO_CRIADO;
+    locRegistroAcao           := REGISTRO_ACAO_CRIACAO;
+    locRegimeTributarioLogMsg := MENSAGEM_REGISTRO_ACAO_CRIADO;
   end
   else
   begin
-    locRegistroAcao := REGISTRO_ACAO_ALTERACAO;
-    locPessoaLogMsg := MENSAGEM_REGISTRO_ACAO_ALTERADO;
+    locRegistroAcao           := REGISTRO_ACAO_ALTERACAO;
+    locRegimeTributarioLogMsg := MENSAGEM_REGISTRO_ACAO_ALTERADO;
   end;
 
   //
@@ -1029,12 +1056,12 @@ begin
   end;  
 
   // 
-  // Determina o próximo ID da pessoa.
+  // Determina o próximo ID do regime tributário.
   //
   if locInsert then
   begin
     try
-      locPessoaID := Plataforma_ERP_ADO_NumeradorBaseDeterminar(locADOConnection, NUMERADOR_PESSOA_ID);
+      locRegimeTributarioID := Plataforma_ERP_ADO_NumeradorBaseDeterminar(locADOConnection, NUMERADOR_REGIME_TRIBUTARIO_ID);
     except
       on locExcecao: Exception do
       begin
@@ -1043,7 +1070,7 @@ begin
         FreeAndNil(locADOQuery);
         locADOConnection.Close;
         FreeAndNil(locADOConnection);
-        locLogMensagem := 'Impossível determinar o próximo numerador para a pessoa!';
+        locLogMensagem := 'Impossível determinar o próximo numerador para o regime tributário!';
         Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
         VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
         Exit
@@ -1062,36 +1089,38 @@ begin
     //
     // Insere dados.
     //
-    locADOQuery.SQL.Add('INSERT INTO [pessoa] (');
-    locADOQuery.SQL.Add('  [pessoa_id],        ');
-    locADOQuery.SQL.Add('  [codigo],           ');
-    locADOQuery.SQL.Add('  [descricao],        ');
-    locADOQuery.SQL.Add('  [fisica],           ');
-    locADOQuery.SQL.Add('  [juridica],         ');
-    locADOQuery.SQL.Add('  [governo],          ');    
-    locADOQuery.SQL.Add('  [bloqueado],        ');
-    locADOQuery.SQL.Add('  [ativo],            ');
-    locADOQuery.SQL.Add('  [ins_local_dt_hr],  ');
-    locADOQuery.SQL.Add('  [ins_server_dt_hr], ');
-    locADOQuery.SQL.Add('  [upd_local_dt_hr],  ');
-    locADOQuery.SQL.Add('  [upd_server_dt_hr], ');
-    locADOQuery.SQL.Add('  [upd_contador]      ');
-    locADOQuery.SQL.Add(')                     ');
-    locADOQuery.SQL.Add('VALUES (              ');
-    locADOQuery.SQL.Add('  :pessoa_id,         '); // [pessoa_id].
-    locADOQuery.SQL.Add('  :codigo,            '); // [codigo].
-    locADOQuery.SQL.Add('  :descricao,         '); // [descricao].
-    locADOQuery.SQL.Add('  :fisica,            '); // [fisica].
-    locADOQuery.SQL.Add('  :juridica,          '); // [juridica].
-    locADOQuery.SQL.Add('  :governo,           '); // [governo].
-    locADOQuery.SQL.Add('  :bloqueado,         '); // [bloqueado].
-    locADOQuery.SQL.Add('  :ativo,             '); // [ativo].
-    locADOQuery.SQL.Add('  :local_dt_hr,       '); // [ins_local_dt_hr].
-    locADOQuery.SQL.Add('  GETDATE(),          '); // [ins_server_dt_hr].
-    locADOQuery.SQL.Add('  NULL,               '); // [upd_local_dt_hr].
-    locADOQuery.SQL.Add('  NULL,               '); // [upd_server_dt_hr].
-    locADOQuery.SQL.Add('  0                   '); // [upd_contador].
-    locADOQuery.SQL.Add(')                     ');
+    locADOQuery.SQL.Add('INSERT INTO [regime_tributario] (');
+    locADOQuery.SQL.Add('  [regime_tributario_id],        ');
+    locADOQuery.SQL.Add('  [codigo],                      ');
+    locADOQuery.SQL.Add('  [descricao],                   ');
+    locADOQuery.SQL.Add('  [simples],                     ');
+    locADOQuery.SQL.Add('  [real],                        ');
+    locADOQuery.SQL.Add('  [presumido],                   ');
+    locADOQuery.SQL.Add('  [arbitrado],                   ');
+    locADOQuery.SQL.Add('  [bloqueado],                   ');
+    locADOQuery.SQL.Add('  [ativo],                       ');
+    locADOQuery.SQL.Add('  [ins_local_dt_hr],             ');
+    locADOQuery.SQL.Add('  [ins_server_dt_hr],            ');
+    locADOQuery.SQL.Add('  [upd_local_dt_hr],             ');
+    locADOQuery.SQL.Add('  [upd_server_dt_hr],            ');
+    locADOQuery.SQL.Add('  [upd_contador]                 ');
+    locADOQuery.SQL.Add(')                                ');
+    locADOQuery.SQL.Add('VALUES (                         ');
+    locADOQuery.SQL.Add('  :regime_tributario_id,         '); // [regime_tributario_id].
+    locADOQuery.SQL.Add('  :codigo,                       '); // [codigo].
+    locADOQuery.SQL.Add('  :descricao,                    '); // [descricao].
+    locADOQuery.SQL.Add('  :simples,                      '); // [simples].
+    locADOQuery.SQL.Add('  :real,                         '); // [real].
+    locADOQuery.SQL.Add('  :presumido,                    '); // [presumido].
+    locADOQuery.SQL.Add('  :arbitrado,                    '); // [arbitrado].
+    locADOQuery.SQL.Add('  :bloqueado,                    '); // [bloqueado].
+    locADOQuery.SQL.Add('  :ativo,                        '); // [ativo].
+    locADOQuery.SQL.Add('  :local_dt_hr,                  '); // [ins_local_dt_hr].
+    locADOQuery.SQL.Add('  GETDATE(),                     '); // [ins_server_dt_hr].
+    locADOQuery.SQL.Add('  NULL,                          '); // [upd_local_dt_hr].
+    locADOQuery.SQL.Add('  NULL,                          '); // [upd_server_dt_hr].
+    locADOQuery.SQL.Add('  0                              '); // [upd_contador].
+    locADOQuery.SQL.Add(')                                ');
   end
   else
   begin
@@ -1099,20 +1128,20 @@ begin
     // Atualiza dados.
     //
     locADOQuery.SQL.Add('UPDATE                                    ');
-    locADOQuery.SQL.Add('  [pessoa]                                ');
+    locADOQuery.SQL.Add('  [regime_tributario]                     ');
     locADOQuery.SQL.Add('SET                                       ');
     locADOQuery.SQL.Add('  [codigo]           = :codigo,           ');
     locADOQuery.SQL.Add('  [descricao]        = :descricao,        ');
-    locADOQuery.SQL.Add('  [fisica]           = :fisica,           ');
-    locADOQuery.SQL.Add('  [juridica]         = :juridica,         ');
-    locADOQuery.SQL.Add('  [governo]          = :governo,          ');
+    locADOQuery.SQL.Add('  []           = :,           ');
+    locADOQuery.SQL.Add('  []           = :,         ');
+    locADOQuery.SQL.Add('  []           = :,          ');
     locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,        ');
     locADOQuery.SQL.Add('  [ativo]            = :ativo,            ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,      ');
     locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),         ');
     locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1 ');
     locADOQuery.SQL.Add('WHERE                                     ');
-    locADOQuery.SQL.Add('  [pessoa_id] = :pessoa_id                ');
+    locADOQuery.SQL.Add('  [regime_tributario_id] = :regime_tributario_id                ');
   end;
 
   //
@@ -1254,7 +1283,7 @@ end;
 //
 // Procedimento para excluir os dados deste cadastro.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormularioExcluir;
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioExcluir;
 const
   PROCEDIMENTO_NOME: string = 'FormularioExcluir';
   ERRO_MENSAGEM    : string = 'Impossível excluir dados da pessoa!';
@@ -1458,7 +1487,7 @@ end;
 //
 // Procedimento para cancelar a edição dos dados do formulário.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormularioCancelar;
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioCancelar;
 var
   locPessoaID: Integer;
 begin
@@ -1493,7 +1522,7 @@ end;
 //
 // Procedimento par sugerir o próximo código.
 //
-procedure TPlataformaERPVCLPessoaCadastro.FormularioCodigoSugerir;
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioCodigoSugerir;
 const
   PROCEDIMENTO_NOME: string = 'FormularioCodigoSugerir';
   ERRO_MENSAGEM    : string = 'Impossível sugerir informações sobre o próximo código da pessoa!';
@@ -1596,7 +1625,7 @@ end;
 //
 // Função para gerar a string de log dos dados.
 //
-function TPlataformaERPVCLPessoaCadastro.LogDadosGerar(argPessoaID: Integer = 0): string;
+function TPlataformaERPVCLRegimeTributarioCadastro.LogDadosGerar(argPessoaID: Integer = 0): string;
 var
   locPessoaID: Integer;
 begin

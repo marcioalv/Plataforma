@@ -64,7 +64,9 @@ uses
   Plataforma_ERP_VCL_ConexaoTeste in '..\Formularios\Plataforma_ERP_VCL_ConexaoTeste.pas' {PlataformaERPVCLConexaoTeste},
   Plataforma_ERP_VCL_AcessoConexaoSelecao in '..\Formularios\Plataforma_ERP_VCL_AcessoConexaoSelecao.pas' {PlataformaERPVCLAcessoConexaoSelecao},
   Plataforma_ERP_VCL_PessoaLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_PessoaLista.pas' {PlataformaERPVCLPessoaLista},
-  Plataforma_ERP_VCL_PessoaCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PessoaCadastro.pas' {PlataformaERPVCLPessoaCadastro};
+  Plataforma_ERP_VCL_PessoaCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PessoaCadastro.pas' {PlataformaERPVCLPessoaCadastro},
+  Plataforma_ERP_VCL_RegimeTributarioLista in '..\Formularios\Fiscal\Plataforma_ERP_VCL_RegimeTributarioLista.pas' {PlataformaERPVCLRegimeTributarioLista},
+  Plataforma_ERP_VCL_RegimeTributarioCadastro in '..\Formularios\Fiscal\Plataforma_ERP_VCL_RegimeTributarioCadastro.pas' {PlataformaERPVCLRegimeTributarioCadastro};
 
 {$R *.res}
 
@@ -72,10 +74,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
-  Application.CreateForm(TPlataformaERPVCLAcessoConexaoConfiguracao, PlataformaERPVCLAcessoConexaoConfiguracao);
-  Application.CreateForm(TPlataformaERPVCLConexaoTeste, PlataformaERPVCLConexaoTeste);
-  Application.CreateForm(TPlataformaERPVCLAcessoConexaoSelecao, PlataformaERPVCLAcessoConexaoSelecao);
-  Application.CreateForm(TPlataformaERPVCLPessoaLista, PlataformaERPVCLPessoaLista);
-  Application.CreateForm(TPlataformaERPVCLPessoaCadastro, PlataformaERPVCLPessoaCadastro);
   Application.Run;
 end.
