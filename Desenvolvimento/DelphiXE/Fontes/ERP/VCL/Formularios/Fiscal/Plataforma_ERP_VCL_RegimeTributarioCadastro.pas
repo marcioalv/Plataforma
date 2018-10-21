@@ -129,14 +129,14 @@ type
     procedure FormularioAtualizar;
     procedure FormularioNovo;
 
-    procedure FormularioPopular(argPessoaID: Integer);
+    procedure FormularioPopular(argRegimeTributarioID: Integer);
 
     procedure FormularioAlterar;
     procedure FormularioGravar;
     procedure FormularioCancelar;
     procedure FormularioExcluir;
     procedure FormularioCodigoSugerir;
-    function  LogDadosGerar(argPessoaID: Integer = 0): string;
+    function  LogDadosGerar(argRegimeTributarioID: Integer = 0): string;
   public
     pubDadosAtualizados  : Boolean;
     pubRegimeTributarioID: Integer;
@@ -678,7 +678,7 @@ end;
 //
 // Procedimento para popular os componentes com os dados de um cadastro.
 //
-procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioPopular(argPessoaID: Integer);
+procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioPopular(argRegimeTributarioID: Integer);
 const
   PROCEDIMENTO_NOME: string = 'FormularioPopular';
   ERRO_MENSAGEM    : string = 'Impossível consultar dados do regime tributário!';
@@ -723,7 +723,7 @@ begin
   locADOQuery.CommandTimeout := gloTimeOutNormal;
 
   //
-  // Consulta dados da pessoa.
+  // Consulta dados do regime tributário.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
@@ -931,7 +931,7 @@ begin
   locADOQuery.CommandTimeout := gloTimeOutNormal;
 
   //
-  // Determina se o código da pessoa já existe no banco de dados para um outro registro.
+  // Determina se o código do regime tributário já existe no banco de dados para um outro registro.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
@@ -1079,7 +1079,7 @@ begin
   end;
 
   //
-  // Grava dados na tabela pessoa.
+  // Grava dados na tabela regime tributário.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
@@ -1127,35 +1127,37 @@ begin
     //
     // Atualiza dados.
     //
-    locADOQuery.SQL.Add('UPDATE                                    ');
-    locADOQuery.SQL.Add('  [regime_tributario]                     ');
-    locADOQuery.SQL.Add('SET                                       ');
-    locADOQuery.SQL.Add('  [codigo]           = :codigo,           ');
-    locADOQuery.SQL.Add('  [descricao]        = :descricao,        ');
-    locADOQuery.SQL.Add('  []           = :,           ');
-    locADOQuery.SQL.Add('  []           = :,         ');
-    locADOQuery.SQL.Add('  []           = :,          ');
-    locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,        ');
-    locADOQuery.SQL.Add('  [ativo]            = :ativo,            ');
-    locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,      ');
-    locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),         ');
-    locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1 ');
-    locADOQuery.SQL.Add('WHERE                                     ');
-    locADOQuery.SQL.Add('  [regime_tributario_id] = :regime_tributario_id                ');
+    locADOQuery.SQL.Add('UPDATE                                           ');
+    locADOQuery.SQL.Add('  [regime_tributario]                            ');
+    locADOQuery.SQL.Add('SET                                              ');
+    locADOQuery.SQL.Add('  [codigo]           = :codigo,                  ');
+    locADOQuery.SQL.Add('  [descricao]        = :descricao,               ');
+    locADOQuery.SQL.Add('  [simples]          = :simples,                 ');
+    locADOQuery.SQL.Add('  [real]             = :real,                    ');
+    locADOQuery.SQL.Add('  [presumido]        = :presumido,               ');
+    locADOQuery.SQL.Add('  [arbitrado]        = :arbitrado,               ');
+    locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,               ');
+    locADOQuery.SQL.Add('  [ativo]            = :ativo,                   ');
+    locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,             ');
+    locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),                ');
+    locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1        ');
+    locADOQuery.SQL.Add('WHERE                                            ');
+    locADOQuery.SQL.Add('  [regime_tributario_id] = :regime_tributario_id ');
   end;
 
   //
   // Parâmetros.
   //
-  locADOQuery.Parameters.ParamByName('pessoa_id').Value   := locPessoaID;
-  locADOQuery.Parameters.ParamByName('codigo').Value      := locCodigo;
-  locADOQuery.Parameters.ParamByName('descricao').Value   := locDescricao;
-  locADOQuery.Parameters.ParamByName('fisica').Value      := BooleanStringConverter(locFisica);
-  locADOQuery.Parameters.ParamByName('juridica').Value    := BooleanStringConverter(locJuridica);
-  locADOQuery.Parameters.ParamByName('governo').Value     := BooleanStringConverter(locGoverno);
-  locADOQuery.Parameters.ParamByName('bloqueado').Value   := BooleanStringConverter(locBloqueado);
-  locADOQuery.Parameters.ParamByName('ativo').Value       := BooleanStringConverter(locAtivo);
-  locADOQuery.Parameters.ParamByName('local_dt_hr').Value := Now;
+  locADOQuery.Parameters.ParamByName('regime_tributario_id').Value := locRegimeTributarioID;
+  locADOQuery.Parameters.ParamByName('codigo').Value               := locCodigo;
+  locADOQuery.Parameters.ParamByName('descricao').Value            := locDescricao;
+  locADOQuery.Parameters.ParamByName('simples').Value              := BooleanStringConverter(locSimples);
+  locADOQuery.Parameters.ParamByName('real').Value                 := BooleanStringConverter(locReal);
+  locADOQuery.Parameters.ParamByName('presumido').Value            := BooleanStringConverter(locPresumido);
+  locADOQuery.Parameters.ParamByName('arbitrado').Value            := BooleanStringConverter(locArbitrado);
+  locADOQuery.Parameters.ParamByName('bloqueado').Value            := BooleanStringConverter(locBloqueado);
+  locADOQuery.Parameters.ParamByName('ativo').Value                := BooleanStringConverter(locAtivo);
+  locADOQuery.Parameters.ParamByName('local_dt_hr').Value          := Now;
 
   try
     locADOQuery.ExecSQL;
@@ -1167,7 +1169,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [pessoa]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [regime_tributario]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit
@@ -1179,16 +1181,16 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                              ');
-  locADOQuery.SQL.Add('  [pessoa].[ins_local_dt_hr],       ');
-  locADOQuery.SQL.Add('  [pessoa].[upd_local_dt_hr],       ');
-  locADOQuery.SQL.Add('  [pessoa].[upd_contador]           ');
-  locADOQuery.SQL.Add('FROM                                ');
-  locADOQuery.SQL.Add('  [pessoa]                          ');
-  locADOQuery.SQL.Add('WHERE                               ');
-  locADOQuery.SQL.Add('  [pessoa].[pessoa_id] = :pessoa_id ');
+  locADOQuery.SQL.Add('SELECT                                                               ');
+  locADOQuery.SQL.Add('  [regime_tributario].[ins_local_dt_hr],                             ');
+  locADOQuery.SQL.Add('  [regime_tributario].[upd_local_dt_hr],                             ');
+  locADOQuery.SQL.Add('  [regime_tributario].[upd_contador]                                 ');
+  locADOQuery.SQL.Add('FROM                                                                 ');
+  locADOQuery.SQL.Add('  [regime_tributario]                                                ');
+  locADOQuery.SQL.Add('WHERE                                                                ');
+  locADOQuery.SQL.Add('  [regime_tributario].[regime_tributario_id] = :regime_tributario_id ');
 
-  locADOQuery.Parameters.ParamByName('pessoa_id').Value := locPessoaID;
+  locADOQuery.Parameters.ParamByName('regime_tributario_id').Value := locRegimeTributarioID;
 
   try
     locADOQuery.Open;
@@ -1200,11 +1202,11 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para determinar o novo contador de updates do registro na tabela [pessoa]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para determinar o novo contador de updates do registro na tabela [regime_tributario]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit
-    end;   
+    end;
   end;
 
   locInsLocalDtHr := locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime;
@@ -1214,7 +1216,7 @@ begin
   //
   // Log dados.
   //
-  locPessoaLogDados := LogDadosGerar(locPessoaID);
+  locRegimeTributarioLogDados := LogDadosGerar(locRegimeTributarioID);
 
   //
   // Finaliza transação com o banco de dados.
@@ -1239,10 +1241,10 @@ begin
   //
   // Atualiza componentes que sofreram alteração com a gravação.
   //
-  edtPessoaID.Text     := IntegerStringConverter(locPessoaID);
-  edtInsLocalDtHr.Text := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn:ss');
-  edtUpdLocalDtHr.Text := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn:ss');
-  edtUpdContador.Text  := IntegerStringConverter(locUpdContador);
+  edtRegimeTributarioID.Text := IntegerStringConverter(locRegimeTributarioID);
+  edtInsLocalDtHr.Text       := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn:ss');
+  edtUpdLocalDtHr.Text       := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn:ss');
+  edtUpdContador.Text        := IntegerStringConverter(locUpdContador);
 
   //
   // Componentes desligados para edição.
@@ -1266,7 +1268,7 @@ begin
   // Grava log de ocorrência.
   //  
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locPessoaID, locCodigo, 'pessoa', locPessoaLogMsg, locPessoaLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locRegimeTributarioID, locCodigo, 'regime_tributario', locRegimeTributarioLogMsg, locRegimeTributarioLogDados);
   except
     on locExcecao: Exception do
     begin
@@ -1275,9 +1277,9 @@ begin
   end;
 
   //
-  // Pessoa gravada!
+  // Regime tributário gravado!
   //
-  VCLInformacaoExibir('Pessoa gravada com sucesso!');
+  VCLInformacaoExibir('Regime tributário gravado com sucesso!');
 end;
 
 //
@@ -1286,23 +1288,23 @@ end;
 procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioExcluir;
 const
   PROCEDIMENTO_NOME: string = 'FormularioExcluir';
-  ERRO_MENSAGEM    : string = 'Impossível excluir dados da pessoa!';
+  ERRO_MENSAGEM    : string = 'Impossível excluir dados do regime tributário!';
 var
-  locADOConnection : TADOConnection;
-  locADOQuery      : TADOQuery;
-  locLogMensagem   : string;
-  locPessoaID      : Integer;
-  locPessoaLogDados: string;
+  locADOConnection           : TADOConnection;
+  locADOQuery                : TADOQuery;
+  locLogMensagem             : string;
+  locRegimeTributarioID      : Integer;
+  locRegimeTributarioLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locPessoaID := StringIntegerConverter(edtPessoaID.Text);
+  locRegimeTributarioID := StringIntegerConverter(edtRegimeTributarioID.Text);
 
   //
   // Log dados.
   //
-  locPessoaLogDados := LogDadosGerar;
+  locRegimeTributarioLogDados := LogDadosGerar;
 
   //
   // Confirma gravação com o usuário.
@@ -1345,14 +1347,14 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                          ');
-  locADOQuery.SQL.Add('  [entidade].[nome]                   ');
-  locADOQuery.SQL.Add('FROM                                  ');
-  locADOQuery.SQL.Add('  [entidade] WITH (NOLOCK)            ');
-  locADOQuery.SQL.Add('WHERE                                 ');  
-  locADOQuery.SQL.Add('  [entidade].[pessoa_id] = :pessoa_id ');
+  locADOQuery.SQL.Add('SELECT TOP 1                                               ');
+  locADOQuery.SQL.Add('  [empresa].[nome]                                         ');
+  locADOQuery.SQL.Add('FROM                                                       ');
+  locADOQuery.SQL.Add('  [empresa] WITH (NOLOCK)                                  ');
+  locADOQuery.SQL.Add('WHERE                                                      ');
+  locADOQuery.SQL.Add('  [empresa].[regime_tributario_id] = :regime_tributario_id ');
 
-  locADOQuery.Parameters.ParamByName('pessoa_id').Value := locPessoaID;
+  locADOQuery.Parameters.ParamByName('regime_tributario_id').Value := locRegimeTributarioID;
 
   try
     locADOQuery.Open;
@@ -1363,7 +1365,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar a query para verificar se a pessoa existe para algum outro cadastro!';
+      locLogMensagem := 'Ocorreu algum problema ao executar a query para verificar se o regime tributário existe para algum outro cadastro!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, ERRO_MENSAGEM_TENTE_NOVAMENTE, locExcecao.Message);
       Exit
@@ -1372,8 +1374,8 @@ begin
 
   if locADOQuery.RecordCount > 0 then
   begin
-    locLogMensagem := 'Essa pessoa existe no cadastro do cliente ou fornecedor "' + locADOQuery.FieldByName('nome').AsString + '"!';
-    
+    locLogMensagem := 'Esse regime tributário existe no cadastro da empresa "' + locADOQuery.FieldByName('nome').AsString + '"!';
+
     locADOQuery.Close;
     FreeAndNil(locADOQuery);
     locADOConnection.Close;
@@ -1403,16 +1405,16 @@ begin
   end;  
 
   //
-  // Comando SQL para excluir um registro da tabela pessoa.
+  // Comando SQL para excluir um registro da tabela regime tributário.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('DELETE FROM                         ');
-  locADOQuery.SQL.Add('  [pessoa]                          ');
-  locADOQuery.SQL.Add('WHERE                               ');
-  locADOQuery.SQL.Add('  [pessoa].[pessoa_id] = :pessoa_id ');
+  locADOQuery.SQL.Add('DELETE FROM                                                          ');
+  locADOQuery.SQL.Add('  [regime_tributario]                                                ');
+  locADOQuery.SQL.Add('WHERE                                                                ');
+  locADOQuery.SQL.Add('  [regime_tributario].[regime_tributario_id] = :regime_tributario_id ');
 
-  locADOQuery.Parameters.ParamByName('pessoa_id').Value := locPessoaID;
+  locADOQuery.Parameters.ParamByName('regime_tributario_id').Value := locRegimeTributarioID;
 
   try
     locADOQuery.ExecSQL;
@@ -1424,7 +1426,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela [pessoa]!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela [regime_tributario]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -1478,10 +1480,10 @@ begin
   // Log de ocorrência.
   //
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locPessoaID, edtCodigo.Text, 'pessoa', 'Registro excluído com sucesso!', locPessoaLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locRegimeTributarioID, edtCodigo.Text, 'regime_tributario', 'Registro excluído com sucesso!', locRegimeTributarioLogDados);
   except
   end;
-  VCLInformacaoExibir('Pessoa excluída com sucesso!');
+  VCLInformacaoExibir('Regime tributário excluído com sucesso!');
 end;
 
 //
@@ -1489,17 +1491,17 @@ end;
 //
 procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioCancelar;
 var
-  locPessoaID: Integer;
+  locRegimeTributarioID: Integer;
 begin
   //
   // Carrega chave do registro que estava sendo editado.
   //
-  locPessoaID := StringIntegerConverter(edtPessoaID.Text);
+  locRegimeTributarioID := StringIntegerConverter(edtRegimeTributarioID.Text);
 
   //
   // Confirma com o usuário.
   //
-  if locPessoaID = 0 then
+  if locRegimeTributarioID = 0 then
   begin
     if not VCLQuestionamentoExibir('Deseja realmente cancelar a digitação destes dados?') then Exit;
   end
@@ -1511,7 +1513,7 @@ begin
   //
   // Popula somente os dados.
   //
-  FormularioPopular(locPessoaID);
+  FormularioPopular(locRegimeTributarioID);
 
   //
   // Componentes desligados para edição.
@@ -1525,7 +1527,7 @@ end;
 procedure TPlataformaERPVCLRegimeTributarioCadastro.FormularioCodigoSugerir;
 const
   PROCEDIMENTO_NOME: string = 'FormularioCodigoSugerir';
-  ERRO_MENSAGEM    : string = 'Impossível sugerir informações sobre o próximo código da pessoa!';
+  ERRO_MENSAGEM    : string = 'Impossível sugerir informações sobre o próximo código do regime tributário!';
 var
   locADOConnection : TADOConnection;
   locADOQuery      : TADOQuery;
@@ -1572,14 +1574,14 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                        ');
-  locADOQuery.SQL.Add('  [pessoa].[pessoa_id],             ');
-  locADOQuery.SQL.Add('  [pessoa].[codigo]                 ');
-  locADOQuery.SQL.Add('FROM                                ');
-  locADOQuery.SQL.Add('  [pessoa] WITH (NOLOCK)            ');
-  locADOQuery.SQL.Add('ORDER BY                            ');
-  locADOQuery.SQL.Add('  [pessoa].[ins_server_dt_hr] DESC, ');
-  locADOQuery.SQL.Add('  [pessoa].[codigo] DESC            ');
+  locADOQuery.SQL.Add('SELECT TOP 1                                   ');
+  locADOQuery.SQL.Add('  [regime_tributario].[regime_tributario_id],  ');
+  locADOQuery.SQL.Add('  [regime_tributario].[codigo]                 ');
+  locADOQuery.SQL.Add('FROM                                           ');
+  locADOQuery.SQL.Add('  [regime_tributario] WITH (NOLOCK)            ');
+  locADOQuery.SQL.Add('ORDER BY                                       ');
+  locADOQuery.SQL.Add('  [regime_tributario].[ins_server_dt_hr] DESC, ');
+  locADOQuery.SQL.Add('  [regime_tributario].[codigo] DESC            ');
 
   //
   // Executa query.
@@ -1593,7 +1595,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar último cadastro na tabela [pessoa]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar último cadastro na tabela [regime_tributario]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -1606,7 +1608,7 @@ begin
   if locADOQuery.RecordCount > 0 then
   begin
     edtCodigoCadastrado.Text   := locADOQuery.FieldByName('codigo').AsString;
-    edtCodigoCadastradoID.Text := IntegerStringConverter(locADOQuery.FieldByName('pessoa_id').AsInteger);
+    edtCodigoCadastradoID.Text := IntegerStringConverter(locADOQuery.FieldByName('regime_tributario_id').AsInteger);
 
     VCLEditClickControlar(edtCodigoCadastrado, True);
   end;
@@ -1625,24 +1627,25 @@ end;
 //
 // Função para gerar a string de log dos dados.
 //
-function TPlataformaERPVCLRegimeTributarioCadastro.LogDadosGerar(argPessoaID: Integer = 0): string;
+function TPlataformaERPVCLRegimeTributarioCadastro.LogDadosGerar(argRegimeTributarioID: Integer = 0): string;
 var
-  locPessoaID: Integer;
+  locRegimeTributarioID: Integer;
 begin
-  if argPessoaID <= 0 then
-    locPessoaID := StringIntegerConverter(edtPessoaID.Text)
+  if argRegimeTributarioID <= 0 then
+    locRegimeTributarioID := StringIntegerConverter(edtRegimeTributarioID.Text)
   else
-    locPessoaID := argPessoaID;
+    locRegimeTributarioID := argRegimeTributarioID;
 
   Result := '';
-  LogDadosIntegerDescrever('ID da pessoa', locPessoaID,          Result);
-  LogDadosStringDescrever ('Código',       edtCodigo.Text,       Result);
-  LogDadosStringDescrever ('Descrição',    edtDescricao.Text,    Result);
-  LogDadosBooleanDescrever('Física',       chkFisica.Checked,    Result);
-  LogDadosBooleanDescrever('Jurídica',     chkJuridica.Checked,  Result);
-  LogDadosBooleanDescrever('Governo',      chkGoverno.Checked,   Result);  
-  LogDadosBooleanDescrever('Bloqueado',    chkBloqueado.Checked, Result);
-  LogDadosBooleanDescrever('Ativo',        chkAtivo.Checked,     Result);
+  LogDadosIntegerDescrever('ID do regime tributário', locRegimeTributarioID, Result);
+  LogDadosStringDescrever ('Código',                  edtCodigo.Text,        Result);
+  LogDadosStringDescrever ('Descrição',               edtDescricao.Text,     Result);
+  LogDadosBooleanDescrever('Simples',                 chkSimples.Checked,    Result);
+  LogDadosBooleanDescrever('Real',                    chkReal.Checked,       Result);
+  LogDadosBooleanDescrever('Presumido',               chkPresumido.Checked,  Result);
+  LogDadosBooleanDescrever('Arbitrado',               chkArbitrado.Checked,  Result);
+  LogDadosBooleanDescrever('Bloqueado',               chkBloqueado.Checked,  Result);
+  LogDadosBooleanDescrever('Ativo',                   chkAtivo.Checked,      Result);
 end;
 
 end.
