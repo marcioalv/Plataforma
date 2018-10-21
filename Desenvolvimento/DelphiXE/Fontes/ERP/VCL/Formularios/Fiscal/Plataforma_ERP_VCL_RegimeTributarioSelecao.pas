@@ -1,10 +1,10 @@
 //
-// Arquivo..: Plataforma_ERP_VCL_TiposUsuariosSelecao.pas
+// Arquivo..: Plataforma_ERP_VCL_RegimeTributarioSelecao.pas
 // Projeto..: ERP
 // Fonte....: Formulário VCL
 // Criação..: 05/Julho/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário com os parâmetros de localização de cadastro de tipo de usuário.
+// Descrição: Formulário com os parâmetros de seleção de cadastro de tipo de usuário.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
@@ -29,10 +29,11 @@ uses
   Vcl.ExtCtrls,
   Vcl.Buttons,
   Vcl.Imaging.pngimage,
-  Vcl.ComCtrls, Vcl.Menus;
+  Vcl.ComCtrls,
+  Vcl.Menus;
 
 type
-  TPlataformaERPVCLTiposUsuariosSelecao = class(TForm)
+  TPlataformaERPVCLRegimeTributarioSelecao = class(TForm)
     imgFormulario: TImage;
     btnSelecionar: TBitBtn;
     btnFechar: TBitBtn;
@@ -74,7 +75,7 @@ type
   end;
 
 var
-  PlataformaERPVCLTiposUsuariosSelecao: TPlataformaERPVCLTiposUsuariosSelecao;
+  PlataformaERPVCLRegimeTributarioSelecao: TPlataformaERPVCLRegimeTributarioSelecao;
 
 implementation
 
@@ -88,7 +89,7 @@ uses
   Plataforma_ERP_VCL_TiposUsuariosCodigo;
 
 const
-  FONTE_NOME: string = 'Plataforma_ERP_VCL_TiposUsuariosLocalizar';
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_RegimeTributarioLocalizar';
 
 const
   LVW_LISTA_LICENCA_ID                  : Integer = 0;
@@ -102,7 +103,7 @@ const
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.FormCreate(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis públicas.
@@ -124,7 +125,7 @@ end;
 //
 // Evento de exibição do formulário.
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.FormShow(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.FormShow(Sender: TObject);
 begin
   FormularioAtualizar;
 end;
@@ -132,7 +133,7 @@ end;
 //
 // Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
 end;
@@ -140,22 +141,22 @@ end;
 // 
 // Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.mniSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.mniSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosSelecao.mniAtualizarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.mniAtualizarClick(Sender: TObject);
 begin
   FormularioAtualizar;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosSelecao.mniMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.mniMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosSelecao.mniFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.mniFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -163,22 +164,22 @@ end;
 //
 // Eventos do componente listview.
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosSelecao.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosSelecao.lvwListaDblClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.lvwListaDblClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
 
-procedure TPlataformaERPVCLTiposUsuariosSelecao.lvwListaKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.lvwListaKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ENTER then lvwListaDblClick(Sender);
 end;
@@ -186,7 +187,7 @@ end;
 //
 // Evento de click no botão "Confirmar".
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.btnSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.btnSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
@@ -194,7 +195,7 @@ end;
 //
 // Evento de click no botão "minimizar".
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.btnMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.btnMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
@@ -202,7 +203,7 @@ end;
 //
 // Evento de click no botão "fechar".
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.btnFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLRegimeTributarioSelecao.btnFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -210,7 +211,7 @@ end;
 //
 // Procedimento para atualizar a lista do formulário.
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.FormularioAtualizar;
+procedure TPlataformaERPVCLRegimeTributarioSelecao.FormularioAtualizar;
 const
   PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
   ERRO_MENSAGEM    : string = 'Impossível atualizar lista de tipos de usuário!';
@@ -380,7 +381,7 @@ end;
 //
 // Procedimento para selecionar uma das linhas da lista.
 //
-procedure TPlataformaERPVCLTiposUsuariosSelecao.FormularioSelecionar;
+procedure TPlataformaERPVCLRegimeTributarioSelecao.FormularioSelecionar;
 var
   locIndice: Integer;
 begin
