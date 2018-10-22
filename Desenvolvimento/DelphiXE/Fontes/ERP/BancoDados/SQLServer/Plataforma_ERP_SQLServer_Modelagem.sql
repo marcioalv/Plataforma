@@ -16,6 +16,7 @@ GO
 --
 -- Apaga tabelas.
 --
+IF OBJECT_ID('empresa')                         IS NOT NULL DROP TABLE [empresa]
 IF OBJECT_ID('regime_tributario')               IS NOT NULL DROP TABLE [regime_tributario]
 IF OBJECT_ID('pessoa')                          IS NOT NULL DROP TABLE [pessoa]
 IF OBJECT_ID('usuario_perfil')                  IS NOT NULL DROP TABLE [usuario_perfil]
@@ -449,19 +450,19 @@ GO
 -- Pessoa.
 --
 CREATE TABLE [pessoa] (
-  [pessoa_id]        TINYINT                                   NOT NULL,
-  [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [descricao]        VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [fisica]           CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [juridica]         CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [governo]          CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ins_local_dt_hr]  DATETIME                                  NOT NULL,
-  [ins_server_dt_hr] DATETIME                                  NOT NULL,
-  [upd_local_dt_hr]  DATETIME                                  NULL,
-  [upd_server_dt_hr] DATETIME                                  NULL,
-  [upd_contador]     INT                                       NOT NULL,
+  [pessoa_id]        TINYINT                                  NOT NULL,
+  [codigo]           VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]        VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [fisica]           CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [juridica]         CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [governo]          CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]        CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]            CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]  DATETIME                                 NOT NULL,
+  [ins_server_dt_hr] DATETIME                                 NOT NULL,
+  [upd_local_dt_hr]  DATETIME                                 NULL,
+  [upd_server_dt_hr] DATETIME                                 NULL,
+  [upd_contador]     INT                                      NOT NULL,
   
   CONSTRAINT [pessoa_pk]        PRIMARY KEY CLUSTERED ([pessoa_id]),
   CONSTRAINT [pessoa_ix_codigo] UNIQUE ([codigo]),
@@ -478,20 +479,20 @@ GO
 -- Regime tributário.
 --
 CREATE TABLE [regime_tributario] (
-  [regime_tributario_id] TINYINT                                   NOT NULL,
-  [codigo]               VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [descricao]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [simples]              CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [real]                 CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [presumido]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [arbitrado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [bloqueado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ativo]                CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ins_local_dt_hr]      DATETIME                                  NOT NULL,
-  [ins_server_dt_hr]     DATETIME                                  NOT NULL,
-  [upd_local_dt_hr]      DATETIME                                  NULL,
-  [upd_server_dt_hr]     DATETIME                                  NULL,
-  [upd_contador]         INT                                       NOT NULL,
+  [regime_tributario_id] TINYINT                                  NOT NULL,
+  [codigo]               VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]            VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [simples]              CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [real]                 CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [presumido]            CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [arbitrado]            CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]            CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]                CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]      DATETIME                                 NOT NULL,
+  [ins_server_dt_hr]     DATETIME                                 NOT NULL,
+  [upd_local_dt_hr]      DATETIME                                 NULL,
+  [upd_server_dt_hr]     DATETIME                                 NULL,
+  [upd_contador]         INT                                      NOT NULL,
   
   CONSTRAINT [regime_tributario_pk]        PRIMARY KEY CLUSTERED ([regime_tributario_id]),
   CONSTRAINT [regime_tributario_ix_codigo] UNIQUE ([codigo]),
@@ -502,6 +503,42 @@ CREATE TABLE [regime_tributario] (
   CONSTRAINT [regime_tributario_ck_arbitrado] CHECK ([arbitrado] IN ('S', 'N')),
   CONSTRAINT [regime_tributario_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
   CONSTRAINT [regime_tributario_ck_ativo]     CHECK ([ativo]     IN ('S', 'N'))
+)
+GO
+
+--
+-- Empresa.
+--
+CREATE TABLE [empresa] (
+  [licenca_id]           INT                                       NOT NULL,
+  [empresa_base_id]      SMALLINT                                  NOT NULL,
+  [empresa_id]           SMALLINT                                  NOT NULL,
+  [codigo]               VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [regime_tributario_id] TINYINT                                   NOT NULL,
+  [bloqueado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]                CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_usuario_base_id]  SMALLINT                                  NOT NULL,
+  [ins_usuario_id]       INT                                       NOT NULL,
+  [ins_local_dt_hr]      DATETIME                                  NOT NULL,
+  [ins_server_dt_hr]     DATETIME                                  NOT NULL,
+  [upd_usuario_base_id]  SMALLINT                                  NOT NULL,
+  [upd_usuario_id]       INT                                       NOT NULL,
+  [upd_local_dt_hr]      DATETIME                                  NULL,
+  [upd_server_dt_hr]     DATETIME                                  NULL,
+  [upd_contador]         INT                                       NOT NULL,
+  
+  CONSTRAINT [empresa_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [empresa_base_id], [empresa_id]),
+  CONSTRAINT [empresa_ix_codigo] UNIQUE ([licenca_id], [codigo], [empresa_base_id]),
+
+  CONSTRAINT [empresa_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [empresa_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
+
+  CONSTRAINT [empresa_fk_lincenca]          FOREIGN KEY ([licenca_id])                                          REFERENCES [licenca]           ([licenca_id]),
+  CONSTRAINT [empresa_fk_base]              FOREIGN KEY ([empresa_base_id])                                     REFERENCES [base]              ([base_id]),
+  CONSTRAINT [empresa_fk_regime_tributario] FOREIGN KEY ([regime_tributario_id])                                REFERENCES [regime_tributario] ([regime_tributario_id]),
+  CONSTRAINT [empresa_fk_usuario_ins]       FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id]),
+  CONSTRAINT [empresa_fk_usuario_upd]       FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id])
 )
 GO
 
