@@ -1,16 +1,16 @@
 //
-// Arquivo..: Plataforma_ERP_VCL_RegimeTributarioSelecao.pas
+// Arquivo..: Plataforma_ERP_VCL_PessoaSelecao.pas
 // Projeto..: ERP
 // Fonte....: Formulário VCL
 // Criação..: 05/Julho/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário com os parâmetros de seleção do cadastro de regimes tributários.
+// Descrição: Formulário com os parâmetros de seleção do cadastro de pessoas.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
 //
 
-unit Plataforma_ERP_VCL_RegimeTributarioSelecao;
+unit Plataforma_ERP_VCL_PessoaSelecao;
 
 interface
 
@@ -33,7 +33,7 @@ uses
   Vcl.Menus;
 
 type
-  TPlataformaERPVCLRegimeTributarioSelecao = class(TForm)
+  TPlataformaERPVCLPessoaSelecao = class(TForm)
     imgFormulario: TImage;
     btnSelecionar: TBitBtn;
     btnFechar: TBitBtn;
@@ -65,15 +65,15 @@ type
     procedure FormularioAtualizar;
     procedure FormularioSelecionar;
   public
-    pubClicouFechar      : Boolean;
-    pubNovo              : Boolean;
-    pubRegimeTributarioID: Integer;
-    pubCodigo            : string;
-    pubDescricao         : string;
+    pubClicouFechar: Boolean;
+    pubNovo        : Boolean;
+    pubPessoaID    : Integer;
+    pubCodigo      : string;
+    pubDescricao   : string;
   end;
 
 var
-  PlataformaERPVCLRegimeTributarioSelecao: TPlataformaERPVCLRegimeTributarioSelecao;
+  PlataformaERPVCLPessoaSelecao: TPlataformaERPVCLPessoaSelecao;
 
 implementation
 
@@ -86,27 +86,27 @@ uses
   Plataforma_ERP_Generico;
 
 const
-  FONTE_NOME: string = 'Plataforma_ERP_VCL_RegimeTributarioSelecao';
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_PessoaSelecao';
 
 const
-  LVW_LISTA_REGIME_TRIBUTARIO_ID: Integer = 0;
-  LVW_LISTA_CODIGO              : Integer = 1;
-  LVW_LISTA_DESCRICAO           : Integer = 2;
-  LVW_LISTA_BLOQUEADO           : Integer = 3;
+  LVW_LISTA_PESSOA_ID: Integer = 0;
+  LVW_LISTA_CODIGO   : Integer = 1;
+  LVW_LISTA_DESCRICAO: Integer = 2;
+  LVW_LISTA_BLOQUEADO: Integer = 3;
 
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLRegimeTributarioSelecao.FormCreate(Sender: TObject);
+procedure TPlataformaERPVCLPessoaSelecao.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis públicas.
   //
-  pubClicouFechar      := True;
-  pubNovo              := True;
-  pubRegimeTributarioID:= 0;
-  pubCodigo            := '';
-  pubDescricao         := '';
+  pubClicouFechar := True;
+  pubNovo         := True;
+  pubPessoaID     := 0;
+  pubCodigo       := '';
+  pubDescricao    := '';
 
   //
   // Limpa componentes do formulário.
@@ -117,7 +117,7 @@ end;
 //
 // Evento de exibição do formulário.
 //
-procedure TPlataformaERPVCLRegimeTributarioSelecao.FormShow(Sender: TObject);
+procedure TPlataformaERPVCLPessoaSelecao.FormShow(Sender: TObject);
 begin
   FormularioAtualizar;
 end;
@@ -125,7 +125,7 @@ end;
 //
 // Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLRegimeTributarioSelecao.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLPessoaSelecao.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
 end;
@@ -133,22 +133,22 @@ end;
 // 
 // Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLRegimeTributarioSelecao.mniSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLPessoaSelecao.mniSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
 
-procedure TPlataformaERPVCLRegimeTributarioSelecao.mniAtualizarClick(Sender: TObject);
+procedure TPlataformaERPVCLPessoaSelecao.mniAtualizarClick(Sender: TObject);
 begin
   FormularioAtualizar;
 end;
 
-procedure TPlataformaERPVCLRegimeTributarioSelecao.mniMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLPessoaSelecao.mniMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
 
-procedure TPlataformaERPVCLRegimeTributarioSelecao.mniFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLPessoaSelecao.mniFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -156,22 +156,22 @@ end;
 //
 // Eventos do componente listview.
 //
-procedure TPlataformaERPVCLRegimeTributarioSelecao.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TPlataformaERPVCLPessoaSelecao.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);
 end;
 
-procedure TPlataformaERPVCLRegimeTributarioSelecao.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TPlataformaERPVCLPessoaSelecao.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);
 end;
 
-procedure TPlataformaERPVCLRegimeTributarioSelecao.lvwListaDblClick(Sender: TObject);
+procedure TPlataformaERPVCLPessoaSelecao.lvwListaDblClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
 
-procedure TPlataformaERPVCLRegimeTributarioSelecao.lvwListaKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLPessoaSelecao.lvwListaKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ENTER then lvwListaDblClick(Sender);
 end;
@@ -179,7 +179,7 @@ end;
 //
 // Evento de click no botão "Confirmar".
 //
-procedure TPlataformaERPVCLRegimeTributarioSelecao.btnSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLPessoaSelecao.btnSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
@@ -187,7 +187,7 @@ end;
 //
 // Evento de click no botão "minimizar".
 //
-procedure TPlataformaERPVCLRegimeTributarioSelecao.btnMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLPessoaSelecao.btnMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
@@ -195,7 +195,7 @@ end;
 //
 // Evento de click no botão "fechar".
 //
-procedure TPlataformaERPVCLRegimeTributarioSelecao.btnFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLPessoaSelecao.btnFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -203,10 +203,10 @@ end;
 //
 // Procedimento para atualizar a lista do formulário.
 //
-procedure TPlataformaERPVCLRegimeTributarioSelecao.FormularioAtualizar;
+procedure TPlataformaERPVCLPessoaSelecao.FormularioAtualizar;
 const
   PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
-  ERRO_MENSAGEM    : string = 'Impossível atualizar lista de regimes tributários!';
+  ERRO_MENSAGEM    : string = 'Impossível atualizar lista de pessoas!';
 var
   locADOConnection: TADOConnection;
   locADOQuery     : TADOQuery;
@@ -257,26 +257,26 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                                  ');
-  locADOQuery.SQL.Add('  [regime_tributario].[regime_tributario_id] AS [regime_tributario_id], ');
-  locADOQuery.SQL.Add('  [regime_tributario].[codigo]               AS [codigo],               ');
-  locADOQuery.SQL.Add('  [regime_tributario].[descricao]            AS [descricao],            ');
-  locADOQuery.SQL.Add('  [regime_tributario].[bloqueado]            AS [bloqueado]             ');
-  locADOQuery.SQL.Add('FROM                                                                    ');
-  locADOQuery.SQL.Add('  [regime_tributario] WITH (NOLOCK)                                     ');
-  locADOQuery.SQL.Add('WHERE                                                                   ');
-  locADOQuery.SQL.Add('  [regime_tributario].[ativo] = ''S''                                   ');
+  locADOQuery.SQL.Add('SELECT                                 ');
+  locADOQuery.SQL.Add('  [pessoa].[pessoa_id] AS [pessoa_id], ');
+  locADOQuery.SQL.Add('  [pessoa].[codigo]    AS [codigo],    ');
+  locADOQuery.SQL.Add('  [pessoa].[descricao] AS [descricao], ');
+  locADOQuery.SQL.Add('  [pessoa].[bloqueado] AS [bloqueado]  ');
+  locADOQuery.SQL.Add('FROM                                   ');
+  locADOQuery.SQL.Add('  [pessoa] WITH (NOLOCK)               ');
+  locADOQuery.SQL.Add('WHERE                                  ');
+  locADOQuery.SQL.Add('  [pessoa].[ativo] = ''S''             ');
 
   if pubNovo then
   begin
-    locADOQuery.SQL.Add(' AND [regime_tributario].[bloqueado] = ''N'' ');
+    locADOQuery.SQL.Add(' AND [pessoa].[bloqueado] = ''N'' ');
   end;
 
   //
   // Order by.
   //  
   locADOQuery.SQL.Add('ORDER BY                           ');
-  locADOQuery.SQL.Add('  [regime_tributario].[codigo] ASC ');
+  locADOQuery.SQL.Add('  [pessoa].[codigo] ASC ');
 
 
   try
@@ -288,7 +288,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar os registros na tabela [regime_tributario]!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar os registros na tabela [pessoa]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -317,12 +317,12 @@ begin
     
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('regime_tributario_id').AsInteger));
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('pessoa_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('descricao').AsString);
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
 
-      if pubRegimeTributarioID = locADOQuery.FieldByName('regime_tributario_id').AsInteger then
+      if pubPessoaID = locADOQuery.FieldByName('pessoa_id').AsInteger then
       begin
         locIndice := (lvwLista.Items.Count - 1);
       end;
@@ -355,17 +355,17 @@ end;
 //
 // Procedimento para selecionar uma das linhas da lista.
 //
-procedure TPlataformaERPVCLRegimeTributarioSelecao.FormularioSelecionar;
+procedure TPlataformaERPVCLPessoaSelecao.FormularioSelecionar;
 var
   locIndice: Integer;
 begin
   locIndice := VCLListViewIndiceItemRetornar(lvwLista);
   if locIndice = VCL_NENHUM_INDICE then Exit;
 
-  pubClicouFechar       := False;
-  pubRegimeTributarioID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_REGIME_TRIBUTARIO_ID]);
-  pubCodigo             := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
-  pubDescricao          := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_DESCRICAO];
+  pubClicouFechar := False;
+  pubPessoaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_PESSOA_ID]);
+  pubCodigo       := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
+  pubDescricao    := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_DESCRICAO];
   
   Close; 
 end;

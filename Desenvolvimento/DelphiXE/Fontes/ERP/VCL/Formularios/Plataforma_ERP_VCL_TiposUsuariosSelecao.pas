@@ -242,7 +242,9 @@ begin
   //
   locADOConnection := TADOConnection.Create(Self);
 
+  //
   // Abre conexão com o banco de dados da aplicação.
+  //
   try
     Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
   except
