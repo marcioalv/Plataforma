@@ -109,6 +109,16 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
         OnClick = mniFornecedoresClick
       end
     end
+    object mniFiscal: TMenuItem
+      Caption = 'Fiscal'
+      object mniFiscalCadastros: TMenuItem
+        Caption = 'Cadastros'
+        object mniEmpresas: TMenuItem
+          Caption = 'Empresas'
+          OnClick = mniEmpresasClick
+        end
+      end
+    end
     object mniAplicacao: TMenuItem
       Caption = '&Aplica'#231#227'o'
       object mniLogoff: TMenuItem

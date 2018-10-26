@@ -66,6 +66,11 @@ procedure Plataforma_ERP_VCL_PerfilUsuarioListaExibir;
 procedure Plataforma_ERP_VCL_TipoUsuarioListaExibir;
 
 //
+// Plataforma_ERP_VCL_RegimeTributarioListaExibir.
+//
+procedure Plataforma_ERP_VCL_RegimeTributarioListaExibir;
+
+//
 // Plataforma_ERP_VCL_TipoUsuarioExibir.
 //
 procedure Plataforma_ERP_VCL_TipoUsuarioExibir(argLicencaID        : Integer;
@@ -107,7 +112,8 @@ uses
   Plataforma_ERP_VCL_TiposUsuariosLista,
   Plataforma_ERP_VCL_TiposUsuariosCadastro,
   Plataforma_ERP_VCL_TiposUsuariosCodigo,
-  Plataforma_ERP_VCL_TiposUsuariosSelecao;
+  Plataforma_ERP_VCL_TiposUsuariosSelecao,
+  Plataforma_ERP_VCL_RegimeTributarioLista;
 
 //
 // Procedimento para configurar a imagem de background padrão dos formulários.
@@ -230,6 +236,19 @@ var
   locFormulario: TPlataformaERPVCLTiposUsuariosLista;
 begin
   locFormulario := TPlataformaERPVCLTiposUsuariosLista.Create(nil);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir a lista de regimes tributários cadastrados.
+//
+procedure Plataforma_ERP_VCL_RegimeTributarioListaExibir;
+var
+  locFormulario: TPlataformaERPVCLRegimeTributarioLista;
+begin
+  locFormulario := TPlataformaERPVCLRegimeTributarioLista.Create(nil);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

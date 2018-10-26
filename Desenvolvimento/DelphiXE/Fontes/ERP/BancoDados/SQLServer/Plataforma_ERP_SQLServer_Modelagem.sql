@@ -518,14 +518,14 @@ CREATE TABLE [empresa] (
   [regime_tributario_id] TINYINT                                   NOT NULL,
   [bloqueado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]                CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [ins_usuario_base_id]  SMALLINT                                  NOT NULL,
-  [ins_usuario_id]       INT                                       NOT NULL,
   [ins_local_dt_hr]      DATETIME                                  NOT NULL,
   [ins_server_dt_hr]     DATETIME                                  NOT NULL,
-  [upd_usuario_base_id]  SMALLINT                                  NOT NULL,
-  [upd_usuario_id]       INT                                       NOT NULL,
+  [ins_usuario_base_id]  SMALLINT                                  NOT NULL,
+  [ins_usuario_id]       INT                                       NOT NULL,
   [upd_local_dt_hr]      DATETIME                                  NULL,
   [upd_server_dt_hr]     DATETIME                                  NULL,
+  [upd_usuario_base_id]  SMALLINT                                  NULL,
+  [upd_usuario_id]       INT                                       NULL,
   [upd_contador]         INT                                       NOT NULL,
   
   CONSTRAINT [empresa_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [empresa_base_id], [empresa_id]),
@@ -539,6 +539,34 @@ CREATE TABLE [empresa] (
   CONSTRAINT [empresa_fk_regime_tributario] FOREIGN KEY ([regime_tributario_id])                                REFERENCES [regime_tributario] ([regime_tributario_id]),
   CONSTRAINT [empresa_fk_usuario_ins]       FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id]),
   CONSTRAINT [empresa_fk_usuario_upd]       FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id])
+)
+GO
+
+--
+-- Log das empresas.
+--
+CREATE TABLE [dbo].[empresa_log] (
+  [licenca_id]          INT                                       NOT NULL,
+  [empresa_base_id]     SMALLINT                                  NOT NULL,
+  [empresa_id]          INT                                       NOT NULL,
+  [empresa_log_sq]      INT                                       NOT NULL,
+  [log_base_id]         SMALLINT                                  NOT NULL,
+  [log_local_dt_hr]     DATETIME                                  NOT NULL,
+  [log_server_dt_hr]    DATETIME                                  NOT NULL,
+  [registro_acao_id]    TINYINT                                   NOT NULL,
+  [host_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [user_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [log_usuario_base_id] SMALLINT                                  NOT NULL,
+  [log_usuario_id]      INT                                       NOT NULL,
+  [mensagem]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [dados]               VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+ 
+  CONSTRAINT [empresa_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [empresa_base_id], [empresa_id], [empresa_log_sq]),
+
+  CONSTRAINT [empresa_log_fk_usuario]       FOREIGN KEY ([licenca_id], [usuario_base_id], [usuario_id])         REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id]),
+  CONSTRAINT [empresa_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
+  CONSTRAINT [empresa_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
+  CONSTRAINT [empresa_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
 )
 GO
 
@@ -648,5 +676,13 @@ GO
 INSERT INTO [numerador_base] VALUES ('regime_tributario_id', 4, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 
+--
+-- Empresa.
+--
+INSERT INTO [empresa] VALUES (1, 1, 1, '01', 'Bergerson',   2, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+INSERT INTO [empresa] VALUES (1, 1, 2, '02', 'M. Campelli', 2, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+INSERT INTO [empresa] VALUES (1, 1, 3, '03', 'MAB',         2, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+GO
 
-
+INSERT INTO [numerador_licenca] VALUES (1, 1, 'empresa_id', 3, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+GO
