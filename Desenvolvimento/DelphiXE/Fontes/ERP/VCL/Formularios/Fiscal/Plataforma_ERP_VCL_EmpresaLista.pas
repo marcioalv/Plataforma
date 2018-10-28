@@ -112,8 +112,8 @@ uses
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_Generico,
-  Plataforma_ERP_VCL_UsuarioFiltro,
-  Plataforma_ERP_VCL_UsuarioCadastro;
+  Plataforma_ERP_VCL_EmpresaFiltro,
+  Plataforma_ERP_VCL_EmpresaCadastro;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_EmpresaLista.pas';
@@ -340,7 +340,7 @@ end;
 //
 procedure TPlataformaERPVCLEmpresaLista.FormularioLocalizar;
 var
-  locFormulario      : TPlataformaERPVCLUsuarioFiltro;
+  locFormulario      : TPlataformaERPVCLEmpresaFiltro;
   locClicouFechar    : Boolean;
   locCodigoInicial   : string;
   locCodigoFinal     : string;
@@ -354,15 +354,15 @@ var
   locUpdDtHrInicial  : TDateTime;
   locUpdDtHrFinal    : TDateTime;
 begin
-  locFormulario := TPlataformaERPVCLUsuarioFiltro.Create(Self);
+  locFormulario := TPlataformaERPVCLEmpresaFiltro.Create(Self);
 
   locFormulario.pubCodigoInicial    := priFiltroCodigoInicial;
   locFormulario.pubCodigoFinal      := priFiltroCodigoFinal;
   locFormulario.pubNome             := priFiltroDescricao;
   locFormulario.pubBloqueado        := priFiltroBloqueado;
   locFormulario.pubAtivo            := priFiltroAtivo;
-  locFormulario.pubUsuarioIDInicial := priFiltroEmpresaIDInicial;
-  locFormulario.pubUsuarioIDFinal   := priFiltroEmpresaIDFinal;
+  locFormulario.pubEmpresaIDInicial := priFiltroEmpresaIDInicial;
+  locFormulario.pubEmpresaIDFinal   := priFiltroEmpresaIDFinal;
   locFormulario.pubInsDtHrInicial   := priFiltroInsDtHrInicial;
   locFormulario.pubInsDtHrFinal     := priFiltroInsDtHrFinal;
   locFormulario.pubUpdDtHrInicial   := priFiltroUpdDtHrInicial;
@@ -376,8 +376,8 @@ begin
   locDescricao        := locFormulario.pubNome;
   locBloqueado        := locFormulario.pubBloqueado;
   locAtivo            := locFormulario.pubAtivo;
-  locEmpresaIDInicial := locFormulario.pubUsuarioIDInicial;
-  locEmpresaIDFinal   := locFormulario.pubUsuarioIDFinal;
+  locEmpresaIDInicial := locFormulario.pubEmpresaIDInicial;
+  locEmpresaIDFinal   := locFormulario.pubEmpresaIDFinal;
   locInsDtHrInicial   := locFormulario.pubInsDtHrInicial;
   locInsDtHrFinal     := locFormulario.pubInsDtHrFinal;
   locUpdDtHrInicial   := locFormulario.pubUpdDtHrInicial;
@@ -469,9 +469,10 @@ begin
   locADOQuery.SQL.Add('  [licenca].[licenca_id] AS [licenca_id],              ');
   locADOQuery.SQL.Add('  [base].[base_id]       AS [empresa_base_id],         ');
   locADOQuery.SQL.Add('  [base].[descricao]     AS [empresa_base_descricao],  ');
+  locADOQuery.SQL.Add('  [empresa].[codigo]     AS [codigo],                  ');
   locADOQuery.SQL.Add('  [empresa].[empresa_id] AS [empresa_id],              ');
   locADOQuery.SQL.Add('  [empresa].[descricao]  AS [descricao],               ');
-  locADOQuery.SQL.Add('  [empresa].[nome]       AS [nome],                    ');
+  locADOQuery.SQL.Add('  [empresa].[descricao]  AS [descricao],               ');
   locADOQuery.SQL.Add('  [empresa].[bloqueado]  AS [bloqueado],               ');
   locADOQuery.SQL.Add('  [empresa].[ativo]      AS [ativo]                    ');
   locADOQuery.SQL.Add('FROM                                                   ');
@@ -680,7 +681,7 @@ end;
 //
 procedure TPlataformaERPVCLEmpresaLista.FormularioCadastroExibir(argNovo: Boolean);
 var
-  locFormulario      : TPlataformaERPVCLUsuarioCadastro;
+  locFormulario      : TPlataformaERPVCLEmpresaCadastro;
   locDadosAtualizados: Boolean;
   locIndice          : Integer;
   locLicencaID       : Integer;
@@ -704,11 +705,11 @@ begin
     locEmpresaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_EMPRESA_ID]);
   end;
 
-  locFormulario := TPlataformaERPVCLUsuarioCadastro.Create(Self);
+  locFormulario := TPlataformaERPVCLEmpresaCadastro.Create(Self);
 
   locFormulario.pubLicencaID     := locLicencaID;
-  locFormulario.pubUsuarioBaseID := locEmpresaBaseID;
-  locFormulario.pubUsuarioID     := locEmpresaID;
+  locFormulario.pubEmpresaBaseID := locEmpresaBaseID;
+  locFormulario.pubEmpresaID     := locEmpresaID;
   
   locFormulario.ShowModal;
 

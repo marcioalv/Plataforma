@@ -16,6 +16,7 @@ GO
 --
 -- Apaga tabelas.
 --
+IF OBJECT_ID('empresa_log')                     IS NOT NULL DROP TABLE [empresa_log]
 IF OBJECT_ID('empresa')                         IS NOT NULL DROP TABLE [empresa]
 IF OBJECT_ID('regime_tributario')               IS NOT NULL DROP TABLE [regime_tributario]
 IF OBJECT_ID('pessoa')                          IS NOT NULL DROP TABLE [pessoa]
@@ -563,7 +564,7 @@ CREATE TABLE [dbo].[empresa_log] (
  
   CONSTRAINT [empresa_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [empresa_base_id], [empresa_id], [empresa_log_sq]),
 
-  CONSTRAINT [empresa_log_fk_usuario]       FOREIGN KEY ([licenca_id], [usuario_base_id], [usuario_id])         REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id]),
+  CONSTRAINT [empresa_log_fk_usuario]       FOREIGN KEY ([licenca_id], [empresa_base_id], [empresa_id])         REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id]),
   CONSTRAINT [empresa_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
   CONSTRAINT [empresa_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
   CONSTRAINT [empresa_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
@@ -680,8 +681,13 @@ GO
 -- Empresa.
 --
 INSERT INTO [empresa] VALUES (1, 1, 1, '01', 'Bergerson',   2, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+INSERT INTO [empresa_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
+
 INSERT INTO [empresa] VALUES (1, 1, 2, '02', 'M. Campelli', 2, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+INSERT INTO [empresa_log] VALUES (1, 1, 2, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
+
 INSERT INTO [empresa] VALUES (1, 1, 3, '03', 'MAB',         2, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+INSERT INTO [empresa_log] VALUES (1, 1, 3, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 GO
 
 INSERT INTO [numerador_licenca] VALUES (1, 1, 'empresa_id', 3, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)

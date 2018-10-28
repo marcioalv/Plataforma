@@ -87,7 +87,7 @@ object PlataformaERPVCLEmpresaLista: TPlataformaERPVCLEmpresaLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 557
+      Left = 545
       Top = 424
       Width = 80
       Height = 13
