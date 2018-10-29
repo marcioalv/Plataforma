@@ -66,11 +66,6 @@ procedure Plataforma_ERP_VCL_PerfilUsuarioListaExibir;
 procedure Plataforma_ERP_VCL_TipoUsuarioListaExibir;
 
 //
-// Plataforma_ERP_VCL_RegimeTributarioListaExibir.
-//
-procedure Plataforma_ERP_VCL_RegimeTributarioListaExibir;
-
-//
 // Plataforma_ERP_VCL_TipoUsuarioExibir.
 //
 procedure Plataforma_ERP_VCL_TipoUsuarioExibir(argLicencaID        : Integer;
@@ -95,6 +90,31 @@ function Plataforma_ERP_VCL_TipoUsuarioSelecionar(argLicencaID           : TEdit
                                                   argTipoUsuarioID       : TEdit;
                                                   argTipoUsuarioCodigo   : TEdit;
                                                   argTipoUsuarioDescricao: TEdit): Boolean;
+
+//
+// Plataforma_ERP_VCL_RegimeTributarioListaExibir.
+//
+procedure Plataforma_ERP_VCL_RegimeTributarioListaExibir;
+
+//
+// Plataforma_ERP_VCL_RegimeTributarioExibir.
+//
+procedure Plataforma_ERP_VCL_RegimeTributarioExibir(argRegimeTributarioID: Integer);
+
+//
+// Plataforma_ERP_VCL_RegimeTributarioValidar.
+//
+function Plataforma_ERP_VCL_RegimeTributarioValidar(argNovo                     : Boolean;
+                                                    argRegimeTributarioID       : TEdit;
+                                                    argRegimeTributarioCodigo   : TEdit;
+                                                    argRegimeTributarioDescricao: TEdit): Boolean;
+
+//
+// Plataforma_ERP_VCL_RegimeTributarioSelecionar.
+//
+function Plataforma_ERP_VCL_RegimeTributarioSelecionar(argRegimeTributarioID       : TEdit;
+                                                       argRegimeTributarioCodigo   : TEdit;
+                                                       argRegimeTributarioDescricao: TEdit): Boolean;
 
 implementation
 
@@ -228,6 +248,10 @@ begin
   FreeAndNil(locFormulario);
 end;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// TIPOS DE USUÁRIOS!
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 //
 // Procedimento para exibir a lista de tipos de usuários cadastrados.
 //
@@ -236,19 +260,6 @@ var
   locFormulario: TPlataformaERPVCLTiposUsuariosLista;
 begin
   locFormulario := TPlataformaERPVCLTiposUsuariosLista.Create(nil);
-  locFormulario.ShowModal;
-  locFormulario.Release;
-  FreeAndNil(locFormulario);
-end;
-
-//
-// Procedimento para exibir a lista de regimes tributários cadastrados.
-//
-procedure Plataforma_ERP_VCL_RegimeTributarioListaExibir;
-var
-  locFormulario: TPlataformaERPVCLRegimeTributarioLista;
-begin
-  locFormulario := TPlataformaERPVCLRegimeTributarioLista.Create(nil);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);
@@ -267,6 +278,304 @@ begin
   locFormulario.pubLicencaID         := argLicencaID;
   locFormulario.pubTipoUsuarioBaseID := argTipoUsuarioBaseID;
   locFormulario.pubTipoUsuarioID     := argTipoUsuarioID;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para validar um tipo de usuário.
+//
+function Plataforma_ERP_VCL_TipoUsuarioValidar(argNovo                : Boolean;
+                                               argLicencaID           : TEdit;
+                                               argTipoUsuarioBaseID   : TEdit;
+                                               argTipoUsuarioID       : TEdit;
+                                               argTipoUsuarioCodigo   : TEdit;
+                                               argTipoUsuarioDescricao: TEdit): Boolean;
+const
+  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_TipoUsuarioValidar';
+  ERRO_MENSAGEM    : string = 'Impossível validar o tipo de usuário!';
+var
+  locADOConnection       : TADOConnection;
+  locADOQuery            : TADOQuery;
+  locLogMensagem         : string;
+  locClicouFechar        : Boolean;
+  locLicencaID           : Integer;
+  locTipoUsuarioBaseID   : Integer;
+  locTipoUsuarioID       : Integer;
+  locTipoUsuarioCodigo   : string;
+  locTipoUsuarioDescricao: string;
+  locFormulario          : TPlataformaERPVCLTiposUsuariosCodigo;
+begin
+  //
+  // Retorno padrão.
+  //
+  Result := False;
+
+  //
+  // Carrega variáveis.
+  //
+  locLicencaID            := StringIntegerConverter(argLicencaID.Text);
+  locTipoUsuarioBaseID    := StringIntegerConverter(argTipoUsuarioBaseID.Text);
+  locTipoUsuarioID        := StringIntegerConverter(argTipoUsuarioID.Text);
+  locTipoUsuarioCodigo    := StringTrim(argTipoUsuarioCodigo.Text);
+  locTipoUsuarioDescricao := StringTrim(argTipoUsuarioDescricao.Text);
+
+  //
+  // Componente vazio.
+  //
+  if locTipoUsuarioCodigo = '' then
+  begin
+    argTipoUsuarioBaseID.Text    := '';
+    argTipoUsuarioID.Text        := '';
+    argTipoUsuarioDescricao.Text := '';
+    Result := True;
+    Exit;
+  end;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(nil);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do tipo de usuário.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                                          ');
+  locADOQuery.SQL.Add('  [base].[base_id]   AS [tipo_usuario_base_id],                 ');
+  locADOQuery.SQL.Add('  [base].[descricao] AS [tipo_usuario_base_titulo],             ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id],                                  ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id],                             ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[codigo],                                      ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[descricao],                                   ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado],                                   ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]                                        ');
+  locADOQuery.SQL.Add('FROM                                                            ');
+  locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)                                  ');
+  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                               ');
+  locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario].[tipo_usuario_base_id] ');
+  locADOQuery.SQL.Add('WHERE                                                           ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id] = :licenca_id AND                 ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[codigo]     = :codigo     AND                 ');
+  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]      = ''S''                           ');
+
+  locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
+  locADOQuery.Parameters.ParamByName('codigo').Value     := locTipoUsuarioCodigo;
+
+  if locTipoUsuarioBaseID > 0 then
+  begin
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[tipo_usuario_base_id] = :tipo_usuario_base_id ');
+    locADOQuery.Parameters.ParamByName('tipo_usuario_base_id').Value := locTipoUsuarioBaseID;
+  end;  
+
+  if argNovo then
+  begin   
+    locADOQuery.SQL.Add(' AND [tipo_usuario].[bloqueado] = ''N'' ');
+  end;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [tipo_usuario]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Nenhum registro encontrado.
+  //
+  if locADOQuery.RecordCount <= 0 then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);    
+    VCLConsistenciaExibir('Nenhum tipo de usuário encontrado com o código "' + locTipoUsuarioCodigo + '" informado!');
+    argTipoUsuarioBaseID.Text    := '';
+    argTipoUsuarioID.Text        := '';
+    argTipoUsuarioDescricao.Text := '';
+    argTipoUsuarioCodigo.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Apenas um registro encontrado.
+  //
+  if locADOQuery.RecordCount = 1 then
+  begin
+    argTipoUsuarioBaseID.Text    := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_base_id').AsInteger);
+    argTipoUsuarioID.Text        := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger);
+    argTipoUsuarioCodigo.Text    := locADOQuery.FieldByName('codigo').AsString;
+    argTipoUsuarioDescricao.Text := locADOQuery.FieldByName('descricao').AsString;
+  end;
+
+  //
+  // Vários registros encontrados.
+  //
+  if locADOQuery.RecordCount > 1 then
+  begin
+    locFormulario                       := TPlataformaERPVCLTiposUsuariosCodigo.Create(nil);
+    locFormulario.pubADOQuery           := locADOQuery;
+    locFormulario.pubTipoUsuarioBaseID  := locTipoUsuarioBaseID;
+    locFormulario.pubTipoUsuarioID      := locTipoUsuarioID;
+    locFormulario.pubCodigo             := locTipoUsuarioCodigo;
+    locFormulario.pubDescricao          := locTipoUsuarioDescricao;
+
+    locFormulario.ShowModal;
+
+    locClicouFechar         := locFormulario.pubClicouFechar;
+    locTipoUsuarioBaseID    := locFormulario.pubTipoUsuarioBaseID;
+    locTipoUsuarioID        := locFormulario.pubTipoUsuarioID;
+    locTipoUsuarioCodigo    := locFormulario.pubCodigo;
+    locTipoUsuarioDescricao := locFormulario.pubDescricao;
+
+    locFormulario.Release;
+    FreeAndNil(locFormulario);
+
+    if locClicouFechar then
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      VCLCursorTrocar;
+      argTipoUsuarioCodigo.SetFocus;
+      Exit;
+    end;
+
+    argTipoUsuarioBaseID.Text    := IntegerStringConverter(locTipoUsuarioBaseID);
+    argTipoUsuarioID.Text        := IntegerStringConverter(locTipoUsuarioID);
+    argTipoUsuarioCodigo.Text    := locTipoUsuarioCodigo;
+    argTipoUsuarioDescricao.Text := locTipoUsuarioDescricao;
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+
+  Result := True;
+end;
+
+//
+// Procedimento para selecionar um tipo de usuário.
+//
+function Plataforma_ERP_VCL_TipoUsuarioSelecionar(argLicencaID           : TEdit;
+                                                  argTipoUsuarioBaseID   : TEdit;
+                                                  argTipoUsuarioID       : TEdit;
+                                                  argTipoUsuarioCodigo   : TEdit;
+                                                  argTipoUsuarioDescricao: TEdit): Boolean;
+var
+  locFormulario          : TPlataformaERPVCLTiposUsuariosSelecao;
+  locClicouFechar        : Boolean;
+  locTipoUsuarioBaseID   : Integer;
+  locTipoUsuarioID       : Integer;
+  locTipoUsuarioCodigo   : string;
+  locTipoUsuarioDescricao: string;
+begin
+  Result := False;
+
+  locTipoUsuarioBaseID    := StringIntegerConverter(argTipoUsuarioBaseID.Text);
+  locTipoUsuarioID        := StringIntegerConverter(argTipoUsuarioID.Text);
+  locTipoUsuarioCodigo    := StringTrim(argTipoUsuarioCodigo.Text);
+  locTipoUsuarioDescricao := StringTrim(argTipoUsuarioDescricao.Text);
+
+  locFormulario := TPlataformaERPVCLTiposUsuariosSelecao.Create(nil);
+
+  locFormulario.pubTipoUsuarioBaseID := locTipoUsuarioBaseID;
+  locFormulario.pubTipoUsuarioID     := locTipoUsuarioID;
+  locFormulario.pubCodigo            := locTipoUsuarioCodigo;
+  locFormulario.pubDescricao         := locTipoUsuarioDescricao;
+  
+  locFormulario.ShowModal;
+
+  locClicouFechar         := locFormulario.pubClicouFechar;
+  locTipoUsuarioBaseID    := locFormulario.pubTipoUsuarioBaseID;
+  locTipoUsuarioID        := locFormulario.pubTipoUsuarioID;
+  locTipoUsuarioCodigo    := locFormulario.pubCodigo;
+  locTipoUsuarioDescricao := locFormulario.pubDescricao;
+  
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    argTipoUsuarioBaseID.Text    := IntegerStringConverter(locTipoUsuarioBaseID);
+    argTipoUsuarioID.Text        := IntegerStringConverter(locTipoUsuarioID);
+    argTipoUsuarioCodigo.Text    := locTipoUsuarioCodigo;
+    argTipoUsuarioDescricao.Text := locTipoUsuarioDescricao;
+    Result := False;
+  end;
+end;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// REGIME TRIBUTÁRIO!
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+//
+// Procedimento para exibir a lista de regimes tributários cadastrados.
+//
+procedure Plataforma_ERP_VCL_RegimeTributarioListaExibir;
+var
+  locFormulario: TPlataformaERPVCLRegimeTributarioLista;
+begin
+  locFormulario := TPlataformaERPVCLRegimeTributarioLista.Create(nil);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o cadastro do regime tributário.
+//
+procedure Plataforma_ERP_VCL_RegimeTributarioExibir(argRegimeTributarioID: Integer);
+var
+  locFormulario: TPlataformaERPVCLRegimeTributarioCadastro;
+begin
+  locFormulario                       := TPlataformaERPVCLRegimeTributarioCadastro.Create(nil);
+  locFormulario.pubRegimeTributarioID := argRegimeTributarioID;
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);
