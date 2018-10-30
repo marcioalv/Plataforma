@@ -399,6 +399,10 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 128
@@ -712,7 +716,7 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
   end
   object btnGravar: TBitBtn
     Left = 400
-    Top = 392
+    Top = 400
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -793,7 +797,7 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
   end
   object btnCancelar: TBitBtn
     Left = 512
-    Top = 392
+    Top = 400
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -874,7 +878,7 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
   end
   object btnMinimizar: TBitBtn
     Left = 456
-    Top = 392
+    Top = 400
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -947,7 +951,7 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
   end
   object btnAlterar: TBitBtn
     Left = 400
-    Top = 392
+    Top = 400
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -1028,7 +1032,7 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
   end
   object btnFechar: TBitBtn
     Left = 512
-    Top = 392
+    Top = 400
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -1091,7 +1095,7 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
   end
   object btnNovo: TBitBtn
     Left = 344
-    Top = 392
+    Top = 400
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -1164,7 +1168,7 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
   end
   object btnSenha: TBitBtn
     Left = 49
-    Top = 388
+    Top = 396
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -1242,13 +1246,12 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
     ParentShowHint = False
     ShowHint = True
     TabOrder = 7
-    OnClick = btnSenhaClick
   end
   object mnuFormulario: TMainMenu
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
-    Left = 176
-    Top = 392
+    Left = 8
+    Top = 384
     object mniAdicional: TMenuItem
       Caption = 'Adicional'
       object mniLog: TMenuItem
