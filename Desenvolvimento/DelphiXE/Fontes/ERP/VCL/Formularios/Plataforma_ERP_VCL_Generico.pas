@@ -61,6 +61,10 @@ procedure Plataforma_ERP_VCL_LicencaCadastroExibir(argLicencaID: Integer);
 procedure Plataforma_ERP_VCL_PerfilUsuarioListaExibir;
 
 //
+// TIPOS DE USUÁRIOS!
+//
+
+//
 // Plataforma_ERP_VCL_TipoUsuarioListaExibir.
 //
 procedure Plataforma_ERP_VCL_TipoUsuarioListaExibir;
@@ -90,7 +94,10 @@ function Plataforma_ERP_VCL_TipoUsuarioSelecionar(argLicencaID           : TEdit
                                                   argTipoUsuarioID       : TEdit;
                                                   argTipoUsuarioCodigo   : TEdit;
                                                   argTipoUsuarioDescricao: TEdit): Boolean;
-
+//
+// REGIME TRIBUTÁRIO!
+//
+                                                  
 //
 // Plataforma_ERP_VCL_RegimeTributarioListaExibir.
 //
@@ -129,11 +136,15 @@ uses
   Plataforma_ERP_VCL_BaseCadastro,
   Plataforma_ERP_VCL_LicencaCadastro,
   Plataforma_ERP_VCL_PerfilUsuarioLista,
+
   Plataforma_ERP_VCL_TiposUsuariosLista,
   Plataforma_ERP_VCL_TiposUsuariosCadastro,
   Plataforma_ERP_VCL_TiposUsuariosCodigo,
   Plataforma_ERP_VCL_TiposUsuariosSelecao,
-  Plataforma_ERP_VCL_RegimeTributarioLista;
+
+  Plataforma_ERP_VCL_RegimeTributarioLista,
+  Plataforma_ERP_VCL_RegimeTributarioCadastro,
+  Plataforma_ERP_VCL_RegimeTributarioSelecao;  
 
 //
 // Procedimento para configurar a imagem de background padrão dos formulários.
@@ -248,9 +259,9 @@ begin
   FreeAndNil(locFormulario);
 end;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//
 // TIPOS DE USUÁRIOS!
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//
 
 //
 // Procedimento para exibir a lista de tipos de usuários cadastrados.
@@ -550,9 +561,9 @@ begin
   end;
 end;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//
 // REGIME TRIBUTÁRIO!
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//
 
 //
 // Procedimento para exibir a lista de regimes tributários cadastrados.
@@ -582,28 +593,23 @@ begin
 end;
 
 //
-// Procedimento para validar um tipo de usuário.
+// Procedimento para validar um regime tributário.
 //
-function Plataforma_ERP_VCL_TipoUsuarioValidar(argNovo                : Boolean;
-                                               argLicencaID           : TEdit;
-                                               argTipoUsuarioBaseID   : TEdit;
-                                               argTipoUsuarioID       : TEdit;
-                                               argTipoUsuarioCodigo   : TEdit;
-                                               argTipoUsuarioDescricao: TEdit): Boolean;
+function Plataforma_ERP_VCL_RegimeTributarioValidar(argNovo                     : Boolean;
+                                                    argRegimeTributarioID       : TEdit;
+                                                    argRegimeTributarioCodigo   : TEdit;
+                                                    argRegimeTributarioDescricao: TEdit): Boolean;
 const
-  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_TipoUsuarioValidar';
-  ERRO_MENSAGEM    : string = 'Impossível validar o tipo de usuário!';
+  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_RegimeTributarioValidar';
+  ERRO_MENSAGEM    : string = 'Impossível validar o regime tributário!';
 var
-  locADOConnection       : TADOConnection;
-  locADOQuery            : TADOQuery;
-  locLogMensagem         : string;
-  locClicouFechar        : Boolean;
-  locLicencaID           : Integer;
-  locTipoUsuarioBaseID   : Integer;
-  locTipoUsuarioID       : Integer;
-  locTipoUsuarioCodigo   : string;
-  locTipoUsuarioDescricao: string;
-  locFormulario          : TPlataformaERPVCLTiposUsuariosCodigo;
+  locADOConnection            : TADOConnection;
+  locADOQuery                 : TADOQuery;
+  locLogMensagem              : string;
+  locClicouFechar             : Boolean;
+  locRegimeTributarioID       : Integer;
+  locRegimeTributarioCodigo   : string;
+  locRegimeTributarioDescricao: string;
 begin
   //
   // Retorno padrão.
@@ -613,20 +619,17 @@ begin
   //
   // Carrega variáveis.
   //
-  locLicencaID            := StringIntegerConverter(argLicencaID.Text);
-  locTipoUsuarioBaseID    := StringIntegerConverter(argTipoUsuarioBaseID.Text);
-  locTipoUsuarioID        := StringIntegerConverter(argTipoUsuarioID.Text);
-  locTipoUsuarioCodigo    := StringTrim(argTipoUsuarioCodigo.Text);
-  locTipoUsuarioDescricao := StringTrim(argTipoUsuarioDescricao.Text);
+  locRegimeTributarioID        := StringIntegerConverter(argRegimeTributarioID.Text);
+  locRegimeTributarioCodigo    := StringTrim(argRegimeTributarioCodigo.Text);
+  locRegimeTributarioDescricao := StringTrim(argRegimeTributarioDescricao.Text);
 
   //
   // Componente vazio.
   //
-  if locTipoUsuarioCodigo = '' then
+  if locRegimeTributarioCodigo = '' then
   begin
-    argTipoUsuarioBaseID.Text    := '';
-    argTipoUsuarioID.Text        := '';
-    argTipoUsuarioDescricao.Text := '';
+    argRegimeTributarioID.Text        := '';
+    argRegimeTributarioDescricao.Text := '';
     Result := True;
     Exit;
   end;
@@ -666,36 +669,23 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                          ');
-  locADOQuery.SQL.Add('  [base].[base_id]   AS [tipo_usuario_base_id],                 ');
-  locADOQuery.SQL.Add('  [base].[descricao] AS [tipo_usuario_base_titulo],             ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id],                                  ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[tipo_usuario_id],                             ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[codigo],                                      ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[descricao],                                   ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[bloqueado],                                   ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]                                        ');
-  locADOQuery.SQL.Add('FROM                                                            ');
-  locADOQuery.SQL.Add('  [tipo_usuario] WITH (NOLOCK)                                  ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                               ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [tipo_usuario].[tipo_usuario_base_id] ');
-  locADOQuery.SQL.Add('WHERE                                                           ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[licenca_id] = :licenca_id AND                 ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[codigo]     = :codigo     AND                 ');
-  locADOQuery.SQL.Add('  [tipo_usuario].[ativo]      = ''S''                           ');
+  locADOQuery.SQL.Add('SELECT                                        ');
+  locADOQuery.SQL.Add('  [regime_tributario].[regime_tributario_id], ');
+  locADOQuery.SQL.Add('  [regime_tributario].[codigo],               ');
+  locADOQuery.SQL.Add('  [regime_tributario].[descricao],            ');
+  locADOQuery.SQL.Add('  [regime_tributario].[bloqueado],            ');
+  locADOQuery.SQL.Add('  [regime_tributario].[ativo]                 ');
+  locADOQuery.SQL.Add('FROM                                          ');
+  locADOQuery.SQL.Add('  [regime_tributario] WITH (NOLOCK)           ');
+  locADOQuery.SQL.Add('WHERE                                         ');
+  locADOQuery.SQL.Add('  [regime_tributario].[codigo] = :codigo AND  ');
+  locADOQuery.SQL.Add('  [regime_tributario].[ativo]  = ''S''        ');
 
-  locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
-  locADOQuery.Parameters.ParamByName('codigo').Value     := locTipoUsuarioCodigo;
-
-  if locTipoUsuarioBaseID > 0 then
-  begin
-    locADOQuery.SQL.Add(' AND [tipo_usuario].[tipo_usuario_base_id] = :tipo_usuario_base_id ');
-    locADOQuery.Parameters.ParamByName('tipo_usuario_base_id').Value := locTipoUsuarioBaseID;
-  end;  
+  locADOQuery.Parameters.ParamByName('codigo').Value := locRegimeTributarioCodigo;
 
   if argNovo then
   begin   
-    locADOQuery.SQL.Add(' AND [tipo_usuario].[bloqueado] = ''N'' ');
+    locADOQuery.SQL.Add(' AND [regime_tributario].[bloqueado] = ''N'' ');
   end;
 
   //
@@ -710,7 +700,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [tipo_usuario]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [regime_tributario]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -726,11 +716,10 @@ begin
     FreeAndNil(locADOQuery);
     locADOConnection.Close;
     FreeAndNil(locADOConnection);    
-    VCLConsistenciaExibir('Nenhum tipo de usuário encontrado com o código "' + locTipoUsuarioCodigo + '" informado!');
-    argTipoUsuarioBaseID.Text    := '';
-    argTipoUsuarioID.Text        := '';
-    argTipoUsuarioDescricao.Text := '';
-    argTipoUsuarioCodigo.SetFocus;
+    VCLConsistenciaExibir('Nenhum regime tributário encontrado com o código "' + locRegimeTributarioCodigo + '" informado!');
+    argRegimeTributarioID.Text        := '';
+    argRegimeTributarioDescricao.Text := '';
+    argRegimeTributarioCodigo.SetFocus;
     Exit;
   end;
 
@@ -739,50 +728,9 @@ begin
   //
   if locADOQuery.RecordCount = 1 then
   begin
-    argTipoUsuarioBaseID.Text    := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_base_id').AsInteger);
-    argTipoUsuarioID.Text        := IntegerStringConverter(locADOQuery.FieldByName('tipo_usuario_id').AsInteger);
-    argTipoUsuarioCodigo.Text    := locADOQuery.FieldByName('codigo').AsString;
-    argTipoUsuarioDescricao.Text := locADOQuery.FieldByName('descricao').AsString;
-  end;
-
-  //
-  // Vários registros encontrados.
-  //
-  if locADOQuery.RecordCount > 1 then
-  begin
-    locFormulario                       := TPlataformaERPVCLTiposUsuariosCodigo.Create(nil);
-    locFormulario.pubADOQuery           := locADOQuery;
-    locFormulario.pubTipoUsuarioBaseID  := locTipoUsuarioBaseID;
-    locFormulario.pubTipoUsuarioID      := locTipoUsuarioID;
-    locFormulario.pubCodigo             := locTipoUsuarioCodigo;
-    locFormulario.pubDescricao          := locTipoUsuarioDescricao;
-
-    locFormulario.ShowModal;
-
-    locClicouFechar         := locFormulario.pubClicouFechar;
-    locTipoUsuarioBaseID    := locFormulario.pubTipoUsuarioBaseID;
-    locTipoUsuarioID        := locFormulario.pubTipoUsuarioID;
-    locTipoUsuarioCodigo    := locFormulario.pubCodigo;
-    locTipoUsuarioDescricao := locFormulario.pubDescricao;
-
-    locFormulario.Release;
-    FreeAndNil(locFormulario);
-
-    if locClicouFechar then
-    begin
-      locADOQuery.Close;
-      FreeAndNil(locADOQuery);
-      locADOConnection.Close;
-      FreeAndNil(locADOConnection);
-      VCLCursorTrocar;
-      argTipoUsuarioCodigo.SetFocus;
-      Exit;
-    end;
-
-    argTipoUsuarioBaseID.Text    := IntegerStringConverter(locTipoUsuarioBaseID);
-    argTipoUsuarioID.Text        := IntegerStringConverter(locTipoUsuarioID);
-    argTipoUsuarioCodigo.Text    := locTipoUsuarioCodigo;
-    argTipoUsuarioDescricao.Text := locTipoUsuarioDescricao;
+    argRegimeTributarioID.Text        := IntegerStringConverter(locADOQuery.FieldByName('regime_tributario_id').AsInteger);
+    argRegimeTributarioCodigo.Text    := locADOQuery.FieldByName('codigo').AsString;
+    argRegimeTributarioDescricao.Text := locADOQuery.FieldByName('descricao').AsString;
   end;
 
   //
@@ -798,52 +746,45 @@ begin
 end;
 
 //
-// Procedimento para selecionar um tipo de usuário.
+// Procedimento para selecionar um regime tributário.
 //
-function Plataforma_ERP_VCL_TipoUsuarioSelecionar(argLicencaID           : TEdit;
-                                                  argTipoUsuarioBaseID   : TEdit;
-                                                  argTipoUsuarioID       : TEdit;
-                                                  argTipoUsuarioCodigo   : TEdit;
-                                                  argTipoUsuarioDescricao: TEdit): Boolean;
+function Plataforma_ERP_VCL_RegimeTributarioSelecionar(argRegimeTributarioID       : TEdit;
+                                                       argRegimeTributarioCodigo   : TEdit;
+                                                       argRegimeTributarioDescricao: TEdit): Boolean;
 var
-  locFormulario          : TPlataformaERPVCLTiposUsuariosSelecao;
-  locClicouFechar        : Boolean;
-  locTipoUsuarioBaseID   : Integer;
-  locTipoUsuarioID       : Integer;
-  locTipoUsuarioCodigo   : string;
-  locTipoUsuarioDescricao: string;
+  locFormulario               : TPlataformaERPVCLRegimeTributarioSelecao;
+  locClicouFechar             : Boolean;
+  locRegimeTributarioID       : Integer;
+  locRegimeTributarioCodigo   : string;
+  locRegimeTributarioDescricao: string;
 begin
   Result := False;
 
-  locTipoUsuarioBaseID    := StringIntegerConverter(argTipoUsuarioBaseID.Text);
-  locTipoUsuarioID        := StringIntegerConverter(argTipoUsuarioID.Text);
-  locTipoUsuarioCodigo    := StringTrim(argTipoUsuarioCodigo.Text);
-  locTipoUsuarioDescricao := StringTrim(argTipoUsuarioDescricao.Text);
+  locRegimeTributarioID        := StringIntegerConverter(argRegimeTributarioID.Text);
+  locRegimeTributarioCodigo    := StringTrim(argRegimeTributarioCodigo.Text);
+  locRegimeTributarioDescricao := StringTrim(argRegimeTributarioDescricao.Text);
 
-  locFormulario := TPlataformaERPVCLTiposUsuariosSelecao.Create(nil);
+  locFormulario := TPlataformaERPVCLRegimeTributarioSelecao.Create(nil);
 
-  locFormulario.pubTipoUsuarioBaseID := locTipoUsuarioBaseID;
-  locFormulario.pubTipoUsuarioID     := locTipoUsuarioID;
-  locFormulario.pubCodigo            := locTipoUsuarioCodigo;
-  locFormulario.pubDescricao         := locTipoUsuarioDescricao;
+  locFormulario.pubRegimeTributarioID := locRegimeTributarioID;
+  locFormulario.pubCodigo             := locRegimeTributarioCodigo;
+  locFormulario.pubDescricao          := locRegimeTributarioDescricao;
   
   locFormulario.ShowModal;
 
-  locClicouFechar         := locFormulario.pubClicouFechar;
-  locTipoUsuarioBaseID    := locFormulario.pubTipoUsuarioBaseID;
-  locTipoUsuarioID        := locFormulario.pubTipoUsuarioID;
-  locTipoUsuarioCodigo    := locFormulario.pubCodigo;
-  locTipoUsuarioDescricao := locFormulario.pubDescricao;
+  locClicouFechar              := locFormulario.pubClicouFechar;
+  locRegimeTributarioID        := locFormulario.pubRegimeTributarioID;
+  locRegimeTributarioCodigo    := locFormulario.pubCodigo;
+  locRegimeTributarioDescricao := locFormulario.pubDescricao;
   
   locFormulario.Release;
   FreeAndNil(locFormulario);
 
   if not locClicouFechar then
   begin
-    argTipoUsuarioBaseID.Text    := IntegerStringConverter(locTipoUsuarioBaseID);
-    argTipoUsuarioID.Text        := IntegerStringConverter(locTipoUsuarioID);
-    argTipoUsuarioCodigo.Text    := locTipoUsuarioCodigo;
-    argTipoUsuarioDescricao.Text := locTipoUsuarioDescricao;
+    argRegimeTributarioID.Text        := IntegerStringConverter(locRegimeTributarioID);
+    argRegimeTributarioCodigo.Text    := locRegimeTributarioCodigo;
+    argRegimeTributarioDescricao.Text := locRegimeTributarioDescricao;
     Result := False;
   end;
 end;

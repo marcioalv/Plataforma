@@ -47,6 +47,7 @@ const
   NUMERADOR_PERFIL_USUARIO_ID   : string = 'perfil_usuario_id';
   NUMERADOR_TIPO_USUARIO_ID     : string = 'tipo_usuario_id';
   NUMERADOR_USUARIO_ID          : string = 'usuario_id';
+  NUMERADOR_EMPRESA_ID          : string = 'empresa_id';
 
 //
 // PlataformaERPLogar.

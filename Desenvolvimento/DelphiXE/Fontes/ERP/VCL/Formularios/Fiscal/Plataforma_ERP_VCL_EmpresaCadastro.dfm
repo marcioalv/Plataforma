@@ -451,7 +451,7 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
         Font.Style = []
         ParentFont = False
       end
-      object lblUsuarioBase: TLabel
+      object lblEmpresaBase: TLabel
         Left = 16
         Top = 72
         Width = 29
@@ -553,7 +553,7 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
         TabOrder = 4
         Text = '9.999'
       end
-      object edtUsuarioBaseDescricao: TEdit
+      object edtEmpresaBaseDescricao: TEdit
         Left = 16
         Top = 88
         Width = 385
@@ -571,9 +571,9 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
         ShowHint = False
         TabOrder = 2
         Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
-        OnClick = edtUsuarioBaseDescricaoClick
+        OnClick = edtEmpresaBaseDescricaoClick
       end
-      object edtUsuarioBaseID: TEdit
+      object edtEmpresaBaseID: TEdit
         Left = 280
         Top = 88
         Width = 65
@@ -1251,21 +1251,12 @@ object PlataformaERPVCLEmpresaCadastro: TPlataformaERPVCLEmpresaCadastro
     Top = 392
     object mniAdicional: TMenuItem
       Caption = 'Adicional'
-      object mniPerfis: TMenuItem
-        Caption = 'Perfis'
-      end
       object mniLog: TMenuItem
         Caption = 'Log altera'#231#245'es'
         OnClick = mniLogClick
       end
-      object mniCadastros: TMenuItem
-        Caption = 'Cadastros'
-        object mniCadastroPerfilUsuario: TMenuItem
-          Caption = 'Perfis de usu'#225'rio'
-        end
-        object mniCadastroTipoUsuario: TMenuItem
-          Caption = 'Tipos de usu'#225'rio'
-        end
+      object mniCadastroRegimeTributario: TMenuItem
+        Caption = 'Regimes tribut'#225'rios'
       end
     end
     object mniAtualizar: TMenuItem
