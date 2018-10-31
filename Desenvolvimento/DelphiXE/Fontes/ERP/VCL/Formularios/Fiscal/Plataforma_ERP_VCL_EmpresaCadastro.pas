@@ -85,7 +85,6 @@ type
     gbxOpcoes: TGroupBox;
     chkBloqueado: TCheckBox;
     chkAtivo: TCheckBox;
-    btnSenha: TBitBtn;
     mniCadastroRegimeTributario: TMenuItem;
     edtCodigoCadastradoBaseID: TEdit;
     edtCodigoCadastradoID: TEdit;
