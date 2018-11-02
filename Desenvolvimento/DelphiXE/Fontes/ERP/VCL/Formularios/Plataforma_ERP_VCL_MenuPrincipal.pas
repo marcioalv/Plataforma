@@ -73,6 +73,7 @@ type
     mniFiscal: TMenuItem;
     mniFiscalCadastros: TMenuItem;
     mniEmpresas: TMenuItem;
+    mniFiliais: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogLocalClick(Sender: TObject);
@@ -99,6 +100,7 @@ type
     procedure mniPessoasClick(Sender: TObject);
     procedure mniRegimeTributarioClick(Sender: TObject);
     procedure mniEmpresasClick(Sender: TObject);
+    procedure mniFiliaisClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -134,7 +136,8 @@ uses
   Plataforma_ERP_VCL_LicencaLista,
   Plataforma_ERP_VCL_NumeradorLicencaLista,
   Plataforma_ERP_VCL_NumeradorBaseLista,
-  Plataforma_ERP_VCL_EmpresaLista;
+  Plataforma_ERP_VCL_EmpresaLista,
+  Plataforma_ERP_VCL_FilialLista;
 
 //
 // Evento de criação do formulário.
@@ -202,13 +205,26 @@ begin
 end;
 
 //
-// Evento de click na opção "Empresas".
+// Evento de click na opção "empresas".
 //
 procedure TPlataformaERPVCLMenuPrincipal.mniEmpresasClick(Sender: TObject);
 var
   locFormulario: TPlataformaERPVCLEmpresaLista;
 begin
   locFormulario := TPlataformaERPVCLEmpresaLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "filiais".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniFiliaisClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLFilialLista;
+begin
+  locFormulario := TPlataformaERPVCLFilialLista.Create(Self);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

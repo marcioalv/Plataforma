@@ -587,6 +587,7 @@ CREATE TABLE [filial] (
   [cpf_cnpj]             VARCHAR(20)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [empresa_base_id]      SMALLINT                                  NOT NULL,
   [empresa_id]           SMALLINT                                  NOT NULL,
+  [regime_tributario_id] TINYINT                                   NOT NULL,
   [bloqueado]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]                CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ins_local_dt_hr]      DATETIME                                  NOT NULL,
@@ -605,11 +606,12 @@ CREATE TABLE [filial] (
   CONSTRAINT [filial_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
   CONSTRAINT [filial_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
 
-  CONSTRAINT [filial_fk_lincenca]    FOREIGN KEY ([licenca_id])                                          REFERENCES [licenca]           ([licenca_id]),
-  CONSTRAINT [filial_fk_base]        FOREIGN KEY ([filial_base_id])                                      REFERENCES [base]              ([base_id]),
-  CONSTRAINT [filial_fk_empresa]     FOREIGN KEY ([licenca_id], [empresa_base_id], [empresa_id])         REFERENCES [empresa]           ([licenca_id], [empresa_base_id], [empresa_id]),
-  CONSTRAINT [filial_fk_usuario_ins] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id]),
-  CONSTRAINT [filial_fk_usuario_upd] FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id])
+  CONSTRAINT [filial_fk_lincenca]          FOREIGN KEY ([licenca_id])                                          REFERENCES [licenca]           ([licenca_id]),
+  CONSTRAINT [filial_fk_base]              FOREIGN KEY ([filial_base_id])                                      REFERENCES [base]              ([base_id]),
+  CONSTRAINT [filial_fk_empresa]           FOREIGN KEY ([licenca_id], [empresa_base_id], [empresa_id])         REFERENCES [empresa]           ([licenca_id], [empresa_base_id], [empresa_id]),
+  CONSTRAINT [filial_fk_regime_tributario] FOREIGN KEY ([regime_tributario_id])                                REFERENCES [regime_tributario] ([regime_tributario_id]),
+  CONSTRAINT [filial_fk_usuario_ins]       FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id]),
+  CONSTRAINT [filial_fk_usuario_upd]       FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id])
 )
 GO
 
@@ -766,13 +768,13 @@ GO
 --
 -- Filial.
 --
-INSERT INTO [filial] VALUES (1, 1, 1, '01', 'Prudente Moraes', 'Bergerson Joias e Relogios Ltda', 'Bergerson Joalheiros',  '76535111000164', 1, 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+INSERT INTO [filial] VALUES (1, 1, 1, '01', 'Prudente Moraes', 'Bergerson Joias e Relogios Ltda', 'Bergerson Joalheiros',  '76535111000164', 1, 1, 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
 INSERT INTO [filial_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
-INSERT INTO [filial] VALUES (1, 1, 2, '02', 'Venda Externa E1', 'Bergerson Joias e Relogios Ltda', 'Bergerson Joalheiros',  '76535111000299', 1, 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+INSERT INTO [filial] VALUES (1, 1, 2, '02', 'Venda Externa E1', 'Bergerson Joias e Relogios Ltda', 'Bergerson Joalheiros',  '76535111000299', 1, 1, 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
 INSERT INTO [filial_log] VALUES (1, 1, 2, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
-INSERT INTO [filial] VALUES (1, 1, 3, '03', 'Bergerson Pátio Batel', 'Bergerson Joias e Relogios Ltda', 'Bergerson Joalheiros',  '76535111000398', 1, 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+INSERT INTO [filial] VALUES (1, 1, 3, '03', 'Bergerson Pátio Batel', 'Bergerson Joias e Relogios Ltda', 'Bergerson Joalheiros',  '76535111000398', 1, 1, 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
 INSERT INTO [filial_log] VALUES (1, 1, 3, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
 INSERT INTO [numerador_licenca] VALUES (1, 1, 'filial_id', 3, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
