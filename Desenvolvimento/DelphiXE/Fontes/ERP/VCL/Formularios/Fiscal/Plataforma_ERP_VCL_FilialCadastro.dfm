@@ -76,6 +76,10 @@ object PlataformaERPVCLFilialCadastro: TPlataformaERPVCLFilialCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -643,6 +647,10 @@ object PlataformaERPVCLFilialCadastro: TPlataformaERPVCLFilialCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 128

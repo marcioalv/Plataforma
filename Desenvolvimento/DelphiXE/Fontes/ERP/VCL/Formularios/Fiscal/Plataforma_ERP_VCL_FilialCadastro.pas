@@ -455,12 +455,12 @@ end;
 //
 procedure TPlataformaERPVCLFilialCadastro.edtEmpresaCodigoEnter(Sender: TObject);
 begin
-  Exit;
+  if not VCLEditEntrar(edtEmpresaCodigo) then Exit;
 end;
 
 procedure TPlataformaERPVCLFilialCadastro.edtEmpresaCodigoKeyPress(Sender: TObject; var Key: Char);
 begin
-  Exit;
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
 end;
 
 procedure TPlataformaERPVCLFilialCadastro.edtEmpresaCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -470,17 +470,26 @@ end;
 
 procedure TPlataformaERPVCLFilialCadastro.edtEmpresaCodigoExit(Sender: TObject);
 begin
-  Exit;
+  if not VCLEditSair(edtEmpresaCodigo) then Exit;
+
+  if not Plataforma_ERP_VCL_EmpresaValidar((edtFilialID.Text = STR_NOVO),
+                                           edtLicencaID,
+                                           edtEmpresaBaseID,
+                                           edtEmpresaID,
+                                           edtEmpresaCodigo,
+                                           edtEmpresaDescricao) then Exit;
 end;
 
 procedure TPlataformaERPVCLFilialCadastro.imgEmpresaSelecionarClick(Sender: TObject);
 begin
-  Exit;
+  if not Plataforma_ERP_VCL_EmpresaSelecionar(edtLicencaID, edtEmpresaBaseID, edtEmpresaID, edtEmpresaCodigo, edtEmpresaDescricao) then Exit;
 end;
 
 procedure TPlataformaERPVCLFilialCadastro.edtEmpresaDescricaoClick(Sender: TObject);
 begin
-  Exit;
+  Plataforma_ERP_VCL_EmpresaExibir(StringIntegerConverter(edtLicencaID.Text),
+                                   StringIntegerConverter(edtEmpresaBaseID.Text),
+                                   StringIntegerConverter(edtEmpresaID.Text));
 end;
 
 //
