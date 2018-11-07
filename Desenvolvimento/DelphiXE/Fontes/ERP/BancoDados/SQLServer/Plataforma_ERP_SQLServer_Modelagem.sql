@@ -16,6 +16,8 @@ GO
 --
 -- Apaga tabelas.
 --
+IF OBJECT_ID('local_log')                       IS NOT NULL DROP TABLE [local_log]
+IF OBJECT_ID('local')                           IS NOT NULL DROP TABLE [local]
 IF OBJECT_ID('filial_log')                      IS NOT NULL DROP TABLE [filial_log]
 IF OBJECT_ID('filial')                          IS NOT NULL DROP TABLE [filial]
 IF OBJECT_ID('empresa_log')                     IS NOT NULL DROP TABLE [empresa_log]
@@ -640,6 +642,68 @@ CREATE TABLE [dbo].[filial_log] (
   CONSTRAINT [filial_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
   CONSTRAINT [filial_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
   CONSTRAINT [filial_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
+)
+GO
+
+--
+-- Local.
+--
+CREATE TABLE [local] (
+  [licenca_id]          INT                                       NOT NULL,
+  [local_base_id]       SMALLINT                                  NOT NULL,
+  [local_id]            SMALLINT                                  NOT NULL,
+  [codigo]              VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]           VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]           CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]               CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]     DATETIME                                  NOT NULL,
+  [ins_server_dt_hr]    DATETIME                                  NOT NULL,
+  [ins_usuario_base_id] SMALLINT                                  NOT NULL,
+  [ins_usuario_id]      INT                                       NOT NULL,
+  [upd_local_dt_hr]     DATETIME                                  NULL,
+  [upd_server_dt_hr]    DATETIME                                  NULL,
+  [upd_usuario_base_id] SMALLINT                                  NULL,
+  [upd_usuario_id]      INT                                       NULL,
+  [upd_contador]        INT                                       NOT NULL,
+  
+  CONSTRAINT [local_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [local_base_id], [local_id]),
+  CONSTRAINT [local_ix_codigo] UNIQUE ([licenca_id], [codigo], [local_base_id]),
+
+  CONSTRAINT [local_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [local_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
+
+  CONSTRAINT [local_fk_lincenca]    FOREIGN KEY ([licenca_id])                                          REFERENCES [licenca]           ([licenca_id]),
+  CONSTRAINT [local_fk_base]        FOREIGN KEY ([local_base_id])                                       REFERENCES [base]              ([base_id]),
+  CONSTRAINT [local_fk_usuario_ins] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id]),
+  CONSTRAINT [local_fk_usuario_upd] FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id])
+)
+GO
+
+--
+-- Log dos locais.
+--
+CREATE TABLE [dbo].[local_log] (
+  [licenca_id]          INT                                       NOT NULL,
+  [local_base_id]       SMALLINT                                  NOT NULL,
+  [local_id]            SMALLINT                                  NOT NULL,
+  [local_log_sq]        INT                                       NOT NULL,
+  [log_base_id]         SMALLINT                                  NOT NULL,
+  [log_local_dt_hr]     DATETIME                                  NOT NULL,
+  [log_server_dt_hr]    DATETIME                                  NOT NULL,
+  [registro_acao_id]    TINYINT                                   NOT NULL,
+  [host_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [user_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [log_usuario_base_id] SMALLINT                                  NOT NULL,
+  [log_usuario_id]      INT                                       NOT NULL,
+  [mensagem]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [dados]               VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+ 
+  CONSTRAINT [local_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [local_base_id], [local_id], [local_log_sq]),
+
+  CONSTRAINT [local_log_fk_empresa]       FOREIGN KEY ([licenca_id], [local_base_id], [local_id])             REFERENCES [local]         ([licenca_id], [local_base_id], [local_id]),
+  CONSTRAINT [local_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
+  CONSTRAINT [local_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
+  CONSTRAINT [local_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
 )
 GO
 
