@@ -18,6 +18,8 @@ GO
 --
 IF OBJECT_ID('local_log')                       IS NOT NULL DROP TABLE [local_log]
 IF OBJECT_ID('local')                           IS NOT NULL DROP TABLE [local]
+IF OBJECT_ID('coligada_log')                    IS NOT NULL DROP TABLE [coligada_log]
+IF OBJECT_ID('coligada')                        IS NOT NULL DROP TABLE [coligada]
 IF OBJECT_ID('filial_log')                      IS NOT NULL DROP TABLE [filial_log]
 IF OBJECT_ID('filial')                          IS NOT NULL DROP TABLE [filial]
 IF OBJECT_ID('empresa_log')                     IS NOT NULL DROP TABLE [empresa_log]
@@ -646,6 +648,68 @@ CREATE TABLE [dbo].[filial_log] (
 GO
 
 --
+-- Coligada.
+--
+CREATE TABLE [coligada] (
+  [licenca_id]          INT                                       NOT NULL,
+  [coligada_base_id]    SMALLINT                                  NOT NULL,
+  [coligada_id]         SMALLINT                                  NOT NULL,
+  [codigo]              VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]           VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]           CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]               CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]     DATETIME                                  NOT NULL,
+  [ins_server_dt_hr]    DATETIME                                  NOT NULL,
+  [ins_usuario_base_id] SMALLINT                                  NOT NULL,
+  [ins_usuario_id]      INT                                       NOT NULL,
+  [upd_local_dt_hr]     DATETIME                                  NULL,
+  [upd_server_dt_hr]    DATETIME                                  NULL,
+  [upd_usuario_base_id] SMALLINT                                  NULL,
+  [upd_usuario_id]      INT                                       NULL,
+  [upd_contador]        INT                                       NOT NULL,
+  
+  CONSTRAINT [coligada_pk]        PRIMARY KEY CLUSTERED ([licenca_id], [coligada_base_id], [coligada_id]),
+  CONSTRAINT [coligada_ix_codigo] UNIQUE ([licenca_id], [codigo], [coligada_base_id]),
+
+  CONSTRAINT [coligada_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [coligada_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
+
+  CONSTRAINT [coligada_fk_lincenca]    FOREIGN KEY ([licenca_id])                                          REFERENCES [licenca]           ([licenca_id]),
+  CONSTRAINT [coligada_fk_base]        FOREIGN KEY ([coligada_base_id])                                    REFERENCES [base]              ([base_id]),
+  CONSTRAINT [coligada_fk_usuario_ins] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id]),
+  CONSTRAINT [coligada_fk_usuario_upd] FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario]           ([licenca_id], [usuario_base_id], [usuario_id])
+)
+GO
+
+--
+-- Log das coligadas.
+--
+CREATE TABLE [dbo].[coligada_log] (
+  [licenca_id]          INT                                       NOT NULL,
+  [coligada_base_id]    SMALLINT                                  NOT NULL,
+  [coligada_id]         SMALLINT                                  NOT NULL,
+  [coligada_log_sq]     INT                                       NOT NULL,
+  [log_base_id]         SMALLINT                                  NOT NULL,
+  [log_local_dt_hr]     DATETIME                                  NOT NULL,
+  [log_server_dt_hr]    DATETIME                                  NOT NULL,
+  [registro_acao_id]    TINYINT                                   NOT NULL,
+  [host_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [user_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [log_usuario_base_id] SMALLINT                                  NOT NULL,
+  [log_usuario_id]      INT                                       NOT NULL,
+  [mensagem]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [dados]               VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+ 
+  CONSTRAINT [coligada_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [coligada_base_id], [coligada_id], [coligada_log_sq]),
+
+  CONSTRAINT [coligada_log_fk_coligada]      FOREIGN KEY ([licenca_id], [coligada_base_id], [coligada_id])       REFERENCES [coligada]      ([licenca_id], [coligada_base_id], [coligada_id]),
+  CONSTRAINT [coligada_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
+  CONSTRAINT [coligada_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
+  CONSTRAINT [coligada_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
+)
+GO
+
+--
 -- Local.
 --
 CREATE TABLE [local] (
@@ -842,4 +906,13 @@ INSERT INTO [filial] VALUES (1, 1, 3, '03', 'Bergerson Pátio Batel', 'Bergerson 
 INSERT INTO [filial_log] VALUES (1, 1, 3, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
 
 INSERT INTO [numerador_licenca] VALUES (1, 1, 'filial_id', 3, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+GO
+
+--
+-- Coligada.
+--
+INSERT INTO [coligada] VALUES (1, 1, 1, '01', 'Bergerson Joalheiros', 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
+INSERT INTO [coligada_log] VALUES (1, 1, 1, 1, 1, GETDATE(), GETDATE(), 1, @@SERVERNAME, 'Administrador', 1, 1, 'Registro criado na instalação!', '')
+
+INSERT INTO [numerador_licenca] VALUES (1, 1, 'coligada_id', 1, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)
 GO

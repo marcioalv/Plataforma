@@ -138,6 +138,8 @@ function StringDataHoraPersistidaConverter(argDataHora: string): TDateTime;
 
 function StringCurrencyConverter(argValor: string): Currency;
 
+function CurrencyStringConverter(argValor: Currency; argSimboloMoeda: string = 'R$'; argCasasDecimais: Integer = 2; argVazio: Boolean = True; argSeparadorMilhar: Boolean = True): string;
+
 function PathExtrair(argArquivo: string): string;
 
 function PathArquivoExisteDeterminar(argPathArquivo: string): Boolean;
@@ -146,6 +148,20 @@ procedure PathCriar(argCaminho: string);
 
 function ListaArquivosRetornar(argCaminho: string; argArquivo: string; argSubPastas: Boolean): TStringList;
 
+function FormatacaoRemover(argValor: string): string;
+
+function CPFFormatar(argCPF: string): string;
+
+function CPFValidar(argCPF: string): boolean;
+
+function CNPJFormatar(argCNPJ: string): string;
+
+function CNPJValidar(argCNPJ : string): Boolean;
+
+function CPFCNPJFormatar(argCPF_CNPJ: string): string;
+
+function CPFCNPJValidar(argCPF_CNPJ: string): Boolean;
+
 function DataFormatar(argData: string): string;
 
 function DataValidar(argData: string): Boolean;
@@ -153,6 +169,8 @@ function DataValidar(argData: string): Boolean;
 function HorarioFormatar(argHorario: string): string;
 
 function HorarioValidar(argHorario: string): Boolean;
+
+function CurrencyFormatar(argValor: string; argSimboloMoeda: string = 'R$'; argCasasDecimais: Integer = 2; argVazio: Boolean = True; argSeparadorMilhar: Boolean = True) : string;
 
 procedure LogDadosStringDescrever (argCampo: string; argValor: string;  var outRetorno: string);
 procedure LogDadosIntegerDescrever(argCampo: string; argValor: Integer; var outRetorno: string);
@@ -832,6 +850,32 @@ begin
 end;
 
 //
+// CurrencyStringConverter.
+//
+function CurrencyStringConverter(argValor: Currency; argSimboloMoeda: string = 'R$'; argCasasDecimais: Integer = 2; argVazio: Boolean = True; argSeparadorMilhar: Boolean = True): string;
+var
+  locFormatacao: string;
+  locContador  : Integer;
+begin
+  if argSeparadorMilhar then
+    locFormatacao := '#,###,###,##0'
+  else
+    locFormatacao := '#########0';
+
+  if argCasasDecimais > 0 then
+  begin
+    locFormatacao := locFormatacao + '.';
+    for locContador := 1 to argCasasDecimais do locFormatacao := locFormatacao + '0';
+  end;
+
+  Result := FormatCurr(locFormatacao, argValor);
+
+  if argSimboloMoeda <> '' then Result := argSimboloMoeda + ' ' + Result;
+
+  if (argVazio) and (argValor = 0) then Result := '';
+end;
+
+//
 // PathExtrair.
 //
 function PathExtrair(argArquivo: string): string;
@@ -934,6 +978,249 @@ begin
 
   // Encerra pesquisa.
   System.SysUtils.FindClose(locPesquisa);
+end;
+
+//
+// FormatacaoRemover.
+//
+function FormatacaoRemover(argValor: string): string;
+begin
+  Result := StringTrim(argValor);
+  
+  Result := StringRemover(Result, '.');
+  Result := StringRemover(Result, '-');
+  Result := StringRemover(Result, '/');
+  Result := StringRemover(Result, '\');
+  Result := StringRemover(Result, ':');  
+end;
+
+//
+// CPFFormatar.
+//
+function CPFFormatar(argCPF: string): string;
+begin
+  argCPF := FormatacaoRemover(argCPF);
+  argCPF := Copy(argCPF, 1, 11);
+  argCPF := StringPreencher(argCPF, 11, '0');
+  
+  Result := Copy(argCPF,  1, 3) + '.' +
+            Copy(argCPF,  4, 3) + '.' +
+            Copy(argCPF,  7, 3) + '-' +
+            Copy(argCPF, 10, 2);
+end;
+
+//
+// CPFValidar.
+//
+function CPFValidar(argCPF: string): Boolean;
+var
+  locContador: Integer;
+  locDV      : Integer;
+  locModulo  : Integer;
+begin
+  //
+  // Retorno padrão.
+  //
+  Result := False;
+
+  //
+  // Formata o CPF com zeros a esquerda.
+  //
+  argCPF := FormatacaoRemover(argCPF);
+  argCPF := Copy(argCPF, 1, 11);
+  argCPF := StringPreencher(argCPF, 11, '0');
+
+  //
+  // Se houver algum caracter que seja um número então não é válido.
+  //
+  if not SomenteNumerosValidar(argCPF) then Exit;
+
+  //
+  // Todos os dígitos iguais não é válido.
+  //
+  if (argCPF = '00000000000') or (argCPF = '11111111111') or
+     (argCPF = '22222222222') or (argCPF = '33333333333') or
+     (argCPF = '44444444444') or (argCPF = '55555555555') or
+     (argCPF = '66666666666') or (argCPF = '77777777777') or
+     (argCPF = '88888888888') or (argCPF = '99999999999') then Exit;
+
+  //
+  // Calcula o primeiro dígito verificador.
+  //
+  locDV     := 0;
+  locModulo := 2;
+
+  for locContador := 9 downto 1 do
+  begin
+    locDV := locDV + (StrToInt(argCPF[locContador])) * locModulo;
+    Inc(locModulo);
+  end;
+
+  locDV := 11 - (locDV mod 11);
+
+  if (locDV = 10) or (locDV = 11) then locDV := 0;
+
+  //
+  // Valida o primeiro dígito verificador.
+  //
+  if StrToInt(argCPF[10]) <> locDV then Exit;
+
+  //
+  // Calcula o segundo dígito verificador.
+  //
+  locDV     := 0;
+  locModulo := 2;
+
+  for locContador := 10 downto 1 do
+  begin
+    locDV := locDV + StrToInt(argCPF[locContador]) * locModulo;
+    Inc(locModulo);
+  end;
+
+  locDV := 11 - (locDV mod 11);
+
+  if (locDV = 10) or (locDV = 11) then locDV := 0;
+
+  //
+  // Valida o segundo dígito verificador.
+  //
+  if StrToInt(argCPF[11]) <> locDV then Exit;
+
+  //
+  // CPF Válido.
+  //
+  Result := True;
+end;
+
+//
+// CNPJFormatar.
+//
+function CNPJFormatar(argCNPJ: string): string;
+begin
+  argCNPJ := FormatacaoRemover(argCNPJ);
+  argCNPJ := Copy(argCNPJ, 1, 14);
+  argCNPJ := StringPreencher(argCNPJ, 14, '0');
+  
+  Result := Copy(argCNPJ,  1, 2) + '.' +
+            Copy(argCNPJ,  3, 3) + '.' +
+            Copy(argCNPJ,  6, 3) + '/' +
+            Copy(argCNPJ,  9, 4) + '-' +
+            Copy(argCNPJ, 13, 2);
+end;
+
+//
+// CNPJValidar.
+//
+function CNPJValidar(argCNPJ : string): Boolean;
+var
+  locContador: Integer;
+  locDV      : Integer;
+  locModulo  : Integer;
+begin
+  //
+  // Retorno padrão.
+  //
+  Result := False;
+
+  //
+  // Formata o CNPJ.
+  //
+  argCNPJ := FormatacaoRemover(argCNPJ);
+  argCNPJ := Copy(argCNPJ, 1, 14);
+  argCNPJ := StringPreencher(argCNPJ, 14, '0');
+
+  //
+  // Se houver algum caracter que seja um número então não é válido.
+  //
+  if not SomenteNumerosValidar(argCNPJ) then Exit;
+
+  //
+  // Todos os dígitos iguais não é válido.
+  //
+  if (argCNPJ = '00000000000000') or (argCNPJ = '11111111111111') or
+     (argCNPJ = '22222222222222') or (argCNPJ = '33333333333333') or
+     (argCNPJ = '44444444444444') or (argCNPJ = '55555555555555') or
+     (argCNPJ = '66666666666666') or (argCNPJ = '77777777777777') or
+     (argCNPJ = '88888888888888') or (argCNPJ = '99999999999999') then Exit;
+
+  //
+  // Calcula o primeiro dígito verificador.
+  //
+  locDV     := 0;
+  locModulo := 2;
+
+  for locContador := 12 downto 1 do
+  begin
+    if (locModulo = 10) then locModulo := 2;
+    locDV  := locDV  + StrToInt(argCNPJ[locContador]) * locModulo;
+    Inc(locModulo);
+  end;
+
+  locDV := 11 - locDV mod 11;
+
+  if (locDV = 11) or (locDV = 10) then locDV := 0;
+
+  //
+  // Valida o primeiro dígito verificado.
+  //
+  if StrToInt(argCNPJ[13]) <> locDV then Exit;
+
+  //
+  // Calcula o segundo dígito verificador.
+  //
+  locDV     := 0;
+  locModulo := 2;
+
+  for locContador := 13 downto 1 do
+  begin
+    if (locModulo = 10) then locModulo := 2;
+    locDV := locDV + StrToInt(argCNPJ[locContador]) * locModulo;
+    Inc(locModulo);
+  end;
+
+  locDV := 11 - locDV mod 11;
+
+  if (locDV = 11) or (locDV = 10) then locDV := 0;
+
+  //
+  // Valida o segundo dígito verificado.
+  //
+  if StrToInt(argCNPJ[14]) <> locDV then Exit;
+
+  //
+  // CNPJ válido.
+  //
+  Result := True;
+end;
+
+//
+// CPFCNPJFormatar.
+//
+function CPFCNPJFormatar(argCPF_CNPJ: string): string;
+begin
+  argCPF_CNPJ := StringRemover(argCPF_CNPJ, '.');
+  argCPF_CNPJ := StringRemover(argCPF_CNPJ, '/');
+  argCPF_CNPJ := StringRemover(argCPF_CNPJ, '-');
+
+  if Length(argCPF_CNPJ) <= 11 then
+    Result := CPFFormatar(argCPF_CNPJ)
+  else
+    Result := CNPJFormatar(argCPF_CNPJ);  
+end;
+
+//
+// CPFCNPJValidar.
+//
+function CPFCNPJValidar(argCPF_CNPJ: string): Boolean;
+begin
+  argCPF_CNPJ := StringRemover(argCPF_CNPJ, '.');
+  argCPF_CNPJ := StringRemover(argCPF_CNPJ, '/');
+  argCPF_CNPJ := StringRemover(argCPF_CNPJ, '-');
+
+  if Length(argCPF_CNPJ) <= 11 then
+    Result := CPFValidar(argCPF_CNPJ)
+  else
+    Result := CNPJValidar(argCPF_CNPJ);  
 end;
 
 //
@@ -1041,6 +1328,17 @@ begin
   if (locMinuto < 0) or (locMinuto > 59) then Exit;
 
   Result := True;
+end;
+
+//
+// CurrencyFormatar.
+//
+function CurrencyFormatar(argValor: string; argSimboloMoeda: string = 'R$'; argCasasDecimais: Integer = 2; argVazio: Boolean = True; argSeparadorMilhar: Boolean = True) : string;
+var
+  locVlrCurr: Currency;
+begin
+  locVlrCurr := StringCurrencyConverter(argValor);
+  Result     := CurrencyStringConverter(locVlrCurr, argSimboloMoeda, argCasasDecimais, argVazio, argSeparadorMilhar);
 end;
 
 //

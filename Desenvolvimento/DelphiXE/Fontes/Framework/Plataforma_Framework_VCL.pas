@@ -155,11 +155,17 @@ procedure VCLComboBoxAnosPopular(argComponente: TComboBox);
 //
 function VCLComboBoxValidar(argComponente: TComboBox): Boolean;
 
-function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
+function VCLEditCPFValidar(argComponente: TEdit; argVazio: Boolean = True): Boolean;
 
-function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
+function VCLEditCNPJValidar(argComponente: TEdit; argVazio: Boolean = True): Boolean;
 
-function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True) : Boolean;
+function VCLEditCPFCNPJValidar(argComponente: TEdit; argVazio: Boolean = True): Boolean;
+
+function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True): Boolean;
+
+function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean = True): Boolean;
+
+function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True): Boolean;
 
 procedure VCLToggleSwitchValidar(argComponente: TToggleSwitch);
 
@@ -1144,6 +1150,89 @@ begin
 end;
 
 //
+// VCLEditCPFValidar.
+//
+function VCLEditCPFValidar(argComponente: TEdit; argVazio: Boolean = True): Boolean;
+var
+  locCPF: String;
+begin
+  Result := False;
+
+  locCPF := FormatacaoRemover(argComponente.Text);
+
+  if locCPF = '' then
+  begin
+    if (not argVazio) then
+    begin
+      VCLConsistenciaExibir('Um número de CPF precisa ser informado!');
+      argComponente.SetFocus;
+    end;
+    Exit
+  end;
+
+  if not CPFValidar(locCPF) then
+  begin
+    VCLConsistenciaExibir('O número de CPF [' + argComponente.Text + '] informado não é válido!');
+    argComponente.Text := '';
+    argComponente.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  argComponente.Text := CPFFormatar(locCPF);
+  Result := True;
+end;
+
+//
+// VCLEditCNPJValidar.
+//
+function VCLEditCNPJValidar(argComponente: TEdit; argVazio: Boolean = True): Boolean;
+var
+  locCNPJ: String;
+begin
+  Result := False;
+
+  locCNPJ := FormatacaoRemover(argComponente.Text);
+
+  if locCNPJ = '' then
+  begin
+    if (not argVazio) then
+    begin
+      VCLConsistenciaExibir('Um número de CNPJ precisa ser informado!');
+      argComponente.SetFocus;
+    end;
+    Exit
+  end;
+
+  if not CNPJValidar(locCNPJ) then
+  begin
+    VCLConsistenciaExibir('O número de CNPJ [' + argComponente.Text + '] informado não é válido!');
+    argComponente.Text := '';
+    argComponente.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  argComponente.Text := CNPJFormatar(locCNPJ);
+  Result := True;
+end;
+
+//
+// VCLEditCPFCNPJValidar.
+//
+function VCLEditCPFCNPJValidar(argComponente: TEdit; argVazio: Boolean = True): Boolean;
+var
+  locCPF_CNPJ: string;
+begin
+  locCPF_CNPJ := FormatacaoRemover(argComponente.Text);
+
+  if Length(locCPF_CNPJ) <= 11 then
+    Result := VCLEditCPFValidar(argComponente, argVazio)
+  else
+    Result := VCLEditCNPJValidar(argComponente, argVazio)    
+end;
+
+//
 // VCLMaskEditDataValidar.
 //
 function VCLMaskEditDataValidar(argComponente: TMaskEdit; argVazio: Boolean = True) : Boolean;
@@ -1879,3 +1968,4 @@ begin
 end;
 
 end.
+

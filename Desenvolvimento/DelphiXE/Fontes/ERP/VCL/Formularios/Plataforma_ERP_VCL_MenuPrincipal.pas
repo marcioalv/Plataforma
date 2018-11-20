@@ -74,6 +74,7 @@ type
     mniFiscalCadastros: TMenuItem;
     mniEmpresas: TMenuItem;
     mniFiliais: TMenuItem;
+    mniColigadas: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogLocalClick(Sender: TObject);
@@ -101,6 +102,7 @@ type
     procedure mniRegimeTributarioClick(Sender: TObject);
     procedure mniEmpresasClick(Sender: TObject);
     procedure mniFiliaisClick(Sender: TObject);
+    procedure mniColigadasClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -137,7 +139,8 @@ uses
   Plataforma_ERP_VCL_NumeradorLicencaLista,
   Plataforma_ERP_VCL_NumeradorBaseLista,
   Plataforma_ERP_VCL_EmpresaLista,
-  Plataforma_ERP_VCL_FilialLista;
+  Plataforma_ERP_VCL_FilialLista,
+  Plataforma_ERP_VCL_ColigadaLista;
 
 //
 // Evento de criação do formulário.
@@ -225,6 +228,19 @@ var
   locFormulario: TPlataformaERPVCLFilialLista;
 begin
   locFormulario := TPlataformaERPVCLFilialLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "coligadas".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniColigadasClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLColigadaLista;
+begin
+  locFormulario := TPlataformaERPVCLColigadaLista.Create(Self);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

@@ -121,6 +121,10 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
           Caption = 'Filiais'
           OnClick = mniFiliaisClick
         end
+        object mniColigadas: TMenuItem
+          Caption = 'Coligadas'
+          OnClick = mniColigadasClick
+        end
       end
     end
     object mniAplicacao: TMenuItem

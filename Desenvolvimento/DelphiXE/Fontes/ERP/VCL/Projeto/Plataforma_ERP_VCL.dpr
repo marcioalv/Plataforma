@@ -76,7 +76,9 @@ uses
   Plataforma_ERP_VCL_FilialFiltro in '..\Formularios\Fiscal\Plataforma_ERP_VCL_FilialFiltro.pas' {PlataformaERPVCLFilialFiltro},
   Plataforma_ERP_VCL_FilialLista in '..\Formularios\Fiscal\Plataforma_ERP_VCL_FilialLista.pas' {PlataformaERPVCLFilialLista},
   Plataforma_ERP_VCL_EmpresaCodigo in '..\Formularios\Fiscal\Plataforma_ERP_VCL_EmpresaCodigo.pas' {PlataformaERPVCLEmpresaCodigo},
-  Plataforma_ERP_VCL_EmpresaSelecao in '..\Formularios\Fiscal\Plataforma_ERP_VCL_EmpresaSelecao.pas' {PlataformaERPVCLEmpresaSelecao};
+  Plataforma_ERP_VCL_EmpresaSelecao in '..\Formularios\Fiscal\Plataforma_ERP_VCL_EmpresaSelecao.pas' {PlataformaERPVCLEmpresaSelecao},
+  Plataforma_ERP_VCL_ColigadaFiltro in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaFiltro.pas' {PlataformaERPVCLColigadaFiltro},
+  Plataforma_ERP_VCL_ColigadaLista in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaLista.pas' {PlataformaERPVCLColigadaLista};
 
 {$R *.res}
 
@@ -84,6 +86,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
-  Application.CreateForm(TPlataformaERPVCLEmpresaSelecao, PlataformaERPVCLEmpresaSelecao);
   Application.Run;
 end.
