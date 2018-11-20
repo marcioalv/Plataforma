@@ -49,6 +49,7 @@ const
   NUMERADOR_USUARIO_ID          : string = 'usuario_id';
   NUMERADOR_EMPRESA_ID          : string = 'empresa_id';
   NUMERADOR_FILIAL_ID           : string = 'filial_id';
+  NUMERADOR_COLIGADA_ID         : string = 'coligada_id';
 
 //
 // PlataformaERPLogar.

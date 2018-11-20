@@ -78,7 +78,8 @@ uses
   Plataforma_ERP_VCL_EmpresaCodigo in '..\Formularios\Fiscal\Plataforma_ERP_VCL_EmpresaCodigo.pas' {PlataformaERPVCLEmpresaCodigo},
   Plataforma_ERP_VCL_EmpresaSelecao in '..\Formularios\Fiscal\Plataforma_ERP_VCL_EmpresaSelecao.pas' {PlataformaERPVCLEmpresaSelecao},
   Plataforma_ERP_VCL_ColigadaFiltro in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaFiltro.pas' {PlataformaERPVCLColigadaFiltro},
-  Plataforma_ERP_VCL_ColigadaLista in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaLista.pas' {PlataformaERPVCLColigadaLista};
+  Plataforma_ERP_VCL_ColigadaLista in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaLista.pas' {PlataformaERPVCLColigadaLista},
+  Plataforma_ERP_VCL_ColigadaCadastro in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaCadastro.pas' {PlataformaERPVCLColigadaCadastro};
 
 {$R *.res}
 

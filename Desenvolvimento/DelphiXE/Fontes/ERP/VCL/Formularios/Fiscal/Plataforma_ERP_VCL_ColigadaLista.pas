@@ -113,7 +113,7 @@ uses
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_Generico,
   Plataforma_ERP_VCL_ColigadaFiltro,
-  Plataforma_ERP_VCL_EmpresaCadastro;
+  Plataforma_ERP_VCL_ColigadaCadastro;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_ColigadaLista.pas';
@@ -681,7 +681,7 @@ end;
 //
 procedure TPlataformaERPVCLColigadaLista.FormularioCadastroExibir(argNovo: Boolean);
 var
-  locFormulario      : TPlataformaERPVCLEmpresaCadastro;
+  locFormulario      : TPlataformaERPVCLColigadaCadastro;
   locDadosAtualizados: Boolean;
   locIndice          : Integer;
   locLicencaID       : Integer;
@@ -705,11 +705,11 @@ begin
     locColigadaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_COLIGADA_ID]);
   end;
 
-  locFormulario := TPlataformaERPVCLEmpresaCadastro.Create(Self);
+  locFormulario := TPlataformaERPVCLColigadaCadastro.Create(Self);
 
-  locFormulario.pubLicencaID     := locLicencaID;
-  locFormulario.pubEmpresaBaseID := locColigadaBaseID;
-  locFormulario.pubEmpresaID     := locColigadaID;
+  locFormulario.pubLicencaID      := locLicencaID;
+  locFormulario.pubColigadaBaseID := locColigadaBaseID;
+  locFormulario.pubColigadaID     := locColigadaID;
   
   locFormulario.ShowModal;
 

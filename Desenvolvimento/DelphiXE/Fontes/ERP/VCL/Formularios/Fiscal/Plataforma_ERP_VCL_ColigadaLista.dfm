@@ -113,7 +113,7 @@ object PlataformaERPVCLColigadaLista: TPlataformaERPVCLColigadaLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 541
+      Left = 537
       Top = 424
       Width = 80
       Height = 13
