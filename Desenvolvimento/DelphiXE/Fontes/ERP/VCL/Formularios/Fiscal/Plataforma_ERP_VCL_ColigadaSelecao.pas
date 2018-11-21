@@ -1,16 +1,16 @@
 //
-// Arquivo..: Plataforma_ERP_VCL_EmpresaSelecao.pas
+// Arquivo..: Plataforma_ERP_VCL_ColigadaSelecao.pas
 // Projeto..: ERP
 // Fonte....: Formulário VCL
 // Criação..: 05/Julho/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário com os parâmetros de seleção de empresa.
+// Descrição: Formulário com os parâmetros de seleção de coligada.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
 //
 
-unit Plataforma_ERP_VCL_EmpresaSelecao;
+unit Plataforma_ERP_VCL_ColigadaSelecao;
 
 interface
 
@@ -33,7 +33,7 @@ uses
   Vcl.Menus;
 
 type
-  TPlataformaERPVCLEmpresaSelecao = class(TForm)
+  TPlataformaERPVCLColigadaSelecao = class(TForm)
     imgFormulario: TImage;
     btnSelecionar: TBitBtn;
     btnFechar: TBitBtn;
@@ -65,17 +65,17 @@ type
     procedure FormularioAtualizar;
     procedure FormularioSelecionar;
   public
-    pubClicouFechar : Boolean;
-    pubNovo         : Boolean;
-    pubLicencaID    : Integer;
-    pubEmpresaBaseID: Integer;
-    pubEmpresaID    : Integer;
-    pubCodigo       : string;
-    pubDescricao    : string;
+    pubClicouFechar  : Boolean;
+    pubNovo          : Boolean;
+    pubLicencaID     : Integer;
+    pubColigadaBaseID: Integer;
+    pubColigadaID    : Integer;
+    pubCodigo        : string;
+    pubDescricao     : string;
   end;
 
 var
-  PlataformaERPVCLEmpresaSelecao: TPlataformaERPVCLEmpresaSelecao;
+  PlataformaERPVCLColigadaSelecao: TPlataformaERPVCLColigadaSelecao;
 
 implementation
 
@@ -86,16 +86,16 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
-  Plataforma_ERP_VCL_EmpresaCodigo;
+  Plataforma_ERP_VCL_ColigadaCodigo;
 
 const
-  FONTE_NOME: string = 'Plataforma_ERP_VCL_EmpresaSelecao';
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_ColigadaSelecao';
 
 const
   LVW_LISTA_LICENCA_ID             : Integer = 0;
-  LVW_LISTA_EMPRESA_BASE_ID        : Integer = 1;
-  LVW_LISTA_EMPRESA_BASE_DESCRICAO : Integer = 2;
-  LVW_LISTA_EMPRESA_ID             : Integer = 3;
+  LVW_LISTA_COLIGADA_BASE_ID       : Integer = 1;
+  LVW_LISTA_COLIGADA_BASE_DESCRICAO: Integer = 2;
+  LVW_LISTA_COLIGADA_ID            : Integer = 3;
   LVW_LISTA_CODIGO                 : Integer = 4;
   LVW_LISTA_DESCRICAO              : Integer = 5;
   LVW_LISTA_BLOQUEADO              : Integer = 6;
@@ -103,18 +103,18 @@ const
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLEmpresaSelecao.FormCreate(Sender: TObject);
+procedure TPlataformaERPVCLColigadaSelecao.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis públicas.
   //
-  pubClicouFechar  := True;
-  pubNovo          := True;
-  pubLicencaID     := 0;
-  pubEmpresaBaseID := 0;
-  pubEmpresaID     := 0;
-  pubCodigo        := '';
-  pubDescricao     := '';
+  pubClicouFechar   := True;
+  pubNovo           := True;
+  pubLicencaID      := 0;
+  pubColigadaBaseID := 0;
+  pubColigadaID     := 0;
+  pubCodigo         := '';
+  pubDescricao      := '';
 
   //
   // Limpa componentes do formulário.
@@ -125,7 +125,7 @@ end;
 //
 // Evento de exibição do formulário.
 //
-procedure TPlataformaERPVCLEmpresaSelecao.FormShow(Sender: TObject);
+procedure TPlataformaERPVCLColigadaSelecao.FormShow(Sender: TObject);
 begin
   FormularioAtualizar;
 end;
@@ -133,7 +133,7 @@ end;
 //
 // Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLEmpresaSelecao.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLColigadaSelecao.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
 end;
@@ -141,22 +141,22 @@ end;
 // 
 // Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLEmpresaSelecao.mniSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLColigadaSelecao.mniSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
 
-procedure TPlataformaERPVCLEmpresaSelecao.mniAtualizarClick(Sender: TObject);
+procedure TPlataformaERPVCLColigadaSelecao.mniAtualizarClick(Sender: TObject);
 begin
   FormularioAtualizar;
 end;
 
-procedure TPlataformaERPVCLEmpresaSelecao.mniMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLColigadaSelecao.mniMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
 
-procedure TPlataformaERPVCLEmpresaSelecao.mniFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLColigadaSelecao.mniFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -164,22 +164,22 @@ end;
 //
 // Eventos do componente listview.
 //
-procedure TPlataformaERPVCLEmpresaSelecao.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TPlataformaERPVCLColigadaSelecao.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);
 end;
 
-procedure TPlataformaERPVCLEmpresaSelecao.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TPlataformaERPVCLColigadaSelecao.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);
 end;
 
-procedure TPlataformaERPVCLEmpresaSelecao.lvwListaDblClick(Sender: TObject);
+procedure TPlataformaERPVCLColigadaSelecao.lvwListaDblClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
 
-procedure TPlataformaERPVCLEmpresaSelecao.lvwListaKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLColigadaSelecao.lvwListaKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ENTER then lvwListaDblClick(Sender);
 end;
@@ -187,7 +187,7 @@ end;
 //
 // Evento de click no botão "Confirmar".
 //
-procedure TPlataformaERPVCLEmpresaSelecao.btnSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLColigadaSelecao.btnSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
@@ -195,7 +195,7 @@ end;
 //
 // Evento de click no botão "minimizar".
 //
-procedure TPlataformaERPVCLEmpresaSelecao.btnMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLColigadaSelecao.btnMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
@@ -203,7 +203,7 @@ end;
 //
 // Evento de click no botão "fechar".
 //
-procedure TPlataformaERPVCLEmpresaSelecao.btnFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLColigadaSelecao.btnFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -211,10 +211,10 @@ end;
 //
 // Procedimento para atualizar a lista do formulário.
 //
-procedure TPlataformaERPVCLEmpresaSelecao.FormularioAtualizar;
+procedure TPlataformaERPVCLColigadaSelecao.FormularioAtualizar;
 const
   PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
-  ERRO_MENSAGEM    : string = 'Impossível atualizar lista de empresas!';
+  ERRO_MENSAGEM    : string = 'Impossível atualizar lista de coligadas!';
 var
   locADOConnection : TADOConnection;
   locADOQuery      : TADOQuery;
@@ -271,36 +271,36 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                 ');
-  locADOQuery.SQL.Add('  [licenca].[licenca_id] AS [licenca_id],              ');
-  locADOQuery.SQL.Add('  [base].[base_id]       AS [empresa_base_id],         ');
-  locADOQuery.SQL.Add('  [base].[descricao]     AS [empresa_base_descricao],  ');
-  locADOQuery.SQL.Add('  [empresa].[empresa_id] AS [empresa_id],              ');
-  locADOQuery.SQL.Add('  [empresa].[codigo]     AS [codigo],                  ');
-  locADOQuery.SQL.Add('  [empresa].[descricao]  AS [descricao],               ');
-  locADOQuery.SQL.Add('  [empresa].[bloqueado]  AS [bloqueado]                ');
-  locADOQuery.SQL.Add('FROM                                                   ');
-  locADOQuery.SQL.Add('  [empresa] WITH (NOLOCK)                              ');
-  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                      ');
-  locADOQuery.SQL.Add('    ON [base].[base_id] = [empresa].[empresa_base_id]  ');
-  locADOQuery.SQL.Add('  INNER JOIN [licenca] WITH (NOLOCK)                   ');
-  locADOQuery.SQL.Add('    ON [licenca].[licenca_id] = [empresa].[licenca_id] ');
-  locADOQuery.SQL.Add('WHERE                                                  ');
-  locADOQuery.SQL.Add('  [empresa].[licenca_id] = :licenca_id AND             ');
-  locADOQuery.SQL.Add('  [empresa].[ativo]      = ''S''                       ');
+  locADOQuery.SQL.Add('SELECT                                                   ');
+  locADOQuery.SQL.Add('  [licenca].[licenca_id]   AS [licenca_id],              ');
+  locADOQuery.SQL.Add('  [base].[base_id]         AS [coligada_base_id],        ');
+  locADOQuery.SQL.Add('  [base].[descricao]       AS [coligada_base_descricao], ');
+  locADOQuery.SQL.Add('  [coligada].[coligada_id] AS [coligada_id],             ');
+  locADOQuery.SQL.Add('  [coligada].[codigo]      AS [codigo],                  ');
+  locADOQuery.SQL.Add('  [coligada].[descricao]   AS [descricao],               ');
+  locADOQuery.SQL.Add('  [coligada].[bloqueado]   AS [bloqueado]                ');
+  locADOQuery.SQL.Add('FROM                                                     ');
+  locADOQuery.SQL.Add('  [coligada] WITH (NOLOCK)                               ');
+  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                        ');
+  locADOQuery.SQL.Add('    ON [base].[base_id] = [coligada].[coligada_base_id]  ');
+  locADOQuery.SQL.Add('  INNER JOIN [licenca] WITH (NOLOCK)                     ');
+  locADOQuery.SQL.Add('    ON [licenca].[licenca_id] = [coligada].[licenca_id]  ');
+  locADOQuery.SQL.Add('WHERE                                                    ');
+  locADOQuery.SQL.Add('  [coligada].[licenca_id] = :licenca_id AND              ');
+  locADOQuery.SQL.Add('  [coligada].[ativo]      = ''S''                        ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value := locLicencaID;
 
   if pubNovo then
   begin
-    locADOQuery.SQL.Add(' AND [empresa].[bloqueado] = ''N'' ');
+    locADOQuery.SQL.Add(' AND [coligada].[bloqueado] = ''N'' ');
   end;
 
   //
   // Order by.
-  //  
-  locADOQuery.SQL.Add('ORDER BY                 ');
-  locADOQuery.SQL.Add('  [empresa].[codigo] ASC ');
+  //
+  locADOQuery.SQL.Add('ORDER BY                  ');
+  locADOQuery.SQL.Add('  [coligada].[codigo] ASC ');
 
 
   try
@@ -312,7 +312,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar os registros na tabela [empresa]!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar os registros na tabela [coligada]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -342,15 +342,15 @@ begin
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('licenca_id').AsInteger));
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('empresa_base_id').AsInteger));
-      locListItem.SubItems.Add(locADOQuery.FieldByName('empresa_base_descricao').AsString);
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('empresa_id').AsInteger));
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('coligada_base_id').AsInteger));
+      locListItem.SubItems.Add(locADOQuery.FieldByName('coligada_base_descricao').AsString);
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('coligada_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('descricao').AsString);
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
 
-      if (pubEmpresaBaseID = locADOQuery.FieldByName('empresa_base_id').AsInteger) and
-         (pubEmpresaID     = locADOQuery.FieldByName('empresa_id').AsInteger) then
+      if (pubColigadaBaseID = locADOQuery.FieldByName('coligada_base_id').AsInteger) and
+         (pubColigadaID     = locADOQuery.FieldByName('coligada_id').AsInteger) then
       begin
         locIndice := (lvwLista.Items.Count - 1);
       end;
@@ -383,19 +383,19 @@ end;
 //
 // Procedimento para selecionar uma das linhas da lista.
 //
-procedure TPlataformaERPVCLEmpresaSelecao.FormularioSelecionar;
+procedure TPlataformaERPVCLColigadaSelecao.FormularioSelecionar;
 var
   locIndice: Integer;
 begin
   locIndice := VCLListViewIndiceItemRetornar(lvwLista);
   if locIndice = VCL_NENHUM_INDICE then Exit;
 
-  pubClicouFechar  := False;
-  pubLicencaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
-  pubEmpresaBaseID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_EMPRESA_BASE_ID]);
-  pubEmpresaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_EMPRESA_ID]);
-  pubCodigo        := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
-  pubDescricao     := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_DESCRICAO];
+  pubClicouFechar   := False;
+  pubLicencaID      := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_LICENCA_ID]);
+  pubColigadaBaseID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_COLIGADA_BASE_ID]);
+  pubColigadaID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_COLIGADA_ID]);
+  pubCodigo         := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
+  pubDescricao      := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_DESCRICAO];
   
   Close; 
 end;
