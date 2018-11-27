@@ -102,6 +102,7 @@ type
     edtEmpresaBaseID: TEdit;
     edtEmpresaID: TEdit;
     imgEmpresaSelecionar: TImage;
+    btnEndereco: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -160,6 +161,7 @@ type
     procedure edtEmpresaCodigoKeyPress(Sender: TObject; var Key: Char);
     procedure imgEmpresaSelecionarClick(Sender: TObject);
     procedure edtEmpresaDescricaoClick(Sender: TObject);
+    procedure btnEnderecoClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -198,7 +200,8 @@ uses
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
-  Plataforma_ERP_VCL_Generico;
+  Plataforma_ERP_VCL_Generico,
+  Plataforma_ERP_VCL_FilialEndereco;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_FilialCadastro.pas';
@@ -432,9 +435,45 @@ begin
 end;
 
 //
+// Eventos do componente "bloqueado".
+//
+procedure TPlataformaERPVCLFilialCadastro.chkBloqueadoEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkBloqueado) then Exit;
+end;
+
+procedure TPlataformaERPVCLFilialCadastro.chkBloqueadoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
+end;
+
+procedure TPlataformaERPVCLFilialCadastro.chkBloqueadoExit(Sender: TObject);
+begin
+  if not VCLCheckBoxSair(chkBloqueado) then Exit;
+end;
+
+//
+// Ativo.
+//
+procedure TPlataformaERPVCLFilialCadastro.chkAtivoEnter(Sender: TObject);
+begin
+  if not VCLCheckBoxEntrar(chkAtivo) then Exit;
+end;
+
+procedure TPlataformaERPVCLFilialCadastro.chkAtivoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
+end;
+
+procedure TPlataformaERPVCLFilialCadastro.chkAtivoExit(Sender: TObject);
+begin
+  if not VCLCheckBoxSair(chkAtivo) then Exit;
+end;
+
+
+//
 // Eventos do componente "CPF/CNPJ".
 //
-
 procedure TPlataformaERPVCLFilialCadastro.edtCPF_CNPJEnter(Sender: TObject);
 begin
   if not VCLEditEntrar(edtCPF_CNPJ) then Exit;
@@ -532,39 +571,16 @@ begin
 end;
 
 //
-// Eventos do componente "bloqueado".
+// Evento de click no botão "endereço".
 //
-procedure TPlataformaERPVCLFilialCadastro.chkBloqueadoEnter(Sender: TObject);
+procedure TPlataformaERPVCLFilialCadastro.btnEnderecoClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLFilialEndereco;
 begin
-  if not VCLCheckBoxEntrar(chkBloqueado) then Exit;
-end;
-
-procedure TPlataformaERPVCLFilialCadastro.chkBloqueadoKeyPress(Sender: TObject; var Key: Char);
-begin
-  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
-end;
-
-procedure TPlataformaERPVCLFilialCadastro.chkBloqueadoExit(Sender: TObject);
-begin
-  if not VCLCheckBoxSair(chkBloqueado) then Exit;
-end;
-
-//
-// Ativo.
-//
-procedure TPlataformaERPVCLFilialCadastro.chkAtivoEnter(Sender: TObject);
-begin
-  if not VCLCheckBoxEntrar(chkAtivo) then Exit;
-end;
-
-procedure TPlataformaERPVCLFilialCadastro.chkAtivoKeyPress(Sender: TObject; var Key: Char);
-begin
-  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
-end;
-
-procedure TPlataformaERPVCLFilialCadastro.chkAtivoExit(Sender: TObject);
-begin
-  if not VCLCheckBoxSair(chkAtivo) then Exit;
+  locFormulario := TPlataformaERPVCLFilialEndereco.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
 end;
 
 //

@@ -377,6 +377,10 @@
             <Form>PlataformaERPVCLColigadaSelecao</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\Formularios\Fiscal\Plataforma_ERP_VCL_FilialEndereco.pas">
+            <Form>PlataformaERPVCLFilialEndereco</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="..\..\..\..\..\Imagem\Background\Formulario\FORM_BACKGROUND_DEFAULT.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>FORM_BACKGROUND_DEFAULT</ResourceId>
