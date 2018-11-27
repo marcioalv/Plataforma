@@ -125,6 +125,8 @@ begin
   FormularioLimpar;
   UltimoAcessoPopular;
   ConexaoDeterminar;
+
+  edtSenha.Text := '123';
 end;
 
 //

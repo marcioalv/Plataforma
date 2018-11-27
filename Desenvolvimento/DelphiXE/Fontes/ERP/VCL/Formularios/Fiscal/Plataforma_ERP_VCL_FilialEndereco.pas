@@ -24,10 +24,13 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Dialogs,
-  Data.Win.ADODB, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, Vcl.Buttons, Vcl.Imaging.pngimage;
+  Data.Win.ADODB, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.ComCtrls, Vcl.Mask;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_FilialEndereco.pas';
+
+  TAB_CADASTRO : Byte = 0;
+  TAB_AUDITORIA: Byte = 1;
 
 type
   TPlataformaERPVCLFilialEndereco = class(TForm)
@@ -47,18 +50,56 @@ type
     mniMinimizar: TMenuItem;
     mniCancelar: TMenuItem;
     mniFechar: TMenuItem;
+    panFormulario: TPanel;
+    lvwLista: TListView;
+    pagFormulario: TPageControl;
+    tabDados: TTabSheet;
+    tabAuditoria: TTabSheet;
+    mskVigenciaIniDt: TMaskEdit;
+    Image1: TImage;
+    imgInsDtHrInicial: TImage;
+    mskVigenciaFimDt: TMaskEdit;
+    edtSequencial: TEdit;
+    lblVigenciaAte: TLabel;
+    lblVigencia: TLabel;
+    lblSequencial: TLabel;
+    lblInsDtHt: TLabel;
+    edtInsLocalDtHr: TEdit;
+    lblUpdDtHr: TLabel;
+    edtUpdLocalDtHr: TEdit;
+    lblUpdContador: TLabel;
+    edtUpdContador: TEdit;
+    btnLog: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure mskVigenciaIniDtEnter(Sender: TObject);
+    procedure mskVigenciaIniDtKeyPress(Sender: TObject; var Key: Char);
+    procedure mskVigenciaIniDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure mskVigenciaIniDtExit(Sender: TObject);
+    procedure mskVigenciaFimDtEnter(Sender: TObject);
+    procedure mskVigenciaFimDtExit(Sender: TObject);
+    procedure mskVigenciaFimDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure mskVigenciaFimDtKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure mniGravarClick(Sender: TObject);
+    procedure mniFecharClick(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure btnMinimizarClick(Sender: TObject);
+    procedure mniMinimizarClick(Sender: TObject);
   private
-    procedure FormularioLimpar;
+    procedure FormularioLimpar(argLista: Boolean = True;
+                               argDados: Boolean = True);
 
-    procedure FormularioPopular(argLicencaID   : Integer;
-                                argFilialBaseID: Integer;
-                                argFilialID    : Integer);
+    procedure FormularioListaPopular(argLicencaID   : Integer;
+                                     argFilialBaseID: Integer;
+                                     argFilialID    : Integer);
 
     procedure FormularioGravar;
   public
-    { Public declarations }
+    pubDadosAtualizados: Boolean;
+    pubLicencaID       : Integer;
+    pubFilialBaseID    : Integer;
+    pubFilialID        : Integer;
   end;
 
 var
@@ -72,14 +113,21 @@ uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
-  Plataforma_ERP_Generico;
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_Generico;
 
 //
 // Evento de criação do formulário.
 //
 procedure TPlataformaERPVCLFilialEndereco.FormCreate(Sender: TObject);
 begin
-  Exit;
+  //
+  // Variáveis públicas.
+  //
+  pubDadosAtualizados := False;
+  pubLicencaID        := 0;
+  pubFilialBaseID     := 0;
+  pubFilialID         := 0;
 end;
 
 //
@@ -96,29 +144,147 @@ begin
   // Limpa o formulário.
   //
   FormularioLimpar;
+
+  //
+  // Carrega dados.
+  //
+  if (pubLicencaID > 0) and (pubFilialBaseID > 0) and (pubFilialID > 0) then
+  begin
+    FormularioListaPopular(pubLicencaID, pubFilialBaseID, pubFilialID);
+  end;
 end;
 
 //
-// Procedimento para limpar os componentes do formulário.
+// Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLFilialEndereco.FormularioLimpar;
+procedure TPlataformaERPVCLFilialEndereco.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = ESC then Close;
+end;
+
+//
+// Evento de click na opção de menu "gravar".
+//
+procedure TPlataformaERPVCLFilialEndereco.mniGravarClick(Sender: TObject);
+begin
+  FormularioGravar;
+end;
+
+//
+// Evento de click na opçao de menu "minimizar".
+//
+procedure TPlataformaERPVCLFilialEndereco.mniMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+//
+// Evento de click na opção de menu "fechar".
+//
+procedure TPlataformaERPVCLFilialEndereco.mniFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+//
+// Vigência inicial.
+//
+procedure TPlataformaERPVCLFilialEndereco.mskVigenciaIniDtEnter(Sender: TObject);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.mskVigenciaIniDtKeyPress(Sender: TObject; var Key: Char);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.mskVigenciaIniDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.mskVigenciaIniDtExit(Sender: TObject);
 begin
   Exit;
 end;
 
 //
+// Vigência final.
+//
+procedure TPlataformaERPVCLFilialEndereco.mskVigenciaFimDtEnter(Sender: TObject);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.mskVigenciaFimDtKeyPress(Sender: TObject; var Key: Char);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.mskVigenciaFimDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.mskVigenciaFimDtExit(Sender: TObject);
+begin
+  Exit;
+end;
+
+//
+// Evento de click no botão "minimizar".
+//
+procedure TPlataformaERPVCLFilialEndereco.btnMinimizarClick(Sender: TObject);
+begin
+  VCLSDIMinimizar;
+end;
+
+//
+// Evento de click no botão "fechar".
+//
+procedure TPlataformaERPVCLFilialEndereco.btnFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+//
+// Procedimento para limpar os componentes do formulário.
+//
+procedure TPlataformaERPVCLFilialEndereco.FormularioLimpar(argLista: Boolean = True;
+                                                           argDados: Boolean = True);
+begin
+  if argLista then
+  begin
+    VCLListViewLimpar(lvwLista);
+  end;
+
+  if argDados then
+  begin
+    VCLEditLimpar    (edtSequencial);
+    VCLMaskEditLimpar(mskVigenciaIniDt);
+    VCLMaskEditLimpar(mskVigenciaFimDt);
+
+    VCLEditLimpar(edtInsLocalDtHr);
+    VCLEditLimpar(edtUpdLocalDtHr);
+    VCLEditLimpar(edtUpdContador);
+  end;
+end;
+
+//
 // Procedimento para popular os componentes com os dados de um cadastro.
 //
-procedure TPlataformaERPVCLFilialEndereco.FormularioPopular(argLicencaID   : Integer;
-                                                            argFilialBaseID: Integer;
-                                                            argFilialID    : Integer);
+procedure TPlataformaERPVCLFilialEndereco.FormularioListaPopular(argLicencaID   : Integer;
+                                                                 argFilialBaseID: Integer;
+                                                                 argFilialID    : Integer);
 const
   PROCEDIMENTO_NOME: string = 'FormularioPopular';
-  ERRO_MENSAGEM    : string = 'Impossível consultar dados do endereço da filial!';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados do endereço da filial para popular a lista!';
 var
   locADOConnection: TADOConnection;
   locADOQuery     : TADOQuery;
   locLogMensagem  : string;
+  locListItem     : TListItem;
 begin
   //
   // Troca cursor.
@@ -161,13 +327,17 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                                             ');
-  locADOQuery.SQL.Add('  [filial_endereco].[filial_endereco_seq]                                          ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_endereco_sq],                                          ');
+  locADOQuery.SQL.Add('  [filial_endereco].[vigencia_ini_dt],                                             ');
+  locADOQuery.SQL.Add('  [filial_endereco].[vigencia_fim_dt]                                              ');
   locADOQuery.SQL.Add('FROM                                                                               ');
   locADOQuery.SQL.Add('  [filial_endereco] WITH (NOLOCK)                                                  ');
   locADOQuery.SQL.Add('WHERE                                                                              ');
   locADOQuery.SQL.Add('  [filial_endereco].[licenca_id]     = :licenca_id     AND                         ');
   locADOQuery.SQL.Add('  [filial_endereco].[filial_base_id] = :filial_base_id AND                         ');
   locADOQuery.SQL.Add('  [filial_endereco].[filial_id]      = :filial_id                                  ');
+  locADOQuery.SQL.Add('ORDER BY                                                                           ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_endereco_sq] ASC                                       ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value     := argLicencaID;
   locADOQuery.Parameters.ParamByName('filial_base_id').Value := argFilialBaseID;
@@ -197,9 +367,15 @@ begin
   //
   if locADOQuery.RecordCount > 0 then
   begin
-    //
-    // Carrega componentes.
-    //
+    lvwLista.Items.BeginUpdate;
+    while not locADOQuery.EOF do
+    begin
+      locListItem         := lvwLista.Items.Add;
+      locListItem.Caption := '';
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('filial_endereco_sq').AsInteger));
+      locListItem.SubItems.Add(DateTimeStringConverter(locADOQuery.FieldByName('vigencia_ini_dt').AsDateTime, 'dd/mm/yyyy') + ' até ' + DateTimeStringConverter(locADOQuery.FieldByName('vigencia_fi,_dt').AsDateTime, 'dd/mm/yyyy'));
+    end;
+    lvwLista.Items.EndUpdate;
   end;
 
   //
@@ -235,6 +411,10 @@ var
   locFilialBaseID          : Integer;
   locFilialID              : Integer;
 
+  locSequencial            : Integer;
+  locVigenciaIniDt         : TDateTime;
+  locVigenciaFimDt         : TDateTime;
+
   locInsLocalDtHr          : TDateTime;
   locUpdLocalDtHr          : TDateTime;
   locUsuarioBaseID         : Integer;
@@ -244,17 +424,15 @@ var
   locUserName              : string;
 begin
   //
-  // Determina se será um insert ou update.
-  //
-  locInsert := True;
-
-{
-  //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locLicencaID          := StringIntegerConverter(edtLicencaID.Text);
-  locFilialBaseID       := StringIntegerConverter(edtFilialBaseID.Text);
-  locFilialID           := StringIntegerConverter(edtFilialID.Text);
+  locLicencaID          := pubLicencaID;
+  locFilialBaseID       := pubFilialBaseID;
+  locFilialID           := pubFilialID;
+
+  locSequencial         := StringIntegerConverter(edtSequencial.Text);
+  locVigenciaIniDt      := StringDateTimeConverter(mskVigenciaIniDt.Text);
+  locVigenciaFimDt      := StringDateTimeConverter(mskVigenciaFimDt.Text);
 
   locUsuarioBaseID      := gloUsuarioBaseID;
   locUsuarioID          := gloUsuarioID;
@@ -263,57 +441,38 @@ begin
   locUpdContador        := StringIntegerConverter(edtUpdContador.Text);
 
   //
+  // Determina se será um insert ou update.
+  //
+  locInsert := True;
+
+  if locSequencial > 0 then locInsert := False;
+
+  //
   // Consiste as informações.
   //
-  if locCodigo = '' then
+  if locVigenciaIniDt <= 0 then
   begin
-    VCLConsistenciaExibir('O código da filial deve ser informado!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCodigo);
+    VCLConsistenciaExibir('A data inicial da vigência deve ser informada!');
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, mskVigenciaIniDt);
     Exit;
   end;
 
-  if locDescricao = '' then
+  if locVigenciaFimDt <= 0 then
   begin
-    VCLConsistenciaExibir('A descrição da filial deve ser informada!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtDescricao);
+    VCLConsistenciaExibir('A data final da vigência deve ser informada!');
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, mskVigenciaFimDt);
     Exit;
   end;
 
-  if locRazaoSocial = '' then
+  if locVigenciaFimDt < locVigenciaIniDt then
   begin
-    VCLConsistenciaExibir('A razão social da filial deve ser informada!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtRazaoSocial);
+    VCLConsistenciaExibir('A data final da vigência não pode ser anterior a data inicial!');
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, mskVigenciaIniDt);
     Exit;
   end;
 
-  if locFantasia = '' then
-  begin
-    VCLConsistenciaExibir('O nome de fantasia da filial deve ser informado!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtFantasia);
-    Exit;
-  end;
 
-  if locCPF_CNPJ = '' then
-  begin
-    VCLConsistenciaExibir('O CPF/CNPJ da filial deve ser informado!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCPF_CNPJ);
-    Exit;
-  end;
-
-  if locEmpresaID <= 0 then
-  begin
-    VCLConsistenciaExibir('A empresa da filial deve ser selecionada!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtRegimeTributarioCodigo); // ARRUMAR!!! AQUI!!!
-    Exit;
-  end;
-
-  if locRegimeTributarioID <= 0 then
-  begin
-    VCLConsistenciaExibir('O regime tributário da filial deve ser selecionado!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtRegimeTributarioCodigo);
-    Exit;
-  end;
-
+{
   //
   // Confirma gravação com o usuário.
   //
@@ -872,7 +1031,7 @@ begin
   //
   // Filial gravada!
   //
-  VCLInformacaoExibir('Endereço da fFilial gravado com sucesso!');
+  VCLInformacaoExibir('Endereço da filial gravado com sucesso!');
 end;
 
 end.

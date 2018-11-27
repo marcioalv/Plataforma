@@ -20,6 +20,8 @@ IF OBJECT_ID('local_log')                       IS NOT NULL DROP TABLE [local_lo
 IF OBJECT_ID('local')                           IS NOT NULL DROP TABLE [local]
 IF OBJECT_ID('coligada_log')                    IS NOT NULL DROP TABLE [coligada_log]
 IF OBJECT_ID('coligada')                        IS NOT NULL DROP TABLE [coligada]
+IF OBJECT_ID('filial_endereco_log')             IS NOT NULL DROP TABLE [filial_endereco_log]
+IF OBJECT_ID('filial_endereco')                 IS NOT NULL DROP TABLE [filial_endereco]
 IF OBJECT_ID('filial_log')                      IS NOT NULL DROP TABLE [filial_log]
 IF OBJECT_ID('filial')                          IS NOT NULL DROP TABLE [filial]
 IF OBJECT_ID('empresa_log')                     IS NOT NULL DROP TABLE [empresa_log]
@@ -644,6 +646,63 @@ CREATE TABLE [dbo].[filial_log] (
   CONSTRAINT [filial_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
   CONSTRAINT [filial_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
   CONSTRAINT [filial_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
+)
+GO
+
+--
+-- Endereço da filial.
+--
+CREATE TABLE [filial_endereco] (
+  [licenca_id]           INT                                       NOT NULL,
+  [filial_base_id]       SMALLINT                                  NOT NULL,
+  [filial_id]            SMALLINT                                  NOT NULL,
+  [filial_endereco_sq]   SMALLINT                                  NOT NULL,
+  [vigencia_ini_dt]      DATETIME                                  NOT NULL,
+  [vigencia_fim_dt]      DATETIME                                  NOT NULL,
+  [ins_local_dt_hr]      DATETIME                                  NOT NULL,
+  [ins_server_dt_hr]     DATETIME                                  NOT NULL,
+  [ins_usuario_base_id]  SMALLINT                                  NOT NULL,
+  [ins_usuario_id]       INT                                       NOT NULL,
+  [upd_local_dt_hr]      DATETIME                                  NULL,
+  [upd_server_dt_hr]     DATETIME                                  NULL,
+  [upd_usuario_base_id]  SMALLINT                                  NULL,
+  [upd_usuario_id]       INT                                       NULL,
+  [upd_contador]         INT                                       NOT NULL,
+  
+  CONSTRAINT [filial_endereco_pk]          PRIMARY KEY CLUSTERED ([licenca_id], [filial_base_id], [filial_id], [filial_endereco_sq]),
+  CONSTRAINT [filial_endereco_ix_vigencia] UNIQUE ([licenca_id], [filial_base_id], [filial_id], [vigencia_ini_dt], [vigencia_fim_dt]),
+
+  CONSTRAINT [filial_endereco_fk_filial]      FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id])           REFERENCES [filial]  ([licenca_id], [filial_base_id],  [filial_id]),
+  CONSTRAINT [filial_endereco_fk_usuario_ins] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id]),
+  CONSTRAINT [filial_endereco_fk_usuario_upd] FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id])
+)
+GO
+
+--
+-- Log do endereço da filial.
+--
+CREATE TABLE [filial_endereco_log] (
+  [licenca_id]          INT                                       NOT NULL,
+  [filial_base_id]      SMALLINT                                  NOT NULL,
+  [filial_id]           SMALLINT                                  NOT NULL,
+  [filial_endereco_log_sq]       INT                              NOT NULL,
+  [log_base_id]         SMALLINT                                  NOT NULL,
+  [log_local_dt_hr]     DATETIME                                  NOT NULL,
+  [log_server_dt_hr]    DATETIME                                  NOT NULL,
+  [registro_acao_id]    TINYINT                                   NOT NULL,
+  [host_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [user_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [log_usuario_base_id] SMALLINT                                  NOT NULL,
+  [log_usuario_id]      INT                                       NOT NULL,
+  [mensagem]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [dados]               VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+ 
+  CONSTRAINT [filial_endereco_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [filial_base_id], [filial_id], [filial_endereco_log_sq]),
+
+  CONSTRAINT [filial_endereco_log_fk_empresa]       FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id])           REFERENCES [filial]        ([licenca_id], [filial_base_id], [filial_id]),
+  CONSTRAINT [filial_endereco_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
+  CONSTRAINT [filial_endereco_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
+  CONSTRAINT [filial_endereco_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
 )
 GO
 

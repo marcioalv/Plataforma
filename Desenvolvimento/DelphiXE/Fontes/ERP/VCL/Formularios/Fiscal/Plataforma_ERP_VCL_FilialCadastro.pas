@@ -578,6 +578,9 @@ var
   locFormulario: TPlataformaERPVCLFilialEndereco;
 begin
   locFormulario := TPlataformaERPVCLFilialEndereco.Create(Self);
+  locFormulario.pubLicencaID    := StringIntegerConverter(edtLicencaID.Text);
+  locFormulario.pubFilialBaseID := StringIntegerConverter(edtFilialBaseID.Text);
+  locFormulario.pubFilialID     := StringIntegerConverter(edtFilialID.Text);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);
