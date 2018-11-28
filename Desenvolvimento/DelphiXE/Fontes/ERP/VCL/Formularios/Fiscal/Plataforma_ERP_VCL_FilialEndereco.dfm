@@ -5,7 +5,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
   BorderStyle = bsSingle
   Caption = 'Endere'#231'o da filial'
   ClientHeight = 394
-  ClientWidth = 698
+  ClientWidth = 738
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -63,7 +63,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       50CE0000000049454E44AE426082}
   end
   object btnMinimizar: TBitBtn
-    Left = 576
+    Left = 616
     Top = 328
     Width = 49
     Height = 49
@@ -136,7 +136,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     OnClick = btnMinimizarClick
   end
   object btnFechar: TBitBtn
-    Left = 632
+    Left = 672
     Top = 328
     Width = 49
     Height = 49
@@ -201,7 +201,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
   object panFormulario: TPanel
     Left = 64
     Top = 16
-    Width = 617
+    Width = 657
     Height = 297
     BevelKind = bkTile
     BevelOuter = bvNone
@@ -213,7 +213,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     object lvwLista: TListView
       Left = 8
       Top = 8
-      Width = 233
+      Width = 273
       Height = 273
       Cursor = crHandPoint
       Columns = <
@@ -228,7 +228,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
         item
           Alignment = taCenter
           Caption = 'Vig'#234'ncia'
-          Width = 165
+          Width = 200
         end>
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -242,7 +242,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       ViewStyle = vsReport
     end
     object pagFormulario: TPageControl
-      Left = 256
+      Left = 296
       Top = 8
       Width = 345
       Height = 273
@@ -251,9 +251,6 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       TabOrder = 1
       object tabDados: TTabSheet
         Caption = 'Dados'
-        ExplicitLeft = -12
-        ExplicitTop = 32
-        ExplicitWidth = 457
         object Image1: TImage
           Left = 303
           Top = 91
@@ -451,6 +448,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       object tabAuditoria: TTabSheet
         Caption = 'Auditoria'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 281
         ExplicitHeight = 165
         object lblInsDtHt: TLabel
