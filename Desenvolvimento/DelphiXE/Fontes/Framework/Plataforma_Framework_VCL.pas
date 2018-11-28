@@ -112,7 +112,9 @@ procedure VCLCheckBoxControlar(argComponente: TCheckBox; argLigar: Boolean);
 procedure VCLMemoControlar(argComponente: TMemo; argLigar: Boolean);
 
 procedure VCLEditClickControlar(argComponente: TEdit; argLigar: Boolean);
+procedure VCLMaskEditClickControlar(argComponente: TMaskEdit; argLigar: Boolean);
 procedure VCLEditSelecaoControlar(argComponente: TEdit; argImage: TImage; argLigar: Boolean);
+procedure VCLMaskEditSelecaoControlar(argComponente: TMaskEdit; argImage: TImage; argLigar: Boolean);
 
 procedure VCLToggleSwitchLigar(argComponente: TToggleSwitch; argLigar: Boolean);
 function  VCLToggleSwitchRecuperar(argComponente: TToggleSwitch): Boolean;
@@ -964,9 +966,48 @@ begin
 end;
 
 //
+// VCLMaskEditClickControlar.
+//
+procedure VCLMaskEditClickControlar(argComponente: TMaskEdit; argLigar: Boolean);
+begin
+  if argComponente.Hint = '' then
+    argComponente.Hint := 'Clique para exibir informações!';
+
+  argComponente.ShowHint := argLigar;
+
+  if argLigar and (argComponente.Text <> '') then
+  begin
+    argComponente.Cursor := crHandPoint;
+  end
+  else
+  begin
+    argComponente.Cursor := crDefault;
+  end;
+
+  argComponente.Refresh;
+end;
+
+//
 // VCLEditSelecaoControlar.
 //
 procedure VCLEditSelecaoControlar(argComponente: TEdit; argImage: TImage; argLigar: Boolean);
+begin
+  if not argLigar then
+  begin
+    argComponente.Width := (argImage.Left + argImage.Width) - argComponente.Left - 1;
+  end
+  else
+  begin
+    argComponente.Width := (argImage.Left - argComponente.Left) - Round(argImage.Width / 2);
+  end;
+
+  argImage.Visible := argLigar;
+end;
+
+//
+// VCLMaskEditSelecaoControlar.
+//
+procedure VCLMaskEditSelecaoControlar(argComponente: TMaskEdit; argImage: TImage; argLigar: Boolean);
 begin
   if not argLigar then
   begin
