@@ -657,6 +657,7 @@ CREATE TABLE [filial_endereco] (
   [filial_base_id]       SMALLINT                                  NOT NULL,
   [filial_id]            SMALLINT                                  NOT NULL,
   [filial_endereco_sq]   SMALLINT                                  NOT NULL,
+  [sequencial]           SMALLINT                                  NOT NULL,
   [vigencia_ini_dt]      DATETIME                                  NOT NULL,
   [vigencia_fim_dt]      DATETIME                                  NOT NULL,
   [ins_local_dt_hr]      DATETIME                                  NOT NULL,
@@ -669,8 +670,9 @@ CREATE TABLE [filial_endereco] (
   [upd_usuario_id]       INT                                       NULL,
   [upd_contador]         INT                                       NOT NULL,
   
-  CONSTRAINT [filial_endereco_pk]          PRIMARY KEY CLUSTERED ([licenca_id], [filial_base_id], [filial_id], [filial_endereco_sq]),
-  CONSTRAINT [filial_endereco_ix_vigencia] UNIQUE ([licenca_id], [filial_base_id], [filial_id], [vigencia_ini_dt], [vigencia_fim_dt]),
+  CONSTRAINT [filial_endereco_pk]            PRIMARY KEY CLUSTERED ([licenca_id], [filial_base_id], [filial_id], [filial_endereco_sq]),
+  CONSTRAINT [filial_endereco_ix_sequencial] UNIQUE ([licenca_id], [filial_base_id], [filial_id], [sequencial]),
+  CONSTRAINT [filial_endereco_ix_vigencia]   UNIQUE ([licenca_id], [filial_base_id], [filial_id], [vigencia_ini_dt], [vigencia_fim_dt]),
 
   CONSTRAINT [filial_endereco_fk_filial]      FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id])           REFERENCES [filial]  ([licenca_id], [filial_base_id],  [filial_id]),
   CONSTRAINT [filial_endereco_fk_usuario_ins] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id]),

@@ -15,6 +15,7 @@ unit Plataforma_ERP_VCL_FilialEndereco;
 interface
 
 uses
+  Data.Win.ADODB,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -24,7 +25,13 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Dialogs,
-  Data.Win.ADODB, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.ComCtrls, Vcl.Mask;
+  Vcl.ExtCtrls,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  Vcl.Buttons,
+  Vcl.Imaging.pngimage,
+  Vcl.ComCtrls,
+  Vcl.Mask;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_FilialEndereco.pas';
@@ -32,8 +39,9 @@ const
   TAB_CADASTRO : Byte = 0;
   TAB_AUDITORIA: Byte = 1;
 
-  LVW_LISTA_SQ      : Integer = 0;
-  LVW_LISTA_VIGENCIA: Integer = 1;
+  LVW_LISTA_FILIAL_ENDERECO_SQ: Integer = 0;
+  LVW_LISTA_SEQUENCIAL        : Integer = 1;
+  LVW_LISTA_VIGENCIA          : Integer = 2;
 
 type
   TPlataformaERPVCLFilialEndereco = class(TForm)
@@ -55,10 +63,10 @@ type
     pagFormulario: TPageControl;
     tabCadastro: TTabSheet;
     tabAuditoria: TTabSheet;
-    mskVigenciaIniDt: TMaskEdit;
+    medVigenciaIniDt: TMaskEdit;
     imgVigenciaFimDtSelecionar: TImage;
     imgVigenciaIniDtSelecionar: TImage;
-    mskVigenciaFimDt: TMaskEdit;
+    medVigenciaFimDt: TMaskEdit;
     edtSequencial: TEdit;
     lblVigenciaAte: TLabel;
     lblVigencia: TLabel;
@@ -76,16 +84,18 @@ type
     btnGravar: TBitBtn;
     mniAdicional: TMenuItem;
     mniLog: TMenuItem;
+    lblFilialEnderecoSq: TLabel;
+    edtFilialEnderecoSq: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure mskVigenciaIniDtEnter(Sender: TObject);
-    procedure mskVigenciaIniDtKeyPress(Sender: TObject; var Key: Char);
-    procedure mskVigenciaIniDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure mskVigenciaIniDtExit(Sender: TObject);
-    procedure mskVigenciaFimDtEnter(Sender: TObject);
-    procedure mskVigenciaFimDtExit(Sender: TObject);
-    procedure mskVigenciaFimDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure mskVigenciaFimDtKeyPress(Sender: TObject; var Key: Char);
+    procedure medVigenciaIniDtEnter(Sender: TObject);
+    procedure medVigenciaIniDtKeyPress(Sender: TObject; var Key: Char);
+    procedure medVigenciaIniDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure medVigenciaIniDtExit(Sender: TObject);
+    procedure medVigenciaFimDtEnter(Sender: TObject);
+    procedure medVigenciaFimDtExit(Sender: TObject);
+    procedure medVigenciaFimDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure medVigenciaFimDtKeyPress(Sender: TObject; var Key: Char);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure mniGravarClick(Sender: TObject);
     procedure mniFecharClick(Sender: TObject);
@@ -104,6 +114,10 @@ type
     procedure btnCancelarClick(Sender: TObject);
     procedure mniLogClick(Sender: TObject);
     procedure btnLogClick(Sender: TObject);
+    procedure lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure imgVigenciaIniDtSelecionarClick(Sender: TObject);
+    procedure imgVigenciaFimDtSelecionarClick(Sender: TObject);
   private
     procedure FormularioLimpar(argLista: Boolean = True;
                                argDados: Boolean = True);
@@ -131,7 +145,8 @@ type
 
     procedure FormularioExcluir;
 
-    function LogDadosGerar(argSequencial: Integer = 0): string;
+    function LogDadosGerar(argFilialEnderecoSq: Integer = 0;
+                           argSequencial      : Integer = 0): string;
   public
     pubDadosAtualizados: Boolean;
     pubLicencaID       : Integer;
@@ -169,8 +184,8 @@ begin
   //
   // Controla os componentes de exibição de cadastro.
   //
-  VCLMaskEditClickControlar(mskVigenciaIniDt, False);
-  VCLMaskEditClickControlar(mskVigenciaFimDt, False);
+  VCLMaskEditClickControlar(medVigenciaIniDt, False);
+  VCLMaskEditClickControlar(medVigenciaFimDt, False);
   VCLEditClickControlar    (edtInsLocalDtHr,  False);
   VCLEditClickControlar    (edtUpdLocalDtHr,  False);
 end;
@@ -289,59 +304,82 @@ end;
 //
 // Eventos do componente lvwLista.
 //
+procedure TPlataformaERPVCLFilialEndereco.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  VCLListViewZebrar(Sender, Item);
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  VCLListViewZebrar(Sender, Item);
+
+end;
+
 procedure TPlataformaERPVCLFilialEndereco.lvwListaSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
 var
-  locSequencial: Integer;
+  locFilialEnderecoSq: Integer;
 begin
-  locSequencial := StringIntegerConverter(Item.SubItems.Strings[LVW_LISTA_SQ]);
+  locFilialEnderecoSq := StringIntegerConverter(Item.SubItems.Strings[LVW_LISTA_FILIAL_ENDERECO_SQ]);
 
-  FormularioDadosPopular(pubLicencaID, pubFilialBaseID, pubFilialID, locSequencial);
+  FormularioDadosPopular(pubLicencaID, pubFilialBaseID, pubFilialID, locFilialEnderecoSq);
 end;
 
 //
 // Vigência inicial.
 //
-procedure TPlataformaERPVCLFilialEndereco.mskVigenciaIniDtEnter(Sender: TObject);
+procedure TPlataformaERPVCLFilialEndereco.medVigenciaIniDtEnter(Sender: TObject);
 begin
-  Exit;
+  if not VCLMaskEditEntrar(medVigenciaIniDt) then Exit;
 end;
 
-procedure TPlataformaERPVCLFilialEndereco.mskVigenciaIniDtKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLFilialEndereco.medVigenciaIniDtKeyPress(Sender: TObject; var Key: Char);
 begin
-  Exit;
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
 end;
 
-procedure TPlataformaERPVCLFilialEndereco.mskVigenciaIniDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLFilialEndereco.medVigenciaIniDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  Exit;
+  if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medVigenciaIniDt);
 end;
 
-procedure TPlataformaERPVCLFilialEndereco.mskVigenciaIniDtExit(Sender: TObject);
+procedure TPlataformaERPVCLFilialEndereco.medVigenciaIniDtExit(Sender: TObject);
 begin
-  Exit;
+  if not VCLMaskEditSair(medVigenciaIniDt) then Exit;
+  if not VCLMaskEditDataValidar(medVigenciaIniDt) then Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.imgVigenciaIniDtSelecionarClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataSelecionar(medVigenciaIniDt);
 end;
 
 //
 // Vigência final.
 //
-procedure TPlataformaERPVCLFilialEndereco.mskVigenciaFimDtEnter(Sender: TObject);
+procedure TPlataformaERPVCLFilialEndereco.medVigenciaFimDtEnter(Sender: TObject);
 begin
-  Exit;
+  if not VCLMaskEditEntrar(medVigenciaFimDt) then Exit;
 end;
 
-procedure TPlataformaERPVCLFilialEndereco.mskVigenciaFimDtKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLFilialEndereco.medVigenciaFimDtKeyPress(Sender: TObject; var Key: Char);
 begin
-  Exit;
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
 end;
 
-procedure TPlataformaERPVCLFilialEndereco.mskVigenciaFimDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLFilialEndereco.medVigenciaFimDtKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  Exit;
+  if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medVigenciaFimDt);
 end;
 
-procedure TPlataformaERPVCLFilialEndereco.mskVigenciaFimDtExit(Sender: TObject);
+procedure TPlataformaERPVCLFilialEndereco.medVigenciaFimDtExit(Sender: TObject);
 begin
-  Exit;
+  if not VCLMaskEditSair(medVigenciaFimDt) then Exit;
+  if not VCLMaskEditDataValidar(medVigenciaFimDt) then Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.imgVigenciaFimDtSelecionarClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_DataSelecionar(medVigenciaFimDt);
 end;
 
 //
@@ -414,9 +452,10 @@ begin
   if argDados then
   begin
     VCLEditLimpar    (edtSequencial);
-    VCLMaskEditLimpar(mskVigenciaIniDt);
-    VCLMaskEditLimpar(mskVigenciaFimDt);
+    VCLMaskEditLimpar(medVigenciaIniDt);
+    VCLMaskEditLimpar(medVigenciaFimDt);
 
+    VCLEditLimpar(edtFilialEnderecoSq);
     VCLEditLimpar(edtInsLocalDtHr);
     VCLEditLimpar(edtUpdLocalDtHr);
     VCLEditLimpar(edtUpdContador);
@@ -433,27 +472,27 @@ begin
   //
   // Determina se existem dados populados no formulário.
   //
-  locDadosPopulados := (StringIntegerConverter(edtSequencial.Text) > 0);
+  locDadosPopulados := (StringIntegerConverter(edtFilialEnderecoSq.Text) > 0);
 
   //
   // Controla os componentes do formulário.
   //
-  VCLMaskEditControlar(mskVigenciaIniDt, argEditar);
-  VCLMaskEditControlar(mskVigenciaFimDt, argEditar);
+  VCLMaskEditControlar(medVigenciaIniDt, argEditar);
+  VCLMaskEditControlar(medVigenciaFimDt, argEditar);
 
   //
   // Controla os componentes de exibição de cadastro.
   //
-  VCLMaskEditClickControlar(mskVigenciaIniDt, True);
-  VCLMaskEditClickControlar(mskVigenciaFimDt, True);
+  VCLMaskEditClickControlar(medVigenciaIniDt, True);
+  VCLMaskEditClickControlar(medVigenciaFimDt, True);
   VCLEditClickControlar    (edtInsLocalDtHr,  True);
   VCLEditClickControlar    (edtUpdLocalDtHr,  True);
 
   //
   // Controle os componentes com seleção de dados.
   //
-  VCLMaskEditSelecaoControlar(mskVigenciaIniDt, imgVigenciaIniDtSelecionar, argEditar);
-  VCLMaskEditSelecaoControlar(mskVigenciaFimDt, imgVigenciaFimDtSelecionar, argEditar);
+  VCLMaskEditSelecaoControlar(medVigenciaIniDt, imgVigenciaIniDtSelecionar, argEditar);
+  VCLMaskEditSelecaoControlar(medVigenciaFimDt, imgVigenciaFimDtSelecionar, argEditar);
 
   //
   // Controla os itens de menu do formulário.
@@ -562,18 +601,19 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                                             ');
-  locADOQuery.SQL.Add('  [filial_endereco].[filial_endereco_sq],                                          ');
-  locADOQuery.SQL.Add('  [filial_endereco].[vigencia_ini_dt],                                             ');
-  locADOQuery.SQL.Add('  [filial_endereco].[vigencia_fim_dt]                                              ');
-  locADOQuery.SQL.Add('FROM                                                                               ');
-  locADOQuery.SQL.Add('  [filial_endereco] WITH (NOLOCK)                                                  ');
-  locADOQuery.SQL.Add('WHERE                                                                              ');
-  locADOQuery.SQL.Add('  [filial_endereco].[licenca_id]     = :licenca_id     AND                         ');
-  locADOQuery.SQL.Add('  [filial_endereco].[filial_base_id] = :filial_base_id AND                         ');
-  locADOQuery.SQL.Add('  [filial_endereco].[filial_id]      = :filial_id                                  ');
-  locADOQuery.SQL.Add('ORDER BY                                                                           ');
-  locADOQuery.SQL.Add('  [filial_endereco].[filial_endereco_sq] ASC                                       ');
+  locADOQuery.SQL.Add('SELECT                                                     ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_endereco_sq],                  ');
+  locADOQuery.SQL.Add('  [filial_endereco].[sequencial],                          ');
+  locADOQuery.SQL.Add('  [filial_endereco].[vigencia_ini_dt],                     ');
+  locADOQuery.SQL.Add('  [filial_endereco].[vigencia_fim_dt]                      ');
+  locADOQuery.SQL.Add('FROM                                                       ');
+  locADOQuery.SQL.Add('  [filial_endereco] WITH (NOLOCK)                          ');
+  locADOQuery.SQL.Add('WHERE                                                      ');
+  locADOQuery.SQL.Add('  [filial_endereco].[licenca_id]     = :licenca_id     AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_base_id] = :filial_base_id AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_id]      = :filial_id          ');
+  locADOQuery.SQL.Add('ORDER BY                                                   ');
+  locADOQuery.SQL.Add('  [filial_endereco].[sequencial] ASC                       ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value     := argLicencaID;
   locADOQuery.Parameters.ParamByName('filial_base_id').Value := argFilialBaseID;
@@ -609,6 +649,7 @@ begin
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('filial_endereco_sq').AsInteger));
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('sequencial').AsInteger));
       locListItem.SubItems.Add(DateTimeStringConverter(locADOQuery.FieldByName('vigencia_ini_dt').AsDateTime, 'dd/mm/yyyy') + ' até ' + DateTimeStringConverter(locADOQuery.FieldByName('vigencia_fim_dt').AsDateTime, 'dd/mm/yyyy'));
 
       locADOQuery.Next;
@@ -696,6 +737,7 @@ begin
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                         ');
   locADOQuery.SQL.Add('  [filial_endereco].[filial_endereco_sq],                      ');
+  locADOQuery.SQL.Add('  [filial_endereco].[sequencial],                              ');
   locADOQuery.SQL.Add('  [filial_endereco].[vigencia_ini_dt],                         ');
   locADOQuery.SQL.Add('  [filial_endereco].[vigencia_fim_dt],                         ');
   locADOQuery.SQL.Add('  [filial_endereco].[ins_local_dt_hr],                         ');
@@ -738,13 +780,14 @@ begin
   //
   if locADOQuery.RecordCount > 0 then
   begin
-    edtSequencial.Text    := IntegerStringConverter (locADOQuery.FieldByName('filial_endereco_sq').AsInteger);
-    mskVigenciaIniDt.Text := DateTimeStringConverter(locADOQuery.FieldByName('vigencia_ini_dt').AsDateTime, 'dd/mm/yyyy');
-    mskVigenciaFimDt.Text := DateTimeStringConverter(locADOQuery.FieldByName('vigencia_fim_dt').AsDateTime, 'dd/mm/yyyy');
+    edtSequencial.Text    := IntegerStringConverter (locADOQuery.FieldByName('sequencial').AsInteger);
+    medVigenciaIniDt.Text := DateTimeStringConverter(locADOQuery.FieldByName('vigencia_ini_dt').AsDateTime, 'dd/mm/yyyy');
+    medVigenciaFimDt.Text := DateTimeStringConverter(locADOQuery.FieldByName('vigencia_fim_dt').AsDateTime, 'dd/mm/yyyy');
 
-    edtInsLocalDtHr.Text  := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
-    edtUpdLocalDtHr.Text  := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
-    edtUpdContador.Text   := IntegerStringConverter (locADOQuery.FieldByName('upd_contador').AsInteger);
+    edtFilialEnderecoSq.Text := IntegerStringConverter (locADOQuery.FieldByName('filial_endereco_sq').AsInteger);
+    edtInsLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
+    edtUpdLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
+    edtUpdContador.Text      := IntegerStringConverter (locADOQuery.FieldByName('upd_contador').AsInteger);
   end;
 
   //
@@ -770,15 +813,15 @@ const
   PROCEDIMENTO_NOME: string = 'FormularioLogExibir';
   ERRO_MENSAGEM    : string = 'Impossível consultar dados sobre os logs do registro!';
 var
-  locADOConnection: TADOConnection;
-  locADOQuery     : TADOQuery;
-  locLogMensagem  : string;
-  locSequencial   : Integer;
+  locADOConnection   : TADOConnection;
+  locADOQuery        : TADOQuery;
+  locLogMensagem     : string;
+  locFilialEnderecoSq: Integer;
 begin
   //
   // Carrega chave do registro.
   //
-  locSequencial := StringIntegerConverter(edtSequencial.Text);
+  locFilialEnderecoSq := StringIntegerConverter(edtFilialEnderecoSq.Text);
 
   //
   // Troca cursor.
@@ -816,20 +859,20 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                                                                ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_endereco_log_sq] AS [sequencial],                     ');
-  locADOQuery.SQL.Add('  [base].[base_id]                               AS [log_base_id],                    ');
-  locADOQuery.SQL.Add('  [base].[descricao]                             AS [log_base_descricao],             ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[log_local_dt_hr]        AS [log_local_dt_hr],                ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[log_server_dt_hr]       AS [log_server_dt_hr],               ');
-  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id]             AS [registro_acao_id],               ');
-  locADOQuery.SQL.Add('  [registro_acao].[descricao]                    AS [registro_acao_descricao],        ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[host_name]              AS [host_name],                      ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[user_name]              AS [user_name],                      ');
-  locADOQuery.SQL.Add('  [usuario].[usuario_base_id]                    AS [usuario_base_id],                ');
-  locADOQuery.SQL.Add('  [usuario].[usuario_id]                         AS [usuario_id],                     ');
-  locADOQuery.SQL.Add('  [usuario].[nome]                               AS [usuario_nome],                   ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[mensagem]               AS [mensagem],                       ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[dados]                  AS [dados]                           ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_endereco_log_sq] AS [sequencial],                           ');
+  locADOQuery.SQL.Add('  [base].[base_id]                               AS [log_base_id],                          ');
+  locADOQuery.SQL.Add('  [base].[descricao]                             AS [log_base_descricao],                   ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[log_local_dt_hr]        AS [log_local_dt_hr],                      ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[log_server_dt_hr]       AS [log_server_dt_hr],                     ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id]             AS [registro_acao_id],                     ');
+  locADOQuery.SQL.Add('  [registro_acao].[descricao]                    AS [registro_acao_descricao],              ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[host_name]              AS [host_name],                            ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[user_name]              AS [user_name],                            ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_base_id]                    AS [usuario_base_id],                      ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_id]                         AS [usuario_id],                           ');
+  locADOQuery.SQL.Add('  [usuario].[nome]                               AS [usuario_nome],                         ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[mensagem]               AS [mensagem],                             ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[dados]                  AS [dados]                                 ');
   locADOQuery.SQL.Add('FROM                                                                                  ');  
   locADOQuery.SQL.Add('  [filial_endereco_log] WITH (NOLOCK)                                                 ');
   locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                                     ');
@@ -851,7 +894,7 @@ begin
   locADOQuery.Parameters.ParamByName('licenca_id').Value         := pubLicencaID;
   locADOQuery.Parameters.ParamByName('filial_base_id').Value     := pubFilialBaseID;
   locADOQuery.Parameters.ParamByName('filial_id').Value          := pubFilialID;
-  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locSequencial;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locFilialEnderecoSq;
 
   //
   // Executa query.
@@ -907,8 +950,9 @@ begin
   //
   // Carrega conteúdo dos campos necessários.
   //
-  edtSequencial.Text := STR_NOVO;
- 
+  edtFilialEnderecoSq.Text := STR_NOVO;
+  edtSequencial.Text       := STR_NOVO;
+
   //
   // Componentes ligados para edição.
   //
@@ -917,7 +961,7 @@ begin
   //
   // Coloca o foco na data de vigência inicial.
   //
-  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, mskVigenciaIniDt);
+  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, medVigenciaIniDt);
 end;
 
 //
@@ -933,7 +977,7 @@ begin
   //
   // Coloca o foco na data de vigência inicial.
   //
-  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, mskVigenciaIniDt);
+  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, medVigenciaIniDt);
 end;
 
 //
@@ -958,6 +1002,7 @@ var
   locLicencaID             : Integer;
   locFilialBaseID          : Integer;
   locFilialID              : Integer;
+  locFilialEnderecoSq      : Integer;
 
   locSequencial            : Integer;
   locVigenciaIniDt         : TDateTime;
@@ -974,26 +1019,27 @@ begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locLicencaID          := pubLicencaID;
-  locFilialBaseID       := pubFilialBaseID;
-  locFilialID           := pubFilialID;
+  locLicencaID        := pubLicencaID;
+  locFilialBaseID     := pubFilialBaseID;
+  locFilialID         := pubFilialID;
+  locFilialEnderecoSq := StringIntegerConverter(edtFilialEnderecoSq.Text);
 
-  locSequencial         := StringIntegerConverter(edtSequencial.Text);
-  locVigenciaIniDt      := StringDateTimeConverter(mskVigenciaIniDt.Text);
-  locVigenciaFimDt      := StringDateTimeConverter(mskVigenciaFimDt.Text);
+  locSequencial       := StringIntegerConverter(edtSequencial.Text);
+  locVigenciaIniDt    := StringDateTimeConverter(medVigenciaIniDt.Text);
+  locVigenciaFimDt    := StringDateTimeConverter(medVigenciaFimDt.Text);
 
-  locUsuarioBaseID      := gloUsuarioBaseID;
-  locUsuarioID          := gloUsuarioID;
-  locHostName           := HostNameRecuperar;
-  locUserName           := UserNameRecuperar;
-  locUpdContador        := StringIntegerConverter(edtUpdContador.Text);
+  locUsuarioBaseID    := gloUsuarioBaseID;
+  locUsuarioID        := gloUsuarioID;
+  locHostName         := HostNameRecuperar;
+  locUserName         := UserNameRecuperar;
+  locUpdContador      := StringIntegerConverter(edtUpdContador.Text);
 
   //
   // Determina se será um insert ou update.
   //
   locInsert := True;
 
-  if locSequencial > 0 then locInsert := False;
+  if locFilialEnderecoSq > 0 then locInsert := False;
 
   //
   // Consiste as informações.
@@ -1001,21 +1047,21 @@ begin
   if locVigenciaIniDt <= 0 then
   begin
     VCLConsistenciaExibir('A data inicial da vigência deve ser informada!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, mskVigenciaIniDt);
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, medVigenciaIniDt);
     Exit;
   end;
 
   if locVigenciaFimDt <= 0 then
   begin
     VCLConsistenciaExibir('A data final da vigência deve ser informada!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, mskVigenciaFimDt);
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, medVigenciaFimDt);
     Exit;
   end;
 
   if locVigenciaFimDt < locVigenciaIniDt then
   begin
     VCLConsistenciaExibir('A data final da vigência não pode ser anterior a data inicial!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, mskVigenciaIniDt);
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, medVigenciaIniDt);
     Exit;
   end;
 
@@ -1078,7 +1124,7 @@ begin
   locADOQuery.Parameters.ParamByName('licenca_id').Value         := locLicencaID;
   locADOQuery.Parameters.ParamByName('filial_base_id').Value     := locFilialBaseID;
   locADOQuery.Parameters.ParamByName('filial_id').Value          := locFilialID;
-  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locSequencial;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locFilialEnderecoSq;
   locADOQuery.Parameters.ParamByName('vigencia_ini_dt').Value    := locVigenciaIniDt;
   locADOQuery.Parameters.ParamByName('vigencia_fim_dt').Value    := locVigenciaFimDt;
 
@@ -1130,7 +1176,7 @@ begin
     locADOQuery.Parameters.ParamByName('licenca_id').Value         := locLicencaID;
     locADOQuery.Parameters.ParamByName('filial_base_id').Value     := locFilialBaseID;
     locADOQuery.Parameters.ParamByName('filial_id').Value          := locFilialID;
-    locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locSequencial;
+    locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locFilialEnderecoSq;
 
     try
       locADOQuery.Open;
@@ -1213,20 +1259,20 @@ begin
   end;
 
   //
-  // Determina o próximo sequencial do endereço da filial.
+  // Determina o próximo [filial_endereco_sq] do endereço da filial.
   //
   if locInsert then
   begin
     locADOQuery.Close;
     locADOQuery.SQL.Clear;
-    locADOQuery.SQL.Add('SELECT                                                         ');
-    locADOQuery.SQL.Add('  MAX([filial_endereco].[filial_endereco_sq]) AS [sequencial]  ');
-    locADOQuery.SQL.Add('FROM                                                           ');
-    locADOQuery.SQL.Add('  [filial_endereco] WITH (NOLOCK)                              ');
-    locADOQuery.SQL.Add('WHERE                                                          ');
-    locADOQuery.SQL.Add('  [filial_endereco].[licenca_id]     = :licenca_id     AND     ');
-    locADOQuery.SQL.Add('  [filial_endereco].[filial_base_id] = :filial_base_id AND     ');
-    locADOQuery.SQL.Add('  [filial_endereco].[filial_id]      = :filial_id              ');
+    locADOQuery.SQL.Add('SELECT                                                                ');
+    locADOQuery.SQL.Add('  MAX([filial_endereco].[filial_endereco_sq]) AS [filial_endereco_sq] ');
+    locADOQuery.SQL.Add('FROM                                                                  ');
+    locADOQuery.SQL.Add('  [filial_endereco] WITH (NOLOCK)                                     ');
+    locADOQuery.SQL.Add('WHERE                                                                 ');
+    locADOQuery.SQL.Add('  [filial_endereco].[licenca_id]     = :licenca_id     AND            ');
+    locADOQuery.SQL.Add('  [filial_endereco].[filial_base_id] = :filial_base_id AND            ');
+    locADOQuery.SQL.Add('  [filial_endereco].[filial_id]      = :filial_id                     ');
 
     locADOQuery.Parameters.ParamByName('licenca_id').Value     := locLicencaID;
     locADOQuery.Parameters.ParamByName('filial_base_id').Value := locFilialBaseID;
@@ -1241,7 +1287,56 @@ begin
         FreeAndNil(locADOQuery);
         locADOConnection.Close;
         FreeAndNil(locADOConnection);
-        locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar o próximo sequencial na tabela [filial_endereco]!';
+        locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar o próximo [filial_endereco_sq] na tabela [filial_endereco]!';
+        Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+        VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+        Exit
+      end;
+    end;
+
+    locFilialEnderecoSq := 0;
+
+    if locADOQuery.RecordCount > 0 then
+    begin
+      if not locADOQuery.FieldByName('filial_endereco_sq').IsNull then
+      begin
+        locFilialEnderecoSq := locADOQuery.FieldByName('filial_endereco_sq').AsInteger;
+      end;
+    end;
+
+    Inc(locFilialEnderecoSq);
+  end;
+
+  //
+  // Determina o próximo [sequencial] do endereço da filial.
+  //
+  if locInsert then
+  begin
+    locADOQuery.Close;
+    locADOQuery.SQL.Clear;
+    locADOQuery.SQL.Add('SELECT                                                     ');
+    locADOQuery.SQL.Add('  MAX([filial_endereco].[sequencial]) AS [sequencial]      ');
+    locADOQuery.SQL.Add('FROM                                                       ');
+    locADOQuery.SQL.Add('  [filial_endereco] WITH (NOLOCK)                          ');
+    locADOQuery.SQL.Add('WHERE                                                      ');
+    locADOQuery.SQL.Add('  [filial_endereco].[licenca_id]     = :licenca_id     AND ');
+    locADOQuery.SQL.Add('  [filial_endereco].[filial_base_id] = :filial_base_id AND ');
+    locADOQuery.SQL.Add('  [filial_endereco].[filial_id]      = :filial_id          ');
+
+    locADOQuery.Parameters.ParamByName('licenca_id').Value     := locLicencaID;
+    locADOQuery.Parameters.ParamByName('filial_base_id').Value := locFilialBaseID;
+    locADOQuery.Parameters.ParamByName('filial_id').Value      := locFilialID;
+
+    try
+      locADOQuery.Open;
+    except
+      on locExcecao: Exception do
+      begin
+        locADOQuery.Close;
+        FreeAndNil(locADOQuery);
+        locADOConnection.Close;
+        FreeAndNil(locADOConnection);
+        locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar o próximo [sequencial] na tabela [filial_endereco]!';
         Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
         VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
         Exit
@@ -1277,6 +1372,7 @@ begin
     locADOQuery.SQL.Add('  [filial_base_id],             ');
     locADOQuery.SQL.Add('  [filial_id],                  ');
     locADOQuery.SQL.Add('  [filial_endereco_sq],         ');
+    locADOQuery.SQL.Add('  [sequencial],                 ');
     locADOQuery.SQL.Add('  [vigencia_ini_dt],            ');
     locADOQuery.SQL.Add('  [vigencia_fim_dt],            ');    
     locADOQuery.SQL.Add('  [ins_local_dt_hr],            ');
@@ -1294,6 +1390,7 @@ begin
     locADOQuery.SQL.Add('  :filial_base_id,              '); // [filial_base_id].
     locADOQuery.SQL.Add('  :filial_id,                   '); // [filial_id].
     locADOQuery.SQL.Add('  :filial_endereco_sq,          '); // [filial_endereco_sq].
+    locADOQuery.SQL.Add('  :sequencial,                  '); // [sequencial].
     locADOQuery.SQL.Add('  :vigencia_ini_dt,             '); // [vigencia_ini_dt].
     locADOQuery.SQL.Add('  :vigencia_fim_dt,             '); // [vigencia_fim_dt].
     locADOQuery.SQL.Add('  :local_dt_hr,                 '); // [ins_local_dt_hr].
@@ -1315,6 +1412,7 @@ begin
     locADOQuery.SQL.Add('UPDATE                                       ');
     locADOQuery.SQL.Add('  [filial_endereco]                          ');
     locADOQuery.SQL.Add('SET                                          ');
+    locADOQuery.SQL.Add('  [sequencial]          = :sequencial,       ');
     locADOQuery.SQL.Add('  [vigencia_ini_dt]     = :vigencia_ini_dt,  ');
     locADOQuery.SQL.Add('  [vigencia_fim_dt]     = :vigencia_fim_dt,  ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]     = :local_dt_hr,      ');
@@ -1332,15 +1430,16 @@ begin
   //
   // Parâmetros.
   //
-  locADOQuery.Parameters.ParamByName('licenca_id').Value           := locLicencaID;
-  locADOQuery.Parameters.ParamByName('filial_base_id').Value       := locFilialBaseID;
-  locADOQuery.Parameters.ParamByName('filial_id').Value            := locFilialID;
-  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value   := locSequencial;
-  locADOQuery.Parameters.ParamByName('vigencia_ini_dt').Value      := locVigenciaIniDt;
-  locADOQuery.Parameters.ParamByName('vigencia_fim_dt').Value      := locVigenciaFimDt;
-  locADOQuery.Parameters.ParamByName('local_dt_hr').Value          := Now;
-  locADOQuery.Parameters.ParamByName('usuario_base_id').Value      := locUsuarioBaseID;
-  locADOQuery.Parameters.ParamByName('usuario_id').Value           := locUsuarioID;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value         := locLicencaID;
+  locADOQuery.Parameters.ParamByName('filial_base_id').Value     := locFilialBaseID;
+  locADOQuery.Parameters.ParamByName('filial_id').Value          := locFilialID;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locFilialEnderecoSq;
+  locADOQuery.Parameters.ParamByName('sequencial').Value         := locSequencial;
+  locADOQuery.Parameters.ParamByName('vigencia_ini_dt').Value    := locVigenciaIniDt;
+  locADOQuery.Parameters.ParamByName('vigencia_fim_dt').Value    := locVigenciaFimDt;
+  locADOQuery.Parameters.ParamByName('local_dt_hr').Value        := Now;
+  locADOQuery.Parameters.ParamByName('usuario_base_id').Value    := locUsuarioBaseID;
+  locADOQuery.Parameters.ParamByName('usuario_id').Value         := locUsuarioID;
 
   try
     locADOQuery.ExecSQL;
@@ -1364,20 +1463,22 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                     ');
-  locADOQuery.SQL.Add('  [filial_endereco].[ins_local_dt_hr],                     ');
-  locADOQuery.SQL.Add('  [filial_endereco].[upd_local_dt_hr],                     ');
-  locADOQuery.SQL.Add('  [filial_endereco].[upd_contador]                         ');
-  locADOQuery.SQL.Add('FROM                                                       ');
-  locADOQuery.SQL.Add('  [filial_endereco]                                        ');
-  locADOQuery.SQL.Add('WHERE                                                      ');
-  locADOQuery.SQL.Add('  [filial_endereco].[licenca_id]     = :licenca_id     AND ');
-  locADOQuery.SQL.Add('  [filial_endereco].[filial_base_id] = :filial_base_id AND ');
-  locADOQuery.SQL.Add('  [filial_endereco].[filial_id]      = :filial_id          ');
+  locADOQuery.SQL.Add('SELECT                                                         ');
+  locADOQuery.SQL.Add('  [filial_endereco].[ins_local_dt_hr],                         ');
+  locADOQuery.SQL.Add('  [filial_endereco].[upd_local_dt_hr],                         ');
+  locADOQuery.SQL.Add('  [filial_endereco].[upd_contador]                             ');
+  locADOQuery.SQL.Add('FROM                                                           ');
+  locADOQuery.SQL.Add('  [filial_endereco]                                            ');
+  locADOQuery.SQL.Add('WHERE                                                          ');
+  locADOQuery.SQL.Add('  [filial_endereco].[licenca_id]         = :licenca_id     AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_base_id]     = :filial_base_id AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_id]          = :filial_id      AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_endereco_sq] = :filial_endereco_sq ');
 
-  locADOQuery.Parameters.ParamByName('licenca_id').Value     := locLicencaID;
-  locADOQuery.Parameters.ParamByName('filial_base_id').Value := locFilialBaseID;
-  locADOQuery.Parameters.ParamByName('filial_id').Value      := locFilialID;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value         := locLicencaID;
+  locADOQuery.Parameters.ParamByName('filial_base_id').Value     := locFilialBaseID;
+  locADOQuery.Parameters.ParamByName('filial_id').Value          := locFilialID;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locFilialEnderecoSq;
 
   try
     locADOQuery.Open;
@@ -1410,20 +1511,20 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                                                ');
-  locADOQuery.SQL.Add('  MAX([filial_endereco_log].[filial_endereco_log_sq]) AS [sequencial] ');
-  locADOQuery.SQL.Add('FROM                                                                  ');
-  locADOQuery.SQL.Add('  [filial_endereco_log]                                               ');
-  locADOQuery.SQL.Add('WHERE                                                                 ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[licenca_id]         = :licenca_id     AND    ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_base_id]     = :filial_base_id AND    ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_id]          = :filial_id      AND    ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_endereco_sq] = :filial_endereco_sq    ');
+  locADOQuery.SQL.Add('SELECT                                                                            ');
+  locADOQuery.SQL.Add('  MAX([filial_endereco_log].[filial_endereco_log_sq]) AS [filial_endereco_log_sq] ');
+  locADOQuery.SQL.Add('FROM                                                                              ');
+  locADOQuery.SQL.Add('  [filial_endereco_log]                                                           ');
+  locADOQuery.SQL.Add('WHERE                                                                             ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[licenca_id]         = :licenca_id     AND                ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_base_id]     = :filial_base_id AND                ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_id]          = :filial_id      AND                ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_endereco_sq] = :filial_endereco_sq                ');
 
   locADOQuery.Parameters.ParamByName('licenca_id').Value         := locLicencaID;
   locADOQuery.Parameters.ParamByName('filial_base_id').Value     := locFilialBaseID;
   locADOQuery.Parameters.ParamByName('filial_id').Value          := locFilialID;
-  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locSequencial;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locFilialEnderecoSq;
 
   try
     locADOQuery.Open;
@@ -1448,7 +1549,7 @@ begin
   end
   else
   begin
-    locFilialEnderecoLogSq := locADOQuery.FieldByName('sequencial').AsInteger + 1;
+    locFilialEnderecoLogSq := locADOQuery.FieldByName('filial_endereco_log_sq').AsInteger + 1;
   end;
 
   //
@@ -1494,7 +1595,7 @@ begin
   locADOQuery.Parameters.ParamByName('licenca_id').Value             := locLicencaID;
   locADOQuery.Parameters.ParamByName('filial_base_id').Value         := locFilialBaseID;
   locADOQuery.Parameters.ParamByName('filial_id').Value              := locFilialID;
-  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value     := locSequencial;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value     := locFilialEnderecoSq;
   locADOQuery.Parameters.ParamByName('filial_endereco_log_sq').Value := locFilialEnderecoLogSq;
   locADOQuery.Parameters.ParamByName('log_base_id').Value            := gloBaseID;
   locADOQuery.Parameters.ParamByName('log_local_dt_hr').Value        := Now;
@@ -1546,10 +1647,11 @@ begin
   //
   // Atualiza componentes que sofreram alteração com a gravação.
   //
-  edtSequencial.Text   := IntegerStringConverter(locSequencial);
-  edtInsLocalDtHr.Text := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn');
-  edtUpdLocalDtHr.Text := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn');
-  edtUpdContador.Text  := IntegerStringConverter(locUpdContador);
+  edtFilialEnderecoSq.Text := IntegerStringConverter(locFilialEnderecoSq);
+  edtSequencial.Text       := IntegerStringConverter(locSequencial);
+  edtInsLocalDtHr.Text     := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn');
+  edtUpdLocalDtHr.Text     := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn');
+  edtUpdContador.Text      := IntegerStringConverter(locUpdContador);
 
   //
   // Componentes desligados para edição.
@@ -1573,7 +1675,7 @@ begin
   // Grava log de ocorrência.
   //
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locFilialID, IntegerStringConverter(locSequencial), 'filial_endereco', locFilialEnderecoLogMsg, locFilialEnderecoLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locFilialID, IntegerStringConverter(locFilialEnderecoSq), 'filial_endereco', locFilialEnderecoLogMsg, locFilialEnderecoLogDados);
   except
     on locExcecao: Exception do
     begin
@@ -1600,7 +1702,7 @@ begin
   //
   // Confirma com o usuário.
   //
-  if StringIntegerConverter(edtSequencial.Text) = 0 then
+  if StringIntegerConverter(edtFilialEnderecoSq.Text) = 0 then
   begin
     if not VCLQuestionamentoExibir('Deseja realmente cancelar a digitação destes dados?') then Exit;
   end
@@ -1631,13 +1733,13 @@ var
   locADOConnection         : TADOConnection;
   locADOQuery              : TADOQuery;
   locLogMensagem           : string;
-  locSequencial            : Integer;
+  locFilialEnderecoSq      : Integer;
   locFilialEnderecoLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locSequencial := StringIntegerConverter(edtSequencial.Text);
+  locFilialEnderecoSq := StringIntegerConverter(edtFilialEnderecoSq.Text);
 
   //
   // Log dados.
@@ -1715,7 +1817,7 @@ begin
   locADOQuery.Parameters.ParamByName('licenca_id').Value         := pubLicencaID;
   locADOQuery.Parameters.ParamByName('filial_base_id').Value     := pubFilialBaseID;
   locADOQuery.Parameters.ParamByName('filial_id').Value          := pubFilialID;
-  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locSequencial;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locFilialEnderecoSq;
 
   try
     locADOQuery.ExecSQL;
@@ -1750,7 +1852,7 @@ begin
   locADOQuery.Parameters.ParamByName('licenca_id').Value         := pubLicencaID;
   locADOQuery.Parameters.ParamByName('filial_base_id').Value     := pubFilialBaseID;
   locADOQuery.Parameters.ParamByName('filial_id').Value          := pubFilialID;
-  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locSequencial;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locFilialEnderecoSq;
 
   try
     locADOQuery.ExecSQL;
@@ -1772,8 +1874,40 @@ begin
   //
   // Comando SQL para ajustar o sequencial nos registros restantes.
   //
-  
-  
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('UPDATE                                                         ');
+  locADOQuery.SQL.Add('  [filial_endereco]                                            ');
+  locADOQuery.SQL.Add('SET                                                            ');
+  locADOQuery.SQL.Add('  [sequencial] = [sequencial] - 1                              ');
+  locADOQuery.SQL.Add('WHERE                                                          ');
+  locADOQuery.SQL.Add('  [filial_endereco].[licenca_id]         = :licenca_id     AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_base_id]     = :filial_base_id AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_id]          = :filial_id      AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_endereco_sq] > :filial_endereco_sq ');
+
+  locADOQuery.Parameters.ParamByName('licenca_id').Value         := pubLicencaID;
+  locADOQuery.Parameters.ParamByName('filial_base_id').Value     := pubFilialBaseID;
+  locADOQuery.Parameters.ParamByName('filial_id').Value          := pubFilialID;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locFilialEnderecoSq;
+
+  try
+    locADOQuery.ExecSQL;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.RollbackTrans;
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum problema ao executar query para atualizar o sequencial dos registros na tabela [filial_endereco]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
   //
   // Finaliza transação com o banco de dados.
   //
@@ -1821,7 +1955,7 @@ begin
   // Log de ocorrência.
   //
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, pubFilialID, IntegerStringConverter(locSequencial), 'filial_endereco', 'Registro excluído com sucesso!', locFilialEnderecoLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, pubFilialID, IntegerStringConverter(locFilialEnderecoSq), 'filial_endereco', 'Registro excluído com sucesso!', locFilialEnderecoLogDados);
   except
   end;
   VCLInformacaoExibir('Endereço da filial excluído com sucesso!');
@@ -1835,10 +1969,17 @@ end;
 //
 // Função para gerar a string de log dos dados.
 //
-function TPlataformaERPVCLFilialEndereco.LogDadosGerar(argSequencial: Integer = 0): string;
+function TPlataformaERPVCLFilialEndereco.LogDadosGerar(argFilialEnderecoSq: Integer = 0;
+                                                       argSequencial      : Integer = 0): string;
 var
-  locSequencial: Integer;
+  locFilialEnderecoSq: Integer;
+  locSequencial      : Integer;
 begin
+  if argFilialEnderecoSq <= 0 then
+    locFilialEnderecoSq := StringIntegerConverter(edtFilialEnderecoSq.Text)
+  else
+    locFilialEnderecoSq := argFilialEnderecoSq;
+
   if argSequencial <= 0 then
     locSequencial := StringIntegerConverter(edtSequencial.Text)
   else
@@ -1848,9 +1989,10 @@ begin
   LogDadosIntegerDescrever('Licença',                pubLicencaID,          Result);
   LogDadosIntegerDescrever('Base da filial',         pubFilialBaseID,       Result);
   LogDadosIntegerDescrever('ID da filial',           pubFilialID,           Result);
-  LogDadosIntegerDescrever('Sequencial do endereço', locSequencial,         Result);
-  LogDadosStringDescrever ('Vigência inicial',       mskVigenciaIniDt.Text, Result);
-  LogDadosStringDescrever ('Vigência final',         mskVigenciaFimDt.Text, Result);
+  LogDadosIntegerDescrever('Sequencial do endereço', locFilialEnderecoSq,   Result);
+  LogDadosIntegerDescrever('Sequencial',             locSequencial,         Result);
+  LogDadosStringDescrever ('Vigência inicial',       medVigenciaIniDt.Text, Result);
+  LogDadosStringDescrever ('Vigência final',         medVigenciaFimDt.Text, Result);
   
 end;
 
