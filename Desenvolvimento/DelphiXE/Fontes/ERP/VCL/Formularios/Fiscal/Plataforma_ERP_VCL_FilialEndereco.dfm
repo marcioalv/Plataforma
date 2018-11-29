@@ -140,7 +140,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 6
+    TabOrder = 3
     OnClick = btnGravarClick
   end
   object btnCancelar: TBitBtn
@@ -294,7 +294,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 0
+    TabOrder = 4
     OnClick = btnMinimizarClick
   end
   object btnFechar: TBitBtn
@@ -357,7 +357,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 1
+    TabOrder = 6
     OnClick = btnFecharClick
   end
   object panFormulario: TPanel
@@ -371,7 +371,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     Color = clWhite
     ParentBackground = False
     ShowCaption = False
-    TabOrder = 2
+    TabOrder = 0
     object lvwLista: TListView
       Left = 8
       Top = 8
@@ -561,7 +561,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Font.Style = []
           MaxLength = 10
           ParentFont = False
-          TabOrder = 0
+          TabOrder = 1
           Text = '  /  /    '
           OnEnter = mskVigenciaIniDtEnter
           OnExit = mskVigenciaIniDtExit
@@ -582,7 +582,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Font.Style = []
           MaxLength = 10
           ParentFont = False
-          TabOrder = 1
+          TabOrder = 2
           Text = '  /  /    '
           OnEnter = mskVigenciaFimDtEnter
           OnExit = mskVigenciaFimDtExit
@@ -595,7 +595,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Width = 65
           Height = 26
           TabStop = False
-          Alignment = taRightJustify
+          Alignment = taCenter
           Color = clInactiveBorder
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -604,17 +604,13 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Font.Style = []
           ParentFont = False
           ReadOnly = True
-          TabOrder = 2
+          TabOrder = 0
           Text = '9999'
         end
       end
       object tabAuditoria: TTabSheet
         Caption = 'Auditoria'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 281
-        ExplicitHeight = 165
         object lblInsDtHt: TLabel
           Left = 8
           Top = 16
@@ -785,6 +781,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00}
           TabOrder = 3
+          OnClick = btnLogClick
         end
       end
     end
@@ -859,7 +856,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 3
+    TabOrder = 1
     OnClick = btnNovoClick
   end
   object btnAlterar: TBitBtn
@@ -940,7 +937,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 4
+    TabOrder = 2
     OnClick = btnAlterarClick
   end
   object mnuFormulario: TMainMenu

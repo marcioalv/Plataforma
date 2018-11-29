@@ -103,6 +103,7 @@ type
     procedure btnGravarClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure mniLogClick(Sender: TObject);
+    procedure btnLogClick(Sender: TObject);
   private
     procedure FormularioLimpar(argLista: Boolean = True;
                                argDados: Boolean = True);
@@ -117,7 +118,20 @@ type
                                      argFilialBaseID    : Integer;
                                      argFilialID        : Integer;
                                      argFilialEnderecoSq: Integer);
+
+    procedure FormularioLogExibir;
+
+    procedure FormularioNovo;
+    
+    procedure FormularioAlterar;
+
     procedure FormularioGravar;
+    
+    procedure FormularioCancelar;
+
+    procedure FormularioExcluir;
+
+    function LogDadosGerar(argSequencial: Integer = 0): string;
   public
     pubDadosAtualizados: Boolean;
     pubLicencaID       : Integer;
@@ -172,6 +186,11 @@ begin
   Plataforma_ERP_VCL_FormularioBackground(imgBackground);
 
   //
+  // Seleciona a aba principal.
+  //
+  VCLPageControlInicializar(pagFormulario);
+
+  //
   // Limpa o formulário.
   //
   FormularioLimpar;
@@ -200,7 +219,7 @@ end;
 //
 procedure TPlataformaERPVCLFilialEndereco.mniLogClick(Sender: TObject);
 begin
-  Exit;
+  FormularioLogExibir;
 end;
 
 //
@@ -216,7 +235,7 @@ end;
 //
 procedure TPlataformaERPVCLFilialEndereco.mniNovoClick(Sender: TObject);
 begin
-  Exit;
+  FormularioNovo;
 end;
 
 //
@@ -224,7 +243,7 @@ end;
 //
 procedure TPlataformaERPVCLFilialEndereco.mniAlterarClick(Sender: TObject);
 begin
-  Exit;
+  FormularioAlterar;
 end;
 
 //
@@ -232,7 +251,7 @@ end;
 //
 procedure TPlataformaERPVCLFilialEndereco.mniExcluirClick(Sender: TObject);
 begin
-  Exit;
+  FormularioExcluir;
 end;
 
 //
@@ -256,7 +275,7 @@ end;
 //
 procedure TPlataformaERPVCLFilialEndereco.mniCancelarClick(Sender: TObject);
 begin
-  Exit;
+  FormularioCancelar;
 end;
 
 //
@@ -326,11 +345,19 @@ begin
 end;
 
 //
+// Evento de click no botão "log alterações".
+//
+procedure TPlataformaERPVCLFilialEndereco.btnLogClick(Sender: TObject);
+begin
+  FormularioLogExibir;
+end;
+
+//
 // Evento de click no botão "novo".
 //
 procedure TPlataformaERPVCLFilialEndereco.btnNovoClick(Sender: TObject);
 begin
-  Exit;
+  FormularioNovo;
 end;
 
 //
@@ -338,7 +365,7 @@ end;
 //
 procedure TPlataformaERPVCLFilialEndereco.btnAlterarClick(Sender: TObject);
 begin
-  Exit;
+  FormularioAlterar;
 end;
 
 //
@@ -362,7 +389,7 @@ end;
 //
 procedure TPlataformaERPVCLFilialEndereco.btnCancelarClick(Sender: TObject);
 begin
-  Exit;
+  FormularioCancelar;
 end;
 
 //
@@ -601,7 +628,15 @@ begin
   //
   // Controla a exibição dos componentes.
   //
-  FormularioControlar(False);
+  if lvwLista.Items.Count <= 0 then
+  begin
+    FormularioControlar(False);
+  end
+  else
+  begin
+    VCLListViewItemPosicionar(lvwLista, lvwLista.Items.Count - 1);
+    VCLListViewFocar(lvwLista);
+  end;
 end;
 
 //
@@ -618,7 +653,6 @@ var
   locADOConnection: TADOConnection;
   locADOQuery     : TADOQuery;
   locLogMensagem  : string;
-  locListItem     : TListItem;
 begin
   //
   // Troca cursor.
@@ -726,6 +760,180 @@ begin
   // Controla a exibição dos componentes.
   //
   FormularioControlar(False);
+end;
+
+//
+// Procedimento para carregar e exibir o log de alterações do registro.
+//
+procedure TPlataformaERPVCLFilialEndereco.FormularioLogExibir;
+const
+  PROCEDIMENTO_NOME: string = 'FormularioLogExibir';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados sobre os logs do registro!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locSequencial   : Integer;
+begin
+  //
+  // Carrega chave do registro.
+  //
+  locSequencial := StringIntegerConverter(edtSequencial.Text);
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(Self);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados da filial.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                                                                ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_endereco_log_sq] AS [sequencial],                     ');
+  locADOQuery.SQL.Add('  [base].[base_id]                               AS [log_base_id],                    ');
+  locADOQuery.SQL.Add('  [base].[descricao]                             AS [log_base_descricao],             ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[log_local_dt_hr]        AS [log_local_dt_hr],                ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[log_server_dt_hr]       AS [log_server_dt_hr],               ');
+  locADOQuery.SQL.Add('  [registro_acao].[registro_acao_id]             AS [registro_acao_id],               ');
+  locADOQuery.SQL.Add('  [registro_acao].[descricao]                    AS [registro_acao_descricao],        ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[host_name]              AS [host_name],                      ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[user_name]              AS [user_name],                      ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_base_id]                    AS [usuario_base_id],                ');
+  locADOQuery.SQL.Add('  [usuario].[usuario_id]                         AS [usuario_id],                     ');
+  locADOQuery.SQL.Add('  [usuario].[nome]                               AS [usuario_nome],                   ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[mensagem]               AS [mensagem],                       ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[dados]                  AS [dados]                           ');
+  locADOQuery.SQL.Add('FROM                                                                                  ');  
+  locADOQuery.SQL.Add('  [filial_endereco_log] WITH (NOLOCK)                                                 ');
+  locADOQuery.SQL.Add('  INNER JOIN [base] WITH (NOLOCK)                                                     ');
+  locADOQuery.SQL.Add('    ON [base].[base_id] = [filial_endereco_log].[log_base_id]                         ');
+  locADOQuery.SQL.Add('  INNER JOIN [registro_acao] WITH (NOLOCK)                                            ');
+  locADOQuery.SQL.Add('    ON [registro_acao].[registro_acao_id] = [filial_endereco_log].[registro_acao_id]  ');
+  locADOQuery.SQL.Add('  INNER JOIN [usuario] WITH (NOLOCK)                                                  ');
+  locADOQuery.SQL.Add('    ON [usuario].[licenca_id]      = [filial_endereco_log].[licenca_id]          AND  ');
+  locADOQuery.SQL.Add('       [usuario].[usuario_base_id] = [filial_endereco_log].[log_usuario_base_id] AND  ');
+  locADOQuery.SQL.Add('       [usuario].[usuario_id]      = [filial_endereco_log].[log_usuario_id]           ');
+  locADOQuery.SQL.Add('WHERE                                                                                 ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[licenca_id]         = :licenca_id     AND                    ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_base_id]     = :filial_base_id AND                    ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_id]          = :filial_id      AND                    ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_endereco_sq] = :filial_endereco_sq                    ');
+  locADOQuery.SQL.Add('ORDER BY                                                                              ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_endereco_log_sq] ASC                                                    ');
+
+  locADOQuery.Parameters.ParamByName('licenca_id').Value         := pubLicencaID;
+  locADOQuery.Parameters.ParamByName('filial_base_id').Value     := pubFilialBaseID;
+  locADOQuery.Parameters.ParamByName('filial_id').Value          := pubFilialID;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locSequencial;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar registros da tabela [filial_endereco_log]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Troca o cursor.
+  //
+  VCLCursorTrocar;  
+
+  //
+  // Exibe formulário.
+  //
+  if locADOQuery.RecordCount > 0 then
+  begin
+    Plataforma_ERP_VCL_LogRegistroExibir('Sequencial: ' + edtSequencial.Text, locADOQuery);
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+end;
+
+//
+// Procedimento para um novo cadastro.
+//
+procedure TPlataformaERPVCLFilialEndereco.FormularioNovo;
+begin
+  //
+  // Limpa os componentes do formulário.
+  //
+  FormularioLimpar(False, True);
+
+  //
+  // Carrega conteúdo dos campos necessários.
+  //
+  edtSequencial.Text := STR_NOVO;
+ 
+  //
+  // Componentes ligados para edição.
+  //
+  FormularioControlar(True);
+  
+  //
+  // Coloca o foco na data de vigência inicial.
+  //
+  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, mskVigenciaIniDt);
+end;
+
+//
+// Procedimento para alterar os dados do formulário.
+//
+procedure TPlataformaERPVCLFilialEndereco.FormularioAlterar;
+begin
+  //
+  // Componentes ligados para edição.
+  //
+  FormularioControlar(True);
+
+  //
+  // Coloca o foco na data de vigência inicial.
+  //
+  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, mskVigenciaIniDt);
 end;
 
 //
@@ -1195,7 +1403,7 @@ begin
   //
   // Log dados.
   //
-  // --> locFilialLogDados := LogDadosGerar(locFilialID);
+  locFilialEnderecoLogDados := LogDadosGerar(locSequencial);
 
   //
   // Determina o próximo sequencial da tabela filial_endereco_log.
@@ -1207,13 +1415,15 @@ begin
   locADOQuery.SQL.Add('FROM                                                                  ');
   locADOQuery.SQL.Add('  [filial_endereco_log]                                               ');
   locADOQuery.SQL.Add('WHERE                                                                 ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[licenca_id]     = :licenca_id     AND        ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_base_id] = :filial_base_id AND        ');
-  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_id]      = :filial_id                 ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[licenca_id]         = :licenca_id     AND    ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_base_id]     = :filial_base_id AND    ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_id]          = :filial_id      AND    ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_endereco_sq] = :filial_endereco_sq    ');
 
-  locADOQuery.Parameters.ParamByName('licenca_id').Value     := locLicencaID;
-  locADOQuery.Parameters.ParamByName('filial_base_id').Value := locFilialBaseID;
-  locADOQuery.Parameters.ParamByName('filial_id').Value      := locFilialID;
+  locADOQuery.Parameters.ParamByName('licenca_id').Value         := locLicencaID;
+  locADOQuery.Parameters.ParamByName('filial_base_id').Value     := locFilialBaseID;
+  locADOQuery.Parameters.ParamByName('filial_id').Value          := locFilialID;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locSequencial;
 
   try
     locADOQuery.Open;
@@ -1250,6 +1460,7 @@ begin
   locADOQuery.SQL.Add('  [licenca_id],                     ');
   locADOQuery.SQL.Add('  [filial_base_id],                 ');
   locADOQuery.SQL.Add('  [filial_id],                      ');
+  locADOQuery.SQL.Add('  [filial_endereco_sq],             ');
   locADOQuery.SQL.Add('  [filial_endereco_log_sq],         ');
   locADOQuery.SQL.Add('  [log_base_id],                    ');
   locADOQuery.SQL.Add('  [log_local_dt_hr],                ');
@@ -1266,6 +1477,7 @@ begin
   locADOQuery.SQL.Add('  :licenca_id,                      '); // [licenca_id].
   locADOQuery.SQL.Add('  :filial_base_id,                  '); // [filial_base_id].
   locADOQuery.SQL.Add('  :filial_id,                       '); // [filial_id].
+  locADOQuery.SQL.Add('  :filial_endereco_sq,              '); // [filial_endereco_sq].
   locADOQuery.SQL.Add('  :filial_endereco_log_sq,          '); // [filial_endereco_log_sq].
   locADOQuery.SQL.Add('  :log_base_id,                     '); // [log_base_id].
   locADOQuery.SQL.Add('  :log_local_dt_hr,                 '); // [log_local_dt_hr].
@@ -1282,6 +1494,7 @@ begin
   locADOQuery.Parameters.ParamByName('licenca_id').Value             := locLicencaID;
   locADOQuery.Parameters.ParamByName('filial_base_id').Value         := locFilialBaseID;
   locADOQuery.Parameters.ParamByName('filial_id').Value              := locFilialID;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value     := locSequencial;
   locADOQuery.Parameters.ParamByName('filial_endereco_log_sq').Value := locFilialEnderecoLogSq;
   locADOQuery.Parameters.ParamByName('log_base_id').Value            := gloBaseID;
   locADOQuery.Parameters.ParamByName('log_local_dt_hr').Value        := Now;
@@ -1372,6 +1585,273 @@ begin
   // Filial gravada!
   //
   VCLInformacaoExibir('Endereço da filial gravado com sucesso!');
+
+  //
+  // Recarrega lista atualizada.
+  //
+  FormularioListaPopular(pubLicencaID, pubFilialBaseID, pubFilialID);
+end;
+
+//
+// Procedimento para cancelar a edição dos dados do formulário.
+//
+procedure TPlataformaERPVCLFilialEndereco.FormularioCancelar;
+begin
+  //
+  // Confirma com o usuário.
+  //
+  if StringIntegerConverter(edtSequencial.Text) = 0 then
+  begin
+    if not VCLQuestionamentoExibir('Deseja realmente cancelar a digitação destes dados?') then Exit;
+  end
+  else
+  begin
+    if not VCLQuestionamentoExibir('Deseja realmente cancelar a alteração destes dados?') then Exit;
+  end;
+
+  //
+  // Popula somente os dados.
+  //
+  FormularioListaPopular(pubLicencaID, pubFilialBaseID, pubFilialID);
+
+  //
+  // Componentes desligados para edição.
+  //
+  FormularioControlar(False);
+end;
+
+//
+// Procedimento para excluir os dados deste cadastro.
+//
+procedure TPlataformaERPVCLFilialEndereco.FormularioExcluir;
+const
+  PROCEDIMENTO_NOME: string = 'FormularioExcluir';
+  ERRO_MENSAGEM    : string = 'Impossível excluir dados do endereço da filial!';
+var
+  locADOConnection         : TADOConnection;
+  locADOQuery              : TADOQuery;
+  locLogMensagem           : string;
+  locSequencial            : Integer;
+  locFilialEnderecoLogDados: string;
+begin
+  //
+  // Carrega variáveis com o conteúdo dos componentes.
+  //
+  locSequencial := StringIntegerConverter(edtSequencial.Text);
+
+  //
+  // Log dados.
+  //
+  locFilialEnderecoLogDados := LogDadosGerar;
+
+  //
+  // Confirma gravação com o usuário.
+  //
+  if not VCLQuestionamentoExibir('Deseja realmente excluir estes dados?') then Exit;
+  if not VCLQuestionamentoExibir('Tem certeza?') then Exit;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(Self);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Inicia transação com o banco de dados.
+  //
+  try
+    locADOConnection.BeginTrans;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := ERRO_MENSAGEM_BD_TRANSACAO_INICIAR;
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, ERRO_MENSAGEM_TENTE_NOVAMENTE, locExcecao.Message);
+      Exit
+    end;
+  end;  
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(Self);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Deleta registro da tabela filial_endereco_log.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('DELETE FROM                                                        ');
+  locADOQuery.SQL.Add('  [filial_endereco_log]                                            ');
+  locADOQuery.SQL.Add('WHERE                                                              ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[licenca_id]         = :licenca_id     AND ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_base_id]     = :filial_base_id AND ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_id]          = :filial_id      AND ');
+  locADOQuery.SQL.Add('  [filial_endereco_log].[filial_endereco_sq] = :filial_endereco_sq ');
+
+  locADOQuery.Parameters.ParamByName('licenca_id').Value         := pubLicencaID;
+  locADOQuery.Parameters.ParamByName('filial_base_id').Value     := pubFilialBaseID;
+  locADOQuery.Parameters.ParamByName('filial_id').Value          := pubFilialID;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locSequencial;
+
+  try
+    locADOQuery.ExecSQL;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.RollbackTrans;
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela [filial_endereco_log]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Comando SQL para excluir um registro da tabela filial_endereco.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('DELETE FROM                                                    ');
+  locADOQuery.SQL.Add('  [filial_endereco]                                            ');
+  locADOQuery.SQL.Add('WHERE                                                          ');
+  locADOQuery.SQL.Add('  [filial_endereco].[licenca_id]         = :licenca_id     AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_base_id]     = :filial_base_id AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_id]          = :filial_id      AND ');
+  locADOQuery.SQL.Add('  [filial_endereco].[filial_endereco_sq] = :filial_endereco_sq ');
+
+  locADOQuery.Parameters.ParamByName('licenca_id').Value         := pubLicencaID;
+  locADOQuery.Parameters.ParamByName('filial_base_id').Value     := pubFilialBaseID;
+  locADOQuery.Parameters.ParamByName('filial_id').Value          := pubFilialID;
+  locADOQuery.Parameters.ParamByName('filial_endereco_sq').Value := locSequencial;
+
+  try
+    locADOQuery.ExecSQL;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.RollbackTrans;
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela [filial_endereco]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Comando SQL para ajustar o sequencial nos registros restantes.
+  //
+  
+  
+  //
+  // Finaliza transação com o banco de dados.
+  //
+  try
+    locADOConnection.CommitTrans;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.RollbackTrans;
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := ERRO_MENSAGEM_BD_TRANSACAO_CONFIRMAR;
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, ERRO_MENSAGEM_TENTE_NOVAMENTE, locExcecao.Message);
+      Exit
+    end;
+  end;  
+
+  //
+  // Limpa os componentes do formulário.
+  //
+  FormularioLimpar(False, True);
+
+  //
+  // Desliga os componentes para edição e ajusta a visibilidade dos botões.
+  //
+  FormularioControlar(False);
+
+  //
+  // Indica que os dados foram atualizados.
+  //
+  pubDadosAtualizados := True;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+
+  //
+  // Log de ocorrência.
+  //
+  try
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, pubFilialID, IntegerStringConverter(locSequencial), 'filial_endereco', 'Registro excluído com sucesso!', locFilialEnderecoLogDados);
+  except
+  end;
+  VCLInformacaoExibir('Endereço da filial excluído com sucesso!');
+
+  //
+  // Recarrega lista atualizada.
+  //
+  FormularioListaPopular(pubLicencaID, pubFilialBaseID, pubFilialID);
+end;
+
+//
+// Função para gerar a string de log dos dados.
+//
+function TPlataformaERPVCLFilialEndereco.LogDadosGerar(argSequencial: Integer = 0): string;
+var
+  locSequencial: Integer;
+begin
+  if argSequencial <= 0 then
+    locSequencial := StringIntegerConverter(edtSequencial.Text)
+  else
+    locSequencial := argSequencial;
+
+  Result := '';
+  LogDadosIntegerDescrever('Licença',                pubLicencaID,          Result);
+  LogDadosIntegerDescrever('Base da filial',         pubFilialBaseID,       Result);
+  LogDadosIntegerDescrever('ID da filial',           pubFilialID,           Result);
+  LogDadosIntegerDescrever('Sequencial do endereço', locSequencial,         Result);
+  LogDadosStringDescrever ('Vigência inicial',       mskVigenciaIniDt.Text, Result);
+  LogDadosStringDescrever ('Vigência final',         mskVigenciaFimDt.Text, Result);
+  
 end;
 
 end.

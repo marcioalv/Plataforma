@@ -642,7 +642,7 @@ CREATE TABLE [dbo].[filial_log] (
  
   CONSTRAINT [filial_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [filial_base_id], [filial_id], [filial_log_sq]),
 
-  CONSTRAINT [filial_log_fk_empresa]       FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id]  )         REFERENCES [filial]        ([licenca_id], [filial_base_id], [filial_id]),
+  CONSTRAINT [filial_log_fk_filial]        FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id]  )         REFERENCES [filial]        ([licenca_id], [filial_base_id], [filial_id]),
   CONSTRAINT [filial_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
   CONSTRAINT [filial_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
   CONSTRAINT [filial_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
@@ -682,27 +682,28 @@ GO
 -- Log do endereço da filial.
 --
 CREATE TABLE [filial_endereco_log] (
-  [licenca_id]          INT                                       NOT NULL,
-  [filial_base_id]      SMALLINT                                  NOT NULL,
-  [filial_id]           SMALLINT                                  NOT NULL,
-  [filial_endereco_log_sq]       INT                              NOT NULL,
-  [log_base_id]         SMALLINT                                  NOT NULL,
-  [log_local_dt_hr]     DATETIME                                  NOT NULL,
-  [log_server_dt_hr]    DATETIME                                  NOT NULL,
-  [registro_acao_id]    TINYINT                                   NOT NULL,
-  [host_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
-  [user_name]           VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
-  [log_usuario_base_id] SMALLINT                                  NOT NULL,
-  [log_usuario_id]      INT                                       NOT NULL,
-  [mensagem]            VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [dados]               VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [licenca_id]             INT                                       NOT NULL,
+  [filial_base_id]         SMALLINT                                  NOT NULL,
+  [filial_id]              SMALLINT                                  NOT NULL,
+  [filial_endereco_sq]     SMALLINT                                  NOT NULL,
+  [filial_endereco_log_sq] INT                                       NOT NULL,
+  [log_base_id]            SMALLINT                                  NOT NULL,
+  [log_local_dt_hr]        DATETIME                                  NOT NULL,
+  [log_server_dt_hr]       DATETIME                                  NOT NULL,
+  [registro_acao_id]       TINYINT                                   NOT NULL,
+  [host_name]              VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [user_name]              VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI  NOT NULL,
+  [log_usuario_base_id]    SMALLINT                                  NOT NULL,
+  [log_usuario_id]         INT                                       NOT NULL,
+  [mensagem]               VARCHAR(250) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [dados]                  VARCHAR(MAX) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
  
-  CONSTRAINT [filial_endereco_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [filial_base_id], [filial_id], [filial_endereco_log_sq]),
+  CONSTRAINT [filial_endereco_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [filial_base_id], [filial_id], [filial_endereco_sq], [filial_endereco_log_sq]),
 
-  CONSTRAINT [filial_endereco_log_fk_empresa]       FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id])           REFERENCES [filial]        ([licenca_id], [filial_base_id], [filial_id]),
-  CONSTRAINT [filial_endereco_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
-  CONSTRAINT [filial_endereco_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
-  CONSTRAINT [filial_endereco_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
+  CONSTRAINT [filial_endereco_log_fk_filial_endereco] FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id], [filial_endereco_sq]) REFERENCES [filial_endereco] ([licenca_id], [filial_base_id], [filial_id], [filial_endereco_sq]),
+  CONSTRAINT [filial_endereco_log_fk_log_base]        FOREIGN KEY ([log_base_id])                                                     REFERENCES [base]            ([base_id]),
+  CONSTRAINT [filial_endereco_log_fk_registro_acao]   FOREIGN KEY ([registro_acao_id])                                                REFERENCES [registro_acao]   ([registro_acao_id]),
+  CONSTRAINT [filial_endereco_log_fk_log_usuario]     FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id])             REFERENCES [usuario]         ([licenca_id], [usuario_base_id], [usuario_id])
 )
 GO
 
@@ -823,7 +824,7 @@ CREATE TABLE [dbo].[local_log] (
  
   CONSTRAINT [local_log_pk] PRIMARY KEY CLUSTERED ([licenca_id], [local_base_id], [local_id], [local_log_sq]),
 
-  CONSTRAINT [local_log_fk_empresa]       FOREIGN KEY ([licenca_id], [local_base_id], [local_id])             REFERENCES [local]         ([licenca_id], [local_base_id], [local_id]),
+  CONSTRAINT [local_log_fk_local]         FOREIGN KEY ([licenca_id], [local_base_id], [local_id])             REFERENCES [local]         ([licenca_id], [local_base_id], [local_id]),
   CONSTRAINT [local_log_fk_log_base]      FOREIGN KEY ([log_base_id])                                         REFERENCES [base]          ([base_id]),
   CONSTRAINT [local_log_fk_registro_acao] FOREIGN KEY ([registro_acao_id])                                    REFERENCES [registro_acao] ([registro_acao_id]),
   CONSTRAINT [local_log_fk_log_usuario]   FOREIGN KEY ([licenca_id], [log_usuario_base_id], [log_usuario_id]) REFERENCES [usuario]       ([licenca_id], [usuario_base_id], [usuario_id])
