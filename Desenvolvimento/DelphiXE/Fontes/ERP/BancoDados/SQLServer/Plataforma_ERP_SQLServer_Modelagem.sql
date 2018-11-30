@@ -1,4 +1,4 @@
---
+--  
 -- Seleciona banco de dados!
 --
 USE [PlataformaERP]
@@ -26,6 +26,7 @@ IF OBJECT_ID('filial_log')                      IS NOT NULL DROP TABLE [filial_l
 IF OBJECT_ID('filial')                          IS NOT NULL DROP TABLE [filial]
 IF OBJECT_ID('empresa_log')                     IS NOT NULL DROP TABLE [empresa_log]
 IF OBJECT_ID('empresa')                         IS NOT NULL DROP TABLE [empresa]
+IF OBJECT_ID('logradouro')                      IS NOT NULL DROP TABLE [logradouro]
 IF OBJECT_ID('regime_tributario')               IS NOT NULL DROP TABLE [regime_tributario]
 IF OBJECT_ID('pessoa')                          IS NOT NULL DROP TABLE [pessoa]
 IF OBJECT_ID('usuario_perfil')                  IS NOT NULL DROP TABLE [usuario_perfil]
@@ -516,6 +517,29 @@ CREATE TABLE [regime_tributario] (
 GO
 
 --
+-- Logradouro.
+--
+CREATE TABLE [logradouro] (
+  [logradouro_id]    SMALLINT                                 NOT NULL,
+  [codigo]           VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [descricao]        VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]        CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]            CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]  DATETIME                                 NOT NULL,
+  [ins_server_dt_hr] DATETIME                                 NOT NULL,
+  [upd_local_dt_hr]  DATETIME                                 NULL,
+  [upd_server_dt_hr] DATETIME                                 NULL,
+  [upd_contador]     INT                                      NOT NULL,
+  
+  CONSTRAINT [logradouro_pk]        PRIMARY KEY CLUSTERED ([logradouro_id]),
+  CONSTRAINT [logradouro_ix_codigo] UNIQUE ([codigo]),
+
+  CONSTRAINT [logradouro_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [logradouro_ck_ativo]     CHECK ([ativo]     IN ('S', 'N'))
+)
+GO
+
+--
 -- Empresa.
 --
 CREATE TABLE [empresa] (
@@ -660,6 +684,20 @@ CREATE TABLE [filial_endereco] (
   [sequencial]           SMALLINT                                  NOT NULL,
   [vigencia_ini_dt]      DATETIME                                  NOT NULL,
   [vigencia_fim_dt]      DATETIME                                  NOT NULL,
+  [estrangeiro]          CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [logradouro_id]        SMALLINT                                  NOT NULL,
+  [endereco]             VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [numero]               VARCHAR(10)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [complemento]          VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bairro]               VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bairro_id]            INT                                       NOT NULL,
+  [cidade]               VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [cidade_id]            SMALLINT                                  NOT NULL,
+  [estado]               VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [estado_id]            SMALLINT                                  NOT NULL,
+  [uf]                   VARCHAR(10)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [pais_id]              SMALLINT                                  NOT NULL,
+  [cep]                  VARCHAR(15)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ins_local_dt_hr]      DATETIME                                  NOT NULL,
   [ins_server_dt_hr]     DATETIME                                  NOT NULL,
   [ins_usuario_base_id]  SMALLINT                                  NOT NULL,
@@ -673,6 +711,8 @@ CREATE TABLE [filial_endereco] (
   CONSTRAINT [filial_endereco_pk]            PRIMARY KEY CLUSTERED ([licenca_id], [filial_base_id], [filial_id], [filial_endereco_sq]),
   CONSTRAINT [filial_endereco_ix_sequencial] UNIQUE ([licenca_id], [filial_base_id], [filial_id], [sequencial]),
   CONSTRAINT [filial_endereco_ix_vigencia]   UNIQUE ([licenca_id], [filial_base_id], [filial_id], [vigencia_ini_dt], [vigencia_fim_dt]),
+
+  CONSTRAINT [filial_endereco_estrangeiro]   CHECK ([estrangeiro] IN ('S', 'N')),
 
   CONSTRAINT [filial_endereco_fk_filial]      FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id])           REFERENCES [filial]  ([licenca_id], [filial_base_id],  [filial_id]),
   CONSTRAINT [filial_endereco_fk_usuario_ins] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id]),
