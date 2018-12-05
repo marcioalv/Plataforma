@@ -523,6 +523,7 @@ CREATE TABLE [logradouro] (
   [logradouro_id]    SMALLINT                                 NOT NULL,
   [codigo]           VARCHAR(25) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [descricao]        VARCHAR(50) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [indeterminado]    CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]        CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]            CHAR(1)     COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ins_local_dt_hr]  DATETIME                                 NOT NULL,
@@ -534,8 +535,9 @@ CREATE TABLE [logradouro] (
   CONSTRAINT [logradouro_pk]        PRIMARY KEY CLUSTERED ([logradouro_id]),
   CONSTRAINT [logradouro_ix_codigo] UNIQUE ([codigo]),
 
-  CONSTRAINT [logradouro_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
-  CONSTRAINT [logradouro_ck_ativo]     CHECK ([ativo]     IN ('S', 'N'))
+  CONSTRAINT [logradouro_ck_indeterminado] CHECK ([indeterminado] IN ('S', 'N')),
+  CONSTRAINT [logradouro_ck_bloqueado]     CHECK ([bloqueado]     IN ('S', 'N')),
+  CONSTRAINT [logradouro_ck_ativo]         CHECK ([ativo]         IN ('S', 'N'))
 )
 GO
 
@@ -977,6 +979,16 @@ INSERT INTO [regime_tributario] VALUES (3, '3', 'Lucro resumido',   'N', 'N', 'S
 INSERT INTO [regime_tributario] VALUES (4, '4', 'Lucro arbitrado',  'N', 'N', 'N', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 INSERT INTO [numerador_base] VALUES ('regime_tributario_id', 4, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+
+--
+-- Logradouro.
+--
+INSERT INTO [logradouro] VALUES (1, '01', 'Indeterminado', 'S', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [logradouro] VALUES (2, '02', 'Rua',           'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [logradouro] VALUES (3, '03', 'Avenida',       'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+INSERT INTO [numerador_base] VALUES ('logradouro_id', 2, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 
 --

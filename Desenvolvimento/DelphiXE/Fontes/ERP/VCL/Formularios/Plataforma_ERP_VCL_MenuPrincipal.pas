@@ -75,6 +75,7 @@ type
     mniEmpresas: TMenuItem;
     mniFiliais: TMenuItem;
     mniColigadas: TMenuItem;
+    mniLogradouros: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogLocalClick(Sender: TObject);
@@ -103,6 +104,7 @@ type
     procedure mniEmpresasClick(Sender: TObject);
     procedure mniFiliaisClick(Sender: TObject);
     procedure mniColigadasClick(Sender: TObject);
+    procedure mniLogradourosClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -140,7 +142,8 @@ uses
   Plataforma_ERP_VCL_NumeradorBaseLista,
   Plataforma_ERP_VCL_EmpresaLista,
   Plataforma_ERP_VCL_FilialLista,
-  Plataforma_ERP_VCL_ColigadaLista;
+  Plataforma_ERP_VCL_ColigadaLista,
+  Plataforma_ERP_VCL_LogradouroLista;
 
 //
 // Evento de criação do formulário.
@@ -400,6 +403,19 @@ var
   locFormulario: TPlataformaERPVCLRegimeTributarioLista;
 begin
   locFormulario := TPlataformaERPVCLRegimeTributarioLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "logradouros".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniLogradourosClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLLogradouroLista;
+begin
+  locFormulario := TPlataformaERPVCLLogradouroLista.Create(Self);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

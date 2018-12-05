@@ -82,7 +82,9 @@ uses
   Plataforma_ERP_VCL_ColigadaCadastro in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaCadastro.pas' {PlataformaERPVCLColigadaCadastro},
   Plataforma_ERP_VCL_ColigadaCodigo in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaCodigo.pas' {PlataformaERPVCLColigadaCodigo},
   Plataforma_ERP_VCL_ColigadaSelecao in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaSelecao.pas' {PlataformaERPVCLColigadaSelecao},
-  Plataforma_ERP_VCL_FilialEndereco in '..\Formularios\Fiscal\Plataforma_ERP_VCL_FilialEndereco.pas' {PlataformaERPVCLFilialEndereco};
+  Plataforma_ERP_VCL_FilialEndereco in '..\Formularios\Fiscal\Plataforma_ERP_VCL_FilialEndereco.pas' {PlataformaERPVCLFilialEndereco},
+  Plataforma_ERP_VCL_LogradouroLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroLista.pas' {PlataformaERPVCLLogradouroLista},
+  Plataforma_ERP_VCL_LogradouroCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroCadastro.pas' {PlataformaERPVCLLogradouroCadastro};
 
 {$R *.res}
 
@@ -90,5 +92,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
+  Application.CreateForm(TPlataformaERPVCLLogradouroLista, PlataformaERPVCLLogradouroLista);
+  Application.CreateForm(TPlataformaERPVCLLogradouroCadastro, PlataformaERPVCLLogradouroCadastro);
   Application.Run;
 end.

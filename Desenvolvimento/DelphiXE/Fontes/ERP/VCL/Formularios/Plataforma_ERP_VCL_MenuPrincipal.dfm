@@ -198,6 +198,10 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
             Caption = 'Regime Tribut'#225'rio'
             OnClick = mniRegimeTributarioClick
           end
+          object mniLogradouros: TMenuItem
+            Caption = 'Logradouros'
+            OnClick = mniLogradourosClick
+          end
         end
         object mniInstalacaoNumeradores: TMenuItem
           Caption = 'Numeradores'
