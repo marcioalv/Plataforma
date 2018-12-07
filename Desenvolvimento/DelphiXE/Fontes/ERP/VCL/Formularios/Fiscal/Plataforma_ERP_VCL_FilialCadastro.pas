@@ -91,7 +91,6 @@ type
     edtRegimeTributarioCodigo: TEdit;
     edtRegimeTributarioDescricao: TEdit;
     edtRegimeTributarioID: TEdit;
-    edtRegimeTributarioBaseID: TEdit;
     lblFantasia: TLabel;
     edtFantasia: TEdit;
     lblCPF_CNPJ: TLabel;

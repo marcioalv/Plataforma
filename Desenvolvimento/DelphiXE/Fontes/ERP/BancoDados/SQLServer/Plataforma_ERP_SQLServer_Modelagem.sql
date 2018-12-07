@@ -688,18 +688,18 @@ CREATE TABLE [filial_endereco] (
   [vigencia_fim_dt]      DATETIME                                  NOT NULL,
   [estrangeiro]          CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [logradouro_id]        SMALLINT                                  NOT NULL,
-  [endereco]             VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [numero]               VARCHAR(10)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [complemento]          VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [bairro]               VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [bairro_id]            INT                                       NOT NULL,
-  [cidade]               VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [cidade_id]            SMALLINT                                  NOT NULL,
-  [estado]               VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [estado_id]            SMALLINT                                  NOT NULL,
-  [uf]                   VARCHAR(10)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [pais_id]              SMALLINT                                  NOT NULL,
-  [cep]                  VARCHAR(15)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+-->  [endereco]             VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+-->  [numero]               VARCHAR(10)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+-->  [complemento]          VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+-->  [bairro]               VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+-->  [bairro_id]            INT                                       NOT NULL,
+-->  [cidade]               VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+-->  [cidade_id]            SMALLINT                                  NOT NULL,
+-->  [estado]               VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+-->  [estado_id]            SMALLINT                                  NOT NULL,
+-->  [uf]                   VARCHAR(10)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+-->  [pais_id]              SMALLINT                                  NOT NULL,
+-->  [cep]                  VARCHAR(15)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ins_local_dt_hr]      DATETIME                                  NOT NULL,
   [ins_server_dt_hr]     DATETIME                                  NOT NULL,
   [ins_usuario_base_id]  SMALLINT                                  NOT NULL,
@@ -716,9 +716,10 @@ CREATE TABLE [filial_endereco] (
 
   CONSTRAINT [filial_endereco_estrangeiro]   CHECK ([estrangeiro] IN ('S', 'N')),
 
-  CONSTRAINT [filial_endereco_fk_filial]      FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id])           REFERENCES [filial]  ([licenca_id], [filial_base_id],  [filial_id]),
-  CONSTRAINT [filial_endereco_fk_usuario_ins] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id]),
-  CONSTRAINT [filial_endereco_fk_usuario_upd] FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario] ([licenca_id], [usuario_base_id], [usuario_id])
+  CONSTRAINT [filial_endereco_fk_filial]      FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id])           REFERENCES [filial]     ([licenca_id], [filial_base_id],  [filial_id]),
+  CONSTRAINT [filial_endereco_fk_logradouro]  FOREIGN KEY ([logradouro_id])                                       REFERENCES [logradouro] ([logradouro_id]),
+  CONSTRAINT [filial_endereco_fk_usuario_ins] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario]    ([licenca_id], [usuario_base_id], [usuario_id]),
+  CONSTRAINT [filial_endereco_fk_usuario_upd] FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario]    ([licenca_id], [usuario_base_id], [usuario_id])
 )
 GO
 

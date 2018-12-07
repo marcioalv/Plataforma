@@ -72,7 +72,7 @@ object PlataformaERPVCLFilialCadastro: TPlataformaERPVCLFilialCadastro
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabAuditoria
+    ActivePage = tabDados
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
@@ -329,10 +329,6 @@ object PlataformaERPVCLFilialCadastro: TPlataformaERPVCLFilialCadastro
     end
     object tabDados: TTabSheet
       Caption = 'Dados'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblRegimeTributario: TLabel
         Left = 16
         Top = 128
@@ -531,25 +527,6 @@ object PlataformaERPVCLFilialCadastro: TPlataformaERPVCLFilialCadastro
         Text = '999.999'
         Visible = False
       end
-      object edtRegimeTributarioBaseID: TEdit
-        Left = 264
-        Top = 144
-        Width = 65
-        Height = 26
-        TabStop = False
-        Alignment = taRightJustify
-        Color = clInactiveBorder
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 8
-        Text = '999.999'
-        Visible = False
-      end
       object edtCPF_CNPJ: TEdit
         Left = 16
         Top = 32
@@ -717,7 +694,7 @@ object PlataformaERPVCLFilialCadastro: TPlataformaERPVCLFilialCadastro
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFF00}
-        TabOrder = 9
+        TabOrder = 8
         OnClick = btnEnderecoClick
       end
     end
