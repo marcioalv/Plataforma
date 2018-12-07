@@ -988,7 +988,7 @@ INSERT INTO [logradouro] VALUES (1, '01', 'Indeterminado', 'S', 'N', 'S', GETDAT
 INSERT INTO [logradouro] VALUES (2, '02', 'Rua',           'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 INSERT INTO [logradouro] VALUES (3, '03', 'Avenida',       'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
-INSERT INTO [numerador_base] VALUES ('logradouro_id', 2, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [numerador_base] VALUES ('logradouro_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 
 --

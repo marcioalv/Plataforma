@@ -1438,7 +1438,7 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT TOP 1                            ');
-  locADOQuery.SQL.Add('  [logradouro].[pessoa_id],             ');
+  locADOQuery.SQL.Add('  [logradouro].[logradouro_id],         ');
   locADOQuery.SQL.Add('  [logradouro].[codigo]                 ');
   locADOQuery.SQL.Add('FROM                                    ');
   locADOQuery.SQL.Add('  [logradouro] WITH (NOLOCK)            ');

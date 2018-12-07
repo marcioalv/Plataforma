@@ -124,6 +124,35 @@ function Plataforma_ERP_VCL_RegimeTributarioSelecionar(argRegimeTributarioID    
                                                        argRegimeTributarioDescricao: TEdit): Boolean;
 
 //
+// LOGRADOURO!
+//
+                                                  
+//
+// Plataforma_ERP_VCL_LogradouroListaExibir.
+//
+procedure Plataforma_ERP_VCL_LogradouroListaExibir;
+
+//
+// Plataforma_ERP_VCL_LogradouroExibir.
+//
+procedure Plataforma_ERP_VCL_LogradouroExibir(argLogradouroID: Integer);
+
+//
+// Plataforma_ERP_VCL_LogradouroValidar.
+//
+function Plataforma_ERP_VCL_LogradouroValidar(argNovo               : Boolean;
+                                              argLogradouroID       : TEdit;
+                                              argLogradouroCodigo   : TEdit;
+                                              argLogradouroDescricao: TEdit): Boolean;
+
+//
+// Plataforma_ERP_VCL_LogradouroSelecionar.
+//
+function Plataforma_ERP_VCL_LogradouroSelecionar(argLogradouroID       : TEdit;
+                                                 argLogradouroCodigo   : TEdit;
+                                                 argLogradouroDescricao: TEdit): Boolean;
+
+//
 // EMPRESA!
 //
 
@@ -180,6 +209,10 @@ uses
   Plataforma_ERP_VCL_RegimeTributarioLista,
   Plataforma_ERP_VCL_RegimeTributarioCadastro,
   Plataforma_ERP_VCL_RegimeTributarioSelecao,
+
+  Plataforma_ERP_VCL_LogradouroLista,
+  Plataforma_ERP_VCL_LogradouroCadastro,
+  Plataforma_ERP_VCL_LogradouroSelecao,
 
   Plataforma_ERP_VCL_EmpresaLista,
   Plataforma_ERP_VCL_EmpresaCadastro,
@@ -700,7 +733,7 @@ begin
   locADOQuery.CommandTimeout := gloTimeOutNormal;
 
   //
-  // Consulta dados do tipo de usuário.
+  // Consulta dados do regime tributário.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
@@ -820,6 +853,229 @@ begin
     argRegimeTributarioID.Text        := IntegerStringConverter(locRegimeTributarioID);
     argRegimeTributarioCodigo.Text    := locRegimeTributarioCodigo;
     argRegimeTributarioDescricao.Text := locRegimeTributarioDescricao;
+    Result := False;
+  end;
+end;
+
+//
+// LOGRADOURO!
+//
+
+//
+// Procedimento para exibir a lista de logradouros cadastrados.
+//
+procedure Plataforma_ERP_VCL_LogradouroListaExibir;
+var
+  locFormulario: TPlataformaERPVCLLogradouroLista;
+begin
+  locFormulario := TPlataformaERPVCLLogradouroLista.Create(nil);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o cadastro do logradouro.
+//
+procedure Plataforma_ERP_VCL_LogradouroExibir(argLogradouroID: Integer);
+var
+  locFormulario: TPlataformaERPVCLLogradouroCadastro;
+begin
+  locFormulario                 := TPlataformaERPVCLLogradouroCadastro.Create(nil);
+  locFormulario.pubLogradouroID := argLogradouroID;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para validar um logradouro.
+//
+function Plataforma_ERP_VCL_LogradouroValidar(argNovo               : Boolean;
+                                              argLogradouroID       : TEdit;
+                                              argLogradouroCodigo   : TEdit;
+                                              argLogradouroDescricao: TEdit): Boolean;
+const
+  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_LogradouroValidar';
+  ERRO_MENSAGEM    : string = 'Impossível validar o logradouro!';
+var
+  locADOConnection   : TADOConnection;
+  locADOQuery        : TADOQuery;
+  locLogMensagem     : string;
+  locLogradouroCodigo: string;
+begin
+  //
+  // Retorno padrão.
+  //
+  Result := False;
+
+  //
+  // Carrega variáveis.
+  //
+  locLogradouroCodigo := StringTrim(argLogradouroCodigo.Text);
+
+  //
+  // Componente vazio.
+  //
+  if locLogradouroCodigo = '' then
+  begin
+    argLogradouroID.Text        := '';
+    argLogradouroDescricao.Text := '';
+    Result := True;
+    Exit;
+  end;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(nil);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do logradouro.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                                ');
+  locADOQuery.SQL.Add('  [logradouro].[logradouro_id],       ');
+  locADOQuery.SQL.Add('  [logradouro].[codigo],              ');
+  locADOQuery.SQL.Add('  [logradouro].[descricao],           ');
+  locADOQuery.SQL.Add('  [logradouro].[bloqueado],           ');
+  locADOQuery.SQL.Add('  [logradouro].[ativo]                ');
+  locADOQuery.SQL.Add('FROM                                  ');
+  locADOQuery.SQL.Add('  [logradouro] WITH (NOLOCK)          ');
+  locADOQuery.SQL.Add('WHERE                                 ');
+  locADOQuery.SQL.Add('  [logradouro].[codigo] = :codigo AND ');
+  locADOQuery.SQL.Add('  [logradouro].[ativo]  = ''S''       ');
+
+  locADOQuery.Parameters.ParamByName('codigo').Value := locLogradouroCodigo;
+
+  if argNovo then
+  begin   
+    locADOQuery.SQL.Add(' AND [logradouro].[bloqueado] = ''N'' ');
+  end;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [logradouro]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Nenhum registro encontrado.
+  //
+  if locADOQuery.RecordCount <= 0 then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);    
+    VCLConsistenciaExibir('Nenhum logradouro encontrado com o código "' + locLogradouroCodigo + '" informado!');
+    argLogradouroID.Text        := '';
+    argLogradouroDescricao.Text := '';
+    argLogradouroCodigo.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Apenas um registro encontrado.
+  //
+  if locADOQuery.RecordCount = 1 then
+  begin
+    argLogradouroID.Text        := IntegerStringConverter(locADOQuery.FieldByName('logradouro_id').AsInteger);
+    argLogradouroCodigo.Text    := locADOQuery.FieldByName('codigo').AsString;
+    argLogradouroDescricao.Text := locADOQuery.FieldByName('descricao').AsString;
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+
+  Result := True;
+end;
+
+//
+// Procedimento para selecionar um logradouro.
+//
+function Plataforma_ERP_VCL_LogradouroSelecionar(argLogradouroID       : TEdit;
+                                                 argLogradouroCodigo   : TEdit;
+                                                 argLogradouroDescricao: TEdit): Boolean;
+var
+  locFormulario         : TPlataformaERPVCLLogradouroSelecao;
+  locClicouFechar       : Boolean;
+  locLogradouroID       : Integer;
+  locLogradouroCodigo   : string;
+  locLogradouroDescricao: string;
+begin
+  Result := False;
+
+  locLogradouroID        := StringIntegerConverter(argLogradouroID.Text);
+  locLogradouroCodigo    := StringTrim(argLogradouroCodigo.Text);
+  locLogradouroDescricao := StringTrim(argLogradouroDescricao.Text);
+
+  locFormulario := TPlataformaERPVCLLogradouroSelecao.Create(nil);
+
+  locFormulario.pubLogradouroID := locLogradouroID;
+  locFormulario.pubCodigo       := locLogradouroCodigo;
+  locFormulario.pubDescricao    := locLogradouroDescricao;
+  
+  locFormulario.ShowModal;
+
+  locClicouFechar        := locFormulario.pubClicouFechar;
+  locLogradouroID        := locFormulario.pubLogradouroID;
+  locLogradouroCodigo    := locFormulario.pubCodigo;
+  locLogradouroDescricao := locFormulario.pubDescricao;
+  
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    argLogradouroID.Text        := IntegerStringConverter(locLogradouroID);
+    argLogradouroCodigo.Text    := locLogradouroCodigo;
+    argLogradouroDescricao.Text := locLogradouroDescricao;
     Result := False;
   end;
 end;

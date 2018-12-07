@@ -84,7 +84,8 @@ uses
   Plataforma_ERP_VCL_ColigadaSelecao in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaSelecao.pas' {PlataformaERPVCLColigadaSelecao},
   Plataforma_ERP_VCL_FilialEndereco in '..\Formularios\Fiscal\Plataforma_ERP_VCL_FilialEndereco.pas' {PlataformaERPVCLFilialEndereco},
   Plataforma_ERP_VCL_LogradouroLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroLista.pas' {PlataformaERPVCLLogradouroLista},
-  Plataforma_ERP_VCL_LogradouroCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroCadastro.pas' {PlataformaERPVCLLogradouroCadastro};
+  Plataforma_ERP_VCL_LogradouroCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroCadastro.pas' {PlataformaERPVCLLogradouroCadastro},
+  Plataforma_ERP_VCL_LogradouroSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroSelecao.pas' {PlataformaERPVCLLogradouroSelecao};
 
 {$R *.res}
 
@@ -94,5 +95,6 @@ begin
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
   Application.CreateForm(TPlataformaERPVCLLogradouroLista, PlataformaERPVCLLogradouroLista);
   Application.CreateForm(TPlataformaERPVCLLogradouroCadastro, PlataformaERPVCLLogradouroCadastro);
+  Application.CreateForm(TPlataformaERPVCLLogradouroSelecao, PlataformaERPVCLLogradouroSelecao);
   Application.Run;
 end.
