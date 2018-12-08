@@ -4,8 +4,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Endere'#231'o da filial'
-  ClientHeight = 394
-  ClientWidth = 1037
+  ClientHeight = 514
+  ClientWidth = 1034
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -23,7 +23,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
   TextHeight = 13
   object imgBackground: TImage
     Left = 0
-    Top = 287
+    Top = 407
     Width = 105
     Height = 105
     Center = True
@@ -63,8 +63,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       50CE0000000049454E44AE426082}
   end
   object btnGravar: TBitBtn
-    Left = 592
-    Top = 329
+    Left = 856
+    Top = 449
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -144,8 +144,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     OnClick = btnGravarClick
   end
   object btnCancelar: TBitBtn
-    Left = 704
-    Top = 329
+    Left = 968
+    Top = 449
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -225,8 +225,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     OnClick = btnCancelarClick
   end
   object btnMinimizar: TBitBtn
-    Left = 648
-    Top = 328
+    Left = 912
+    Top = 448
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -298,8 +298,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     OnClick = btnMinimizarClick
   end
   object btnFechar: TBitBtn
-    Left = 704
-    Top = 328
+    Left = 968
+    Top = 448
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -364,7 +364,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     Left = 64
     Top = 16
     Width = 953
-    Height = 297
+    Height = 417
     BevelKind = bkTile
     BevelOuter = bvNone
     Caption = 'panFormulario'
@@ -376,7 +376,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       Left = 8
       Top = 8
       Width = 305
-      Height = 273
+      Height = 393
       Cursor = crHandPoint
       Columns = <
         item
@@ -414,13 +414,13 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       Left = 328
       Top = 8
       Width = 609
-      Height = 273
+      Height = 393
       Cursor = crHandPoint
       ActivePage = tabCadastro
       TabOrder = 1
       object tabCadastro: TTabSheet
         Caption = 'Cadastro'
-        ExplicitWidth = 337
+        ExplicitHeight = 245
         object imgVigenciaFimDtSelecionar: TImage
           Left = 303
           Top = 91
@@ -617,6 +617,59 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+          OnClick = imgLogradouroSelecionarClick
+        end
+        object lblEndereco: TLabel
+          Left = 16
+          Top = 184
+          Width = 56
+          Height = 14
+          Caption = 'Endere'#231'o:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+        end
+        object lblNumero: TLabel
+          Left = 512
+          Top = 184
+          Width = 56
+          Height = 14
+          Caption = 'Endere'#231'o:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+        end
+        object lblComplemento: TLabel
+          Left = 16
+          Top = 240
+          Width = 80
+          Height = 14
+          Caption = 'Complemento:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+        end
+        object lblBairro: TLabel
+          Left = 304
+          Top = 240
+          Width = 34
+          Height = 14
+          Caption = 'Bairro:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
         end
         object medVigenciaIniDt: TMaskEdit
           Left = 16
@@ -709,6 +762,10 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           ParentFont = False
           TabOrder = 4
           Text = '99'
+          OnEnter = edtLogradouroCodigoEnter
+          OnExit = edtLogradouroCodigoExit
+          OnKeyDown = edtLogradouroCodigoKeyDown
+          OnKeyPress = edtLogradouroCodigoKeyPress
         end
         object edtLogradouroDescricao: TEdit
           Left = 96
@@ -747,6 +804,78 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           TabOrder = 6
           Text = '999.999'
           Visible = False
+        end
+        object edtEndereco: TEdit
+          Left = 16
+          Top = 200
+          Width = 489
+          Height = 26
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          MaxLength = 100
+          ParentFont = False
+          TabOrder = 7
+          Text = 'Xxxxxxxxxx Gggggggggg Dddddddddd Hhhhhhhhhh Kkkkkkkkkk'
+          OnEnter = edtEnderecoEnter
+          OnExit = edtEnderecoExit
+          OnKeyPress = edtEnderecoKeyPress
+        end
+        object edtNumero: TEdit
+          Left = 512
+          Top = 200
+          Width = 73
+          Height = 26
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          MaxLength = 100
+          ParentFont = False
+          TabOrder = 8
+          Text = '999.999'
+          OnEnter = edtNumeroEnter
+          OnExit = edtNumeroExit
+          OnKeyPress = edtNumeroKeyPress
+        end
+        object edtComplemento: TEdit
+          Left = 16
+          Top = 256
+          Width = 273
+          Height = 26
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          MaxLength = 100
+          ParentFont = False
+          TabOrder = 9
+          Text = 'Xxxxxxxxxx Gggggggggg Dddddddddd'
+          OnEnter = edtComplementoEnter
+          OnExit = edtComplementoExit
+          OnKeyPress = edtComplementoKeyPress
+        end
+        object edtBairro: TEdit
+          Left = 304
+          Top = 256
+          Width = 281
+          Height = 26
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          MaxLength = 100
+          ParentFont = False
+          TabOrder = 10
+          Text = 'Xxxxxxxxxx Gggggggggg Dddddddddd'
+          OnEnter = edtBairroEnter
+          OnExit = edtBairroExit
+          OnKeyPress = edtBairroKeyPress
         end
       end
       object tabAuditoria: TTabSheet
@@ -963,8 +1092,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     end
   end
   object btnNovo: TBitBtn
-    Left = 536
-    Top = 328
+    Left = 800
+    Top = 448
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -1036,8 +1165,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     OnClick = btnNovoClick
   end
   object btnAlterar: TBitBtn
-    Left = 592
-    Top = 328
+    Left = 856
+    Top = 448
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -1120,7 +1249,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     Left = 32
-    Top = 322
+    Top = 442
     object mniAdicional: TMenuItem
       Caption = 'Adicional'
       object mniLog: TMenuItem

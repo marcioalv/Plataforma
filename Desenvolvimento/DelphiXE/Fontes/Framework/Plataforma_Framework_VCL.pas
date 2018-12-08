@@ -802,7 +802,7 @@ function VCLEditEntrar(argComponente: TEdit): Boolean;
 begin
   Result := False;
   if argComponente.Color = clBtnFace then Exit;
-  argComponente.Color := RGB(230, 242, 255);
+  argComponente.Color := RGB(253, 254, 194); // RGB(230, 242, 255);
   if argComponente.ReadOnly then Exit;
   Result := True;
 end;
@@ -827,7 +827,7 @@ function VCLMaskEditEntrar(argComponente: TMaskEdit): Boolean;
 begin
   Result := False;
   if argComponente.Color = clBtnFace then Exit;
-  argComponente.Color := RGB(230, 242, 255);
+  argComponente.Color := RGB(253, 254, 194); // RGB(230, 242, 255);
   if argComponente.ReadOnly then Exit;
   Result := True;
 end;
@@ -852,7 +852,7 @@ function VCLMemoEntrar(argComponente: TMemo): Boolean;
 begin
   Result := False;
   if argComponente.Color = clBtnFace then Exit;
-  argComponente.Color := RGB(230, 242, 255);
+  argComponente.Color := RGB(253, 254, 194); // RGB(230, 242, 255);
   if argComponente.ReadOnly then Exit;
   Result := True;
 end;
@@ -877,7 +877,7 @@ function VCLComboBoxEntrar(argComponente: TComboBox): Boolean;
 begin
   Result := False;
   if argComponente.Color = clBtnFace then Exit;
-  argComponente.Color := RGB(230, 242, 255);
+  argComponente.Color := RGB(253, 254, 194); // RGB(230, 242, 255);
   if not argComponente.Enabled then Exit;
   Result := True;
 end;
@@ -902,7 +902,7 @@ function VCLCheckBoxEntrar(argComponente: TCheckBox): Boolean;
 begin
   Result := False;
   if argComponente.Color = clBtnFace then Exit;
-  argComponente.Color := RGB(230, 242, 255);
+  argComponente.Color := RGB(253, 254, 194); // RGB(230, 242, 255);
   if not argComponente.Enabled then Exit;
   Result := True;
 end;
@@ -926,7 +926,7 @@ function VCLToggleSwitchEntrar(argComponente: TToggleSwitch): Boolean;
 begin
   Result := False;
   if argComponente.ReadOnly then Exit;
-  argComponente.Color := RGB(230, 242, 255);
+  argComponente.Color := RGB(253, 254, 194); // RGB(230, 242, 255);
   if not argComponente.Enabled then Exit;
   Result := True;  
 end;
