@@ -4,8 +4,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Endere'#231'o da filial'
-  ClientHeight = 514
-  ClientWidth = 1034
+  ClientHeight = 513
+  ClientWidth = 1026
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -63,7 +63,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       50CE0000000049454E44AE426082}
   end
   object btnGravar: TBitBtn
-    Left = 856
+    Left = 848
     Top = 449
     Width = 49
     Height = 49
@@ -144,7 +144,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     OnClick = btnGravarClick
   end
   object btnCancelar: TBitBtn
-    Left = 968
+    Left = 960
     Top = 449
     Width = 49
     Height = 49
@@ -225,7 +225,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     OnClick = btnCancelarClick
   end
   object btnMinimizar: TBitBtn
-    Left = 912
+    Left = 904
     Top = 448
     Width = 49
     Height = 49
@@ -298,7 +298,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     OnClick = btnMinimizarClick
   end
   object btnFechar: TBitBtn
-    Left = 968
+    Left = 960
     Top = 448
     Width = 49
     Height = 49
@@ -361,7 +361,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     OnClick = btnFecharClick
   end
   object panFormulario: TPanel
-    Left = 64
+    Left = 56
     Top = 16
     Width = 953
     Height = 417
@@ -420,10 +420,9 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       TabOrder = 1
       object tabCadastro: TTabSheet
         Caption = 'Cadastro'
-        ExplicitHeight = 245
         object imgVigenciaFimDtSelecionar: TImage
-          Left = 303
-          Top = 91
+          Left = 391
+          Top = 35
           Width = 18
           Height = 20
           Cursor = crHandPoint
@@ -470,8 +469,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           OnClick = imgVigenciaFimDtSelecionarClick
         end
         object imgVigenciaIniDtSelecionar: TImage
-          Left = 128
-          Top = 91
+          Left = 216
+          Top = 35
           Width = 18
           Height = 20
           Cursor = crHandPoint
@@ -518,8 +517,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           OnClick = imgVigenciaIniDtSelecionarClick
         end
         object lblVigenciaAte: TLabel
-          Left = 160
-          Top = 94
+          Left = 248
+          Top = 38
           Width = 18
           Height = 14
           Caption = 'at'#233
@@ -531,8 +530,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           ParentFont = False
         end
         object lblVigencia: TLabel
-          Left = 16
-          Top = 72
+          Left = 104
+          Top = 16
           Width = 49
           Height = 14
           Caption = 'Vig'#234'ncia:'
@@ -557,8 +556,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           ParentFont = False
         end
         object lblLogradouro: TLabel
-          Left = 16
-          Top = 128
+          Left = 136
+          Top = 72
           Width = 66
           Height = 14
           Caption = 'Logradouro:'
@@ -570,8 +569,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           ParentFont = False
         end
         object imgLogradouroSelecionar: TImage
-          Left = 432
-          Top = 148
+          Left = 472
+          Top = 92
           Width = 20
           Height = 20
           Cursor = crHandPoint
@@ -621,7 +620,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
         end
         object lblEndereco: TLabel
           Left = 16
-          Top = 184
+          Top = 128
           Width = 56
           Height = 14
           Caption = 'Endere'#231'o:'
@@ -634,10 +633,10 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
         end
         object lblNumero: TLabel
           Left = 512
-          Top = 184
-          Width = 56
+          Top = 128
+          Width = 47
           Height = 14
-          Caption = 'Endere'#231'o:'
+          Caption = 'N'#250'mero:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -647,7 +646,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
         end
         object lblComplemento: TLabel
           Left = 16
-          Top = 240
+          Top = 184
           Width = 80
           Height = 14
           Caption = 'Complemento:'
@@ -659,8 +658,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           ParentFont = False
         end
         object lblBairro: TLabel
-          Left = 304
-          Top = 240
+          Left = 312
+          Top = 184
           Width = 34
           Height = 14
           Caption = 'Bairro:'
@@ -670,10 +669,53 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Font.Name = 'Tahoma'
           Font.Style = []
           ParentFont = False
+          OnClick = lblBairroClick
+        end
+        object lblCidade: TLabel
+          Left = 16
+          Top = 240
+          Width = 40
+          Height = 14
+          Caption = 'Cidade:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          OnClick = lblBairroClick
+        end
+        object Label1: TLabel
+          Left = 312
+          Top = 240
+          Width = 41
+          Height = 14
+          Caption = 'Estado:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          OnClick = lblBairroClick
+        end
+        object lblCEP: TLabel
+          Left = 16
+          Top = 72
+          Width = 25
+          Height = 14
+          Caption = 'CEP:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          OnClick = lblBairroClick
         end
         object medVigenciaIniDt: TMaskEdit
-          Left = 16
-          Top = 88
+          Left = 104
+          Top = 32
           Width = 105
           Height = 26
           Alignment = taCenter
@@ -693,8 +735,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           OnKeyPress = medVigenciaIniDtKeyPress
         end
         object medVigenciaFimDt: TMaskEdit
-          Left = 192
-          Top = 88
+          Left = 280
+          Top = 32
           Width = 105
           Height = 26
           Alignment = taCenter
@@ -732,7 +774,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Text = '9999'
         end
         object chkEstrangeiro: TCheckBox
-          Left = 224
+          Left = 480
           Top = 37
           Width = 97
           Height = 17
@@ -748,8 +790,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           TabOrder = 3
         end
         object edtLogradouroCodigo: TEdit
-          Left = 16
-          Top = 144
+          Left = 136
+          Top = 88
           Width = 73
           Height = 26
           Alignment = taCenter
@@ -760,7 +802,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Font.Style = []
           MaxLength = 25
           ParentFont = False
-          TabOrder = 4
+          TabOrder = 5
           Text = '99'
           OnEnter = edtLogradouroCodigoEnter
           OnExit = edtLogradouroCodigoExit
@@ -768,9 +810,9 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           OnKeyPress = edtLogradouroCodigoKeyPress
         end
         object edtLogradouroDescricao: TEdit
-          Left = 96
-          Top = 144
-          Width = 329
+          Left = 216
+          Top = 88
+          Width = 249
           Height = 26
           TabStop = False
           Color = clInactiveBorder
@@ -783,12 +825,12 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           ParentShowHint = False
           ReadOnly = True
           ShowHint = False
-          TabOrder = 5
-          Text = 'Xxxxxxxxxx Dddddddddd Ssssssssss'
+          TabOrder = 6
+          Text = 'Xxxxxxxxxx Dddddddddd'
         end
         object edtLogradouroID: TEdit
-          Left = 320
-          Top = 144
+          Left = 288
+          Top = 88
           Width = 65
           Height = 26
           TabStop = False
@@ -801,32 +843,14 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Font.Style = []
           ParentFont = False
           ReadOnly = True
-          TabOrder = 6
+          TabOrder = 7
           Text = '999.999'
           Visible = False
         end
         object edtEndereco: TEdit
           Left = 16
-          Top = 200
-          Width = 489
-          Height = 26
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -15
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          MaxLength = 100
-          ParentFont = False
-          TabOrder = 7
-          Text = 'Xxxxxxxxxx Gggggggggg Dddddddddd Hhhhhhhhhh Kkkkkkkkkk'
-          OnEnter = edtEnderecoEnter
-          OnExit = edtEnderecoExit
-          OnKeyPress = edtEnderecoKeyPress
-        end
-        object edtNumero: TEdit
-          Left = 512
-          Top = 200
-          Width = 73
+          Top = 144
+          Width = 481
           Height = 26
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -836,12 +860,66 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           MaxLength = 100
           ParentFont = False
           TabOrder = 8
+          Text = 'Xxxxxxxxxx Gggggggggg Dddddddddd Hhhhhhhhhh Kkkkkkkkkk'
+          OnEnter = edtEnderecoEnter
+          OnExit = edtEnderecoExit
+          OnKeyPress = edtEnderecoKeyPress
+        end
+        object edtNumero: TEdit
+          Left = 512
+          Top = 144
+          Width = 73
+          Height = 26
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          MaxLength = 100
+          ParentFont = False
+          TabOrder = 9
           Text = '999.999'
           OnEnter = edtNumeroEnter
           OnExit = edtNumeroExit
           OnKeyPress = edtNumeroKeyPress
         end
         object edtComplemento: TEdit
+          Left = 16
+          Top = 200
+          Width = 273
+          Height = 26
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          MaxLength = 100
+          ParentFont = False
+          TabOrder = 10
+          Text = 'Xxxxxxxxxx Gggggggggg Dddddddddd'
+          OnEnter = edtComplementoEnter
+          OnExit = edtComplementoExit
+          OnKeyPress = edtComplementoKeyPress
+        end
+        object edtBairro: TEdit
+          Left = 312
+          Top = 200
+          Width = 273
+          Height = 26
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          MaxLength = 100
+          ParentFont = False
+          TabOrder = 11
+          Text = 'Xxxxxxxxxx Gggggggggg Dddddddddd'
+          OnEnter = edtBairroEnter
+          OnExit = edtBairroExit
+          OnKeyPress = edtBairroKeyPress
+        end
+        object edtCidade: TEdit
           Left = 16
           Top = 256
           Width = 273
@@ -853,16 +931,16 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Font.Style = []
           MaxLength = 100
           ParentFont = False
-          TabOrder = 9
+          TabOrder = 12
           Text = 'Xxxxxxxxxx Gggggggggg Dddddddddd'
-          OnEnter = edtComplementoEnter
-          OnExit = edtComplementoExit
-          OnKeyPress = edtComplementoKeyPress
+          OnEnter = edtCidadeEnter
+          OnExit = edtCidadeExit
+          OnKeyPress = edtCidadeKeyPress
         end
-        object edtBairro: TEdit
-          Left = 304
+        object edtEstado: TEdit
+          Left = 312
           Top = 256
-          Width = 281
+          Width = 273
           Height = 26
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -871,11 +949,30 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Font.Style = []
           MaxLength = 100
           ParentFont = False
-          TabOrder = 10
+          TabOrder = 13
           Text = 'Xxxxxxxxxx Gggggggggg Dddddddddd'
-          OnEnter = edtBairroEnter
-          OnExit = edtBairroExit
-          OnKeyPress = edtBairroKeyPress
+          OnEnter = edtEstadoEnter
+          OnExit = edtEstadoExit
+          OnKeyPress = edtEstadoKeyPress
+          OnMouseEnter = btnAlterarClick
+        end
+        object edtCEP: TEdit
+          Left = 16
+          Top = 88
+          Width = 97
+          Height = 26
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          MaxLength = 100
+          ParentFont = False
+          TabOrder = 4
+          Text = '99.999-999'
+          OnEnter = edtCEPEnter
+          OnExit = edtCEPExit
+          OnKeyPress = edtCEPKeyPress
         end
       end
       object tabAuditoria: TTabSheet
@@ -1092,7 +1189,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     end
   end
   object btnNovo: TBitBtn
-    Left = 800
+    Left = 792
     Top = 448
     Width = 49
     Height = 49
@@ -1165,7 +1262,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
     OnClick = btnNovoClick
   end
   object btnAlterar: TBitBtn
-    Left = 856
+    Left = 848
     Top = 448
     Width = 49
     Height = 49

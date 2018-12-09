@@ -100,6 +100,12 @@ type
     edtComplemento: TEdit;
     edtBairro: TEdit;
     lblBairro: TLabel;
+    lblCidade: TLabel;
+    edtCidade: TEdit;
+    Label1: TLabel;
+    edtEstado: TEdit;
+    lblCEP: TLabel;
+    edtCEP: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure medVigenciaIniDtEnter(Sender: TObject);
@@ -149,6 +155,16 @@ type
     procedure edtBairroEnter(Sender: TObject);
     procedure edtBairroExit(Sender: TObject);
     procedure edtBairroKeyPress(Sender: TObject; var Key: Char);
+    procedure lblBairroClick(Sender: TObject);
+    procedure edtCEPEnter(Sender: TObject);
+    procedure edtCEPExit(Sender: TObject);
+    procedure edtCEPKeyPress(Sender: TObject; var Key: Char);
+    procedure edtCidadeEnter(Sender: TObject);
+    procedure edtCidadeExit(Sender: TObject);
+    procedure edtCidadeKeyPress(Sender: TObject; var Key: Char);
+    procedure edtEstadoEnter(Sender: TObject);
+    procedure edtEstadoExit(Sender: TObject);
+    procedure edtEstadoKeyPress(Sender: TObject; var Key: Char);
   private
     procedure FormularioLimpar(argLista: Boolean = True;
                                argDados: Boolean = True);
@@ -384,6 +400,11 @@ begin
   Plataforma_ERP_VCL_DataSelecionar(medVigenciaIniDt);
 end;
 
+procedure TPlataformaERPVCLFilialEndereco.lblBairroClick(Sender: TObject);
+begin
+
+end;
+
 //
 // Vigência final.
 //
@@ -411,6 +432,24 @@ end;
 procedure TPlataformaERPVCLFilialEndereco.imgVigenciaFimDtSelecionarClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataSelecionar(medVigenciaFimDt);
+end;
+
+//
+// CEP.
+//
+procedure TPlataformaERPVCLFilialEndereco.edtCEPEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtCEP) then Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.edtCEPKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.edtCEPExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtCEP) then Exit;
 end;
 
 //
@@ -519,6 +558,42 @@ begin
 end;
 
 //
+// Cidade.
+//
+procedure TPlataformaERPVCLFilialEndereco.edtCidadeEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtCidade) then Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.edtCidadeKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.edtCidadeExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtCidade) then Exit;
+end;
+
+//
+// Estado.
+//
+procedure TPlataformaERPVCLFilialEndereco.edtEstadoEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtEstado) then Exit;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.edtEstadoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.edtEstadoExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtEstado) then Exit;
+end;
+
+//
 // Evento de click no botão "log alterações".
 //
 procedure TPlataformaERPVCLFilialEndereco.btnLogClick(Sender: TObject);
@@ -592,6 +667,7 @@ begin
     VCLMaskEditLimpar(medVigenciaFimDt);
 
     VCLCheckBoxLimpar(chkEstrangeiro);
+    VCLEditLimpar(edtCEP);
     VCLEditLimpar(edtLogradouroID);
     VCLEditLimpar(edtLogradouroCodigo);
     VCLEditLimpar(edtLogradouroDescricao);
@@ -599,6 +675,8 @@ begin
     VCLEditLimpar(edtNumero);
     VCLEditLimpar(edtComplemento);
     VCLEditLimpar(edtBairro);
+    VCLEditLimpar(edtCidade);
+    VCLEditLimpar(edtEstado);
 
     VCLEditLimpar(edtFilialEnderecoSq);
     VCLEditLimpar(edtInsLocalDtHr);
@@ -624,11 +702,14 @@ begin
   //
   VCLMaskEditControlar(medVigenciaIniDt,    argEditar);
   VCLMaskEditControlar(medVigenciaFimDt,    argEditar);
+  VCLEditControlar    (edtCEP,              argEditar);
   VCLEditControlar    (edtLogradouroCodigo, argEditar);
   VCLEditControlar    (edtEndereco,         argEditar);
   VCLEditControlar    (edtNumero,           argEditar);
   VCLEditControlar    (edtComplemento,      argEditar);
   VCLEditControlar    (edtBairro,           argEditar);
+  VCLEditControlar    (edtCidade,           argEditar);
+  VCLEditControlar    (edtEstado,           argEditar);
 
   //
   // Controla os componentes de exibição de cadastro.
@@ -902,6 +983,9 @@ begin
   locADOQuery.SQL.Add('  [filial_endereco].[numero],                                           ');
   locADOQuery.SQL.Add('  [filial_endereco].[complemento],                                      ');
   locADOQuery.SQL.Add('  [filial_endereco].[bairro],                                           ');
+  locADOQuery.SQL.Add('  [filial_endereco].[cidade],                                           ');
+  locADOQuery.SQL.Add('  [filial_endereco].[estado],                                           ');
+  locADOQuery.SQL.Add('  [filial_endereco].[cep],                                              ');
   locADOQuery.SQL.Add('  [filial_endereco].[ins_local_dt_hr],                                  ');
   locADOQuery.SQL.Add('  [filial_endereco].[upd_local_dt_hr],                                  ');
   locADOQuery.SQL.Add('  [filial_endereco].[upd_contador]                                      ');
@@ -958,6 +1042,9 @@ begin
     edtNumero.Text      := locADOQuery.FieldByName('numero').AsString;
     edtComplemento.Text := locADOQuery.FieldByName('complemento').AsString;
     edtBairro.Text      := locADOQuery.FieldByName('bairro').AsString;
+    edtCidade.Text      := locADOQuery.FieldByName('cidade').AsString;
+    edtEstado.Text      := locADOQuery.FieldByName('estado').AsString;
+    edtCEP.Text         := locADOQuery.FieldByName('cep').AsString;
 
     edtInsLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
     edtUpdLocalDtHr.Text     := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
@@ -1187,6 +1274,9 @@ var
   locNumero                : string;
   locComplemento           : string;
   locBairro                : string;
+  locCidade                : string;
+  locEstado                : string;
+  locCEP                   : string;
 
   locInsLocalDtHr          : TDateTime;
   locUpdLocalDtHr          : TDateTime;
@@ -1213,6 +1303,9 @@ begin
   locNumero           := StringTrim(edtNumero.Text);
   locComplemento      := StringTrim(edtComplemento.Text);
   locBairro           := StringTrim(edtBairro.Text);
+  locCidade           := StringTrim(edtCidade.Text);
+  locEstado           := StringTrim(edtEstado.Text);
+  locCEP              := StringTrim(edtCEP.Text);
 
   locUsuarioBaseID    := gloUsuarioBaseID;
   locUsuarioID        := gloUsuarioID;
@@ -1276,6 +1369,20 @@ begin
   begin
     VCLConsistenciaExibir('O bairro do endereço deve ser informado!');
     VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtBairro);
+    Exit;
+  end;
+
+  if locCidade = '' then
+  begin
+    VCLConsistenciaExibir('A cidade do endereço deve ser informada!');
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCidade);
+    Exit;
+  end;
+
+  if locEstado = '' then
+  begin
+    VCLConsistenciaExibir('O estado do endereço deve ser informado!');
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtEstado);
     Exit;
   end;
 
@@ -1591,12 +1698,13 @@ begin
     locADOQuery.SQL.Add('  [vigencia_fim_dt],            ');
     locADOQuery.SQL.Add('  [estrangeiro],                ');
     locADOQuery.SQL.Add('  [logradouro_id],              ');
-
     locADOQuery.SQL.Add('  [endereco],                   ');
     locADOQuery.SQL.Add('  [numero],                     ');
     locADOQuery.SQL.Add('  [complemento],                ');
     locADOQuery.SQL.Add('  [bairro],                     ');
-
+    locADOQuery.SQL.Add('  [cidade],                     ');
+    locADOQuery.SQL.Add('  [estado],                     ');
+    locADOQuery.SQL.Add('  [cep],                        ');
     locADOQuery.SQL.Add('  [ins_local_dt_hr],            ');
     locADOQuery.SQL.Add('  [ins_server_dt_hr],           ');
     locADOQuery.SQL.Add('  [ins_usuario_base_id],        ');
@@ -1621,6 +1729,9 @@ begin
     locADOQuery.SQL.Add('  :numero,                      '); // [numero].
     locADOQuery.SQL.Add('  :complemento,                 '); // [complemento].
     locADOQuery.SQL.Add('  :bairro,                      '); // [bairro].
+    locADOQuery.SQL.Add('  :cidade,                      '); // [cidade].
+    locADOQuery.SQL.Add('  :estado,                      '); // [estado].
+    locADOQuery.SQL.Add('  :cep,                         '); // [cep].
     locADOQuery.SQL.Add('  :local_dt_hr,                 '); // [ins_local_dt_hr].
     locADOQuery.SQL.Add('  GETDATE(),                    '); // [ins_server_dt_hr].
     locADOQuery.SQL.Add('  :usuario_base_id,             '); // [ins_usuario_base_id].
@@ -1649,6 +1760,9 @@ begin
     locADOQuery.SQL.Add('  [numero]              = :numero,           ');
     locADOQuery.SQL.Add('  [complemento]         = :complemento,      ');
     locADOQuery.SQL.Add('  [bairro]              = :bairro,           ');
+    locADOQuery.SQL.Add('  [cidade]              = :cidade,           ');
+    locADOQuery.SQL.Add('  [estado]              = :estado,           ');
+    locADOQuery.SQL.Add('  [cep]                 = :cep,              ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]     = :local_dt_hr,      ');
     locADOQuery.SQL.Add('  [upd_server_dt_hr]    = GETDATE(),         ');
     locADOQuery.SQL.Add('  [upd_usuario_base_id] = :usuario_base_id,  ');
@@ -1677,6 +1791,9 @@ begin
   locADOQuery.Parameters.ParamByName('numero').Value             := locNumero;
   locADOQuery.Parameters.ParamByName('complemento').Value        := locComplemento;
   locADOQuery.Parameters.ParamByName('bairro').Value             := locBairro;
+  locADOQuery.Parameters.ParamByName('cidade').Value             := locCidade;
+  locADOQuery.Parameters.ParamByName('estado').Value             := locEstado;
+  locADOQuery.Parameters.ParamByName('cep').Value                := locCEP;
   locADOQuery.Parameters.ParamByName('local_dt_hr').Value        := Now;
   locADOQuery.Parameters.ParamByName('usuario_base_id').Value    := locUsuarioBaseID;
   locADOQuery.Parameters.ParamByName('usuario_id').Value         := locUsuarioID;
@@ -1744,7 +1861,7 @@ begin
   //
   // Log dados.
   //
-  locFilialEnderecoLogDados := LogDadosGerar(locSequencial);
+  locFilialEnderecoLogDados := LogDadosGerar(locFilialEnderecoLogSq, locSequencial);
 
   //
   // Determina o próximo sequencial da tabela filial_endereco_log.
@@ -2166,7 +2283,7 @@ begin
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, ERRO_MENSAGEM_TENTE_NOVAMENTE, locExcecao.Message);
       Exit
     end;
-  end;  
+  end;
 
   //
   // Limpa os componentes do formulário.
@@ -2226,14 +2343,24 @@ begin
     locSequencial := argSequencial;
 
   Result := '';
-  LogDadosIntegerDescrever('Licença',                pubLicencaID,           Result);
-  LogDadosIntegerDescrever('Base da filial',         pubFilialBaseID,        Result);
-  LogDadosIntegerDescrever('ID da filial',           pubFilialID,            Result);
-  LogDadosIntegerDescrever('Sequencial do endereço', locFilialEnderecoSq,    Result);
-  LogDadosIntegerDescrever('Sequencial',             locSequencial,          Result);
-  LogDadosStringDescrever ('Vigência inicial',       medVigenciaIniDt.Text,  Result);
-  LogDadosStringDescrever ('Vigência final',         medVigenciaFimDt.Text,  Result);
-  LogDadosBooleanDescrever('Estrangeiro',            chkEstrangeiro.Checked, Result);  
+  LogDadosIntegerDescrever('Licença',                pubLicencaID,                Result);
+  LogDadosIntegerDescrever('Base da filial',         pubFilialBaseID,             Result);
+  LogDadosIntegerDescrever('ID da filial',           pubFilialID,                 Result);
+  LogDadosIntegerDescrever('Sequencial do endereço', locFilialEnderecoSq,         Result);
+  LogDadosIntegerDescrever('Sequencial',             locSequencial,               Result);
+  LogDadosStringDescrever ('Vigência inicial',       medVigenciaIniDt.Text,       Result);
+  LogDadosStringDescrever ('Vigência final',         medVigenciaFimDt.Text,       Result);
+  LogDadosBooleanDescrever('Estrangeiro',            chkEstrangeiro.Checked,      Result);
+  LogDadosStringDescrever ('CEP',                    edtCEP.Text,                 Result);
+  LogDadosStringDescrever ('ID do logradouro',       edtLogradouroID.Text,        Result);
+  LogDadosStringDescrever ('Código do logradouro',   edtLogradouroCodigo.Text,    Result);
+  LogDadosStringDescrever ('Logradouro',             edtLogradouroDescricao.Text, Result);
+  LogDadosStringDescrever ('Endereço',               edtEndereco.Text,            Result);
+  LogDadosStringDescrever ('Número',                 edtNumero.Text,              Result);
+  LogDadosStringDescrever ('Complemento',            edtComplemento.Text,         Result);
+  LogDadosStringDescrever ('Bairro',                 edtBairro.Text,              Result);
+  LogDadosStringDescrever ('Cidade',                 edtCidade.Text,              Result);
+  LogDadosStringDescrever ('Estado',                 edtEstado.Text,              Result);
 end;
 
 end.
