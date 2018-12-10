@@ -26,6 +26,10 @@ IF OBJECT_ID('filial_log')                      IS NOT NULL DROP TABLE [filial_l
 IF OBJECT_ID('filial')                          IS NOT NULL DROP TABLE [filial]
 IF OBJECT_ID('empresa_log')                     IS NOT NULL DROP TABLE [empresa_log]
 IF OBJECT_ID('empresa')                         IS NOT NULL DROP TABLE [empresa]
+IF OBJECT_ID('cep')                             IS NOT NULL DROP TABLE [cep]
+IF OBJECT_ID('bairro')                          IS NOT NULL DROP TABLE [bairro]
+IF OBJECT_ID('cidade')                          IS NOT NULL DROP TABLE [cidade]
+IF OBJECT_ID('estado')                          IS NOT NULL DROP TABLE [estado]
 IF OBJECT_ID('pais')                            IS NOT NULL DROP TABLE [pais]
 IF OBJECT_ID('logradouro')                      IS NOT NULL DROP TABLE [logradouro]
 IF OBJECT_ID('regime_tributario')               IS NOT NULL DROP TABLE [regime_tributario]
@@ -560,8 +564,118 @@ CREATE TABLE [pais] (
   CONSTRAINT [pais_pk]        PRIMARY KEY CLUSTERED ([pais_id]),
   CONSTRAINT [pais_ix_codigo] UNIQUE ([codigo]),
 
-  CONSTRAINT [pais_ck_bloqueado]     CHECK ([bloqueado]     IN ('S', 'N')),
-  CONSTRAINT [pais_ck_ativo]         CHECK ([ativo]         IN ('S', 'N'))
+  CONSTRAINT [pais_ck_bloqueado]     CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [pais_ck_ativo]         CHECK ([ativo]     IN ('S', 'N'))
+)
+GO
+
+--
+-- Estado.
+--
+CREATE TABLE [estado] (
+  [estado_id]        SMALLINT                                  NOT NULL,
+  [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [nome]             VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [pais_id]          SMALLINT                                  NOT NULL,
+  [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]  DATETIME                                  NOT NULL,
+  [ins_server_dt_hr] DATETIME                                  NOT NULL,
+  [upd_local_dt_hr]  DATETIME                                  NULL,
+  [upd_server_dt_hr] DATETIME                                  NULL,
+  [upd_contador]     INT                                       NOT NULL,
+  
+  CONSTRAINT [estado_pk]        PRIMARY KEY CLUSTERED ([estado_id]),
+  CONSTRAINT [estado_ix_codigo] UNIQUE ([codigo]),
+
+  CONSTRAINT [estado_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [estado_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
+
+  CONSTRAINT [estado_fk_pais] FOREIGN KEY ([pais_id]) REFERENCES [pais] ([pais_id])
+)
+GO
+
+--
+-- Cidade.
+--
+CREATE TABLE [cidade] (
+  [cidade_id]        INT                                       NOT NULL,
+  [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [nome]             VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [estado_id]        SMALLINT                                  NOT NULL,
+  [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]  DATETIME                                  NOT NULL,
+  [ins_server_dt_hr] DATETIME                                  NOT NULL,
+  [upd_local_dt_hr]  DATETIME                                  NULL,
+  [upd_server_dt_hr] DATETIME                                  NULL,
+  [upd_contador]     INT                                       NOT NULL,
+  
+  CONSTRAINT [cidade_pk]        PRIMARY KEY CLUSTERED ([cidade_id]),
+  CONSTRAINT [cidade_ix_codigo] UNIQUE ([codigo]),
+
+  CONSTRAINT [cidade_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [cidade_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
+
+  CONSTRAINT [cidade_fk_estado] FOREIGN KEY ([estado_id]) REFERENCES [estado] ([estado_id])
+)
+GO
+
+--
+-- Bairro.
+--
+CREATE TABLE [bairro] (
+  [bairro_id]        INT                                       NOT NULL,
+  [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [nome]             VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [cidade_id]        INT                                       NOT NULL,
+  [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]  DATETIME                                  NOT NULL,
+  [ins_server_dt_hr] DATETIME                                  NOT NULL,
+  [upd_local_dt_hr]  DATETIME                                  NULL,
+  [upd_server_dt_hr] DATETIME                                  NULL,
+  [upd_contador]     INT                                       NOT NULL,
+  
+  CONSTRAINT [bairro_pk]        PRIMARY KEY CLUSTERED ([bairro_id]),
+  CONSTRAINT [bairro_ix_codigo] UNIQUE ([codigo]),
+
+  CONSTRAINT [bairro_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [bairro_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
+
+  CONSTRAINT [bairro_fk_cidade] FOREIGN KEY ([cidade_id]) REFERENCES [cidade] ([cidade_id])
+)
+GO
+
+--
+-- CEP.
+--
+CREATE TABLE [cep] (
+  [pais_id]          SMALLINT                                  NOT NULL,
+  [cep]              INT                                       NOT NULL,
+  [logradouro_id]    SMALLINT                                  NOT NULL,
+  [endereco]         VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bairro_id]        INT                                       NOT NULL,
+  [cidade_id]        INT                                       NOT NULL,
+  [estado_id]        SMALLINT                                  NOT NULL,
+  [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]  DATETIME                                  NOT NULL,
+  [ins_server_dt_hr] DATETIME                                  NOT NULL,
+  [upd_local_dt_hr]  DATETIME                                  NULL,
+  [upd_server_dt_hr] DATETIME                                  NULL,
+  [upd_contador]     INT                                       NOT NULL,
+  
+  CONSTRAINT [cep_pk]        PRIMARY KEY CLUSTERED ([pais_id], [cep]),
+  
+  CONSTRAINT [cep_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
+  CONSTRAINT [cep_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
+
+  CONSTRAINT [cep_fk_pais]       FOREIGN KEY ([pais_id])       REFERENCES [pais]       ([pais_id]),
+  CONSTRAINT [cep_fk_logradouro] FOREIGN KEY ([logradouro_id]) REFERENCES [logradouro] ([logradouro_id]),
+  CONSTRAINT [cep_fk_bairro]     FOREIGN KEY ([bairro_id])     REFERENCES [bairro]     ([bairro_id]),
+  CONSTRAINT [cep_fk_cidade]     FOREIGN KEY ([cidade_id])     REFERENCES [cidade]     ([cidade_id]),
+  CONSTRAINT [cep_fk_estado]     FOREIGN KEY ([estado_id])     REFERENCES [estado]     ([estado_id])
 )
 GO
 
@@ -715,8 +829,11 @@ CREATE TABLE [filial_endereco] (
   [endereco]             VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [numero]               VARCHAR(10)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [complemento]          VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bairro_id]            INT                                       NULL,
   [bairro]               VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [cidade_id]            INT                                       NULL,
   [cidade]               VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [estado_id]            SMALLINT                                  NULL,
   [estado]               VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [cep]                  VARCHAR(15)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [pais_id]              SMALLINT                                  NOT NULL,
@@ -738,6 +855,9 @@ CREATE TABLE [filial_endereco] (
 
   CONSTRAINT [filial_endereco_fk_filial]      FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id])           REFERENCES [filial]     ([licenca_id], [filial_base_id],  [filial_id]),
   CONSTRAINT [filial_endereco_fk_logradouro]  FOREIGN KEY ([logradouro_id])                                       REFERENCES [logradouro] ([logradouro_id]),
+  CONSTRAINT [filial_endereco_fk_bairro]      FOREIGN KEY ([bairro_id])                                           REFERENCES [bairro]     ([bairro_id]),
+  CONSTRAINT [filial_endereco_fk_cidade]      FOREIGN KEY ([cidade_id])                                           REFERENCES [cidade]     ([cidade_id]),
+  CONSTRAINT [filial_endereco_fk_estado]      FOREIGN KEY ([estado_id])                                           REFERENCES [estado]     ([estado_id]),
   CONSTRAINT [filial_endereco_fk_pais]        FOREIGN KEY ([pais_id])                                             REFERENCES [pais]       ([pais_id]),
   CONSTRAINT [filial_endereco_fk_usuario_ins] FOREIGN KEY ([licenca_id], [ins_usuario_base_id], [ins_usuario_id]) REFERENCES [usuario]    ([licenca_id], [usuario_base_id], [usuario_id]),
   CONSTRAINT [filial_endereco_fk_usuario_upd] FOREIGN KEY ([licenca_id], [upd_usuario_base_id], [upd_usuario_id]) REFERENCES [usuario]    ([licenca_id], [usuario_base_id], [usuario_id])
