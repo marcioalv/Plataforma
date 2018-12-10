@@ -385,12 +385,28 @@
             <Form>PlataformaERPVCLLogradouroLista</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroSelecao.pas">
+            <Form>PlataformaERPVCLLogradouroSelecao</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Formularios\Entidade\Plataforma_ERP_VCL_PaisLista.pas">
+            <Form>PlataformaERPVCLPaisLista</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <DCCReference Include="..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroCadastro.pas">
             <Form>PlataformaERPVCLLogradouroCadastro</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroSelecao.pas">
-            <Form>PlataformaERPVCLLogradouroSelecao</Form>
+        <DCCReference Include="..\Formularios\Entidade\Plataforma_ERP_VCL_PaisCadastro.pas">
+            <Form>PlataformaERPVCLPaisCadastro</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Formularios\Entidade\Plataforma_ERP_VCL_PaisSelecao.pas">
+            <Form>PlataformaERPVCLPaisSelecao</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Formularios\Entidade\Plataforma_ERP_VCL_PaisFiltro.pas">
+            <Form>PlataformaERPVCLPaisFiltro</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <RcItem Include="..\..\..\..\..\Imagem\Background\Formulario\FORM_BACKGROUND_DEFAULT.bmp">

@@ -153,6 +153,35 @@ function Plataforma_ERP_VCL_LogradouroSelecionar(argLogradouroID       : TEdit;
                                                  argLogradouroDescricao: TEdit): Boolean;
 
 //
+// PAÍS!
+//
+                                                  
+//
+// Plataforma_ERP_VCL_PaisListaExibir.
+//
+procedure Plataforma_ERP_VCL_PaisListaExibir;
+
+//
+// Plataforma_ERP_VCL_PaisExibir.
+//
+procedure Plataforma_ERP_VCL_PaisExibir(argPaisID: Integer);
+
+//
+// Plataforma_ERP_VCL_PaisValidar.
+//
+function Plataforma_ERP_VCL_PaisValidar(argNovo      : Boolean;
+                                        argPaisID    : TEdit;
+                                        argPaisCodigo: TEdit;
+                                        argPaisNome  : TEdit): Boolean;
+
+//
+// Plataforma_ERP_VCL_PaisSelecionar.
+//
+function Plataforma_ERP_VCL_PaisSelecionar(argPaisID       : TEdit;
+                                           argPaisCodigo   : TEdit;
+                                           argPaisNome: TEdit): Boolean;
+
+//
 // EMPRESA!
 //
 
@@ -213,6 +242,10 @@ uses
   Plataforma_ERP_VCL_LogradouroLista,
   Plataforma_ERP_VCL_LogradouroCadastro,
   Plataforma_ERP_VCL_LogradouroSelecao,
+
+  Plataforma_ERP_VCL_PaisLista,
+  Plataforma_ERP_VCL_PaisCadastro,
+  Plataforma_ERP_VCL_PaisSelecao,
 
   Plataforma_ERP_VCL_EmpresaLista,
   Plataforma_ERP_VCL_EmpresaCadastro,
@@ -1076,6 +1109,229 @@ begin
     argLogradouroID.Text        := IntegerStringConverter(locLogradouroID);
     argLogradouroCodigo.Text    := locLogradouroCodigo;
     argLogradouroDescricao.Text := locLogradouroDescricao;
+    Result := False;
+  end;
+end;
+
+//
+// PAÍS!
+//
+
+//
+// Procedimento para exibir a lista de países cadastrados.
+//
+procedure Plataforma_ERP_VCL_PaisListaExibir;
+var
+  locFormulario: TPlataformaERPVCLPaisLista;
+begin
+  locFormulario := TPlataformaERPVCLPaisLista.Create(nil);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o cadastro do país.
+//
+procedure Plataforma_ERP_VCL_PaisExibir(argPaisID: Integer);
+var
+  locFormulario: TPlataformaERPVCLPaisCadastro;
+begin
+  locFormulario           := TPlataformaERPVCLPaisCadastro.Create(nil);
+  locFormulario.pubPaisID := argPaisID;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para validar um país.
+//
+function Plataforma_ERP_VCL_PaisValidar(argNovo      : Boolean;
+                                        argPaisID    : TEdit;
+                                        argPaisCodigo: TEdit;
+                                        argPaisNome  : TEdit): Boolean;
+const
+  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_PaisValidar';
+  ERRO_MENSAGEM    : string = 'Impossível validar o país!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locPaisCodigo   : string;
+begin
+  //
+  // Retorno padrão.
+  //
+  Result := False;
+
+  //
+  // Carrega variáveis.
+  //
+  locPaisCodigo := StringTrim(argPaisCodigo.Text);
+
+  //
+  // Componente vazio.
+  //
+  if locPaisCodigo = '' then
+  begin
+    argPaisID.Text   := '';
+    argPaisNome.Text := '';
+    Result := True;
+    Exit;
+  end;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(nil);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do país.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                          ');
+  locADOQuery.SQL.Add('  [pais].[pais_id],             ');
+  locADOQuery.SQL.Add('  [pais].[codigo],              ');
+  locADOQuery.SQL.Add('  [pais].[nome],                ');
+  locADOQuery.SQL.Add('  [pais].[bloqueado],           ');
+  locADOQuery.SQL.Add('  [pais].[ativo]                ');
+  locADOQuery.SQL.Add('FROM                            ');
+  locADOQuery.SQL.Add('  [pais] WITH (NOLOCK)          ');
+  locADOQuery.SQL.Add('WHERE                           ');
+  locADOQuery.SQL.Add('  [pais].[codigo] = :codigo AND ');
+  locADOQuery.SQL.Add('  [pais].[ativo]  = ''S''       ');
+
+  locADOQuery.Parameters.ParamByName('codigo').Value := locPaisCodigo;
+
+  if argNovo then
+  begin   
+    locADOQuery.SQL.Add(' AND [pais].[bloqueado] = ''N'' ');
+  end;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [pais]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Nenhum registro encontrado.
+  //
+  if locADOQuery.RecordCount <= 0 then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);    
+    VCLConsistenciaExibir('Nenhum país encontrado com o código "' + locPaisCodigo + '" informado!');
+    argPaisID.Text   := '';
+    argPaisNome.Text := '';
+    argPaisCodigo.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Apenas um registro encontrado.
+  //
+  if locADOQuery.RecordCount = 1 then
+  begin
+    argPaisID.Text     := IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger);
+    argPaisCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
+    argPaisNome.Text   := locADOQuery.FieldByName('nome').AsString;
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+
+  Result := True;
+end;
+
+//
+// Procedimento para selecionar um país.
+//
+function Plataforma_ERP_VCL_PaisSelecionar(argPaisID    : TEdit;
+                                           argPaisCodigo: TEdit;
+                                           argPaisNome  : TEdit): Boolean;
+var
+  locFormulario  : TPlataformaERPVCLPaisSelecao;
+  locClicouFechar: Boolean;
+  locPaisID      : Integer;
+  locPaisCodigo  : string;
+  locPaisNome    : string;
+begin
+  Result := False;
+
+  locPaisID     := StringIntegerConverter(argPaisID.Text);
+  locPaisCodigo := StringTrim(argPaisCodigo.Text);
+  locPaisNome   := StringTrim(argPaisNome.Text);
+
+  locFormulario := TPlataformaERPVCLPaisSelecao.Create(nil);
+
+  locFormulario.pubPaisID := locPaisID;
+  locFormulario.pubCodigo := locPaisCodigo;
+  locFormulario.pubNome   := locPaisNome;
+  
+  locFormulario.ShowModal;
+
+  locClicouFechar := locFormulario.pubClicouFechar;
+  locPaisID       := locFormulario.pubPaisID;
+  locPaisCodigo   := locFormulario.pubCodigo;
+  locPaisNome     := locFormulario.pubNome;
+  
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    argPaisID.Text     := IntegerStringConverter(locPaisID);
+    argPaisCodigo.Text := locPaisCodigo;
+    argPaisNome.Text   := locPaisNome;
     Result := False;
   end;
 end;

@@ -76,6 +76,11 @@ type
     mniFiliais: TMenuItem;
     mniColigadas: TMenuItem;
     mniLogradouros: TMenuItem;
+    mniPaises: TMenuItem;
+    mniEstados: TMenuItem;
+    mniCidades: TMenuItem;
+    mniBairros: TMenuItem;
+    mniCEPs: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniLogLocalClick(Sender: TObject);
@@ -105,6 +110,7 @@ type
     procedure mniFiliaisClick(Sender: TObject);
     procedure mniColigadasClick(Sender: TObject);
     procedure mniLogradourosClick(Sender: TObject);
+    procedure mniPaisesClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -143,7 +149,8 @@ uses
   Plataforma_ERP_VCL_EmpresaLista,
   Plataforma_ERP_VCL_FilialLista,
   Plataforma_ERP_VCL_ColigadaLista,
-  Plataforma_ERP_VCL_LogradouroLista;
+  Plataforma_ERP_VCL_LogradouroLista,
+  Plataforma_ERP_VCL_PaisLista;
 
 //
 // Evento de criação do formulário.
@@ -416,6 +423,19 @@ var
   locFormulario: TPlataformaERPVCLLogradouroLista;
 begin
   locFormulario := TPlataformaERPVCLLogradouroLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "países".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniPaisesClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLPaisLista;
+begin
+  locFormulario := TPlataformaERPVCLPaisLista.Create(Self);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

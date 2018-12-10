@@ -84,8 +84,12 @@ uses
   Plataforma_ERP_VCL_ColigadaSelecao in '..\Formularios\Fiscal\Plataforma_ERP_VCL_ColigadaSelecao.pas' {PlataformaERPVCLColigadaSelecao},
   Plataforma_ERP_VCL_FilialEndereco in '..\Formularios\Fiscal\Plataforma_ERP_VCL_FilialEndereco.pas' {PlataformaERPVCLFilialEndereco},
   Plataforma_ERP_VCL_LogradouroLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroLista.pas' {PlataformaERPVCLLogradouroLista},
+  Plataforma_ERP_VCL_LogradouroSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroSelecao.pas' {PlataformaERPVCLLogradouroSelecao},
+  Plataforma_ERP_VCL_PaisLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisLista.pas' {PlataformaERPVCLPaisLista},
   Plataforma_ERP_VCL_LogradouroCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroCadastro.pas' {PlataformaERPVCLLogradouroCadastro},
-  Plataforma_ERP_VCL_LogradouroSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroSelecao.pas' {PlataformaERPVCLLogradouroSelecao};
+  Plataforma_ERP_VCL_PaisCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisCadastro.pas' {PlataformaERPVCLPaisCadastro},
+  Plataforma_ERP_VCL_PaisSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisSelecao.pas' {PlataformaERPVCLPaisSelecao},
+  Plataforma_ERP_VCL_PaisFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisFiltro.pas' {PlataformaERPVCLPaisFiltro};
 
 {$R *.res}
 
@@ -94,7 +98,11 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
   Application.CreateForm(TPlataformaERPVCLLogradouroLista, PlataformaERPVCLLogradouroLista);
-  Application.CreateForm(TPlataformaERPVCLLogradouroCadastro, PlataformaERPVCLLogradouroCadastro);
   Application.CreateForm(TPlataformaERPVCLLogradouroSelecao, PlataformaERPVCLLogradouroSelecao);
+  Application.CreateForm(TPlataformaERPVCLPaisLista, PlataformaERPVCLPaisLista);
+  Application.CreateForm(TPlataformaERPVCLLogradouroCadastro, PlataformaERPVCLLogradouroCadastro);
+  Application.CreateForm(TPlataformaERPVCLPaisCadastro, PlataformaERPVCLPaisCadastro);
+  Application.CreateForm(TPlataformaERPVCLPaisSelecao, PlataformaERPVCLPaisSelecao);
+  Application.CreateForm(TPlataformaERPVCLPaisFiltro, PlataformaERPVCLPaisFiltro);
   Application.Run;
 end.

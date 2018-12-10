@@ -26,6 +26,7 @@ IF OBJECT_ID('filial_log')                      IS NOT NULL DROP TABLE [filial_l
 IF OBJECT_ID('filial')                          IS NOT NULL DROP TABLE [filial]
 IF OBJECT_ID('empresa_log')                     IS NOT NULL DROP TABLE [empresa_log]
 IF OBJECT_ID('empresa')                         IS NOT NULL DROP TABLE [empresa]
+IF OBJECT_ID('pais')                            IS NOT NULL DROP TABLE [pais]
 IF OBJECT_ID('logradouro')                      IS NOT NULL DROP TABLE [logradouro]
 IF OBJECT_ID('regime_tributario')               IS NOT NULL DROP TABLE [regime_tributario]
 IF OBJECT_ID('pessoa')                          IS NOT NULL DROP TABLE [pessoa]
@@ -542,6 +543,29 @@ CREATE TABLE [logradouro] (
 GO
 
 --
+-- Pais.
+--
+CREATE TABLE [pais] (
+  [pais_id]          SMALLINT                                  NOT NULL,
+  [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [nome]             VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [ins_local_dt_hr]  DATETIME                                  NOT NULL,
+  [ins_server_dt_hr] DATETIME                                  NOT NULL,
+  [upd_local_dt_hr]  DATETIME                                  NULL,
+  [upd_server_dt_hr] DATETIME                                  NULL,
+  [upd_contador]     INT                                       NOT NULL,
+  
+  CONSTRAINT [pais_pk]        PRIMARY KEY CLUSTERED ([pais_id]),
+  CONSTRAINT [pais_ix_codigo] UNIQUE ([codigo]),
+
+  CONSTRAINT [pais_ck_bloqueado]     CHECK ([bloqueado]     IN ('S', 'N')),
+  CONSTRAINT [pais_ck_ativo]         CHECK ([ativo]         IN ('S', 'N'))
+)
+GO
+
+--
 -- Empresa.
 --
 CREATE TABLE [empresa] (
@@ -985,6 +1009,16 @@ INSERT INTO [logradouro] VALUES (2, '02', 'Rua',           'N', 'N', 'S', GETDAT
 INSERT INTO [logradouro] VALUES (3, '03', 'Avenida',       'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 INSERT INTO [numerador_base] VALUES ('logradouro_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+
+--
+-- Pais.
+--
+INSERT INTO [pais] VALUES (1, '001', 'Brasil',    'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [pais] VALUES (2, '002', 'Argentina', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [pais] VALUES (3, '003', 'Paraguai',  'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+INSERT INTO [numerador_base] VALUES ('pais_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 
 --

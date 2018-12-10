@@ -202,6 +202,22 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
             Caption = 'Logradouros'
             OnClick = mniLogradourosClick
           end
+          object mniPaises: TMenuItem
+            Caption = 'Pa'#237'ses'
+            OnClick = mniPaisesClick
+          end
+          object mniEstados: TMenuItem
+            Caption = 'Estados'
+          end
+          object mniCidades: TMenuItem
+            Caption = 'Cidades'
+          end
+          object mniBairros: TMenuItem
+            Caption = 'Bairros'
+          end
+          object mniCEPs: TMenuItem
+            Caption = 'CEPs'
+          end
         end
         object mniInstalacaoNumeradores: TMenuItem
           Caption = 'Numeradores'

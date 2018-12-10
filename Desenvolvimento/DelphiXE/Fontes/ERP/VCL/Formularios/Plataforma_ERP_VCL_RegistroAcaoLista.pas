@@ -452,7 +452,6 @@ begin
   locADOQuery.SQL.Add('WHERE                                                       ');
   locADOQuery.SQL.Add('  1 = 1                                                     ');
 
-
   //
   // Filtros.
   //
