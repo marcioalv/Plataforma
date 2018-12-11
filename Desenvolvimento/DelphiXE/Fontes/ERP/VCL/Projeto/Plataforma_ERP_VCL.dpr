@@ -89,7 +89,11 @@ uses
   Plataforma_ERP_VCL_LogradouroCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroCadastro.pas' {PlataformaERPVCLLogradouroCadastro},
   Plataforma_ERP_VCL_PaisCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisCadastro.pas' {PlataformaERPVCLPaisCadastro},
   Plataforma_ERP_VCL_PaisSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisSelecao.pas' {PlataformaERPVCLPaisSelecao},
-  Plataforma_ERP_VCL_PaisFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisFiltro.pas' {PlataformaERPVCLPaisFiltro};
+  Plataforma_ERP_VCL_PaisFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisFiltro.pas' {PlataformaERPVCLPaisFiltro},
+  Plataforma_ERP_VCL_EstadoLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_EstadoLista.pas' {PlataformaERPVCLEstadoLista},
+  Plataforma_ERP_VCL_EstadoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_EstadoFiltro.pas' {PlataformaERPVCLEstadoFiltro},
+  Plataforma_ERP_VCL_EstadoCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_EstadoCadastro.pas' {PlataformaERPVCLEstadoCadastro},
+  Plataforma_ERP_VCL_EstadoSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_EstadoSelecao.pas' {PlataformaERPVCLEstadoSelecao};
 
 {$R *.res}
 
@@ -104,5 +108,9 @@ begin
   Application.CreateForm(TPlataformaERPVCLPaisCadastro, PlataformaERPVCLPaisCadastro);
   Application.CreateForm(TPlataformaERPVCLPaisSelecao, PlataformaERPVCLPaisSelecao);
   Application.CreateForm(TPlataformaERPVCLPaisFiltro, PlataformaERPVCLPaisFiltro);
+  Application.CreateForm(TPlataformaERPVCLEstadoLista, PlataformaERPVCLEstadoLista);
+  Application.CreateForm(TPlataformaERPVCLEstadoFiltro, PlataformaERPVCLEstadoFiltro);
+  Application.CreateForm(TPlataformaERPVCLEstadoCadastro, PlataformaERPVCLEstadoCadastro);
+  Application.CreateForm(TPlataformaERPVCLEstadoSelecao, PlataformaERPVCLEstadoSelecao);
   Application.Run;
 end.

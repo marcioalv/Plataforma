@@ -46,6 +46,10 @@ const
   NUMERADOR_REGIME_TRIBUTARIO_ID: string = 'regime_tributario_id';
   NUMERADOR_LOGRADOURO_ID       : string = 'logradouro_id';
   NUMERADOR_PAIS_ID             : string = 'pais_id';
+  NUMERADOR_ESTADO_ID           : string = 'estado_id';
+  NUMERADOR_CIDADE_ID           : string = 'cidade_id';
+  NUMERADOR_BAIRRO_ID           : string = 'bairro_id';
+  NUMERADOR_CEP_ID              : string = 'cep_id';
   NUMERADOR_PERFIL_USUARIO_ID   : string = 'perfil_usuario_id';
   NUMERADOR_TIPO_USUARIO_ID     : string = 'tipo_usuario_id';
   NUMERADOR_USUARIO_ID          : string = 'usuario_id';

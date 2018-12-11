@@ -208,6 +208,7 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
           end
           object mniEstados: TMenuItem
             Caption = 'Estados'
+            OnClick = mniEstadosClick
           end
           object mniCidades: TMenuItem
             Caption = 'Cidades'

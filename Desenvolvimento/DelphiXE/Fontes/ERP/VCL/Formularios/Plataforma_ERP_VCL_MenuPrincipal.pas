@@ -1,3 +1,4 @@
+
 //
 // Arquivo..: Plataforma_ERP_VCL_MenuPrincipal.pas
 // Projeto..: ERP
@@ -111,6 +112,7 @@ type
     procedure mniColigadasClick(Sender: TObject);
     procedure mniLogradourosClick(Sender: TObject);
     procedure mniPaisesClick(Sender: TObject);
+    procedure mniEstadosClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -150,7 +152,8 @@ uses
   Plataforma_ERP_VCL_FilialLista,
   Plataforma_ERP_VCL_ColigadaLista,
   Plataforma_ERP_VCL_LogradouroLista,
-  Plataforma_ERP_VCL_PaisLista;
+  Plataforma_ERP_VCL_PaisLista,
+  Plataforma_ERP_VCL_EstadoLista;
 
 //
 // Evento de criação do formulário.
@@ -436,6 +439,19 @@ var
   locFormulario: TPlataformaERPVCLPaisLista;
 begin
   locFormulario := TPlataformaERPVCLPaisLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "estados".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniEstadosClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLEstadoLista;
+begin
+  locFormulario := TPlataformaERPVCLEstadoLista.Create(Self);
   locFormulario.ShowModal;
   locFormulario.Release;
   FreeAndNil(locFormulario);

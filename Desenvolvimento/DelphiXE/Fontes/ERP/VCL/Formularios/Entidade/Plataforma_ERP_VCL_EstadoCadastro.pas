@@ -1,16 +1,16 @@
 //
-// Arquivo..: Plataforma_ERP_VCL_PaisCadastro.pas
+// Arquivo..: Plataforma_ERP_VCL_EstadoCadastro.pas
 // Projeto..: ERP
 // Fonte....: Formulário VCL
 // Criação..: 14/Agosto/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário com o cadastro do país.
+// Descrição: Formulário com o cadastro do estado.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
 //
 
-unit Plataforma_ERP_VCL_PaisCadastro;
+unit Plataforma_ERP_VCL_EstadoCadastro;
 
 interface
 
@@ -33,7 +33,7 @@ uses
   Vcl.Menus;
 
 type
-  TPlataformaERPVCLPaisCadastro = class(TForm)
+  TPlataformaERPVCLEstadoCadastro = class(TForm)
     imgFormulario: TImage;
     pagFormulario: TPageControl;
     tabCadastro: TTabSheet;
@@ -54,8 +54,8 @@ type
     btnCancelar: TBitBtn;
     btnAlterar: TBitBtn;
     btnNovo: TBitBtn;
-    lblPaisID: TLabel;
-    edtPaisID: TEdit;
+    lblEstadoID: TLabel;
+    edtEstadoID: TEdit;
     imgBackground: TImage;
     mnuFormulario: TMainMenu;
     mniFechar: TMenuItem;
@@ -112,21 +112,21 @@ type
     procedure FormularioAtualizar;
     procedure FormularioNovo;
 
-    procedure FormularioPopular(argPaisID: Integer);
+    procedure FormularioPopular(argEstadoID: Integer);
 
     procedure FormularioAlterar;
     procedure FormularioGravar;
     procedure FormularioCancelar;
     procedure FormularioExcluir;
     procedure FormularioCodigoSugerir;
-    function  LogDadosGerar(argPaisID: Integer = 0): string;
+    function  LogDadosGerar(argEstadoID: Integer = 0): string;
   public
     pubDadosAtualizados: Boolean;
-    pubPaisID          : Integer;
+    pubEstadoID        : Integer;
   end;
 
 var
-  PlataformaERPVCLPaisCadastro: TPlataformaERPVCLPaisCadastro;
+  PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro;
 
 implementation
 
@@ -140,7 +140,7 @@ uses
   Plataforma_ERP_VCL_Generico;
 
 const
-  FONTE_NOME: string = 'Plataforma_ERP_VCL_PaisCadastro.pas';
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_EstadoCadastro.pas';
 
   TAB_CADASTRO : Byte = 0;
   TAB_AUDITORIA: Byte = 1;
@@ -148,13 +148,13 @@ const
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormCreate(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis públicas.
   //
   pubDadosAtualizados := False;
-  pubPaisID           := 0;
+  pubEstadoID         := 0;
  
   //
   // Limpa os componentes do formulário.
@@ -170,7 +170,7 @@ end;
 //
 // Evento de exibição do formulário.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormShow(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.FormShow(Sender: TObject);
 begin
   //
   // Background do formulário.
@@ -187,7 +187,7 @@ begin
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
   //
-  if pubPaisID = 0 then
+  if pubEstadoID = 0 then
   begin
     FormularioNovo;
     Exit;
@@ -196,9 +196,9 @@ begin
   //
   // Se foi passada uma chave então popula formulário.
   //
-  if pubPaisID > 0 then
+  if pubEstadoID > 0 then
   begin
-    FormularioPopular(pubPaisID);
+    FormularioPopular(pubEstadoID);
     FormularioControlar(False);
     Exit;
   end;
@@ -207,7 +207,7 @@ end;
 //
 // Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLEstadoCadastro.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
 end;
@@ -215,42 +215,42 @@ end;
 //
 // Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLPaisCadastro.mniAtualizarClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.mniAtualizarClick(Sender: TObject);
 begin
   FormularioAtualizar;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.mniNovoClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.mniNovoClick(Sender: TObject);
 begin
   FormularioNovo;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.mniExcluirClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.mniExcluirClick(Sender: TObject);
 begin
   FormularioExcluir;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.mniAlterarClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.mniAlterarClick(Sender: TObject);
 begin
   FormularioAlterar;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.mniGravarClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.mniGravarClick(Sender: TObject);
 begin
   FormularioGravar;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.mniCancelarClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.mniCancelarClick(Sender: TObject);
 begin
   FormularioCancelar;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.mniMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.mniMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.mniFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.mniFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -258,22 +258,22 @@ end;
 //
 // Eventos do componente "código".
 //
-procedure TPlataformaERPVCLPaisCadastro.edtCodigoEnter(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.edtCodigoEnter(Sender: TObject);
 begin
   if not VCLEditEntrar(edtCodigo) then Exit;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.edtCodigoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLEstadoCadastro.edtCodigoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.edtCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLEstadoCadastro.edtCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   Exit;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.edtCodigoExit(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.edtCodigoExit(Sender: TObject);
 begin
   if not VCLEditSair(edtCodigo) then Exit;
 end;
@@ -281,14 +281,14 @@ end;
 //
 // Evento de click no código sugerido.
 //
-procedure TPlataformaERPVCLPaisCadastro.edtCodigoCadastradoClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.edtCodigoCadastradoClick(Sender: TObject);
 var
-  locFormulario      : TPlataformaERPVCLPaisCadastro;
+  locFormulario      : TPlataformaERPVCLEstadoCadastro;
   locDadosAtualizados: Boolean;
 begin
-  locFormulario := TPlataformaERPVCLPaisCadastro.Create(Self);
+  locFormulario := TPlataformaERPVCLEstadoCadastro.Create(Self);
 
-  locFormulario.pubPaisID := StringIntegerConverter(edtPaisID.Text);
+  locFormulario.pubEstadoID := StringIntegerConverter(edtEstadoID.Text);
 
   locFormulario.ShowModal;
 
@@ -306,22 +306,22 @@ end;
 //
 // Eventos do componente "nome".
 //
-procedure TPlataformaERPVCLPaisCadastro.edtNomeEnter(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.edtNomeEnter(Sender: TObject);
 begin
   if not VCLEditEntrar(edtNome) then Exit;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.edtNomeKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLEstadoCadastro.edtNomeKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.edtNomeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLEstadoCadastro.edtNomeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   Exit;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.edtNomeExit(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.edtNomeExit(Sender: TObject);
 begin
   if not VCLEditSair(edtNome) then Exit;
 end;
@@ -329,17 +329,17 @@ end;
 //
 // Eventos do componente "bloqueado".
 //
-procedure TPlataformaERPVCLPaisCadastro.chkBloqueadoEnter(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.chkBloqueadoEnter(Sender: TObject);
 begin
   if not VCLCheckBoxEntrar(chkBloqueado) then Exit;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.chkBloqueadoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLEstadoCadastro.chkBloqueadoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.chkBloqueadoExit(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.chkBloqueadoExit(Sender: TObject);
 begin
   if not VCLCheckBoxSair(chkBloqueado) then Exit;
 end;
@@ -347,17 +347,17 @@ end;
 //
 // Eventos do componente "ativo".
 //
-procedure TPlataformaERPVCLPaisCadastro.chkAtivoEnter(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.chkAtivoEnter(Sender: TObject);
 begin
   if not VCLCheckBoxEntrar(chkAtivo) then Exit;
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.chkAtivoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLEstadoCadastro.chkAtivoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_LIVRE);
 end;
 
-procedure TPlataformaERPVCLPaisCadastro.chkAtivoExit(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.chkAtivoExit(Sender: TObject);
 begin
   if not VCLCheckBoxSair(chkAtivo) then Exit;
 end;
@@ -365,7 +365,7 @@ end;
 //
 // Evento de click na data de criação.
 //
-procedure TPlataformaERPVCLPaisCadastro.edtInsLocalDtHrClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.edtInsLocalDtHrClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtInsLocalDtHr.Text));
 end;
@@ -373,7 +373,7 @@ end;
 //
 // Evento de click na data da última alteração.
 //
-procedure TPlataformaERPVCLPaisCadastro.edtUpdLocalDtHrClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.edtUpdLocalDtHrClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataExibir(StringDateTimeConverter(edtUpdLocalDtHr.Text));
 end;
@@ -381,7 +381,7 @@ end;
 //
 // Evento de click no botão "novo".
 //
-procedure TPlataformaERPVCLPaisCadastro.btnNovoClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.btnNovoClick(Sender: TObject);
 begin
   FormularioNovo;
 end;
@@ -389,7 +389,7 @@ end;
 //
 // Evento de click no botão "alterar".
 //
-procedure TPlataformaERPVCLPaisCadastro.btnAlterarClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.btnAlterarClick(Sender: TObject);
 begin
   FormularioAlterar;
 end;
@@ -397,7 +397,7 @@ end;
 //
 // Evento de click no botão "gravar".
 //
-procedure TPlataformaERPVCLPaisCadastro.btnGravarClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.btnGravarClick(Sender: TObject);
 begin
   FormularioGravar;
 end;
@@ -405,7 +405,7 @@ end;
 //
 // Evento de click no botão "minimizar".
 //
-procedure TPlataformaERPVCLPaisCadastro.btnMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.btnMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
@@ -413,7 +413,7 @@ end;
 //
 // Evento de click no botão "cancelar".
 //
-procedure TPlataformaERPVCLPaisCadastro.btnCancelarClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.btnCancelarClick(Sender: TObject);
 begin
   FormularioCancelar;
 end;
@@ -421,7 +421,7 @@ end;
 //
 // Evento de click no botão "fechar".
 //
-procedure TPlataformaERPVCLPaisCadastro.btnFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLEstadoCadastro.btnFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -429,7 +429,7 @@ end;
 //
 // Procedimento para limpar os componentes do formulário.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormularioLimpar;
+procedure TPlataformaERPVCLEstadoCadastro.FormularioLimpar;
 begin 
   //
   // Posiciona pagecontrole na primeira aba.
@@ -449,7 +449,7 @@ begin
   //
   // Limpa componentes da aba "auditoria".
   //
-  VCLEditLimpar(edtPaisID);
+  VCLEditLimpar(edtEstadoID);
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
   VCLEditLimpar(edtUpdContador);
@@ -458,7 +458,7 @@ end;
 //
 // Procedimento para controlar os componentes do formulário.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormularioControlar(argEditar: Boolean);
+procedure TPlataformaERPVCLEstadoCadastro.FormularioControlar(argEditar: Boolean);
 var
   locDadosPopulados: Boolean;
   locIdentificador : string;
@@ -466,7 +466,7 @@ begin
   //
   // Determina se existem dados populados no formulário.
   //
-  locDadosPopulados := (StringIntegerConverter(edtPaisID.Text) > 0);
+  locDadosPopulados := (StringIntegerConverter(edtEstadoID.Text) > 0);
 
   //
   // Controla os componentes do formulário.
@@ -503,13 +503,13 @@ begin
   //
   // Permissões de acesso por usuário.
   //
-  tabCadastro.TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_PAIS_CADASTRO_ABA_CADASTRO');
-  tabAuditoria.TabVisible := Plataforma_ERP_UsuarioRotina('ERP_PAIS_CADASTRO_ABA_AUDITORIA');
+  tabCadastro.TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_ESTADO_CADASTRO_ABA_CADASTRO');
+  tabAuditoria.TabVisible := Plataforma_ERP_UsuarioRotina('ERP_ESTADO_CADASTRO_ABA_AUDITORIA');
       
-  mniAtualizar.Visible := (mniAtualizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_PAIS_CADASTRO_ATUALIZAR'));
-  mniNovo.Visible      := (mniNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_PAIS_CADASTRO_NOVO'));
-  mniExcluir.Visible   := (mniExcluir.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_PAIS_CADASTRO_EXCLUIR'));
-  mniAlterar.Visible   := (mniAlterar.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_PAIS_CADASTRO_ALTERAR'));
+  mniAtualizar.Visible := (mniAtualizar.Visible) and (Plataforma_ERP_UsuarioRotina('ERP_ESTADO_CADASTRO_ATUALIZAR'));
+  mniNovo.Visible      := (mniNovo.Visible)      and (Plataforma_ERP_UsuarioRotina('ERP_ESTADO_CADASTRO_NOVO'));
+  mniExcluir.Visible   := (mniExcluir.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_ESTADO_CADASTRO_EXCLUIR'));
+  mniAlterar.Visible   := (mniAlterar.Visible)   and (Plataforma_ERP_UsuarioRotina('ERP_ESTADO_CADASTRO_ALTERAR'));
 
   //
   // Botões.
@@ -524,7 +524,7 @@ begin
   //
   // Ajusta o título do formulário.
   //
-  Self.Caption     := 'País';
+  Self.Caption     := 'Estado';
   locIdentificador := ': ' + edtNome.Text;
 
   if (not locDadosPopulados) and (argEditar) then Self.Caption := Self.Caption + ' - novo cadastro';
@@ -535,12 +535,12 @@ end;
 //
 // Procedimento para atualizar os dados populados nos componentes do formulário.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormularioAtualizar;
+procedure TPlataformaERPVCLEstadoCadastro.FormularioAtualizar;
 begin
   //
   // Popula componentes com as informações do cadastro.
   //
-  FormularioPopular(StringIntegerConverter(edtPaisID.Text));
+  FormularioPopular(StringIntegerConverter(edtEstadoID.Text));
 
   //
   // Controla a exibição dos componentes.
@@ -551,7 +551,7 @@ end;
 //
 // Procedimento para iniciar a digitação de dados de um novo cadastro.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormularioNovo;
+procedure TPlataformaERPVCLEstadoCadastro.FormularioNovo;
 begin
   //
   // Limpa os componentes do formulário.
@@ -561,7 +561,7 @@ begin
   //
   // Carrega conteúdo dos campos necessários.
   //
-  edtPaisID.Text   := STR_NOVO;
+  edtEstadoID.Text   := STR_NOVO;
   chkAtivo.Checked := True;
 
   //
@@ -583,10 +583,10 @@ end;
 //
 // Procedimento para popular os componentes com os dados de um cadastro.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormularioPopular(argPaisID: Integer);
+procedure TPlataformaERPVCLEstadoCadastro.FormularioPopular(argEstadoID: Integer);
 const
   PROCEDIMENTO_NOME: string = 'FormularioPopular';
-  ERRO_MENSAGEM    : string = 'Impossível consultar dados do país!';
+  ERRO_MENSAGEM    : string = 'Impossível consultar dados do estado!';
 var
   locADOConnection: TADOConnection;
   locADOQuery     : TADOQuery;
@@ -628,25 +628,25 @@ begin
   locADOQuery.CommandTimeout := gloTimeOutNormal;
 
   //
-  // Consulta dados do país.
+  // Consulta dados do estado.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                        ');
-  locADOQuery.SQL.Add('  [pais].[pais_id],           ');
-  locADOQuery.SQL.Add('  [pais].[codigo],            ');
-  locADOQuery.SQL.Add('  [pais].[Nome],              ');
-  locADOQuery.SQL.Add('  [pais].[bloqueado],         ');
-  locADOQuery.SQL.Add('  [pais].[ativo],             ');
-  locADOQuery.SQL.Add('  [pais].[ins_local_dt_hr],   ');
-  locADOQuery.SQL.Add('  [pais].[upd_local_dt_hr],   ');
-  locADOQuery.SQL.Add('  [pais].[upd_contador]       ');  
-  locADOQuery.SQL.Add('FROM                          ');
-  locADOQuery.SQL.Add('  [pais] WITH (NOLOCK)        ');
-  locADOQuery.SQL.Add('WHERE                         ');
-  locADOQuery.SQL.Add('  [pais].[pais_id] = :pais_id ');
+  locADOQuery.SQL.Add('SELECT                              ');
+  locADOQuery.SQL.Add('  [estado].[estado_id],             ');
+  locADOQuery.SQL.Add('  [estado].[codigo],                ');
+  locADOQuery.SQL.Add('  [estado].[Nome],                  ');
+  locADOQuery.SQL.Add('  [estado].[bloqueado],             ');
+  locADOQuery.SQL.Add('  [estado].[ativo],                 ');
+  locADOQuery.SQL.Add('  [estado].[ins_local_dt_hr],       ');
+  locADOQuery.SQL.Add('  [estado].[upd_local_dt_hr],       ');
+  locADOQuery.SQL.Add('  [estado].[upd_contador]           ');  
+  locADOQuery.SQL.Add('FROM                                ');
+  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)            ');
+  locADOQuery.SQL.Add('WHERE                               ');
+  locADOQuery.SQL.Add('  [estado].[estado_id] = :estado_id ');
 
-  locADOQuery.Parameters.ParamByName('pais_id').Value := argPaisID;
+  locADOQuery.Parameters.ParamByName('estado_id').Value := argEstadoID;
 
   //
   // Executa query.
@@ -660,7 +660,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [pais]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [estado]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -681,7 +681,7 @@ begin
     chkBloqueado.Checked := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked     := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
 
-    edtPaisID.Text       := IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger, True);
+    edtEstadoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger, True);
     edtInsLocalDtHr.Text := DateTimeStringConverter(locADOQuery.FieldByName('ins_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
     edtUpdLocalDtHr.Text := DateTimeStringConverter(locADOQuery.FieldByName('upd_local_dt_hr').AsDateTime, 'dd/mm/yyyy hh:nn:ss');
     edtUpdContador.Text  := IntegerStringConverter(locADOQuery.FieldByName('upd_contador').AsInteger);
@@ -700,7 +700,7 @@ end;
 //
 // Procedimento para alterar os dados do formulário.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormularioAlterar;
+procedure TPlataformaERPVCLEstadoCadastro.FormularioAlterar;
 begin
   //
   // Componentes ligados para edição.
@@ -716,10 +716,10 @@ end;
 //
 // Procedimento para gravar os dados do formulário.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormularioGravar;
+procedure TPlataformaERPVCLEstadoCadastro.FormularioGravar;
 const
   PROCEDIMENTO_NOME: string = 'FormularioGravar';
-  ERRO_MENSAGEM    : string = 'Impossível gravar dados do país!';
+  ERRO_MENSAGEM    : string = 'Impossível gravar dados do estado!';
 var
   locADOConnection : TADOConnection;
   locADOQuery      : TADOQuery;
@@ -727,11 +727,11 @@ var
 
   locInsert        : Boolean;
   locRegistroAcao  : Byte;
-  locPaisLogSq     : Integer;
-  locPaisLogMsg    : string;
-  locPaisLogDados  : string;
+  locEstadoLogSq   : Integer;
+  locEstadoLogMsg  : string;
+  locEstadoLogDados: string;
 
-  locPaisID        : Integer;
+  locEstadoID      : Integer;
   locCodigo        : string;
   locNome          : string;
   locBloqueado     : Boolean;
@@ -747,7 +747,7 @@ begin
   //
   // Determina se será um insert ou update.
   //
-  if edtPaisID.Text = STR_NOVO then
+  if edtEstadoID.Text = STR_NOVO then
     locInsert := True
   else
     locInsert := False;
@@ -755,7 +755,7 @@ begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locPaisID        := StringIntegerConverter(edtPaisID.Text);
+  locEstadoID      := StringIntegerConverter(edtEstadoID.Text);
   locCodigo        := StringTrim(edtCodigo.Text);
   locNome          := StringTrim(edtNome.Text);
   locBloqueado     := chkBloqueado.Checked;
@@ -771,14 +771,14 @@ begin
   //
   if locCodigo = '' then
   begin
-    VCLConsistenciaExibir('O código do país deve ser informado!');
+    VCLConsistenciaExibir('O código do estado deve ser informado!');
     VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCodigo);
     Exit;
   end;
 
   if locNome = '' then
   begin
-    VCLConsistenciaExibir('O nome do país deve ser informado!');
+    VCLConsistenciaExibir('O nome do estado deve ser informado!');
     VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtNome);
     Exit;
   end;
@@ -819,20 +819,20 @@ begin
   locADOQuery.CommandTimeout := gloTimeOutNormal;
 
   //
-  // Determina se o código do país já existe no banco de dados para um outro registro.
+  // Determina se o código do estado já existe no banco de dados para um outro registro.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                      ');
-  locADOQuery.SQL.Add('  1                               ');
-  locADOQuery.SQL.Add('FROM                              ');
-  locADOQuery.SQL.Add('  [pais] WITH (NOLOCK)            ');
-  locADOQuery.SQL.Add('WHERE                             ');
-  locADOQuery.SQL.Add('  [pais].[codigo]   = :codigo AND ');
-  locADOQuery.SQL.Add('  [pais].[pais_id] <> :pais_id    ');
+  locADOQuery.SQL.Add('SELECT TOP 1                         ');
+  locADOQuery.SQL.Add('  1                                  ');
+  locADOQuery.SQL.Add('FROM                                 ');
+  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)             ');
+  locADOQuery.SQL.Add('WHERE                                ');
+  locADOQuery.SQL.Add('  [estado].[codigo]   = :codigo AND  ');
+  locADOQuery.SQL.Add('  [estado].[estado_id] <> :estado_id ');
 
-  locADOQuery.Parameters.ParamByName('codigo').Value  := locCodigo;
-  locADOQuery.Parameters.ParamByName('pais_id').Value := locPaisID;
+  locADOQuery.Parameters.ParamByName('codigo').Value    := locCodigo;
+  locADOQuery.Parameters.ParamByName('estado_id').Value := locEstadoID;
 
   try
     locADOQuery.Open;
@@ -843,7 +843,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar o mesmo código de país em um outro registro!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar o mesmo código de estado em um outro registro!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -856,7 +856,7 @@ begin
     FreeAndNil(locADOQuery);
     locADOConnection.Close;
     FreeAndNil(locADOConnection);
-    locLogMensagem := 'O código "' + locCodigo + '" informado para o país já existe em algum outro cadastro!';
+    locLogMensagem := 'O código "' + locCodigo + '" informado para o estado já existe em algum outro cadastro!';
     Plataforma_ERP_Logar(False, ERRO_MENSAGEM, locLogMensagem, FONTE_NOME, PROCEDIMENTO_NOME);
     VCLConsistenciaExibir(ERRO_MENSAGEM, locLogMensagem);
     Exit;
@@ -869,14 +869,14 @@ begin
   begin
     locADOQuery.Close;
     locADOQuery.SQL.Clear;
-    locADOQuery.SQL.Add('SELECT                        ');
-    locADOQuery.SQL.Add('  [pais].[upd_contador]       ');
-    locADOQuery.SQL.Add('FROM                          ');
-    locADOQuery.SQL.Add('  [pais] WITH (NOLOCK)        ');
-    locADOQuery.SQL.Add('WHERE                         ');
-    locADOQuery.SQL.Add('  [pais].[pais_id] = :pais_id ');
+    locADOQuery.SQL.Add('SELECT                              ');
+    locADOQuery.SQL.Add('  [estado].[upd_contador]           ');
+    locADOQuery.SQL.Add('FROM                                ');
+    locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)            ');
+    locADOQuery.SQL.Add('WHERE                               ');
+    locADOQuery.SQL.Add('  [estado].[estado_id] = :estado_id ');
 
-    locADOQuery.Parameters.ParamByName('pais_id').Value := locPaisID;
+    locADOQuery.Parameters.ParamByName('estado_id').Value := locEstadoID;
 
     try
       locADOQuery.Open;
@@ -887,7 +887,7 @@ begin
         FreeAndNil(locADOQuery);
         locADOConnection.Close;
         FreeAndNil(locADOConnection);
-        locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar se o contador de atualizações confere na tabela [pais]!';
+        locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar se o contador de atualizações confere na tabela [estado]!';
         Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
         VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
         Exit
@@ -916,12 +916,12 @@ begin
   if locInsert then
   begin
     locRegistroAcao := REGISTRO_ACAO_CRIACAO;
-    locPaisLogMsg   := MENSAGEM_REGISTRO_ACAO_CRIADO;
+    locEstadoLogMsg := MENSAGEM_REGISTRO_ACAO_CRIADO;
   end
   else
   begin
     locRegistroAcao := REGISTRO_ACAO_ALTERACAO;
-    locPaisLogMsg   := MENSAGEM_REGISTRO_ACAO_ALTERADO;
+    locEstadoLogMsg := MENSAGEM_REGISTRO_ACAO_ALTERADO;
   end;
 
   //
@@ -944,12 +944,12 @@ begin
   end;  
 
   // 
-  // Determina o próximo ID do país.
+  // Determina o próximo ID do estado.
   //
   if locInsert then
   begin
     try
-      locPaisID := Plataforma_ERP_ADO_NumeradorBaseDeterminar(locADOConnection, NUMERADOR_PAIS_ID);
+      locEstadoID := Plataforma_ERP_ADO_NumeradorBaseDeterminar(locADOConnection, NUMERADOR_ESTADO_ID);
     except
       on locExcecao: Exception do
       begin
@@ -958,7 +958,7 @@ begin
         FreeAndNil(locADOQuery);
         locADOConnection.Close;
         FreeAndNil(locADOConnection);
-        locLogMensagem := 'Impossível determinar o próximo numerador para o país!';
+        locLogMensagem := 'Impossível determinar o próximo numerador para o estado!';
         Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
         VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
         Exit
@@ -967,7 +967,7 @@ begin
   end;
 
   //
-  // Grava dados na tabela país.
+  // Grava dados na tabela estado.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
@@ -977,38 +977,38 @@ begin
     //
     // Insere dados.
     //
-    locADOQuery.SQL.Add('INSERT INTO [pais] (  ');
-    locADOQuery.SQL.Add('  [pais_id],          ');
-    locADOQuery.SQL.Add('  [codigo],           ');
-    locADOQuery.SQL.Add('  [nome],             ');
-    locADOQuery.SQL.Add('  [bloqueado],        ');
-    locADOQuery.SQL.Add('  [ativo],            ');
-    locADOQuery.SQL.Add('  [ins_local_dt_hr],  ');
-    locADOQuery.SQL.Add('  [ins_server_dt_hr], ');
-    locADOQuery.SQL.Add('  [upd_local_dt_hr],  ');
-    locADOQuery.SQL.Add('  [upd_server_dt_hr], ');
-    locADOQuery.SQL.Add('  [upd_contador]      ');
-    locADOQuery.SQL.Add(')                     ');
-    locADOQuery.SQL.Add('VALUES (              ');
-    locADOQuery.SQL.Add('  :pais_id,           '); // [pais_id].
-    locADOQuery.SQL.Add('  :codigo,            '); // [codigo].
-    locADOQuery.SQL.Add('  :Nome,              '); // [nome].
-    locADOQuery.SQL.Add('  :bloqueado,         '); // [bloqueado].
-    locADOQuery.SQL.Add('  :ativo,             '); // [ativo].
-    locADOQuery.SQL.Add('  :local_dt_hr,       '); // [ins_local_dt_hr].
-    locADOQuery.SQL.Add('  GETDATE(),          '); // [ins_server_dt_hr].
-    locADOQuery.SQL.Add('  NULL,               '); // [upd_local_dt_hr].
-    locADOQuery.SQL.Add('  NULL,               '); // [upd_server_dt_hr].
-    locADOQuery.SQL.Add('  0                   '); // [upd_contador].
-    locADOQuery.SQL.Add(')                     ');
-  end
+    locADOQuery.SQL.Add('INSERT INTO [estado] ( ');
+    locADOQuery.SQL.Add('  [estado_id],         ');
+    locADOQuery.SQL.Add('  [codigo],            ');
+    locADOQuery.SQL.Add('  [nome],              ');
+    locADOQuery.SQL.Add('  [bloqueado],         ');
+    locADOQuery.SQL.Add('  [ativo],             ');
+    locADOQuery.SQL.Add('  [ins_local_dt_hr],   ');
+    locADOQuery.SQL.Add('  [ins_server_dt_hr],  ');
+    locADOQuery.SQL.Add('  [upd_local_dt_hr],   ');
+    locADOQuery.SQL.Add('  [upd_server_dt_hr],  ');
+    locADOQuery.SQL.Add('  [upd_contador]       ');
+    locADOQuery.SQL.Add(')                      ');
+    locADOQuery.SQL.Add('VALUES (               ');
+    locADOQuery.SQL.Add('  :estado_id,          '); // [estado_id].
+    locADOQuery.SQL.Add('  :codigo,             '); // [codigo].
+    locADOQuery.SQL.Add('  :Nome,               '); // [nome].
+    locADOQuery.SQL.Add('  :bloqueado,          '); // [bloqueado].
+    locADOQuery.SQL.Add('  :ativo,              '); // [ativo].
+    locADOQuery.SQL.Add('  :local_dt_hr,        '); // [ins_local_dt_hr].
+    locADOQuery.SQL.Add('  GETDATE(),           '); // [ins_server_dt_hr].
+    locADOQuery.SQL.Add('  NULL,                '); // [upd_local_dt_hr].
+    locADOQuery.SQL.Add('  NULL,                '); // [upd_server_dt_hr].
+    locADOQuery.SQL.Add('  0                    '); // [upd_contador].
+    locADOQuery.SQL.Add(')                      ');
+  end                                          
   else
   begin
     //
     // Atualiza dados.
     //
     locADOQuery.SQL.Add('UPDATE                                    ');
-    locADOQuery.SQL.Add('  [pais]                                  ');
+    locADOQuery.SQL.Add('  [estado]                                ');
     locADOQuery.SQL.Add('SET                                       ');
     locADOQuery.SQL.Add('  [codigo]           = :codigo,           ');
     locADOQuery.SQL.Add('  [Nome]             = :nome,             ');
@@ -1018,13 +1018,13 @@ begin
     locADOQuery.SQL.Add('  [upd_server_dt_hr] = GETDATE(),         ');
     locADOQuery.SQL.Add('  [upd_contador]     = [upd_contador] + 1 ');
     locADOQuery.SQL.Add('WHERE                                     ');
-    locADOQuery.SQL.Add('  [pais_id] = :pais_id                    ');
+    locADOQuery.SQL.Add('  [estado_id] = :estado_id                ');
   end;
 
   //
   // Parâmetros.
   //
-  locADOQuery.Parameters.ParamByName('pais_id').Value     := locPaisID;
+  locADOQuery.Parameters.ParamByName('estado_id').Value   := locEstadoID;
   locADOQuery.Parameters.ParamByName('codigo').Value      := locCodigo;
   locADOQuery.Parameters.ParamByName('nome').Value        := locNome;
   locADOQuery.Parameters.ParamByName('bloqueado').Value   := BooleanStringConverter(locBloqueado);
@@ -1041,7 +1041,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [pais]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para inserir o registro na tabela [estado]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit
@@ -1053,16 +1053,16 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                        ');
-  locADOQuery.SQL.Add('  [pais].[ins_local_dt_hr],   ');
-  locADOQuery.SQL.Add('  [pais].[upd_local_dt_hr],   ');
-  locADOQuery.SQL.Add('  [pais].[upd_contador]       ');
-  locADOQuery.SQL.Add('FROM                          ');
-  locADOQuery.SQL.Add('  [pais]                      ');
-  locADOQuery.SQL.Add('WHERE                         ');
-  locADOQuery.SQL.Add('  [pais].[pais_id] = :pais_id ');
+  locADOQuery.SQL.Add('SELECT                              ');
+  locADOQuery.SQL.Add('  [estado].[ins_local_dt_hr],       ');
+  locADOQuery.SQL.Add('  [estado].[upd_local_dt_hr],       ');
+  locADOQuery.SQL.Add('  [estado].[upd_contador]           ');
+  locADOQuery.SQL.Add('FROM                                ');
+  locADOQuery.SQL.Add('  [estado]                          ');
+  locADOQuery.SQL.Add('WHERE                               ');
+  locADOQuery.SQL.Add('  [estado].[estado_id] = :estado_id ');
 
-  locADOQuery.Parameters.ParamByName('pais_id').Value := locPaisID;
+  locADOQuery.Parameters.ParamByName('estado_id').Value := locEstadoID;
 
   try
     locADOQuery.Open;
@@ -1074,7 +1074,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para determinar o novo contador de updates do registro na tabela [pais]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para determinar o novo contador de updates do registro na tabela [estado]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit
@@ -1088,7 +1088,7 @@ begin
   //
   // Log dados.
   //
-  locPaisLogDados := LogDadosGerar(locPaisID);
+  locEstadoLogDados := LogDadosGerar(locEstadoID);
 
   //
   // Finaliza transação com o banco de dados.
@@ -1113,7 +1113,7 @@ begin
   //
   // Atualiza componentes que sofreram alteração com a gravação.
   //
-  edtPaisID.Text       := IntegerStringConverter(locPaisID);
+  edtEstadoID.Text     := IntegerStringConverter(locEstadoID);
   edtInsLocalDtHr.Text := DateTimeStringConverter(locInsLocalDtHr, 'dd/mm/yyyy hh:nn:ss');
   edtUpdLocalDtHr.Text := DateTimeStringConverter(locUpdLocalDtHr, 'dd/mm/yyyy hh:nn:ss');
   edtUpdContador.Text  := IntegerStringConverter(locUpdContador);
@@ -1140,7 +1140,7 @@ begin
   // Grava log de ocorrência.
   //  
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locPaisID, locCodigo, 'pais', locPaisLogMsg, locPaisLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locEstadoID, locCodigo, 'estado', locEstadoLogMsg, locEstadoLogDados);
   except
     on locExcecao: Exception do
     begin
@@ -1149,34 +1149,34 @@ begin
   end;
 
   //
-  // Pais gravado!
+  // Estado gravado!
   //
-  VCLInformacaoExibir('País gravado com sucesso!');
+  VCLInformacaoExibir('Estado gravado com sucesso!');
 end;
 
 //
 // Procedimento para excluir os dados deste cadastro.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormularioExcluir;
+procedure TPlataformaERPVCLEstadoCadastro.FormularioExcluir;
 const
   PROCEDIMENTO_NOME: string = 'FormularioExcluir';
-  ERRO_MENSAGEM    : string = 'Impossível excluir dados do país!';
+  ERRO_MENSAGEM    : string = 'Impossível excluir dados do estado!';
 var
   locADOConnection : TADOConnection;
   locADOQuery      : TADOQuery;
   locLogMensagem   : string;
-  locPaisID        : Integer;
-  locPaisLogDados  : string;
+  locEstadoID      : Integer;
+  locEstadoLogDados: string;
 begin
   //
   // Carrega variáveis com o conteúdo dos componentes.
   //
-  locPaisID := StringIntegerConverter(edtPaisID.Text);
+  locEstadoID := StringIntegerConverter(edtEstadoID.Text);
 
   //
   // Log dados.
   //
-  locPaisLogDados := LogDadosGerar;
+  locEstadoLogDados := LogDadosGerar;
 
   //
   // Confirma gravação com o usuário.
@@ -1234,16 +1234,16 @@ begin
   end;  
 
   //
-  // Comando SQL para excluir um registro da tabela país.
+  // Comando SQL para excluir um registro da tabela estado.
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;                  
-  locADOQuery.SQL.Add('DELETE FROM                   ');
-  locADOQuery.SQL.Add('  [pais]                      ');
-  locADOQuery.SQL.Add('WHERE                         ');
-  locADOQuery.SQL.Add('  [pais].[pais_id] = :pais_id ');
+  locADOQuery.SQL.Add('DELETE FROM                         ');
+  locADOQuery.SQL.Add('  [estado]                          ');
+  locADOQuery.SQL.Add('WHERE                               ');
+  locADOQuery.SQL.Add('  [estado].[estado_id] = :estado_id ');
 
-  locADOQuery.Parameters.ParamByName('pais_id').Value := locPaisID;
+  locADOQuery.Parameters.ParamByName('estado_id').Value := locEstadoID;
 
   try
     locADOQuery.ExecSQL;
@@ -1255,7 +1255,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela [pais]!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para deletar os registros na tabela [estado]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -1309,28 +1309,28 @@ begin
   // Log de ocorrência.
   //
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locPaisID, edtCodigo.Text, 'pais', 'Registro excluído com sucesso!', locPaisLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locEstadoID, edtCodigo.Text, 'estado', 'Registro excluído com sucesso!', locEstadoLogDados);
   except
   end;
-  VCLInformacaoExibir('País excluído com sucesso!');
+  VCLInformacaoExibir('Estado excluído com sucesso!');
 end;
 
 //
 // Procedimento para cancelar a edição dos dados do formulário.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormularioCancelar;
+procedure TPlataformaERPVCLEstadoCadastro.FormularioCancelar;
 var
-  locPaisID: Integer;
+  locEstadoID: Integer;
 begin
   //
   // Carrega chave do registro que estava sendo editado.
   //
-  locPaisID := StringIntegerConverter(edtPaisID.Text);
+  locEstadoID := StringIntegerConverter(edtEstadoID.Text);
 
   //
   // Confirma com o usuário.
   //
-  if locPaisID = 0 then
+  if locEstadoID = 0 then
   begin
     if not VCLQuestionamentoExibir('Deseja realmente cancelar a digitação destes dados?') then Exit;
   end
@@ -1342,7 +1342,7 @@ begin
   //
   // Popula somente os dados.
   //
-  FormularioPopular(locPaisID);
+  FormularioPopular(locEstadoID);
 
   //
   // Componentes desligados para edição.
@@ -1353,10 +1353,10 @@ end;
 //
 // Procedimento par sugerir o próximo código.
 //
-procedure TPlataformaERPVCLPaisCadastro.FormularioCodigoSugerir;
+procedure TPlataformaERPVCLEstadoCadastro.FormularioCodigoSugerir;
 const
   PROCEDIMENTO_NOME: string = 'FormularioCodigoSugerir';
-  ERRO_MENSAGEM    : string = 'Impossível sugerir informações sobre o próximo código do país!';
+  ERRO_MENSAGEM    : string = 'Impossível sugerir informações sobre o próximo código do estado!';
 var
   locADOConnection : TADOConnection;
   locADOQuery      : TADOQuery;
@@ -1403,14 +1403,14 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                      ');
-  locADOQuery.SQL.Add('  [pais].[pais_id],               ');
-  locADOQuery.SQL.Add('  [pais].[codigo]                 ');
-  locADOQuery.SQL.Add('FROM                              ');
-  locADOQuery.SQL.Add('  [pais] WITH (NOLOCK)            ');
-  locADOQuery.SQL.Add('ORDER BY                          ');
-  locADOQuery.SQL.Add('  [pais].[ins_server_dt_hr] DESC, ');
-  locADOQuery.SQL.Add('  [pais].[codigo] DESC            ');
+  locADOQuery.SQL.Add('SELECT TOP 1                        ');
+  locADOQuery.SQL.Add('  [estado].[estado_id],             ');
+  locADOQuery.SQL.Add('  [estado].[codigo]                 ');
+  locADOQuery.SQL.Add('FROM                                ');
+  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)            ');
+  locADOQuery.SQL.Add('ORDER BY                            ');
+  locADOQuery.SQL.Add('  [estado].[ins_server_dt_hr] DESC, ');
+  locADOQuery.SQL.Add('  [estado].[codigo] DESC            ');
 
   //
   // Executa query.
@@ -1424,7 +1424,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar último cadastro na tabela [pais]!';
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar último cadastro na tabela [estado]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -1437,7 +1437,7 @@ begin
   if locADOQuery.RecordCount > 0 then
   begin
     edtCodigoCadastrado.Text   := locADOQuery.FieldByName('codigo').AsString;
-    edtCodigoCadastradoID.Text := IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger);
+    edtCodigoCadastradoID.Text := IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger);
 
     VCLEditClickControlar(edtCodigoCadastrado, True);
   end;
@@ -1456,21 +1456,21 @@ end;
 //
 // Função para gerar a string de log dos dados.
 //
-function TPlataformaERPVCLPaisCadastro.LogDadosGerar(argPaisID: Integer = 0): string;
+function TPlataformaERPVCLEstadoCadastro.LogDadosGerar(argEstadoID: Integer = 0): string;
 var
-  locPaisID: Integer;
+  locEstadoID: Integer;
 begin
-  if argPaisID <= 0 then
-    locPaisID := StringIntegerConverter(edtPaisID.Text)
+  if argEstadoID <= 0 then
+    locEstadoID := StringIntegerConverter(edtEstadoID.Text)
   else
-    locPaisID := argPaisID;
+    locEstadoID := argEstadoID;
 
   Result := '';
-  LogDadosIntegerDescrever('ID do pais', locPaisID,            Result);
-  LogDadosStringDescrever ('Código',     edtCodigo.Text,       Result);
-  LogDadosStringDescrever ('Nome',       edtNome.Text,         Result);
-  LogDadosBooleanDescrever('Bloqueado',  chkBloqueado.Checked, Result);
-  LogDadosBooleanDescrever('Ativo',      chkAtivo.Checked,     Result);
+  LogDadosIntegerDescrever('ID do estado', locEstadoID,          Result);
+  LogDadosStringDescrever ('Código',       edtCodigo.Text,       Result);
+  LogDadosStringDescrever ('Nome',         edtNome.Text,         Result);
+  LogDadosBooleanDescrever('Bloqueado',    chkBloqueado.Checked, Result);
+  LogDadosBooleanDescrever('Ativo',        chkAtivo.Checked,     Result);
 end;
 
 end.
