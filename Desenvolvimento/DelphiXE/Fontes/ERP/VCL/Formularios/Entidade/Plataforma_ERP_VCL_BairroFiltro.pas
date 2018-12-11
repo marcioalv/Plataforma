@@ -1,16 +1,16 @@
 //
-// Arquivo..: Plataforma_ERP_VCL_CidadeFiltro.pas
+// Arquivo..: Plataforma_ERP_VCL_BairroFiltro.pas
 // Projeto..: ERP
 // Fonte....: Formulário VCL
 // Criação..: 17/Agosto/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário com os parâmetros de filtro para a listagem de cidades.
+// Descrição: Formulário com os parâmetros de filtro para a listagem de bairros.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
 //
 
-unit Plataforma_ERP_VCL_CidadeFiltro;
+unit Plataforma_ERP_VCL_BairroFiltro;
 
 interface
 
@@ -33,7 +33,7 @@ uses
   Vcl.Menus;
 
 type
-  TPlataformaERPVCLCidadeFiltro = class(TForm)
+  TPlataformaERPVCLBairroFiltro = class(TForm)
     imgFormulario: TImage;
     btnLocalizar: TBitBtn;
     btnFechar: TBitBtn;
@@ -48,10 +48,10 @@ type
     edtCodigoInicial: TEdit;
     edtCodigoFinal: TEdit;
     edtNome: TEdit;
-    lblCidadeID: TLabel;
-    lblCidadeIDAte: TLabel;
-    edtCidadeIDInicial: TEdit;
-    edtCidadeIDFinal: TEdit;
+    lblBairroID: TLabel;
+    lblBairroIDAte: TLabel;
+    edtBairroIDInicial: TEdit;
+    edtBairroIDFinal: TEdit;
     lblBloqueado: TLabel;
     lblAtivo: TLabel;
     cbxBloqueado: TComboBox;
@@ -77,12 +77,12 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure edtCidadeIDInicialEnter(Sender: TObject);
-    procedure edtCidadeIDInicialExit(Sender: TObject);
-    procedure edtCidadeIDInicialKeyPress(Sender: TObject; var Key: Char);
-    procedure edtCidadeIDFinalEnter(Sender: TObject);
-    procedure edtCidadeIDFinalExit(Sender: TObject);
-    procedure edtCidadeIDFinalKeyPress(Sender: TObject; var Key: Char);
+    procedure edtBairroIDInicialEnter(Sender: TObject);
+    procedure edtBairroIDInicialExit(Sender: TObject);
+    procedure edtBairroIDInicialKeyPress(Sender: TObject; var Key: Char);
+    procedure edtBairroIDFinalEnter(Sender: TObject);
+    procedure edtBairroIDFinalExit(Sender: TObject);
+    procedure edtBairroIDFinalKeyPress(Sender: TObject; var Key: Char);
     procedure edtCodigoInicialEnter(Sender: TObject);
     procedure edtCodigoInicialExit(Sender: TObject);
     procedure edtCodigoInicialKeyPress(Sender: TObject; var Key: Char);
@@ -137,8 +137,8 @@ type
     pubNome           : string;
     pubBloqueado      : string;
     pubAtivo          : string;
-    pubCidadeIDInicial: Integer;
-    pubCidadeIDFinal  : Integer;
+    pubBairroIDInicial: Integer;
+    pubBairroIDFinal  : Integer;
     pubInsDtHrInicial : TDateTime;
     pubInsDtHrFinal   : TDateTime;
     pubUpdDtHrInicial : TDateTime;
@@ -146,7 +146,7 @@ type
   end;
 
 var
-  PlataformaERPVCLCidadeFiltro: TPlataformaERPVCLCidadeFiltro;
+  PlataformaERPVCLBairroFiltro: TPlataformaERPVCLBairroFiltro;
 
 implementation
 
@@ -162,19 +162,19 @@ const
   TAB_CADASTRO : Byte = 0;
   TAB_AUDITORIA: Byte = 1;
 
-  FONTE_NOME: string = 'Plataforma_ERP_VCL_CidadeFiltro';
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_BairroFiltro';
 
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLCidadeFiltro.FormCreate(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis públicas.
   //
   pubClicouFechar    := True;
-  pubCidadeIDInicial := 0;
-  pubCidadeIDFinal   := 0;
+  pubBairroIDInicial := 0;
+  pubBairroIDFinal   := 0;
   pubCodigoInicial   := '';
   pubCodigoFinal     := '';
   pubNome            := '';
@@ -204,7 +204,7 @@ end;
 //
 // Evento de exibição do formulário.
 //
-procedure TPlataformaERPVCLCidadeFiltro.FormShow(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.FormShow(Sender: TObject);
 begin
   //
   // Background do formulário.
@@ -220,8 +220,8 @@ begin
   VCLComboBoxPopular(cbxBloqueado, pubBloqueado);
   VCLComboBoxPopular(cbxAtivo,     pubAtivo);
 
-  edtCidadeIDInicial.Text := IntegerStringConverter(pubCidadeIDInicial, True);
-  edtCidadeIDFinal.Text   := IntegerStringConverter(pubCidadeIDFinal,   True);
+  edtBairroIDInicial.Text := IntegerStringConverter(pubBairroIDInicial, True);
+  edtBairroIDFinal.Text   := IntegerStringConverter(pubBairroIDFinal,   True);
   medInsDtHrInicial.Text  := DateTimeStringConverter(pubInsDtHrInicial, 'dd/mm/yyyy hh:nn');
   medInsDtHrFinal.Text    := DateTimeStringConverter(pubInsDtHrFinal,   'dd/mm/yyyy hh:nn');
   medUpdDtHrInicial.Text  := DateTimeStringConverter(pubUpdDtHrInicial, 'dd/mm/yyyy hh:nn');
@@ -232,13 +232,13 @@ begin
   // Foco no componente desejado.
   //
   if pagFormulario.ActivePageIndex = TAB_CADASTRO  then edtCodigoInicial.SetFocus;
-  if pagFormulario.ActivePageIndex = TAB_AUDITORIA then edtCidadeIDInicial.SetFocus;
+  if pagFormulario.ActivePageIndex = TAB_AUDITORIA then edtBairroIDInicial.SetFocus;
 end;
 
 //
 // Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLCidadeFiltro.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
 end;
@@ -246,76 +246,76 @@ end;
 //
 // Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLCidadeFiltro.mniLocalizarClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.mniLocalizarClick(Sender: TObject);
 begin
   FormularioLocalizar;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.mniLimparClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.mniLimparClick(Sender: TObject);
 begin
   FormularioLimpar;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.mniMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.mniMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.mniFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.mniFecharClick(Sender: TObject);
 begin
   Close;
 end;
 
 //
-// Eventos do componente "ID inicial" da cidade.
+// Eventos do componente "ID inicial" do bairro.
 //
-procedure TPlataformaERPVCLCidadeFiltro.edtCidadeIDInicialEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.edtBairroIDInicialEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtCidadeIDInicial) then Exit;
+  if not VCLEditEntrar(edtBairroIDInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.edtCidadeIDInicialKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.edtBairroIDInicialKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_NUMERICA_INTEIRA);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.edtCidadeIDInicialExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.edtBairroIDInicialExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtCidadeIDInicial) then Exit;
+  if not VCLEditSair(edtBairroIDInicial) then Exit;
 end;
 
 //
-// Eventos do componente "ID final" da cidade.
+// Eventos do componente "ID final" do bairro.
 //
-procedure TPlataformaERPVCLCidadeFiltro.edtCidadeIDFinalEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.edtBairroIDFinalEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtCidadeIDFinal) then Exit;
+  if not VCLEditEntrar(edtBairroIDFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.edtCidadeIDFinalKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.edtBairroIDFinalKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_NUMERICA_INTEIRA);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.edtCidadeIDFinalExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.edtBairroIDFinalExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtCidadeIDFinal) then Exit;
+  if not VCLEditSair(edtBairroIDFinal) then Exit;
 end;
 
 //
 // Eventos do componente "código inicial".
 //
-procedure TPlataformaERPVCLCidadeFiltro.edtCodigoInicialEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.edtCodigoInicialEnter(Sender: TObject);
 begin
   if not VCLEditEntrar(edtCodigoInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.edtCodigoInicialKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.edtCodigoInicialKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.edtCodigoInicialExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.edtCodigoInicialExit(Sender: TObject);
 begin
   if not VCLEditSair(edtCodigoInicial) then Exit;
 end;
@@ -323,17 +323,17 @@ end;
 //
 // Eventos do componente "código final".
 //
-procedure TPlataformaERPVCLCidadeFiltro.edtCodigoFinalEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.edtCodigoFinalEnter(Sender: TObject);
 begin
   if not VCLEditEntrar(edtCodigoFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.edtCodigoFinalKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.edtCodigoFinalKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.edtCodigoFinalExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.edtCodigoFinalExit(Sender: TObject);
 begin
   if not VCLEditSair(edtCodigoFinal) then Exit;
 end;
@@ -341,17 +341,17 @@ end;
 //
 // Eventos do componente "nome".
 //
-procedure TPlataformaERPVCLCidadeFiltro.edtNomeEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.edtNomeEnter(Sender: TObject);
 begin
   if not VCLEditEntrar(edtNome) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.edtNomeKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.edtNomeKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.edtNomeExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.edtNomeExit(Sender: TObject);
 begin
   if not VCLEditSair(edtNome) then Exit;
 end;
@@ -359,17 +359,17 @@ end;
 //
 // Eventos do componente "bloqueado".
 //
-procedure TPlataformaERPVCLCidadeFiltro.cbxBloqueadoEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.cbxBloqueadoEnter(Sender: TObject);
 begin
   if not VCLComboBoxEntrar(cbxBloqueado) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.cbxBloqueadoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.cbxBloqueadoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.cbxBloqueadoExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.cbxBloqueadoExit(Sender: TObject);
 begin
   if not VCLComboBoxSair(cbxBloqueado) then Exit;
   if not VCLComboBoxValidar(cbxBloqueado) then Exit;
@@ -378,17 +378,17 @@ end;
 //
 // Eventos do componente "ativo".
 //
-procedure TPlataformaERPVCLCidadeFiltro.cbxAtivoEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.cbxAtivoEnter(Sender: TObject);
 begin
   if not VCLComboBoxEntrar(cbxAtivo) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.cbxAtivoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.cbxAtivoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.cbxAtivoExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.cbxAtivoExit(Sender: TObject);
 begin
   if not VCLComboBoxSair(cbxAtivo) then Exit;
   if not VCLComboBoxValidar(cbxAtivo) then Exit;
@@ -397,28 +397,28 @@ end;
 //
 // Eventos do componente "data de criação inicial".
 //
-procedure TPlataformaERPVCLCidadeFiltro.medInsDtHrInicialEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.medInsDtHrInicialEnter(Sender: TObject);
 begin
   if not VCLMaskEditEntrar(medInsDtHrInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medInsDtHrInicialKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.medInsDtHrInicialKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medInsDtHrInicialKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLBairroFiltro.medInsDtHrInicialKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medInsDtHrInicial);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medInsDtHrInicialExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.medInsDtHrInicialExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medInsDtHrInicial) then Exit;
   if not VCLMaskEditDataValidar(medInsDtHrInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.imgInsDtHrInicialClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.imgInsDtHrInicialClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataSelecionar(medInsDtHrInicial);
 end;
@@ -426,28 +426,28 @@ end;
 //
 // Eventos do componente "data de criação final".
 //
-procedure TPlataformaERPVCLCidadeFiltro.medInsDtHrFinalEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.medInsDtHrFinalEnter(Sender: TObject);
 begin
   if not VCLMaskEditEntrar(medInsDtHrFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medInsDtHrFinalKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.medInsDtHrFinalKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medInsDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLBairroFiltro.medInsDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medInsDtHrFinal);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medInsDtHrFinalExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.medInsDtHrFinalExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medInsDtHrFinal) then Exit;
   if not VCLMaskEditDataValidar(medInsDtHrFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.imgInsDtHrFinalClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.imgInsDtHrFinalClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataSelecionar(medInsDtHrFinal);
 end;
@@ -455,28 +455,28 @@ end;
 //
 // Eventos do componente "data de alteração inicial".
 //
-procedure TPlataformaERPVCLCidadeFiltro.medUpdDtHrInicialEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.medUpdDtHrInicialEnter(Sender: TObject);
 begin
   if not VCLMaskEditEntrar(medUpdDtHrInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medUpdDtHrInicialKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.medUpdDtHrInicialKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medUpdDtHrInicialKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLBairroFiltro.medUpdDtHrInicialKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrInicial);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medUpdDtHrInicialExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.medUpdDtHrInicialExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medUpdDtHrInicial) then Exit;
   if not VCLMaskEditDataValidar(medUpdDtHrInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.imgUpdDtHrInicialClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.imgUpdDtHrInicialClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrInicial);
 end;
@@ -484,28 +484,28 @@ end;
 //
 // Eventos do componente "data de alteração final".
 //
-procedure TPlataformaERPVCLCidadeFiltro.medUpdDtHrFinalEnter(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.medUpdDtHrFinalEnter(Sender: TObject);
 begin
   if not VCLMaskEditEntrar(medUpdDtHrFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medUpdDtHrFinalKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLBairroFiltro.medUpdDtHrFinalKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_DATA);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medUpdDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLBairroFiltro.medUpdDtHrFinalKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = F2 then Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrFinal);
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.medUpdDtHrFinalExit(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.medUpdDtHrFinalExit(Sender: TObject);
 begin
   if not VCLMaskEditSair(medUpdDtHrFinal) then Exit;
   if not VCLMaskEditDataValidar(medUpdDtHrFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLCidadeFiltro.imgUpdDtHrFinalClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.imgUpdDtHrFinalClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_DataSelecionar(medUpdDtHrFinal);
 end;
@@ -513,7 +513,7 @@ end;
 //
 // Evento de click no botão "localizar".
 //
-procedure TPlataformaERPVCLCidadeFiltro.btnLocalizarClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.btnLocalizarClick(Sender: TObject);
 begin
   FormularioLocalizar;
 end;
@@ -521,18 +521,18 @@ end;
 //
 // Evento de click no botão "limpar".
 //
-procedure TPlataformaERPVCLCidadeFiltro.btnLimparClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.btnLimparClick(Sender: TObject);
 begin
   FormularioLimpar;
 
   if pagFormulario.ActivePageIndex = TAB_CADASTRO  then edtCodigoInicial.SetFocus;
-  if pagFormulario.ActivePageIndex = TAB_AUDITORIA then edtCidadeIDInicial.SetFocus;
+  if pagFormulario.ActivePageIndex = TAB_AUDITORIA then edtBairroIDInicial.SetFocus;
 end;
 
 //
 // Evento de click no botão "minimizar".
 //
-procedure TPlataformaERPVCLCidadeFiltro.btnMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.btnMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
@@ -540,7 +540,7 @@ end;
 //
 // Evento de click no botão "fechar".
 //
-procedure TPlataformaERPVCLCidadeFiltro.btnFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLBairroFiltro.btnFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -548,13 +548,13 @@ end;
 //
 // Procedimento para inicializar os componentes do formulário.
 //
-procedure TPlataformaERPVCLCidadeFiltro.FormularioInicializar;
+procedure TPlataformaERPVCLBairroFiltro.FormularioInicializar;
 begin
   //
   // Controla os componentes conforme permissão de acesso.
   //
-  pagFormulario.Pages[TAB_CADASTRO].TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_CIDADE_FILTRO_CADASTRO');
-  pagFormulario.Pages[TAB_AUDITORIA].TabVisible := Plataforma_ERP_UsuarioRotina('ERP_CIDADE_FILTRO_AUDITORIA');
+  pagFormulario.Pages[TAB_CADASTRO].TabVisible  := Plataforma_ERP_UsuarioRotina('ERP_BAIRRO_FILTRO_CADASTRO');
+  pagFormulario.Pages[TAB_AUDITORIA].TabVisible := Plataforma_ERP_UsuarioRotina('ERP_BAIRRO_FILTRO_AUDITORIA');
 
   //
   // Componentes pré-carregados.
@@ -566,7 +566,7 @@ end;
 //
 // Procedimento para limpar os componentes do formulário.
 //
-procedure TPlataformaERPVCLCidadeFiltro.FormularioLimpar;
+procedure TPlataformaERPVCLBairroFiltro.FormularioLimpar;
 begin
   VCLEditLimpar    (edtCodigoInicial);
   VCLEditLimpar    (edtCodigoFinal);
@@ -574,8 +574,8 @@ begin
   VCLComboBoxLimpar(cbxBloqueado);
   VCLComboBoxLimpar(cbxAtivo);
 
-  VCLEditLimpar    (edtCidadeIDInicial);
-  VCLEditLimpar    (edtCidadeIDFinal);
+  VCLEditLimpar    (edtBairroIDInicial);
+  VCLEditLimpar    (edtBairroIDFinal);
   VCLMaskEditLimpar(medInsDtHrInicial);
   VCLMaskEditLimpar(medInsDtHrFinal);
   VCLMaskEditLimpar(medUpdDtHrInicial);
@@ -585,7 +585,7 @@ end;
 //
 // Procedimento para localizar os dados do filtro.
 //
-procedure TPlataformaERPVCLCidadeFiltro.FormularioLocalizar;
+procedure TPlataformaERPVCLBairroFiltro.FormularioLocalizar;
 begin
   pubClicouFechar    := False;
   pubCodigoInicial   := StringTrim(edtCodigoInicial.Text);
@@ -593,8 +593,8 @@ begin
   pubNome            := StringTrim(edtNome.Text);
   pubBloqueado       := Copy(cbxBloqueado.Text, 1, 1);
   pubAtivo           := Copy(cbxAtivo.Text, 1, 1);
-  pubCidadeIDInicial := StringIntegerConverter(edtCidadeIDInicial.Text);
-  pubCidadeIDFinal   := StringIntegerConverter(edtCidadeIDFinal.Text);
+  pubBairroIDInicial := StringIntegerConverter(edtBairroIDInicial.Text);
+  pubBairroIDFinal   := StringIntegerConverter(edtBairroIDFinal.Text);
   pubInsDtHrInicial  := StringDateTimeConverter(medInsDtHrInicial.Text);
   pubInsDtHrFinal    := StringDateTimeConverter(medInsDtHrFinal.Text);
   pubUpdDtHrInicial  := StringDateTimeConverter(medUpdDtHrInicial.Text);

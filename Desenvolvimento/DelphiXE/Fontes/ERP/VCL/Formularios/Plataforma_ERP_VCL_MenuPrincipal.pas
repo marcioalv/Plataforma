@@ -157,7 +157,7 @@ uses
   Plataforma_ERP_VCL_LogradouroLista,
   Plataforma_ERP_VCL_PaisLista,
   Plataforma_ERP_VCL_EstadoLista,
-  Plataforma_ERP_VCL_CidadeLista
+  Plataforma_ERP_VCL_CidadeLista,
   Plataforma_ERP_VCL_BairroLista,
   Plataforma_ERP_VCL_CEPLista;
 

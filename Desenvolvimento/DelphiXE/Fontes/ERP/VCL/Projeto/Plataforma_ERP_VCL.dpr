@@ -97,7 +97,15 @@ uses
   Plataforma_ERP_VCL_CidadeCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_CidadeCadastro.pas' {PlataformaERPVCLCidadeCadastro},
   Plataforma_ERP_VCL_CidadeFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_CidadeFiltro.pas' {PlataformaERPVCLCidadeFiltro},
   Plataforma_ERP_VCL_CidadeLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_CidadeLista.pas' {PlataformaERPVCLCidadeLista},
-  Plataforma_ERP_VCL_CidadeSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_CidadeSelecao.pas' {PlataformaERPVCLCidadeSelecao};
+  Plataforma_ERP_VCL_CidadeSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_CidadeSelecao.pas' {PlataformaERPVCLCidadeSelecao},
+  Plataforma_ERP_VCL_BairroCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_BairroCadastro.pas' {PlataformaERPVCLBairroCadastro},
+  Plataforma_ERP_VCL_BairroFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_BairroFiltro.pas' {PlataformaERPVCLBairroFiltro},
+  Plataforma_ERP_VCL_BairroLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_BairroLista.pas' {PlataformaERPVCLBairroLista},
+  Plataforma_ERP_VCL_BairroSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_BairroSelecao.pas' {PlataformaERPVCLBairroSelecao},
+  Plataforma_ERP_VCL_CEPCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPCadastro.pas' {PlataformaERPVCLCEPCadastro},
+  Plataforma_ERP_VCL_CEPFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPFiltro.pas' {PlataformaERPVCLCEPFiltro},
+  Plataforma_ERP_VCL_CEPLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPLista.pas' {PlataformaERPVCLCEPLista},
+  Plataforma_ERP_VCL_CEPSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPSelecao.pas' {PlataformaERPVCLCEPSelecao};
 
 {$R *.res}
 
@@ -105,20 +113,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
-  Application.CreateForm(TPlataformaERPVCLLogradouroLista, PlataformaERPVCLLogradouroLista);
-  Application.CreateForm(TPlataformaERPVCLLogradouroSelecao, PlataformaERPVCLLogradouroSelecao);
-  Application.CreateForm(TPlataformaERPVCLPaisLista, PlataformaERPVCLPaisLista);
-  Application.CreateForm(TPlataformaERPVCLLogradouroCadastro, PlataformaERPVCLLogradouroCadastro);
-  Application.CreateForm(TPlataformaERPVCLPaisCadastro, PlataformaERPVCLPaisCadastro);
-  Application.CreateForm(TPlataformaERPVCLPaisSelecao, PlataformaERPVCLPaisSelecao);
-  Application.CreateForm(TPlataformaERPVCLPaisFiltro, PlataformaERPVCLPaisFiltro);
-  Application.CreateForm(TPlataformaERPVCLEstadoLista, PlataformaERPVCLEstadoLista);
-  Application.CreateForm(TPlataformaERPVCLEstadoFiltro, PlataformaERPVCLEstadoFiltro);
-  Application.CreateForm(TPlataformaERPVCLEstadoCadastro, PlataformaERPVCLEstadoCadastro);
-  Application.CreateForm(TPlataformaERPVCLEstadoSelecao, PlataformaERPVCLEstadoSelecao);
-  Application.CreateForm(TPlataformaERPVCLCidadeCadastro, PlataformaERPVCLCidadeCadastro);
-  Application.CreateForm(TPlataformaERPVCLCidadeFiltro, PlataformaERPVCLCidadeFiltro);
-  Application.CreateForm(TPlataformaERPVCLCidadeLista, PlataformaERPVCLCidadeLista);
-  Application.CreateForm(TPlataformaERPVCLCidadeSelecao, PlataformaERPVCLCidadeSelecao);
   Application.Run;
 end.

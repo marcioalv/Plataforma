@@ -267,7 +267,7 @@ begin
 end;
 
 //
-// Eventos do componente "ID inicial" do país.
+// Eventos do componente "ID inicial" do estado.
 //
 procedure TPlataformaERPVCLEstadoFiltro.edtEstadoIDInicialEnter(Sender: TObject);
 begin
@@ -285,7 +285,7 @@ begin
 end;
 
 //
-// Eventos do componente "ID final" do país.
+// Eventos do componente "ID final" do estado.
 //
 procedure TPlataformaERPVCLEstadoFiltro.edtEstadoIDFinalEnter(Sender: TObject);
 begin
