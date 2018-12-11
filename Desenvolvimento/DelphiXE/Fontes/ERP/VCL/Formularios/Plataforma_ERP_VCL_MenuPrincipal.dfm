@@ -212,12 +212,15 @@ object PlataformaERPVCLMenuPrincipal: TPlataformaERPVCLMenuPrincipal
           end
           object mniCidades: TMenuItem
             Caption = 'Cidades'
+            OnClick = mniCidadesClick
           end
           object mniBairros: TMenuItem
             Caption = 'Bairros'
+            OnClick = mniBairrosClick
           end
           object mniCEPs: TMenuItem
             Caption = 'CEPs'
+            OnClick = mniCEPsClick
           end
         end
         object mniInstalacaoNumeradores: TMenuItem

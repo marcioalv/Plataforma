@@ -1,16 +1,16 @@
 //
-// Arquivo..: Plataforma_ERP_VCL_EstadoLista.pas
+// Arquivo..: Plataforma_ERP_VCL_CidadeLista.pas
 // Projeto..: ERP
 // Fonte....: Formulário VCL
 // Criação..: 14/Agosto/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário com a lista de estados cadastrados.
+// Descrição: Formulário com a lista de cidades cadastrados.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
 //
 
-unit Plataforma_ERP_VCL_EstadoLista;
+unit Plataforma_ERP_VCL_CidadeLista;
 
 interface
 
@@ -33,7 +33,7 @@ uses
   Vcl.Menus;
 
 type
-  TPlataformaERPVCLEstadoLista = class(TForm)
+  TPlataformaERPVCLCidadeLista = class(TForm)
     imgFormulario: TImage;
     panFormulario: TPanel;
     lvwLista: TListView;
@@ -81,8 +81,8 @@ type
     priFiltroNome             : string;
     priFiltroBloqueado        : string;
     priFiltroAtivo            : string;
-    priFiltroEstadoIDInicial  : Integer;
-    priFiltroEstadoIDFinal    : Integer;
+    priFiltroCidadeIDInicial  : Integer;
+    priFiltroCidadeIDFinal    : Integer;
     priFiltroInsDtHrInicial   : TDateTime;
     priFiltroInsDtHrFinal     : TDateTime;
     priFiltroUpdDtHrInicial   : TDateTime;
@@ -97,7 +97,7 @@ type
   end;
 
 var
-  PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista;
+  PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista;
 
 implementation
 
@@ -109,13 +109,13 @@ uses
   Plataforma_ERP_Global,
   Plataforma_ERP_Generico,
   Plataforma_ERP_VCL_Generico,
-  Plataforma_ERP_VCL_EstadoFiltro,
-  Plataforma_ERP_VCL_EstadoCadastro;
+  Plataforma_ERP_VCL_CidadeFiltro,
+  Plataforma_ERP_VCL_CidadeCadastro;
 
 const
-  FONTE_NOME: string = 'Plataforma_ERP_VCL_EstadoLista.pas';
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_CidadeLista.pas';
 
-  LVW_LISTA_ESTADO_ID: Integer = 0;
+  LVW_LISTA_CIDADE_ID: Integer = 0;
   LVW_LISTA_CODIGO   : Integer = 1;
   LVW_LISTA_NOME     : Integer = 2;
   LVW_LISTA_BLOQUEADO: Integer = 3;
@@ -124,7 +124,7 @@ const
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLEstadoLista.FormCreate(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis privadas.
@@ -137,8 +137,8 @@ begin
   priFiltroNome            := '';
   priFiltroBloqueado       := '';
   priFiltroAtivo           := '';
-  priFiltroEstadoIDInicial := 0;
-  priFiltroEstadoIDFinal   := 0;
+  priFiltroCidadeIDInicial := 0;
+  priFiltroCidadeIDFinal   := 0;
   priFiltroInsDtHrInicial  := 0;
   priFiltroInsDtHrFinal    := 0;
   priFiltroUpdDtHrInicial  := 0;
@@ -153,7 +153,7 @@ end;
 //
 // Evento de exibição do formulário.
 //
-procedure TPlataformaERPVCLEstadoLista.FormShow(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.FormShow(Sender: TObject);
 begin
   //
   // Imagem de background.
@@ -174,7 +174,7 @@ end;
 //
 // Evento de ativação do formulário.
 //
-procedure TPlataformaERPVCLEstadoLista.FormActivate(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.FormActivate(Sender: TObject);
 begin
   VCLListViewColunarDimensionar(lvwLista);
 
@@ -190,7 +190,7 @@ end;
 //
 // Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLEstadoLista.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLCidadeLista.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
 end;
@@ -198,32 +198,32 @@ end;
 //
 // Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLEstadoLista.mniLocalizarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.mniLocalizarClick(Sender: TObject);
 begin
   FormularioLocalizar;
 end;
 
-procedure TPlataformaERPVCLEstadoLista.mniAtualizarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.mniAtualizarClick(Sender: TObject);
 begin
   FormularioAtualizar(VCL_NENHUM_INDICE);
 end;
 
-procedure TPlataformaERPVCLEstadoLista.mniNovoClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.mniNovoClick(Sender: TObject);
 begin
   FormularioCadastroExibir(True);
 end;
 
-procedure TPlataformaERPVCLEstadoLista.mniSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.mniSelecionarClick(Sender: TObject);
 begin
   FormularioCadastroExibir(False);
 end;
 
-procedure TPlataformaERPVCLEstadoLista.mniMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.mniMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
 
-procedure TPlataformaERPVCLEstadoLista.mniFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.mniFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -231,32 +231,32 @@ end;
 //
 // Eventos de controle da lista.
 //
-procedure TPlataformaERPVCLEstadoLista.lvwListaColumnClick(Sender: TObject; Column: TListColumn);
+procedure TPlataformaERPVCLCidadeLista.lvwListaColumnClick(Sender: TObject; Column: TListColumn);
 begin
   VCLListViewColunaClicar(Sender, Column, priListViewIndiceColuna, priListViewOrdemAscendente);
 end;
 
-procedure TPlataformaERPVCLEstadoLista.lvwListaCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
+procedure TPlataformaERPVCLCidadeLista.lvwListaCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
 begin
   VCLListViewComparar(Sender, Item1, Item2, Compare, priListViewIndiceColuna, priListViewOrdemAscendente);
 end;
 
-procedure TPlataformaERPVCLEstadoLista.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TPlataformaERPVCLCidadeLista.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);
 end;
 
-procedure TPlataformaERPVCLEstadoLista.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TPlataformaERPVCLCidadeLista.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);
 end;
 
-procedure TPlataformaERPVCLEstadoLista.lvwListaDblClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.lvwListaDblClick(Sender: TObject);
 begin
   FormularioCadastroExibir(False);
 end;
 
-procedure TPlataformaERPVCLEstadoLista.lvwListaKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLCidadeLista.lvwListaKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ENTER then lvwListaDblClick(Sender);
 end;
@@ -264,7 +264,7 @@ end;
 //
 // Evento de click no botão "localizar".
 //
-procedure TPlataformaERPVCLEstadoLista.btnLocalizarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.btnLocalizarClick(Sender: TObject);
 begin
   FormularioLocalizar;
 end;
@@ -272,7 +272,7 @@ end;
 //
 // Evento de click no botão "novo".
 //
-procedure TPlataformaERPVCLEstadoLista.btnNovoClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.btnNovoClick(Sender: TObject);
 begin
   FormularioCadastroExibir(True);
 end;
@@ -280,7 +280,7 @@ end;
 //
 // Evento de click no botão "minimizar".
 //
-procedure TPlataformaERPVCLEstadoLista.btnMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.btnMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
@@ -288,7 +288,7 @@ end;
 //
 // Evento de click no botão "fechar".
 //
-procedure TPlataformaERPVCLEstadoLista.btnFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeLista.btnFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -296,14 +296,14 @@ end;
 //
 // Controla a exibição dos componentes do formulário.
 //
-procedure TPlataformaERPVCLEstadoLista.FormularioControlar;
+procedure TPlataformaERPVCLCidadeLista.FormularioControlar;
 begin
   //
   // Menu - Ações.
   //
-  mniAtualizar.Visible  := Plataforma_ERP_UsuarioRotina('ERP_ESTADO_LISTA_ATUALIZAR');
-  mniNovo.Visible       := Plataforma_ERP_UsuarioRotina('ERP_ESTADO_LISTA_NOVO');
-  mniSelecionar.Visible := Plataforma_ERP_UsuarioRotina('ERP_ESTADO_LISTA_SELECIONAR');
+  mniAtualizar.Visible  := Plataforma_ERP_UsuarioRotina('ERP_CIDADE_LISTA_ATUALIZAR');
+  mniNovo.Visible       := Plataforma_ERP_UsuarioRotina('ERP_CIDADE_LISTA_NOVO');
+  mniSelecionar.Visible := Plataforma_ERP_UsuarioRotina('ERP_CIDADE_LISTA_SELECIONAR');
   mniMinimizar.Visible  := True;
   mniFechar.Visible     := True;
 
@@ -318,31 +318,31 @@ end;
 //
 // Procedimento para localizar registros cadastrados.
 //
-procedure TPlataformaERPVCLEstadoLista.FormularioLocalizar;
+procedure TPlataformaERPVCLCidadeLista.FormularioLocalizar;
 var
-  locFormulario     : TPlataformaERPVCLEstadoFiltro;
+  locFormulario     : TPlataformaERPVCLCidadeFiltro;
   locClicouFechar   : Boolean;
   locCodigoInicial  : string;
   locCodigoFinal    : string;
   locNome           : string;
   locBloqueado      : string;
   locAtivo          : string;
-  locEstadoIDInicial: Integer;
-  locEstadoIDFinal  : Integer;
+  locCidadeIDInicial: Integer;
+  locCidadeIDFinal  : Integer;
   locInsDtHrInicial : TDateTime;
   locInsDtHrFinal   : TDateTime;
   locUpdDtHrInicial : TDateTime;
   locUpdDtHrFinal   : TDateTime;
 begin
-  locFormulario := TPlataformaERPVCLEstadoFiltro.Create(Self);
+  locFormulario := TPlataformaERPVCLCidadeFiltro.Create(Self);
 
   locFormulario.pubCodigoInicial   := priFiltroCodigoInicial;
   locFormulario.pubCodigoFinal     := priFiltroCodigoFinal;
   locFormulario.pubNome            := priFiltroNome;
   locFormulario.pubBloqueado       := priFiltroBloqueado;
   locFormulario.pubAtivo           := priFiltroAtivo;
-  locFormulario.pubEstadoIDInicial := priFiltroEstadoIDInicial;
-  locFormulario.pubEstadoIDFinal   := priFiltroEstadoIDFinal;
+  locFormulario.pubCidadeIDInicial := priFiltroCidadeIDInicial;
+  locFormulario.pubCidadeIDFinal   := priFiltroCidadeIDFinal;
   locFormulario.pubInsDtHrInicial  := priFiltroInsDtHrInicial;
   locFormulario.pubInsDtHrFinal    := priFiltroInsDtHrFinal;
   locFormulario.pubUpdDtHrInicial  := priFiltroUpdDtHrInicial;
@@ -356,8 +356,8 @@ begin
   locNome            := locFormulario.pubNome;
   locBloqueado       := locFormulario.pubBloqueado;
   locAtivo           := locFormulario.pubAtivo;
-  locEstadoIDInicial := locFormulario.pubEstadoIDInicial;
-  locEstadoIDFinal   := locFormulario.pubEstadoIDFinal;
+  locCidadeIDInicial := locFormulario.pubCidadeIDInicial;
+  locCidadeIDFinal   := locFormulario.pubCidadeIDFinal;
   locInsDtHrInicial  := locFormulario.pubInsDtHrInicial;
   locInsDtHrFinal    := locFormulario.pubInsDtHrFinal;
   locUpdDtHrInicial  := locFormulario.pubUpdDtHrInicial;
@@ -373,8 +373,8 @@ begin
     priFiltroNome            := locNome;
     priFiltroBloqueado       := locBloqueado;
     priFiltroAtivo           := locAtivo;
-    priFiltroEstadoIDInicial := locEstadoIDInicial;
-    priFiltroEstadoIDFinal   := locEstadoIDFinal;
+    priFiltroCidadeIDInicial := locCidadeIDInicial;
+    priFiltroCidadeIDFinal   := locCidadeIDFinal;
     priFiltroInsDtHrInicial  := locInsDtHrInicial;
     priFiltroInsDtHrFinal    := locInsDtHrFinal;
     priFiltroUpdDtHrInicial  := locUpdDtHrInicial;
@@ -387,10 +387,10 @@ end;
 //
 // Procedimento para atualizar a lista do formulário.
 //
-procedure TPlataformaERPVCLEstadoLista.FormularioAtualizar(argIndice: Integer);
+procedure TPlataformaERPVCLCidadeLista.FormularioAtualizar(argIndice: Integer);
 const
   PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
-  ERRO_MENSAGEM    : string = 'Impossível atualizar lista de estados';
+  ERRO_MENSAGEM    : string = 'Impossível atualizar lista de cidades';
 var
   locADOConnection: TADOConnection;
   locADOQuery     : TADOQuery;
@@ -440,13 +440,13 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                 ');
-  locADOQuery.SQL.Add('  [estado].[estado_id] AS [estado_id], ');
-  locADOQuery.SQL.Add('  [estado].[codigo]    AS [codigo],    ');
-  locADOQuery.SQL.Add('  [estado].[nome]      AS [nome],      ');
-  locADOQuery.SQL.Add('  [estado].[bloqueado] AS [bloqueado], ');
-  locADOQuery.SQL.Add('  [estado].[ativo]     AS [ativo]      ');
+  locADOQuery.SQL.Add('  [cidade].[cidade_id] AS [cidade_id], ');
+  locADOQuery.SQL.Add('  [cidade].[codigo]    AS [codigo],    ');
+  locADOQuery.SQL.Add('  [cidade].[nome]      AS [nome],      ');
+  locADOQuery.SQL.Add('  [cidade].[bloqueado] AS [bloqueado], ');
+  locADOQuery.SQL.Add('  [cidade].[ativo]     AS [ativo]      ');
   locADOQuery.SQL.Add('FROM                                   ');
-  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)               ');
+  locADOQuery.SQL.Add('  [cidade] WITH (NOLOCK)               ');
   locADOQuery.SQL.Add('WHERE                                  ');
   locADOQuery.SQL.Add('  1 = 1                                ');
 
@@ -455,80 +455,80 @@ begin
   //
   locFiltros := False;
 
-  if priFiltroEstadoIDInicial > 0 then
+  if priFiltroCidadeIDInicial > 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[estado_id] >= :estado_id_inicial ');
-    locADOQuery.Parameters.ParamByName('estado_id_inicial').Value := priFiltroEstadoIDInicial;
+    locADOQuery.SQL.Add(' AND [cidade].[cidade_id] >= :cidade_id_inicial ');
+    locADOQuery.Parameters.ParamByName('cidade_id_inicial').Value := priFiltroCidadeIDInicial;
   end;
 
-  if priFiltroEstadoIDFinal > 0 then
+  if priFiltroCidadeIDFinal > 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[estado_id] <= :estado_id_final ');
-    locADOQuery.Parameters.ParamByName('estado_id_final').Value := priFiltroEstadoIDFinal;
+    locADOQuery.SQL.Add(' AND [cidade].[cidade_id] <= :cidade_id_final ');
+    locADOQuery.Parameters.ParamByName('cidade_id_final').Value := priFiltroCidadeIDFinal;
   end;
 
   if priFiltroCodigoInicial <> '' then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[codigo] >= :codigo_inicial ');
+    locADOQuery.SQL.Add(' AND [cidade].[codigo] >= :codigo_inicial ');
     locADOQuery.Parameters.ParamByName('codigo_inicial').Value := priFiltroCodigoInicial;
   end;
 
   if priFiltroCodigoFinal <> '' then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[codigo] <= :codigo_final ');
+    locADOQuery.SQL.Add(' AND [cidade].[codigo] <= :codigo_final ');
     locADOQuery.Parameters.ParamByName('codigo_final').Value := priFiltroCodigoFinal;
   end;
 
   if priFiltroNome <> '' then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[nome] LIKE :nome ');
+    locADOQuery.SQL.Add(' AND [cidade].[nome] LIKE :nome ');
     locADOQuery.Parameters.ParamByName('nome').Value := StringLikeGerar(priFiltroNome);
   end;
   
   if (priFiltroBloqueado <> '') AND (priFiltroBloqueado <> FLAG_AMBOS) then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[bloqueado] = :bloqueado ');
+    locADOQuery.SQL.Add(' AND [cidade].[bloqueado] = :bloqueado ');
     locADOQuery.Parameters.ParamByName('bloqueado').Value := priFiltroBloqueado;
   end;
 
   if (priFiltroAtivo <> '') AND (priFiltroAtivo <> FLAG_AMBOS) then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[ativo] = :ativo ');
+    locADOQuery.SQL.Add(' AND [cidade].[ativo] = :ativo ');
     locADOQuery.Parameters.ParamByName('ativo').Value := priFiltroAtivo;
   end;
 
   if priFiltroInsDtHrInicial <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[ins_local_dt_hr] >= :ins_local_dt_hr_inicial ');
+    locADOQuery.SQL.Add(' AND [cidade].[ins_local_dt_hr] >= :ins_local_dt_hr_inicial ');
     locADOQuery.Parameters.ParamByName('ins_local_dt_hr_inicial').Value := DateTimeHorarioInicial(priFiltroInsDtHrInicial);
   end;
 
   if priFiltroInsDtHrFinal <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[ins_local_dt_hr] <= :ins_local_dt_hr_final ');
+    locADOQuery.SQL.Add(' AND [cidade].[ins_local_dt_hr] <= :ins_local_dt_hr_final ');
     locADOQuery.Parameters.ParamByName('ins_local_dt_hr_final').Value := DateTimeHorarioFinal(priFiltroInsDtHrFinal);
   end;
 
   if priFiltroUpdDtHrInicial <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[upd_local_dt_hr] >= :upd_local_dt_hr_inicial ');
+    locADOQuery.SQL.Add(' AND [cidade].[upd_local_dt_hr] >= :upd_local_dt_hr_inicial ');
     locADOQuery.Parameters.ParamByName('upd_local_dt_hr_inicial').Value := DateTimeHorarioInicial(priFiltroUpdDtHrInicial);
   end;
 
   if priFiltroUpdDtHrFinal <> 0 then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [estado].[upd_local_dt_hr] <= :upd_local_dt_hr_final ');
+    locADOQuery.SQL.Add(' AND [cidade].[upd_local_dt_hr] <= :upd_local_dt_hr_final ');
     locADOQuery.Parameters.ParamByName('upd_local_dt_hr_final').Value := DateTimeHorarioFinal(priFiltroUpdDtHrFinal);
   end;
 
@@ -536,7 +536,7 @@ begin
   // ORDER BY.
   //
   locADOQuery.SQL.Add('ORDER BY                   ');
-  locADOQuery.SQL.Add('  [estado].[estado_id] ASC ');
+  locADOQuery.SQL.Add('  [cidade].[cidade_id] ASC ');
 
   try
     locADOQuery.Open;
@@ -547,7 +547,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar os registros na tabela [estado]!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar os registros na tabela [cidade]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -574,7 +574,7 @@ begin
     
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger));
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('cidade_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('nome').AsString);
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
@@ -618,28 +618,28 @@ end;
 //
 // Procedimento para exibir o formulário de cadastro.
 //
-procedure TPlataformaERPVCLEstadoLista.FormularioCadastroExibir(argNovo: Boolean);
+procedure TPlataformaERPVCLCidadeLista.FormularioCadastroExibir(argNovo: Boolean);
 var
-  locFormulario      : TPlataformaERPVCLEstadoCadastro;
+  locFormulario      : TPlataformaERPVCLCidadeCadastro;
   locDadosAtualizados: Boolean;
   locIndice          : Integer;
-  locEstadoID        : Integer;
+  locCidadeID        : Integer;
 begin
   if argNovo then
   begin
     locIndice := VCL_NENHUM_INDICE;
-    locEstadoID := 0;
+    locCidadeID := 0;
   end
   else
   begin  
     locIndice := VCLListViewIndiceItemRetornar(lvwLista);
     if locIndice <= VCL_NENHUM_INDICE then Exit;
-    locEstadoID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_ESTADO_ID]);
+    locCidadeID := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CIDADE_ID]);
   end;
 
-  locFormulario := TPlataformaERPVCLEstadoCadastro.Create(Self);
+  locFormulario := TPlataformaERPVCLCidadeCadastro.Create(Self);
 
-  locFormulario.pubEstadoID := locEstadoID;
+  locFormulario.pubCidadeID := locCidadeID;
   
   locFormulario.ShowModal;
 

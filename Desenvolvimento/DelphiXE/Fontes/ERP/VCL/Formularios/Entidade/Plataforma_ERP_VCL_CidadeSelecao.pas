@@ -1,16 +1,16 @@
 //
-// Arquivo..: Plataforma_ERP_VCL_EstadoSelecao.pas
+// Arquivo..: Plataforma_ERP_VCL_CidadeSelecao.pas
 // Projeto..: ERP
 // Fonte....: Formulário VCL
 // Criação..: 05/Julho/2018
 // Autor....: Marcio Alves (marcioalv@yahoo.com.br)
-// Descrição: Formulário com os parâmetros de seleção do cadastro de estado.
+// Descrição: Formulário com os parâmetros de seleção do cadastro de cidade.
 //
 // Histórico de alterações:
 //   Nenhuma alteração até o momento.
 //
 
-unit Plataforma_ERP_VCL_EstadoSelecao;
+unit Plataforma_ERP_VCL_CidadeSelecao;
 
 interface
 
@@ -33,7 +33,7 @@ uses
   Vcl.Menus;
 
 type
-  TPlataformaERPVCLEstadoSelecao = class(TForm)
+  TPlataformaERPVCLCidadeSelecao = class(TForm)
     imgFormulario: TImage;
     btnSelecionar: TBitBtn;
     btnFechar: TBitBtn;
@@ -67,13 +67,13 @@ type
   public
     pubClicouFechar: Boolean;
     pubNovo        : Boolean;
-    pubEstadoID    : Integer;
+    pubCidadeID    : Integer;
     pubCodigo      : string;
     pubNome        : string;
   end;
 
 var
-  PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao;
+  PlataformaERPVCLCidadeSelecao: TPlataformaERPVCLCidadeSelecao;
 
 implementation
 
@@ -86,10 +86,10 @@ uses
   Plataforma_ERP_Generico;
 
 const
-  FONTE_NOME: string = 'Plataforma_ERP_VCL_EstadoSelecao';
+  FONTE_NOME: string = 'Plataforma_ERP_VCL_CidadeSelecao';
 
 const
-  LVW_LISTA_ESTADO_ID: Integer = 0;
+  LVW_LISTA_CIDADE_ID: Integer = 0;
   LVW_LISTA_CODIGO   : Integer = 1;
   LVW_LISTA_NOME     : Integer = 2;
   LVW_LISTA_BLOQUEADO: Integer = 3;
@@ -97,14 +97,14 @@ const
 //
 // Evento de criação do formulário.
 //
-procedure TPlataformaERPVCLEstadoSelecao.FormCreate(Sender: TObject);
+procedure TPlataformaERPVCLCidadeSelecao.FormCreate(Sender: TObject);
 begin
   //
   // Inicializa variáveis públicas.
   //
   pubClicouFechar := True;
   pubNovo         := True;
-  pubEstadoID     := 0;
+  pubCidadeID     := 0;
   pubCodigo       := '';
   pubNome         := '';
 
@@ -117,7 +117,7 @@ end;
 //
 // Evento de exibição do formulário.
 //
-procedure TPlataformaERPVCLEstadoSelecao.FormShow(Sender: TObject);
+procedure TPlataformaERPVCLCidadeSelecao.FormShow(Sender: TObject);
 begin
   FormularioAtualizar;
 end;
@@ -125,7 +125,7 @@ end;
 //
 // Evento de pressionamento de teclas no formulário.
 //
-procedure TPlataformaERPVCLEstadoSelecao.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLCidadeSelecao.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ESC then Close;
 end;
@@ -133,22 +133,22 @@ end;
 // 
 // Eventos de click nas opções do menu.
 //
-procedure TPlataformaERPVCLEstadoSelecao.mniSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeSelecao.mniSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
 
-procedure TPlataformaERPVCLEstadoSelecao.mniAtualizarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeSelecao.mniAtualizarClick(Sender: TObject);
 begin
   FormularioAtualizar;
 end;
 
-procedure TPlataformaERPVCLEstadoSelecao.mniMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeSelecao.mniMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
 
-procedure TPlataformaERPVCLEstadoSelecao.mniFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeSelecao.mniFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -156,22 +156,22 @@ end;
 //
 // Eventos do componente listview.
 //
-procedure TPlataformaERPVCLEstadoSelecao.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TPlataformaERPVCLCidadeSelecao.lvwListaCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);
 end;
 
-procedure TPlataformaERPVCLEstadoSelecao.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TPlataformaERPVCLCidadeSelecao.lvwListaCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   VCLListViewZebrar(Sender, Item);
 end;
 
-procedure TPlataformaERPVCLEstadoSelecao.lvwListaDblClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeSelecao.lvwListaDblClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
 
-procedure TPlataformaERPVCLEstadoSelecao.lvwListaKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLCidadeSelecao.lvwListaKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = ENTER then lvwListaDblClick(Sender);
 end;
@@ -179,7 +179,7 @@ end;
 //
 // Evento de click no botão "Confirmar".
 //
-procedure TPlataformaERPVCLEstadoSelecao.btnSelecionarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeSelecao.btnSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
 end;
@@ -187,7 +187,7 @@ end;
 //
 // Evento de click no botão "minimizar".
 //
-procedure TPlataformaERPVCLEstadoSelecao.btnMinimizarClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeSelecao.btnMinimizarClick(Sender: TObject);
 begin
   VCLSDIMinimizar;
 end;
@@ -195,7 +195,7 @@ end;
 //
 // Evento de click no botão "fechar".
 //
-procedure TPlataformaERPVCLEstadoSelecao.btnFecharClick(Sender: TObject);
+procedure TPlataformaERPVCLCidadeSelecao.btnFecharClick(Sender: TObject);
 begin
   Close;
 end;
@@ -203,10 +203,10 @@ end;
 //
 // Procedimento para atualizar a lista do formulário.
 //
-procedure TPlataformaERPVCLEstadoSelecao.FormularioAtualizar;
+procedure TPlataformaERPVCLCidadeSelecao.FormularioAtualizar;
 const
   PROCEDIMENTO_NOME: string = 'FormularioAtualizar';
-  ERRO_MENSAGEM    : string = 'Impossível atualizar lista de estados!';
+  ERRO_MENSAGEM    : string = 'Impossível atualizar lista de cidades!';
 var
   locADOConnection: TADOConnection;
   locADOQuery     : TADOQuery;
@@ -258,25 +258,25 @@ begin
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                                 ');
-  locADOQuery.SQL.Add('  [estado].[estado_id] AS [estado_id], ');
-  locADOQuery.SQL.Add('  [estado].[codigo]    AS [codigo],    ');
-  locADOQuery.SQL.Add('  [estado].[nome]      AS [nome],      ');
-  locADOQuery.SQL.Add('  [estado].[bloqueado] AS [bloqueado]  ');
+  locADOQuery.SQL.Add('  [cidade].[cidade_id] AS [cidade_id], ');
+  locADOQuery.SQL.Add('  [cidade].[codigo]    AS [codigo],    ');
+  locADOQuery.SQL.Add('  [cidade].[nome]      AS [nome],      ');
+  locADOQuery.SQL.Add('  [cidade].[bloqueado] AS [bloqueado]  ');
   locADOQuery.SQL.Add('FROM                                   ');
-  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)               ');
+  locADOQuery.SQL.Add('  [cidade] WITH (NOLOCK)               ');
   locADOQuery.SQL.Add('WHERE                                  ');
-  locADOQuery.SQL.Add('  [estado].[ativo] = ''S''             ');
+  locADOQuery.SQL.Add('  [cidade].[ativo] = ''S''             ');
 
   if pubNovo then
   begin
-    locADOQuery.SQL.Add(' AND [estado].[bloqueado] = ''N'' ');
+    locADOQuery.SQL.Add(' AND [cidade].[bloqueado] = ''N'' ');
   end;
 
   //
   // Order by.
   //  
   locADOQuery.SQL.Add('ORDER BY                    ');
-  locADOQuery.SQL.Add('  [estado].[codigo] ASC ');
+  locADOQuery.SQL.Add('  [cidade].[codigo] ASC ');
 
 
   try
@@ -288,7 +288,7 @@ begin
       FreeAndNil(locADOQuery);
       locADOConnection.Close;
       FreeAndNil(locADOConnection);
-      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar os registros na tabela [estado]!';
+      locLogMensagem := 'Ocorreu algum problema ao executar query para selecionar os registros na tabela [cidade]!';
       Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
       VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
       Exit;
@@ -317,12 +317,12 @@ begin
     
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
-      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger));
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('cidade_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('nome').AsString);
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
 
-      if pubEstadoID = locADOQuery.FieldByName('estado_id').AsInteger then
+      if pubCidadeID = locADOQuery.FieldByName('cidade_id').AsInteger then
       begin
         locIndice := (lvwLista.Items.Count - 1);
       end;
@@ -355,7 +355,7 @@ end;
 //
 // Procedimento para selecionar uma das linhas da lista.
 //
-procedure TPlataformaERPVCLEstadoSelecao.FormularioSelecionar;
+procedure TPlataformaERPVCLCidadeSelecao.FormularioSelecionar;
 var
   locIndice: Integer;
 begin
@@ -363,7 +363,7 @@ begin
   if locIndice = VCL_NENHUM_INDICE then Exit;
 
   pubClicouFechar := False;
-  pubEstadoID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_ESTADO_ID]);
+  pubCidadeID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CIDADE_ID]);
   pubCodigo       := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
   pubNome         := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_NOME];
   

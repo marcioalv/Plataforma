@@ -113,6 +113,9 @@ type
     procedure mniLogradourosClick(Sender: TObject);
     procedure mniPaisesClick(Sender: TObject);
     procedure mniEstadosClick(Sender: TObject);
+    procedure mniCidadesClick(Sender: TObject);
+    procedure mniBairrosClick(Sender: TObject);
+    procedure mniCEPsClick(Sender: TObject);
   private
     procedure FormularioInicializar;
     procedure FormularioInformacoesDeterminar;
@@ -153,7 +156,10 @@ uses
   Plataforma_ERP_VCL_ColigadaLista,
   Plataforma_ERP_VCL_LogradouroLista,
   Plataforma_ERP_VCL_PaisLista,
-  Plataforma_ERP_VCL_EstadoLista;
+  Plataforma_ERP_VCL_EstadoLista,
+  Plataforma_ERP_VCL_CidadeLista
+  Plataforma_ERP_VCL_BairroLista,
+  Plataforma_ERP_VCL_CEPLista;
 
 //
 // Evento de criação do formulário.
@@ -456,6 +462,46 @@ begin
   locFormulario.Release;
   FreeAndNil(locFormulario);
 end;
+
+//
+// Evento de click na opção "cidades".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniCidadesClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLCidadeLista;
+begin
+  locFormulario := TPlataformaERPVCLCidadeLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "bairros".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniBairrosClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLBairroLista;
+begin
+  locFormulario := TPlataformaERPVCLBairroLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Evento de click na opção "CEPs".
+//
+procedure TPlataformaERPVCLMenuPrincipal.mniCEPsClick(Sender: TObject);
+var
+  locFormulario: TPlataformaERPVCLCEPLista;
+begin
+  locFormulario := TPlataformaERPVCLCEPLista.Create(Self);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
 
 {-------------------------------------------------------------------------------------------------}
 { INSTALAÇÃO                                                                                      }
