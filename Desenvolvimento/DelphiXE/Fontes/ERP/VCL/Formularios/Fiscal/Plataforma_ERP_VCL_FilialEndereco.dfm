@@ -420,6 +420,8 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       TabOrder = 1
       object tabCadastro: TTabSheet
         Caption = 'Cadastro'
+        ExplicitLeft = -68
+        ExplicitTop = 16
         object imgVigenciaFimDtSelecionar: TImage
           Left = 391
           Top = 35

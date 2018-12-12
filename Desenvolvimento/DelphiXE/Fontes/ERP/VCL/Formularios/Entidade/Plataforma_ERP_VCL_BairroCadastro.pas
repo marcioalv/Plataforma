@@ -635,7 +635,7 @@ begin
   locADOQuery.SQL.Add('SELECT                              ');
   locADOQuery.SQL.Add('  [bairro].[bairro_id],             ');
   locADOQuery.SQL.Add('  [bairro].[codigo],                ');
-  locADOQuery.SQL.Add('  [bairro].[Nome],                  ');
+  locADOQuery.SQL.Add('  [bairro].[nome],                  ');
   locADOQuery.SQL.Add('  [bairro].[bloqueado],             ');
   locADOQuery.SQL.Add('  [bairro].[ativo],                 ');
   locADOQuery.SQL.Add('  [bairro].[ins_local_dt_hr],       ');
@@ -992,7 +992,7 @@ begin
     locADOQuery.SQL.Add('VALUES (               ');
     locADOQuery.SQL.Add('  :bairro_id,          '); // [bairro_id].
     locADOQuery.SQL.Add('  :codigo,             '); // [codigo].
-    locADOQuery.SQL.Add('  :Nome,               '); // [nome].
+    locADOQuery.SQL.Add('  :nome,               '); // [nome].
     locADOQuery.SQL.Add('  :bloqueado,          '); // [bloqueado].
     locADOQuery.SQL.Add('  :ativo,              '); // [ativo].
     locADOQuery.SQL.Add('  :local_dt_hr,        '); // [ins_local_dt_hr].
@@ -1011,7 +1011,7 @@ begin
     locADOQuery.SQL.Add('  [bairro]                                ');
     locADOQuery.SQL.Add('SET                                       ');
     locADOQuery.SQL.Add('  [codigo]           = :codigo,           ');
-    locADOQuery.SQL.Add('  [Nome]             = :nome,             ');
+    locADOQuery.SQL.Add('  [nome]             = :nome,             ');
     locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,        ');
     locADOQuery.SQL.Add('  [ativo]            = :ativo,            ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,      ');
