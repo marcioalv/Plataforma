@@ -179,7 +179,7 @@ object PlataformaERPVCLPaisLista: TPlataformaERPVCLPaisLista
       Caption = 'Foram localizados 9 registros!'
     end
     object lblListaFiltros: TLabel
-      Left = 500
+      Left = 492
       Top = 411
       Width = 80
       Height = 13
@@ -192,8 +192,6 @@ object PlataformaERPVCLPaisLista: TPlataformaERPVCLPaisLista
       Font.Style = []
       ParentFont = False
       Visible = False
-      ExplicitLeft = 504
-      ExplicitTop = 415
     end
     object lvwLista: TListView
       AlignWithMargins = True
@@ -254,7 +252,6 @@ object PlataformaERPVCLPaisLista: TPlataformaERPVCLPaisLista
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
-      ExplicitHeight = 216
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True
@@ -501,8 +498,8 @@ object PlataformaERPVCLPaisLista: TPlataformaERPVCLPaisLista
   object mnuFormulario: TMainMenu
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
-    Left = 352
-    Top = 240
+    Left = 40
+    Top = 464
     object mniLocalizar: TMenuItem
       Caption = 'Localizar'
       OnClick = mniLocalizarClick

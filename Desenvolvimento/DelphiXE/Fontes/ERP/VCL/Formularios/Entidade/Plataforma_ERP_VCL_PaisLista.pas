@@ -347,7 +347,7 @@ begin
   locFormulario.pubInsDtHrFinal   := priFiltroInsDtHrFinal;
   locFormulario.pubUpdDtHrInicial := priFiltroUpdDtHrInicial;
   locFormulario.pubUpdDtHrFinal   := priFiltroUpdDtHrFinal;
-  
+
   locFormulario.ShowModal;
 
   locClicouFechar   := locFormulario.pubClicouFechar;
@@ -362,7 +362,7 @@ begin
   locInsDtHrFinal   := locFormulario.pubInsDtHrFinal;
   locUpdDtHrInicial := locFormulario.pubUpdDtHrInicial;
   locUpdDtHrFinal   := locFormulario.pubUpdDtHrFinal;
-  
+
   locFormulario.Release;
   FreeAndNil(locFormulario);
 
@@ -407,6 +407,8 @@ begin
   // Limpa listview.
   //
   VCLListViewLimpar(lvwLista);
+  lblListaQtde.Caption    := '';
+  lblListaFiltros.Visible := False;
 
   //
   // Conexão ao banco de dados.
@@ -535,8 +537,8 @@ begin
   //
   // ORDER BY.
   //
-  locADOQuery.SQL.Add('ORDER BY                             ');
-  locADOQuery.SQL.Add('  [pais].[pais_id] ASC               ');
+  locADOQuery.SQL.Add('ORDER BY               ');
+  locADOQuery.SQL.Add('  [pais].[pais_id] ASC ');
 
   try
     locADOQuery.Open;

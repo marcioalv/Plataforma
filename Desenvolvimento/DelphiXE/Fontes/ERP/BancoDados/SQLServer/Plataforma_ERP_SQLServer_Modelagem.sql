@@ -1145,6 +1145,26 @@ INSERT INTO [numerador_base] VALUES ('pais_id', 3, 'N', 'S', GETDATE(), GETDATE(
 GO
 
 --
+-- Estado.
+--
+INSERT INTO [estado] VALUES (1, '01', 'Paraná',            'PR', 1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [estado] VALUES (2, '02', 'Santa Catarina',    'SC', 1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [estado] VALUES (3, '03', 'Rio Grande do Sul', 'RS', 1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+INSERT INTO [numerador_base] VALUES ('estado_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+
+--
+-- Cidade.
+--
+INSERT INTO [cidade] VALUES (1, '01', 'Curitiba', 1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [cidade] VALUES (2, '02', 'Pinhais',  1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [cidade] VALUES (3, '03', 'Colombo',  1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+INSERT INTO [numerador_base] VALUES ('cidade_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+
+--
 -- Empresa.
 --
 INSERT INTO [empresa] VALUES (1, 1, 1, '01', 'Bergerson',   2, 'N', 'S', GETDATE(), GETDATE(), 1, 1, NULL, NULL, NULL, NULL, 0)

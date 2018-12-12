@@ -105,7 +105,9 @@ uses
   Plataforma_ERP_VCL_CEPCadastro in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPCadastro.pas' {PlataformaERPVCLCEPCadastro},
   Plataforma_ERP_VCL_CEPFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPFiltro.pas' {PlataformaERPVCLCEPFiltro},
   Plataforma_ERP_VCL_CEPLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPLista.pas' {PlataformaERPVCLCEPLista},
-  Plataforma_ERP_VCL_CEPSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPSelecao.pas' {PlataformaERPVCLCEPSelecao};
+  Plataforma_ERP_VCL_CEPSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPSelecao.pas' {PlataformaERPVCLCEPSelecao},
+  Plataforma_ERP_VCL_PaisSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisSelecaoFiltro.pas' {PlataformaERPVCLPaisSelecaoFiltro},
+  Plataforma_ERP_VCL_EstadoSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_EstadoSelecaoFiltro.pas' {PlataformaERPVCLEstadoSelecaoFiltro};
 
 {$R *.res}
 
