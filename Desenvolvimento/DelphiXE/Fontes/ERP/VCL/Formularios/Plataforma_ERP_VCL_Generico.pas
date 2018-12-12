@@ -177,9 +177,125 @@ function Plataforma_ERP_VCL_PaisValidar(argNovo      : Boolean;
 //
 // Plataforma_ERP_VCL_PaisSelecionar.
 //
-function Plataforma_ERP_VCL_PaisSelecionar(argPaisID       : TEdit;
-                                           argPaisCodigo   : TEdit;
-                                           argPaisNome: TEdit): Boolean;
+function Plataforma_ERP_VCL_PaisSelecionar(argPaisID    : TEdit;
+                                           argPaisCodigo: TEdit;
+                                           argPaisNome  : TEdit): Boolean;
+
+//
+// ESTADO!
+//
+                                                  
+//
+// Plataforma_ERP_VCL_EstadoListaExibir.
+//
+procedure Plataforma_ERP_VCL_EstadoListaExibir;
+
+//
+// Plataforma_ERP_VCL_EstadoExibir.
+//
+procedure Plataforma_ERP_VCL_EstadoExibir(argEstadoID: Integer);
+
+//
+// Plataforma_ERP_VCL_EstadoValidar.
+//
+function Plataforma_ERP_VCL_EstadoValidar(argNovo        : Boolean;
+                                          argEstadoID    : TEdit;
+                                          argEstadoCodigo: TEdit;
+                                          argEstadoNome  : TEdit): Boolean;
+
+//
+// Plataforma_ERP_VCL_EstadoSelecionar.
+//
+function Plataforma_ERP_VCL_EstadoSelecionar(argEstadoID    : TEdit;
+                                             argEstadoCodigo: TEdit;
+                                             argEstadoNome  : TEdit): Boolean;
+
+//
+// CIDADE!
+//
+                                                  
+//
+// Plataforma_ERP_VCL_CidadeListaExibir.
+//
+procedure Plataforma_ERP_VCL_CidadeListaExibir;
+
+//
+// Plataforma_ERP_VCL_CidadeExibir.
+//
+procedure Plataforma_ERP_VCL_CidadeExibir(argCidadeID: Integer);
+
+//
+// Plataforma_ERP_VCL_CidadeValidar.
+//
+function Plataforma_ERP_VCL_CidadeValidar(argNovo        : Boolean;
+                                          argCidadeID    : TEdit;
+                                          argCidadeCodigo: TEdit;
+                                          argCidadeNome  : TEdit): Boolean;
+
+//
+// Plataforma_ERP_VCL_CidadeSelecionar.
+//
+function Plataforma_ERP_VCL_CidadeSelecionar(argCidadeID    : TEdit;
+                                             argCidadeCodigo: TEdit;
+                                             argCidadeNome  : TEdit): Boolean;
+
+//
+// BAIRRO!
+//
+                                                  
+//
+// Plataforma_ERP_VCL_BairroListaExibir.
+//
+procedure Plataforma_ERP_VCL_BairroListaExibir;
+
+//
+// Plataforma_ERP_VCL_BairroExibir.
+//
+procedure Plataforma_ERP_VCL_BairroExibir(argBairroID: Integer);
+
+//
+// Plataforma_ERP_VCL_BairroValidar.
+//
+function Plataforma_ERP_VCL_BairroValidar(argNovo        : Boolean;
+                                          argBairroID    : TEdit;
+                                          argBairroCodigo: TEdit;
+                                          argBairroNome  : TEdit): Boolean;
+
+//
+// Plataforma_ERP_VCL_BairroSelecionar.
+//
+function Plataforma_ERP_VCL_BairroSelecionar(argBairroID    : TEdit;
+                                             argBairroCodigo: TEdit;
+                                             argBairroNome  : TEdit): Boolean;
+
+//
+// CEP!
+//
+                                                  
+//
+// Plataforma_ERP_VCL_CEPListaExibir.
+//
+procedure Plataforma_ERP_VCL_CEPListaExibir;
+
+//
+// Plataforma_ERP_VCL_CEPExibir.
+//
+procedure Plataforma_ERP_VCL_CEPExibir(argCEPID: Integer);
+
+//
+// Plataforma_ERP_VCL_CEPValidar.
+//
+function Plataforma_ERP_VCL_CEPValidar(argNovo     : Boolean;
+                                       argCEPID    : TEdit;
+                                       argCEPCodigo: TEdit;
+                                       argCEPNome  : TEdit): Boolean;
+
+//
+// Plataforma_ERP_VCL_CEPSelecionar.
+//
+function Plataforma_ERP_VCL_CEPSelecionar(argCEPID    : TEdit;
+                                          argCEPCodigo: TEdit;
+                                          argCEPNome  : TEdit): Boolean;
 
 //
 // EMPRESA!
@@ -246,6 +362,22 @@ uses
   Plataforma_ERP_VCL_PaisLista,
   Plataforma_ERP_VCL_PaisCadastro,
   Plataforma_ERP_VCL_PaisSelecao,
+
+  Plataforma_ERP_VCL_EstadoLista,
+  Plataforma_ERP_VCL_EstadoCadastro,
+  Plataforma_ERP_VCL_EstadoSelecao,
+
+  Plataforma_ERP_VCL_CidadeLista,
+  Plataforma_ERP_VCL_CidadeCadastro,
+  Plataforma_ERP_VCL_CidadeSelecao,
+
+  Plataforma_ERP_VCL_BairroLista,
+  Plataforma_ERP_VCL_BairroCadastro,
+  Plataforma_ERP_VCL_BairroSelecao,
+
+  Plataforma_ERP_VCL_CEPLista,
+  Plataforma_ERP_VCL_CEPCadastro,
+  Plataforma_ERP_VCL_CEPSelecao,
 
   Plataforma_ERP_VCL_EmpresaLista,
   Plataforma_ERP_VCL_EmpresaCadastro,
@@ -1332,6 +1464,898 @@ begin
     argPaisID.Text     := IntegerStringConverter(locPaisID);
     argPaisCodigo.Text := locPaisCodigo;
     argPaisNome.Text   := locPaisNome;
+    Result := False;
+  end;
+end;
+
+//
+// ESTADO!
+//
+
+//
+// Procedimento para exibir a lista de estados cadastrados.
+//
+procedure Plataforma_ERP_VCL_EstadoListaExibir;
+var
+  locFormulario: TPlataformaERPVCLEstadoLista;
+begin
+  locFormulario := TPlataformaERPVCLEstadoLista.Create(nil);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o cadastro do estado.
+//
+procedure Plataforma_ERP_VCL_EstadoExibir(argEstadoID: Integer);
+var
+  locFormulario: TPlataformaERPVCLEstadoCadastro;
+begin
+  locFormulario             := TPlataformaERPVCLEstadoCadastro.Create(nil);
+  locFormulario.pubEstadoID := argEstadoID;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para validar um estado.
+//
+function Plataforma_ERP_VCL_EstadoValidar(argNovo        : Boolean;
+                                          argEstadoID    : TEdit;
+                                          argEstadoCodigo: TEdit;
+                                          argEstadoNome  : TEdit): Boolean;
+const
+  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_EstadoValidar';
+  ERRO_MENSAGEM    : string = 'Impossível validar o estado!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locEstadoCodigo : string;
+begin
+  //
+  // Retorno padrão.
+  //
+  Result := False;
+
+  //
+  // Carrega variáveis.
+  //
+  locEstadoCodigo := StringTrim(argEstadoCodigo.Text);
+
+  //
+  // Componente vazio.
+  //
+  if locEstadoCodigo = '' then
+  begin
+    argEstadoID.Text   := '';
+    argEstadoNome.Text := '';
+    Result := True;
+    Exit;
+  end;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(nil);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do estado.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                            ');
+  locADOQuery.SQL.Add('  [estado].[estado_id],           ');
+  locADOQuery.SQL.Add('  [estado].[codigo],              ');
+  locADOQuery.SQL.Add('  [estado].[nome],                ');
+  locADOQuery.SQL.Add('  [estado].[bloqueado],           ');
+  locADOQuery.SQL.Add('  [estado].[ativo]                ');
+  locADOQuery.SQL.Add('FROM                              ');
+  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)          ');
+  locADOQuery.SQL.Add('WHERE                             ');
+  locADOQuery.SQL.Add('  [estado].[codigo] = :codigo AND ');
+  locADOQuery.SQL.Add('  [estado].[ativo]  = ''S''       ');
+
+  locADOQuery.Parameters.ParamByName('codigo').Value := locEstadoCodigo;
+
+  if argNovo then
+  begin   
+    locADOQuery.SQL.Add(' AND [estado].[bloqueado] = ''N'' ');
+  end;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [estado]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Nenhum registro encontrado.
+  //
+  if locADOQuery.RecordCount <= 0 then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);    
+    VCLConsistenciaExibir('Nenhum estado encontrado com o código "' + locEstadoCodigo + '" informado!');
+    argEstadoID.Text   := '';
+    argEstadoNome.Text := '';
+    argEstadoCodigo.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Apenas um registro encontrado.
+  //
+  if locADOQuery.RecordCount = 1 then
+  begin
+    argEstadoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger);
+    argEstadoCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
+    argEstadoNome.Text   := locADOQuery.FieldByName('nome').AsString;
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+
+  Result := True;
+end;
+
+//
+// Procedimento para selecionar um estado.
+//
+function Plataforma_ERP_VCL_EstadoSelecionar(argEstadoID    : TEdit;
+                                             argEstadoCodigo: TEdit;
+                                             argEstadoNome  : TEdit): Boolean;
+var
+  locFormulario  : TPlataformaERPVCLEstadoSelecao;
+  locClicouFechar: Boolean;
+  locEstadoID    : Integer;
+  locEstadoCodigo: string;
+  locEstadoNome  : string;
+begin
+  Result := False;
+
+  locEstadoID     := StringIntegerConverter(argEstadoID.Text);
+  locEstadoCodigo := StringTrim(argEstadoCodigo.Text);
+  locEstadoNome   := StringTrim(argEstadoNome.Text);
+
+  locFormulario := TPlataformaERPVCLEstadoSelecao.Create(nil);
+
+  locFormulario.pubEstadoID := locEstadoID;
+  locFormulario.pubCodigo   := locEstadoCodigo;
+  locFormulario.pubNome     := locEstadoNome;
+  
+  locFormulario.ShowModal;
+
+  locClicouFechar := locFormulario.pubClicouFechar;
+  locEstadoID     := locFormulario.pubEstadoID;
+  locEstadoCodigo := locFormulario.pubCodigo;
+  locEstadoNome   := locFormulario.pubNome;
+  
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    argEstadoID.Text     := IntegerStringConverter(locEstadoID);
+    argEstadoCodigo.Text := locEstadoCodigo;
+    argEstadoNome.Text   := locEstadoNome;
+    Result := False;
+  end;
+end;
+
+//
+// CIDADE!
+//
+
+//
+// Procedimento para exibir a lista de cidades cadastrados.
+//
+procedure Plataforma_ERP_VCL_CidadeListaExibir;
+var
+  locFormulario: TPlataformaERPVCLCidadeLista;
+begin
+  locFormulario := TPlataformaERPVCLCidadeLista.Create(nil);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o cadastro da cidade.
+//
+procedure Plataforma_ERP_VCL_CidadeExibir(argCidadeID: Integer);
+var
+  locFormulario: TPlataformaERPVCLCidadeCadastro;
+begin
+  locFormulario             := TPlataformaERPVCLCidadeCadastro.Create(nil);
+  locFormulario.pubCidadeID := argCidadeID;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para validar uma cidade.
+//
+function Plataforma_ERP_VCL_CidadeValidar(argNovo        : Boolean;
+                                          argCidadeID    : TEdit;
+                                          argCidadeCodigo: TEdit;
+                                          argCidadeNome  : TEdit): Boolean;
+const
+  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_CidadeValidar';
+  ERRO_MENSAGEM    : string = 'Impossível validar a cidade!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locCidadeCodigo : string;
+begin
+  //
+  // Retorno padrão.
+  //
+  Result := False;
+
+  //
+  // Carrega variáveis.
+  //
+  locCidadeCodigo := StringTrim(argCidadeCodigo.Text);
+
+  //
+  // Componente vazio.
+  //
+  if locCidadeCodigo = '' then
+  begin
+    argCidadeID.Text   := '';
+    argCidadeNome.Text := '';
+    Result := True;
+    Exit;
+  end;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(nil);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados da cidade.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                            ');
+  locADOQuery.SQL.Add('  [cidade].[cidade_id],           ');
+  locADOQuery.SQL.Add('  [cidade].[codigo],              ');
+  locADOQuery.SQL.Add('  [cidade].[nome],                ');
+  locADOQuery.SQL.Add('  [cidade].[bloqueado],           ');
+  locADOQuery.SQL.Add('  [cidade].[ativo]                ');
+  locADOQuery.SQL.Add('FROM                              ');
+  locADOQuery.SQL.Add('  [cidade] WITH (NOLOCK)          ');
+  locADOQuery.SQL.Add('WHERE                             ');
+  locADOQuery.SQL.Add('  [cidade].[codigo] = :codigo AND ');
+  locADOQuery.SQL.Add('  [cidade].[ativo]  = ''S''       ');
+
+  locADOQuery.Parameters.ParamByName('codigo').Value := locCidadeCodigo;
+
+  if argNovo then
+  begin   
+    locADOQuery.SQL.Add(' AND [cidade].[bloqueado] = ''N'' ');
+  end;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [cidade]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Nenhum registro encontrado.
+  //
+  if locADOQuery.RecordCount <= 0 then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);    
+    VCLConsistenciaExibir('Nenhuma cidade encontrada com o código "' + locCidadeCodigo + '" informado!');
+    argCidadeID.Text   := '';
+    argCidadeNome.Text := '';
+    argCidadeCodigo.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Apenas um registro encontrado.
+  //
+  if locADOQuery.RecordCount = 1 then
+  begin
+    argCidadeID.Text     := IntegerStringConverter(locADOQuery.FieldByName('cidade_id').AsInteger);
+    argCidadeCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
+    argCidadeNome.Text   := locADOQuery.FieldByName('nome').AsString;
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+
+  Result := True;
+end;
+
+//
+// Procedimento para selecionar uma cidade.
+//
+function Plataforma_ERP_VCL_CidadeSelecionar(argCidadeID    : TEdit;
+                                             argCidadeCodigo: TEdit;
+                                             argCidadeNome  : TEdit): Boolean;
+var
+  locFormulario  : TPlataformaERPVCLCidadeSelecao;
+  locClicouFechar: Boolean;
+  locCidadeID    : Integer;
+  locCidadeCodigo: string;
+  locCidadeNome  : string;
+begin
+  Result := False;
+
+  locCidadeID     := StringIntegerConverter(argCidadeID.Text);
+  locCidadeCodigo := StringTrim(argCidadeCodigo.Text);
+  locCidadeNome   := StringTrim(argCidadeNome.Text);
+
+  locFormulario := TPlataformaERPVCLCidadeSelecao.Create(nil);
+
+  locFormulario.pubCidadeID := locCidadeID;
+  locFormulario.pubCodigo   := locCidadeCodigo;
+  locFormulario.pubNome     := locCidadeNome;
+  
+  locFormulario.ShowModal;
+
+  locClicouFechar := locFormulario.pubClicouFechar;
+  locCidadeID     := locFormulario.pubCidadeID;
+  locCidadeCodigo := locFormulario.pubCodigo;
+  locCidadeNome   := locFormulario.pubNome;
+  
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    argCidadeID.Text     := IntegerStringConverter(locCidadeID);
+    argCidadeCodigo.Text := locCidadeCodigo;
+    argCidadeNome.Text   := locCidadeNome;
+    Result := False;
+  end;
+end;
+
+//
+// BAIRRO!
+//
+
+//
+// Procedimento para exibir a lista de bairros cadastrados.
+//
+procedure Plataforma_ERP_VCL_BairroListaExibir;
+var
+  locFormulario: TPlataformaERPVCLBairroLista;
+begin
+  locFormulario := TPlataformaERPVCLBairroLista.Create(nil);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o cadastro do bairro.
+//
+procedure Plataforma_ERP_VCL_BairroExibir(argBairroID: Integer);
+var
+  locFormulario: TPlataformaERPVCLBairroCadastro;
+begin
+  locFormulario             := TPlataformaERPVCLBairroCadastro.Create(nil);
+  locFormulario.pubBairroID := argBairroID;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para validar um bairro.
+//
+function Plataforma_ERP_VCL_BairroValidar(argNovo        : Boolean;
+                                          argBairroID    : TEdit;
+                                          argBairroCodigo: TEdit;
+                                          argBairroNome  : TEdit): Boolean;
+const
+  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_BairroValidar';
+  ERRO_MENSAGEM    : string = 'Impossível validar o bairro!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locBairroCodigo : string;
+begin
+  //
+  // Retorno padrão.
+  //
+  Result := False;
+
+  //
+  // Carrega variáveis.
+  //
+  locBairroCodigo := StringTrim(argBairroCodigo.Text);
+
+  //
+  // Componente vazio.
+  //
+  if locBairroCodigo = '' then
+  begin
+    argBairroID.Text   := '';
+    argBairroNome.Text := '';
+    Result := True;
+    Exit;
+  end;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(nil);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do bairro.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                            ');
+  locADOQuery.SQL.Add('  [bairro].[bairro_id],           ');
+  locADOQuery.SQL.Add('  [bairro].[codigo],              ');
+  locADOQuery.SQL.Add('  [bairro].[nome],                ');
+  locADOQuery.SQL.Add('  [bairro].[bloqueado],           ');
+  locADOQuery.SQL.Add('  [bairro].[ativo]                ');
+  locADOQuery.SQL.Add('FROM                              ');
+  locADOQuery.SQL.Add('  [bairro] WITH (NOLOCK)          ');
+  locADOQuery.SQL.Add('WHERE                             ');
+  locADOQuery.SQL.Add('  [bairro].[codigo] = :codigo AND ');
+  locADOQuery.SQL.Add('  [bairro].[ativo]  = ''S''       ');
+
+  locADOQuery.Parameters.ParamByName('codigo').Value := locBairroCodigo;
+
+  if argNovo then
+  begin   
+    locADOQuery.SQL.Add(' AND [bairro].[bloqueado] = ''N'' ');
+  end;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [bairro]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Nenhum registro encontrado.
+  //
+  if locADOQuery.RecordCount <= 0 then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);    
+    VCLConsistenciaExibir('Nenhum bairro encontrado com o código "' + locBairroCodigo + '" informado!');
+    argBairroID.Text   := '';
+    argBairroNome.Text := '';
+    argBairroCodigo.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Apenas um registro encontrado.
+  //
+  if locADOQuery.RecordCount = 1 then
+  begin
+    argBairroID.Text     := IntegerStringConverter(locADOQuery.FieldByName('bairro_id').AsInteger);
+    argBairroCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
+    argBairroNome.Text   := locADOQuery.FieldByName('nome').AsString;
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+
+  Result := True;
+end;
+
+//
+// Procedimento para selecionar um bairro.
+//
+function Plataforma_ERP_VCL_BairroSelecionar(argBairroID    : TEdit;
+                                             argBairroCodigo: TEdit;
+                                             argBairroNome  : TEdit): Boolean;
+var
+  locFormulario  : TPlataformaERPVCLBairroSelecao;
+  locClicouFechar: Boolean;
+  locBairroID    : Integer;
+  locBairroCodigo: string;
+  locBairroNome  : string;
+begin
+  Result := False;
+
+  locBairroID     := StringIntegerConverter(argBairroID.Text);
+  locBairroCodigo := StringTrim(argBairroCodigo.Text);
+  locBairroNome   := StringTrim(argBairroNome.Text);
+
+  locFormulario := TPlataformaERPVCLBairroSelecao.Create(nil);
+
+  locFormulario.pubBairroID := locBairroID;
+  locFormulario.pubCodigo   := locBairroCodigo;
+  locFormulario.pubNome     := locBairroNome;
+  
+  locFormulario.ShowModal;
+
+  locClicouFechar := locFormulario.pubClicouFechar;
+  locBairroID     := locFormulario.pubBairroID;
+  locBairroCodigo := locFormulario.pubCodigo;
+  locBairroNome   := locFormulario.pubNome;
+  
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    argBairroID.Text     := IntegerStringConverter(locBairroID);
+    argBairroCodigo.Text := locBairroCodigo;
+    argBairroNome.Text   := locBairroNome;
+    Result := False;
+  end;
+end;
+
+//
+// CEP!
+//
+
+//
+// Procedimento para exibir a lista de CEP's cadastrados.
+//
+procedure Plataforma_ERP_VCL_CEPListaExibir;
+var
+  locFormulario: TPlataformaERPVCLCEPLista;
+begin
+  locFormulario := TPlataformaERPVCLCEPLista.Create(nil);
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para exibir o cadastro do cep.
+//
+procedure Plataforma_ERP_VCL_CEPExibir(argCEPID: Integer);
+var
+  locFormulario: TPlataformaERPVCLCEPCadastro;
+begin
+  locFormulario          := TPlataformaERPVCLCEPCadastro.Create(nil);
+  locFormulario.pubCEPID := argCEPID;
+  locFormulario.ShowModal;
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+end;
+
+//
+// Procedimento para validar um cep.
+//
+function Plataforma_ERP_VCL_CEPValidar(argNovo     : Boolean;
+                                       argCEPID    : TEdit;
+                                       argCEPCodigo: TEdit;
+                                       argCEPNome  : TEdit): Boolean;
+const
+  PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_CEPValidar';
+  ERRO_MENSAGEM    : string = 'Impossível validar o CEP!';
+var
+  locADOConnection: TADOConnection;
+  locADOQuery     : TADOQuery;
+  locLogMensagem  : string;
+  locCEPCodigo    : string;
+begin
+  //
+  // Retorno padrão.
+  //
+  Result := False;
+
+  //
+  // Carrega variáveis.
+  //
+  locCEPCodigo := StringTrim(argCEPCodigo.Text);
+
+  //
+  // Componente vazio.
+  //
+  if locCEPCodigo = '' then
+  begin
+    argCEPID.Text   := '';
+    argCEPNome.Text := '';
+    Result := True;
+    Exit;
+  end;
+
+  //
+  // Troca cursor.
+  //
+  VCLCursorTrocar(True);
+
+  //
+  // Conexão ao banco de dados.
+  //
+  locADOConnection := TADOConnection.Create(nil);
+
+  try
+    Plataforma_ERP_ADO_ConexaoAbrir(locADOConnection);
+  except
+    on locExcecao: Exception do
+    begin
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Query.
+  //
+  locADOQuery                := TADOQuery.Create(nil);
+  locADOQuery.Connection     := locADOConnection;
+  locADOQuery.CommandTimeout := gloTimeOutNormal;
+
+  //
+  // Consulta dados do cep.
+  //
+  locADOQuery.Close;
+  locADOQuery.SQL.Clear;
+  locADOQuery.SQL.Add('SELECT                         ');
+  locADOQuery.SQL.Add('  [cep].[cep_id],              ');
+  locADOQuery.SQL.Add('  [cep].[codigo],              ');
+  locADOQuery.SQL.Add('  [cep].[nome],                ');
+  locADOQuery.SQL.Add('  [cep].[bloqueado],           ');
+  locADOQuery.SQL.Add('  [cep].[ativo]                ');
+  locADOQuery.SQL.Add('FROM                           ');
+  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)          ');
+  locADOQuery.SQL.Add('WHERE                          ');
+  locADOQuery.SQL.Add('  [cep].[codigo] = :codigo AND ');
+  locADOQuery.SQL.Add('  [cep].[ativo]  = ''S''       ');
+
+  locADOQuery.Parameters.ParamByName('codigo').Value := locCEPCodigo;
+
+  if argNovo then
+  begin   
+    locADOQuery.SQL.Add(' AND [cep].[bloqueado] = ''N'' ');
+  end;
+
+  //
+  // Executa query.
+  //
+  try
+    locADOQuery.Open;
+  except
+    on locExcecao: Exception do
+    begin
+      locADOQuery.Close;
+      FreeAndNil(locADOQuery);
+      locADOConnection.Close;
+      FreeAndNil(locADOConnection);
+      locLogMensagem := 'Ocorreu algum erro ao executar o comando SQL para consultar um registro da tabela [cep]!';
+      Plataforma_ERP_Logar(True, ERRO_MENSAGEM, locLogMensagem, locExcecao.Message, FONTE_NOME, PROCEDIMENTO_NOME);
+      VCLErroExibir(ERRO_MENSAGEM, locLogMensagem, locExcecao.Message);
+      Exit;
+    end;
+  end;
+
+  //
+  // Nenhum registro encontrado.
+  //
+  if locADOQuery.RecordCount <= 0 then
+  begin
+    locADOQuery.Close;
+    FreeAndNil(locADOQuery);
+    locADOConnection.Close;
+    FreeAndNil(locADOConnection);    
+    VCLConsistenciaExibir('Nenhum CEP encontrado com o código "' + locCEPCodigo + '" informado!');
+    argCEPID.Text   := '';
+    argCEPNome.Text := '';
+    argCEPCodigo.SetFocus;
+    Exit;
+  end;
+
+  //
+  // Apenas um registro encontrado.
+  //
+  if locADOQuery.RecordCount = 1 then
+  begin
+    argCEPID.Text     := IntegerStringConverter(locADOQuery.FieldByName('cep_id').AsInteger);
+    argCEPCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
+    argCEPNome.Text   := locADOQuery.FieldByName('nome').AsString;
+  end;
+
+  //
+  // Finaliza.
+  //
+  locADOQuery.Close;
+  FreeAndNil(locADOQuery);
+  locADOConnection.Close;
+  FreeAndNil(locADOConnection);
+  VCLCursorTrocar;
+
+  Result := True;
+end;
+
+//
+// Procedimento para selecionar um cep.
+//
+function Plataforma_ERP_VCL_CEPSelecionar(argCEPID    : TEdit;
+                                          argCEPCodigo: TEdit;
+                                          argCEPNome  : TEdit): Boolean;
+var
+  locFormulario  : TPlataformaERPVCLCEPSelecao;
+  locClicouFechar: Boolean;
+  locCEPID       : Integer;
+  locCEPCodigo   : string;
+  locCEPNome     : string;
+begin
+  Result := False;
+
+  locCEPID     := StringIntegerConverter(argCEPID.Text);
+  locCEPCodigo := StringTrim(argCEPCodigo.Text);
+  locCEPNome   := StringTrim(argCEPNome.Text);
+
+  locFormulario := TPlataformaERPVCLCEPSelecao.Create(nil);
+
+  locFormulario.pubCEPID  := locCEPID;
+  locFormulario.pubCodigo := locCEPCodigo;
+  locFormulario.pubNome   := locCEPNome;
+  
+  locFormulario.ShowModal;
+
+  locClicouFechar := locFormulario.pubClicouFechar;
+  locCEPID        := locFormulario.pubCEPID;
+  locCEPCodigo    := locFormulario.pubCodigo;
+  locCEPNome      := locFormulario.pubNome;
+  
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    argCEPID.Text     := IntegerStringConverter(locCEPID);
+    argCEPCodigo.Text := locCEPCodigo;
+    argCEPNome.Text   := locCEPNome;
     Result := False;
   end;
 end;
