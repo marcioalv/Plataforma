@@ -4,8 +4,8 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Estado'
-  ClientHeight = 362
-  ClientWidth = 601
+  ClientHeight = 367
+  ClientWidth = 592
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -67,15 +67,15 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
   end
   object imgBackground: TImage
     Left = 0
-    Top = 249
+    Top = 257
     Width = 105
     Height = 105
     Center = True
     Stretch = True
   end
   object btnGravar: TBitBtn
-    Left = 424
-    Top = 296
+    Left = 416
+    Top = 304
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -155,8 +155,8 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
     OnClick = btnGravarClick
   end
   object btnCancelar: TBitBtn
-    Left = 536
-    Top = 296
+    Left = 528
+    Top = 304
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -236,8 +236,8 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
     OnClick = btnCancelarClick
   end
   object btnMinimizar: TBitBtn
-    Left = 480
-    Top = 296
+    Left = 472
+    Top = 304
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -309,8 +309,8 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
     OnClick = btnMinimizarClick
   end
   object btnAlterar: TBitBtn
-    Left = 424
-    Top = 296
+    Left = 416
+    Top = 304
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -392,8 +392,8 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
   object pagFormulario: TPageControl
     Left = 48
     Top = 16
-    Width = 537
-    Height = 265
+    Width = 529
+    Height = 273
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
@@ -403,6 +403,8 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
+      ExplicitWidth = 529
+      ExplicitHeight = 237
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -444,7 +446,7 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
       end
       object lblPais: TLabel
         Left = 16
-        Top = 128
+        Top = 184
         Width = 24
         Height = 14
         Caption = 'Pais:'
@@ -457,7 +459,7 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
       end
       object imgPaisSelecionar: TImage
         Left = 312
-        Top = 147
+        Top = 203
         Width = 20
         Height = 20
         Cursor = crHandPoint
@@ -505,6 +507,19 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
         OnClick = imgPaisSelecionarClick
       end
+      object lblSigla: TLabel
+        Left = 16
+        Top = 128
+        Width = 28
+        Height = 14
+        Caption = 'Sigla:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
       object edtCodigo: TEdit
         Left = 16
         Top = 32
@@ -534,7 +549,7 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
         Font.Height = -15
         Font.Name = 'Tahoma'
         Font.Style = []
-        MaxLength = 250
+        MaxLength = 100
         ParentFont = False
         TabOrder = 1
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
@@ -545,10 +560,10 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
       end
       object gbxOpcoes: TGroupBox
         Left = 376
-        Top = 144
+        Top = 152
         Width = 129
         Height = 73
-        TabOrder = 7
+        TabOrder = 8
         object chkBloqueado: TCheckBox
           Left = 24
           Top = 16
@@ -632,7 +647,7 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
       end
       object edtPaisCodigo: TEdit
         Left = 16
-        Top = 144
+        Top = 200
         Width = 49
         Height = 26
         Alignment = taCenter
@@ -643,7 +658,7 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
         Font.Style = []
         MaxLength = 25
         ParentFont = False
-        TabOrder = 4
+        TabOrder = 5
         Text = '999'
         OnEnter = edtPaisCodigoEnter
         OnExit = edtPaisCodigoExit
@@ -652,7 +667,7 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
       end
       object edtPaisNome: TEdit
         Left = 72
-        Top = 144
+        Top = 200
         Width = 233
         Height = 26
         TabStop = False
@@ -666,12 +681,13 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
         ParentShowHint = False
         ReadOnly = True
         ShowHint = False
-        TabOrder = 5
+        TabOrder = 6
         Text = 'Xxxxxxxxxx Dddddddddd'
+        OnClick = edtPaisNomeClick
       end
       object edtPaisID: TEdit
         Left = 112
-        Top = 144
+        Top = 200
         Width = 65
         Height = 26
         TabStop = False
@@ -684,14 +700,36 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 6
+        TabOrder = 7
         Text = '999.999'
         Visible = False
+      end
+      object edtSigla: TEdit
+        Left = 16
+        Top = 144
+        Width = 153
+        Height = 26
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 15
+        ParentFont = False
+        TabOrder = 4
+        Text = 'Xxxxxxxxx Wwwww'
+        OnEnter = edtSiglaEnter
+        OnExit = edtSiglaExit
+        OnKeyPress = edtSiglaKeyPress
       end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 72
@@ -823,8 +861,8 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
     end
   end
   object btnFechar: TBitBtn
-    Left = 536
-    Top = 296
+    Left = 528
+    Top = 304
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -886,8 +924,8 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
     OnClick = btnFecharClick
   end
   object btnNovo: TBitBtn
-    Left = 368
-    Top = 296
+    Left = 360
+    Top = 304
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -961,7 +999,7 @@ object PlataformaERPVCLEstadoCadastro: TPlataformaERPVCLEstadoCadastro
   object mnuFormulario: TMainMenu
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
-    Left = 40
+    Left = 48
     Top = 296
     object mniAtualizar: TMenuItem
       Caption = 'Atualizar'

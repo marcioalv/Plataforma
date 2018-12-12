@@ -181,14 +181,7 @@ begin
   // Background do formulário.
   //
   Plataforma_ERP_VCL_FormularioBackground(imgBackground);
-
-  //
-  // Controla os componentes de exibição de cadastro.
-  //
-  VCLEditClickControlar(edtCodigoCadastrado, False);
-  VCLEditClickControlar(edtInsLocalDtHr,     False);
-  VCLEditClickControlar(edtUpdLocalDtHr,     False);
-  
+ 
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
   //
@@ -477,6 +470,13 @@ begin
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
   VCLEditLimpar(edtUpdContador);
+
+  //
+  // Controla os componentes de exibição de cadastro.
+  //
+  VCLEditClickControlar(edtCodigoCadastrado, False);
+  VCLEditClickControlar(edtInsLocalDtHr,     False);
+  VCLEditClickControlar(edtUpdLocalDtHr,     False);  
 end;
 
 //

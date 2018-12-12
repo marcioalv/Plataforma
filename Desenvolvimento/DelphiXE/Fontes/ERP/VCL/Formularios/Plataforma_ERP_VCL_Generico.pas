@@ -419,6 +419,8 @@ begin
   begin
     argComponente.Text := DateTimeStringConverter(locData, 'dd/mm/yyyy');
   end;
+
+  VCLMaskEditClickControlar(argComponente, (argComponente.Text <> ''));  
 end;
 
 //
@@ -523,6 +525,8 @@ procedure Plataforma_ERP_VCL_TipoUsuarioExibir(argLicencaID        : Integer;
 var
   locFormulario: TPlataformaERPVCLTiposUsuariosCadastro;
 begin
+  if argTipoUsuarioID <= 0 then Exit;
+
   locFormulario := TPlataformaERPVCLTiposUsuariosCadastro.Create(nil);
   locFormulario.pubLicencaID         := argLicencaID;
   locFormulario.pubTipoUsuarioBaseID := argTipoUsuarioBaseID;
@@ -560,6 +564,7 @@ begin
   // Retorno padrão.
   //
   Result := False;
+  VCLEditClickControlar(argTipoUsuarioDescricao, False);  
 
   //
   // Carrega variáveis.
@@ -733,7 +738,7 @@ begin
     argTipoUsuarioBaseID.Text    := IntegerStringConverter(locTipoUsuarioBaseID);
     argTipoUsuarioID.Text        := IntegerStringConverter(locTipoUsuarioID);
     argTipoUsuarioCodigo.Text    := locTipoUsuarioCodigo;
-    argTipoUsuarioDescricao.Text := locTipoUsuarioDescricao;
+    argTipoUsuarioDescricao.Text := locTipoUsuarioDescricao;    
   end;
 
   //
@@ -743,6 +748,8 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  VCLEditClickControlar(argTipoUsuarioDescricao, True);  
   VCLCursorTrocar;
 
   Result := True;
@@ -797,6 +804,8 @@ begin
     argTipoUsuarioDescricao.Text := locTipoUsuarioDescricao;
     Result := False;
   end;
+
+  VCLEditClickControlar(argTipoUsuarioDescricao, (argTipoUsuarioDescricao.Text <> ''));  
 end;
 
 //
@@ -823,6 +832,8 @@ procedure Plataforma_ERP_VCL_RegimeTributarioExibir(argRegimeTributarioID: Integ
 var
   locFormulario: TPlataformaERPVCLRegimeTributarioCadastro;
 begin
+  if argRegimeTributarioID <= 0 then Exit;
+
   locFormulario                       := TPlataformaERPVCLRegimeTributarioCadastro.Create(nil);
   locFormulario.pubRegimeTributarioID := argRegimeTributarioID;
   locFormulario.ShowModal;
@@ -850,6 +861,7 @@ begin
   // Retorno padrão.
   //
   Result := False;
+  VCLEditClickControlar(argRegimeTributarioDescricao, False);  
 
   //
   // Carrega variáveis.
@@ -973,6 +985,8 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  VCLEditClickControlar(argRegimeTributarioDescricao, True);  
   VCLCursorTrocar;
 
   Result := True;
@@ -1020,6 +1034,8 @@ begin
     argRegimeTributarioDescricao.Text := locRegimeTributarioDescricao;
     Result := False;
   end;
+
+  VCLEditClickControlar(argRegimeTributarioDescricao, (argRegimeTributarioDescricao.Text <> ''));  
 end;
 
 //
@@ -1046,6 +1062,8 @@ procedure Plataforma_ERP_VCL_LogradouroExibir(argLogradouroID: Integer);
 var
   locFormulario: TPlataformaERPVCLLogradouroCadastro;
 begin
+  if argLogradouroID <= 0 then Exit;
+
   locFormulario                 := TPlataformaERPVCLLogradouroCadastro.Create(nil);
   locFormulario.pubLogradouroID := argLogradouroID;
   locFormulario.ShowModal;
@@ -1073,6 +1091,7 @@ begin
   // Retorno padrão.
   //
   Result := False;
+  VCLEditClickControlar(argLogradouroDescricao, False);  
 
   //
   // Carrega variáveis.
@@ -1196,6 +1215,8 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  VCLEditClickControlar(argLogradouroDescricao, True);  
   VCLCursorTrocar;
 
   Result := True;
@@ -1243,6 +1264,8 @@ begin
     argLogradouroDescricao.Text := locLogradouroDescricao;
     Result := False;
   end;
+
+  VCLEditClickControlar(argLogradouroDescricao, (argLogradouroDescricao.Text <> ''));  
 end;
 
 //
@@ -1269,6 +1292,8 @@ procedure Plataforma_ERP_VCL_PaisExibir(argPaisID: Integer);
 var
   locFormulario: TPlataformaERPVCLPaisCadastro;
 begin
+  if argPaisID <= 0 then Exit;
+  
   locFormulario           := TPlataformaERPVCLPaisCadastro.Create(nil);
   locFormulario.pubPaisID := argPaisID;
   locFormulario.ShowModal;
@@ -1296,6 +1321,7 @@ begin
   // Retorno padrão.
   //
   Result := False;
+  VCLEditClickControlar(argPaisNome, False);
 
   //
   // Carrega variáveis.
@@ -1419,6 +1445,8 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  VCLEditClickControlar(argPaisNome, True);
   VCLCursorTrocar;
 
   Result := True;
@@ -1466,6 +1494,8 @@ begin
     argPaisNome.Text   := locPaisNome;
     Result := False;
   end;
+
+  VCLEditClickControlar(argPaisNome, (argPaisNome.Text <> ''));
 end;
 
 //
@@ -1492,6 +1522,8 @@ procedure Plataforma_ERP_VCL_EstadoExibir(argEstadoID: Integer);
 var
   locFormulario: TPlataformaERPVCLEstadoCadastro;
 begin
+  if argEstadoID <= 0 then Exit;
+
   locFormulario             := TPlataformaERPVCLEstadoCadastro.Create(nil);
   locFormulario.pubEstadoID := argEstadoID;
   locFormulario.ShowModal;
@@ -1519,6 +1551,7 @@ begin
   // Retorno padrão.
   //
   Result := False;
+  VCLEditClickControlar(argEstadoNome, False);  
 
   //
   // Carrega variáveis.
@@ -1642,6 +1675,8 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  VCLEditClickControlar(argEstadoNome, True);  
   VCLCursorTrocar;
 
   Result := True;
@@ -1689,6 +1724,8 @@ begin
     argEstadoNome.Text   := locEstadoNome;
     Result := False;
   end;
+
+  VCLEditClickControlar(argEstadoNome, (argEstadoNome.Text <> ''));  
 end;
 
 //
@@ -1715,6 +1752,8 @@ procedure Plataforma_ERP_VCL_CidadeExibir(argCidadeID: Integer);
 var
   locFormulario: TPlataformaERPVCLCidadeCadastro;
 begin
+  if argCidadeID <= 0 then Exit;
+
   locFormulario             := TPlataformaERPVCLCidadeCadastro.Create(nil);
   locFormulario.pubCidadeID := argCidadeID;
   locFormulario.ShowModal;
@@ -1742,6 +1781,7 @@ begin
   // Retorno padrão.
   //
   Result := False;
+  VCLEditClickControlar(argCidadeNome, False);  
 
   //
   // Carrega variáveis.
@@ -1865,6 +1905,8 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  VCLEditClickControlar(argCidadeNome, True);  
   VCLCursorTrocar;
 
   Result := True;
@@ -1912,6 +1954,8 @@ begin
     argCidadeNome.Text   := locCidadeNome;
     Result := False;
   end;
+
+  VCLEditClickControlar(argCidadeNome, (argCidadeNome.Text <> ''));  
 end;
 
 //
@@ -1938,6 +1982,8 @@ procedure Plataforma_ERP_VCL_BairroExibir(argBairroID: Integer);
 var
   locFormulario: TPlataformaERPVCLBairroCadastro;
 begin
+  if argBairroID <= 0 then Exit;
+
   locFormulario             := TPlataformaERPVCLBairroCadastro.Create(nil);
   locFormulario.pubBairroID := argBairroID;
   locFormulario.ShowModal;
@@ -1965,6 +2011,7 @@ begin
   // Retorno padrão.
   //
   Result := False;
+  VCLEditClickControlar(argBairroNome, False);  
 
   //
   // Carrega variáveis.
@@ -2088,6 +2135,8 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  VCLEditClickControlar(argBairroNome, True);  
   VCLCursorTrocar;
 
   Result := True;
@@ -2135,6 +2184,8 @@ begin
     argBairroNome.Text   := locBairroNome;
     Result := False;
   end;
+
+  VCLEditClickControlar(argBairroNome, (argBairroNome.Text <> ''));  
 end;
 
 //
@@ -2161,6 +2212,8 @@ procedure Plataforma_ERP_VCL_CEPExibir(argCEPID: Integer);
 var
   locFormulario: TPlataformaERPVCLCEPCadastro;
 begin
+  if argCEPID <= 0 then Exit;
+
   locFormulario          := TPlataformaERPVCLCEPCadastro.Create(nil);
   locFormulario.pubCEPID := argCEPID;
   locFormulario.ShowModal;
@@ -2188,6 +2241,7 @@ begin
   // Retorno padrão.
   //
   Result := False;
+  VCLEditClickControlar(argCEPNome, False);  
 
   //
   // Carrega variáveis.
@@ -2311,6 +2365,8 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  VCLEditClickControlar(argCEPNome, True);  
   VCLCursorTrocar;
 
   Result := True;
@@ -2358,6 +2414,8 @@ begin
     argCEPNome.Text   := locCEPNome;
     Result := False;
   end;
+
+  VCLEditClickControlar(argCEPNome, (argCEPNome.Text <> ''));  
 end;
 
 //
@@ -2386,6 +2444,8 @@ procedure Plataforma_ERP_VCL_EmpresaExibir(argLicencaID    : Integer;
 var
   locFormulario: TPlataformaERPVCLEmpresaCadastro;
 begin
+  if argEmpresaID <= 0 then Exit;
+
   locFormulario := TPlataformaERPVCLEmpresaCadastro.Create(nil);
   locFormulario.pubLicencaID     := argLicencaID;
   locFormulario.pubEmpresaBaseID := argEmpresaBaseID;
@@ -2423,6 +2483,7 @@ begin
   // Retorno padrão.
   //
   Result := False;
+  VCLEditClickControlar(argEmpresaDescricao, False);  
 
   //
   // Carrega variáveis.
@@ -2606,6 +2667,8 @@ begin
   FreeAndNil(locADOQuery);
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
+
+  VCLEditClickControlar(argEmpresaDescricao, True);  
   VCLCursorTrocar;
 
   Result := True;
@@ -2660,6 +2723,8 @@ begin
     argEmpresaDescricao.Text := locEmpresaDescricao;
     Result := False;
   end;
+
+  VCLEditClickControlar(argEmpresaDescricao, (argEmpresaDescricao.Text <> ''));  
 end;
 
 end.

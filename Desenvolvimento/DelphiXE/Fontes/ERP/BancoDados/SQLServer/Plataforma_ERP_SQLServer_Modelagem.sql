@@ -576,6 +576,7 @@ CREATE TABLE [estado] (
   [estado_id]        SMALLINT                                  NOT NULL,
   [codigo]           VARCHAR(25)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [nome]             VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [sigla]            VARCHAR(15)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [pais_id]          SMALLINT                                  NOT NULL,
   [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
