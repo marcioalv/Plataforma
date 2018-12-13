@@ -652,13 +652,16 @@ GO
 -- CEP.
 --
 CREATE TABLE [cep] (
-  [pais_id]          SMALLINT                                  NOT NULL,
-  [cep]              INT                                       NOT NULL,
+  [cep_id]           INT                                       NOT NULL,
+  [cep]              VARCHAR(25)                               NOT NULL,
   [logradouro_id]    SMALLINT                                  NOT NULL,
   [endereco]         VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [complemento]      VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bairro_id]        INT                                       NOT NULL,
   [cidade_id]        INT                                       NOT NULL,
   [estado_id]        SMALLINT                                  NOT NULL,
+  [pais_id]          SMALLINT                                  NOT NULL,
+  [generico]         CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ins_local_dt_hr]  DATETIME                                  NOT NULL,
@@ -667,16 +670,18 @@ CREATE TABLE [cep] (
   [upd_server_dt_hr] DATETIME                                  NULL,
   [upd_contador]     INT                                       NOT NULL,
   
-  CONSTRAINT [cep_pk]        PRIMARY KEY CLUSTERED ([pais_id], [cep]),
+  CONSTRAINT [cep_pk]     PRIMARY KEY CLUSTERED ([cep_id]),
+  CONSTRAINT [cep_ix_cep] UNIQUE ([cep], [pais_id]),
   
+  CONSTRAINT [cep_ck_generico]  CHECK ([generico]  IN ('S', 'N')),
   CONSTRAINT [cep_ck_bloqueado] CHECK ([bloqueado] IN ('S', 'N')),
   CONSTRAINT [cep_ck_ativo]     CHECK ([ativo]     IN ('S', 'N')),
 
-  CONSTRAINT [cep_fk_pais]       FOREIGN KEY ([pais_id])       REFERENCES [pais]       ([pais_id]),
   CONSTRAINT [cep_fk_logradouro] FOREIGN KEY ([logradouro_id]) REFERENCES [logradouro] ([logradouro_id]),
   CONSTRAINT [cep_fk_bairro]     FOREIGN KEY ([bairro_id])     REFERENCES [bairro]     ([bairro_id]),
   CONSTRAINT [cep_fk_cidade]     FOREIGN KEY ([cidade_id])     REFERENCES [cidade]     ([cidade_id]),
-  CONSTRAINT [cep_fk_estado]     FOREIGN KEY ([estado_id])     REFERENCES [estado]     ([estado_id])
+  CONSTRAINT [cep_fk_estado]     FOREIGN KEY ([estado_id])     REFERENCES [estado]     ([estado_id]),
+  CONSTRAINT [cep_fk_pais]       FOREIGN KEY ([pais_id])       REFERENCES [pais]       ([pais_id])
 )
 GO
 
@@ -1162,6 +1167,16 @@ INSERT INTO [cidade] VALUES (2, '02', 'Pinhais',  1, 'N', 'S', GETDATE(), GETDAT
 INSERT INTO [cidade] VALUES (3, '03', 'Colombo',  1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 INSERT INTO [numerador_base] VALUES ('cidade_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+
+--
+-- Bairro.
+--
+INSERT INTO [bairro] VALUES (1, '01', 'Centro',       1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [bairro] VALUES (2, '02', 'Pinheirinho',  1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [bairro] VALUES (3, '03', 'Boqueirão',    1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+INSERT INTO [numerador_base] VALUES ('bairro_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 
 --

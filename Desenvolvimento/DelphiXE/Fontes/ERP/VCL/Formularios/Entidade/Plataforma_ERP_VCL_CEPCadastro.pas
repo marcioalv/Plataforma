@@ -38,10 +38,10 @@ type
     pagFormulario: TPageControl;
     tabCadastro: TTabSheet;
     tabAuditoria: TTabSheet;
-    lblCodigo: TLabel;
-    edtCodigo: TEdit;
+    lblCEP: TLabel;
+    edtCEP: TEdit;
     lblNome: TLabel;
-    edtNome: TEdit;
+    edtEndereco: TEdit;
     lblInsDtHt: TLabel;
     edtInsLocalDtHr: TEdit;
     lblUpdDtHr: TLabel;
@@ -69,23 +69,30 @@ type
     gbxOpcoes: TGroupBox;
     chkBloqueado: TCheckBox;
     chkAtivo: TCheckBox;
-    lblCodigoCadastrado: TLabel;
-    edtCodigoCadastrado: TEdit;
-    edtCodigoCadastradoID: TEdit;
+    lblCEPCadastrado: TLabel;
+    edtCEPCadastrado: TEdit;
+    edtCEPCadastradoID: TEdit;
+    lblComplemento: TLabel;
+    edtComplemento: TEdit;
+    lblLogradouro: TLabel;
+    edtLogradouroCodigo: TEdit;
+    edtLogradouroDescricao: TEdit;
+    edtLogradouroID: TEdit;
+    imgLogradouroSelecionar: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnMinimizarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
-    procedure edtCodigoEnter(Sender: TObject);
-    procedure edtCodigoExit(Sender: TObject);
-    procedure edtCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure edtCodigoKeyPress(Sender: TObject; var Key: Char);
-    procedure edtNomeEnter(Sender: TObject);
-    procedure edtNomeExit(Sender: TObject);
-    procedure edtNomeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure edtNomeKeyPress(Sender: TObject; var Key: Char);
+    procedure edtCEPEnter(Sender: TObject);
+    procedure edtCEPExit(Sender: TObject);
+    procedure edtCEPKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtCEPKeyPress(Sender: TObject; var Key: Char);
+    procedure edtEnderecoEnter(Sender: TObject);
+    procedure edtEnderecoExit(Sender: TObject);
+    procedure edtEnderecoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtEnderecoKeyPress(Sender: TObject; var Key: Char);
     procedure chkBloqueadoEnter(Sender: TObject);
     procedure chkBloqueadoExit(Sender: TObject);
     procedure chkBloqueadoKeyPress(Sender: TObject; var Key: Char);
@@ -105,7 +112,16 @@ type
     procedure mniExcluirClick(Sender: TObject);
     procedure mniNovoClick(Sender: TObject);
     procedure mniAtualizarClick(Sender: TObject);
-    procedure edtCodigoCadastradoClick(Sender: TObject);
+    procedure edtCEPCadastradoClick(Sender: TObject);
+    procedure edtComplementoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtComplementoEnter(Sender: TObject);
+    procedure edtComplementoExit(Sender: TObject);
+    procedure edtLogradouroCodigoExit(Sender: TObject);
+    procedure edtLogradouroCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtLogradouroCodigoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtLogradouroCodigoEnter(Sender: TObject);
+    procedure imgLogradouroSelecionarClick(Sender: TObject);
+    procedure edtLogradouroDescricaoClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -118,7 +134,7 @@ type
     procedure FormularioGravar;
     procedure FormularioCancelar;
     procedure FormularioExcluir;
-    procedure FormularioCodigoSugerir;
+    procedure FormularioCEPSugerir;
     function  LogDadosGerar(argCEPID: Integer = 0): string;
   public
     pubDadosAtualizados: Boolean;
@@ -176,13 +192,6 @@ begin
   // Background do formulário.
   //
   Plataforma_ERP_VCL_FormularioBackground(imgBackground);
-
-  //
-  // Controla os componentes de exibição de cadastro.
-  //
-  VCLEditClickControlar(edtCodigoCadastrado, False);
-  VCLEditClickControlar(edtInsLocalDtHr,     False);
-  VCLEditClickControlar(edtUpdLocalDtHr,     False);
   
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
@@ -256,32 +265,32 @@ begin
 end;
 
 //
-// Eventos do componente "código".
+// Eventos do componente "CEP".
 //
-procedure TPlataformaERPVCLCEPCadastro.edtCodigoEnter(Sender: TObject);
+procedure TPlataformaERPVCLCEPCadastro.edtCEPEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtCodigo) then Exit;
+  if not VCLEditEntrar(edtCEP) then Exit;
 end;
 
-procedure TPlataformaERPVCLCEPCadastro.edtCodigoKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLCEPCadastro.edtCEPKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
 end;
 
-procedure TPlataformaERPVCLCEPCadastro.edtCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLCEPCadastro.edtCEPKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   Exit;
 end;
 
-procedure TPlataformaERPVCLCEPCadastro.edtCodigoExit(Sender: TObject);
+procedure TPlataformaERPVCLCEPCadastro.edtCEPExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtCodigo) then Exit;
+  if not VCLEditSair(edtCEP) then Exit;
 end;
 
 //
 // Evento de click no código sugerido.
 //
-procedure TPlataformaERPVCLCEPCadastro.edtCodigoCadastradoClick(Sender: TObject);
+procedure TPlataformaERPVCLCEPCadastro.edtCEPCadastradoClick(Sender: TObject);
 var
   locFormulario      : TPlataformaERPVCLCEPCadastro;
   locDadosAtualizados: Boolean;
@@ -299,31 +308,87 @@ begin
 
   if locDadosAtualizados then
   begin
-    FormularioCodigoSugerir;
+    FormularioCEPSugerir;
   end;
 end;
 
 //
-// Eventos do componente "nome".
+// Eventos do componente "logradouro".
 //
-procedure TPlataformaERPVCLCEPCadastro.edtNomeEnter(Sender: TObject);
+procedure TPlataformaERPVCLCEPCadastro.edtLogradouroCodigoEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtNome) then Exit;
+  if not VCLEditEntrar(edtLogradouroCodigo) then Exit;
 end;
 
-procedure TPlataformaERPVCLCEPCadastro.edtNomeKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLCEPCadastro.edtLogradouroCodigoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
+end;
+
+procedure TPlataformaERPVCLCEPCadastro.edtLogradouroCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = F2 then imgLogradouroSelecionarClick(Sender);
+end;
+
+procedure TPlataformaERPVCLCEPCadastro.edtLogradouroCodigoExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtLogradouroCodigo) then Exit;
+
+  if not Plataforma_ERP_VCL_LogradouroValidar((edtCEPID.Text = STR_NOVO),
+                                              edtLogradouroID,
+                                              edtLogradouroCodigo,
+                                              edtLogradouroDescricao) then Exit;
+end;
+
+procedure TPlataformaERPVCLCEPCadastro.imgLogradouroSelecionarClick(Sender: TObject);
+begin
+  if not Plataforma_ERP_VCL_LogradouroSelecionar(edtLogradouroID, edtLogradouroCodigo, edtLogradouroDescricao) then Exit;
+end;
+
+procedure TPlataformaERPVCLCEPCadastro.edtLogradouroDescricaoClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_LogradouroExibir(StringIntegerConverter(edtLogradouroID.Text));
+end;
+
+//
+// Eventos do componente "endereço".
+//
+procedure TPlataformaERPVCLCEPCadastro.edtEnderecoEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtEndereco) then Exit;
+end;
+
+procedure TPlataformaERPVCLCEPCadastro.edtEnderecoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLCEPCadastro.edtNomeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TPlataformaERPVCLCEPCadastro.edtEnderecoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   Exit;
 end;
 
-procedure TPlataformaERPVCLCEPCadastro.edtNomeExit(Sender: TObject);
+procedure TPlataformaERPVCLCEPCadastro.edtEnderecoExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtNome) then Exit;
+  if not VCLEditSair(edtEndereco) then Exit;
+end;
+
+//
+// Eventos do componente "complemento".
+//
+procedure TPlataformaERPVCLCEPCadastro.edtComplementoEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtComplemento) then Exit;
+end;
+
+procedure TPlataformaERPVCLCEPCadastro.edtComplementoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLCEPCadastro.edtComplementoExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtComplemento) then Exit
 end;
 
 //
@@ -437,14 +502,18 @@ begin
   VCLPageControlInicializar(pagFormulario);
 
   // Limpa componentes da aba "cadastro".
-  VCLEditLimpar    (edtCodigo);
-  VCLEditLimpar    (edtNome);
+  VCLEditLimpar(edtCEP);
+  VCLEditLimpar(edtLogradouroID);
+  VCLEditLimpar(edtLogradouroCodigo);
+  VCLEditLimpar(edtLogradouroDescricao);
+  VCLEditLimpar(edtEndereco);
+  VCLEditLimpar(edtComplemento);
 
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
 
-  VCLEditLimpar(edtCodigoCadastrado);
-  VCLEditLimpar(edtCodigoCadastradoID);
+  VCLEditLimpar(edtCEPCadastrado);
+  VCLEditLimpar(edtCEPCadastradoID);
 
   //
   // Limpa componentes da aba "auditoria".
@@ -453,6 +522,14 @@ begin
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
   VCLEditLimpar(edtUpdContador);
+
+  //
+  // Controla os componentes de exibição de cadastro.
+  //
+  VCLEditClickControlar(edtCEPCadastrado,       False);
+  VCLEditClickControlar(edtLogradouroDescricao, False);
+  VCLEditClickControlar(edtInsLocalDtHr,        False);
+  VCLEditClickControlar(edtUpdLocalDtHr,        False);
 end;
 
 //
@@ -471,22 +548,25 @@ begin
   //
   // Controla os componentes do formulário.
   //
-  VCLEditControlar(edtCodigo,    argEditar);
-  VCLEditControlar(edtNome, argEditar);
+  VCLEditControlar(edtCEP,              argEditar);
+  VCLEditControlar(edtLogradouroCodigo, argEditar);
+  VCLEditControlar(edtEndereco,         argEditar);
+  VCLEditControlar(edtComplemento,      argEditar);
 
   gbxOpcoes.Enabled := argEditar;
 
   //
   // Exibe o último código cadastrado somente se for um novo cadastro.
   //
-  lblCodigoCadastrado.Visible := (argEditar) and (not locDadosPopulados);
-  edtCodigoCadastrado.Visible := (argEditar) and (not locDadosPopulados);
+  lblCEPCadastrado.Visible := (argEditar) and (not locDadosPopulados);
+  edtCEPCadastrado.Visible := (argEditar) and (not locDadosPopulados);
 
   //
   // Controla os componentes de exibição de cadastro.
   //
-  VCLEditClickControlar(edtInsLocalDtHr, True);
-  VCLEditClickControlar(edtUpdLocalDtHr, True);
+  VCLEditClickControlar(edtLogradouroDescricao, True);
+  VCLEditClickControlar(edtInsLocalDtHr,        True);
+  VCLEditClickControlar(edtUpdLocalDtHr,        True);
 
   //
   // Controla os itens de menu do formulário.
@@ -525,7 +605,7 @@ begin
   // Ajusta o título do formulário.
   //
   Self.Caption     := 'CEP';
-  locIdentificador := ': ' + edtNome.Text;
+  locIdentificador := ': ' + edtCEP.Text;
 
   if (not locDadosPopulados) and (argEditar) then Self.Caption := Self.Caption + ' - novo cadastro';
   if locDadosPopulados and argEditar         then Self.Caption := Self.Caption + ' - alterando cadastro'   + locIdentificador;
@@ -565,9 +645,9 @@ begin
   chkAtivo.Checked := True;
 
   //
-  // Exibe o último código cadastrado.
+  // Exibe o último CEP cadastrado.
   //
-  FormularioCodigoSugerir;
+  FormularioCEPSugerir;
 
   //
   // Componentes ligados para edição.
@@ -577,7 +657,7 @@ begin
   //
   // Coloca o foco no código.
   //
-  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCodigo);
+  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCEP);
 end;
 
 //
@@ -632,19 +712,27 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                     ');
-  locADOQuery.SQL.Add('  [cep].[cep_id],          ');
-  locADOQuery.SQL.Add('  [cep].[codigo],          ');
-  locADOQuery.SQL.Add('  [cep].[nome],            ');
-  locADOQuery.SQL.Add('  [cep].[bloqueado],       ');
-  locADOQuery.SQL.Add('  [cep].[ativo],           ');
-  locADOQuery.SQL.Add('  [cep].[ins_local_dt_hr], ');
-  locADOQuery.SQL.Add('  [cep].[upd_local_dt_hr], ');
-  locADOQuery.SQL.Add('  [cep].[upd_contador]     ');  
-  locADOQuery.SQL.Add('FROM                       ');
-  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)      ');
-  locADOQuery.SQL.Add('WHERE                      ');
-  locADOQuery.SQL.Add('  [cep].[cep_id] = :cep_id ');
+  locADOQuery.SQL.Add('SELECT                                                      ');
+  locADOQuery.SQL.Add('  [cep].[cep_id],                                           ');
+  locADOQuery.SQL.Add('  [cep].[cep],                                              ');
+
+  locADOQuery.SQL.Add('  [logradouro].[logradouro_id] AS [logradouro_id],          ');
+  locADOQuery.SQL.Add('  [logradouro].[codigo]        AS [logradouro_codigo],      ');
+  locADOQuery.SQL.Add('  [logradouro].[descricao]     AS [logradouro_descricao],   ');
+  
+  locADOQuery.SQL.Add('  [cep].[endereco],                                         ');
+  locADOQuery.SQL.Add('  [cep].[complemento],                                      ');
+  locADOQuery.SQL.Add('  [cep].[bloqueado],                                        ');
+  locADOQuery.SQL.Add('  [cep].[ativo],                                            ');
+  locADOQuery.SQL.Add('  [cep].[ins_local_dt_hr],                                  ');
+  locADOQuery.SQL.Add('  [cep].[upd_local_dt_hr],                                  ');
+  locADOQuery.SQL.Add('  [cep].[upd_contador]                                      ');
+  locADOQuery.SQL.Add('FROM                                                        ');
+  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)                                       ');
+  locADOQuery.SQL.Add('  INNER JOIN [logradouro] WITH (NOLOCK)                     ');
+  locADOQuery.SQL.Add('    ON [logradouro].[logradouro_id] = [cep].[logradouro_id] ');
+  locADOQuery.SQL.Add('WHERE                                                       ');
+  locADOQuery.SQL.Add('  [cep].[cep_id] = :cep_id                                  ');
 
   locADOQuery.Parameters.ParamByName('cep_id').Value := argCEPID;
 
@@ -675,8 +763,14 @@ begin
     //
     // Carrega componentes.
     //
-    edtCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
-    edtNome.Text   := locADOQuery.FieldByName('nome').AsString;
+    edtCEP.Text         := locADOQuery.FieldByName('cep').AsString;
+
+    edtLogradouroID.Text        := IntegerStringConverter(locADOQuery.FieldByName('logradouro_id').AsInteger);
+    edtLogradouroCodigo.Text    := locADOQuery.FieldByName('logradouro_codigo').AsString;
+    edtLogradouroDescricao.Text := locADOQuery.FieldByName('logradouro_descricao').AsString;
+    
+    edtEndereco.Text    := locADOQuery.FieldByName('endereco').AsString;
+    edtComplemento.Text := locADOQuery.FieldByName('complemento').AsString;
 
     chkBloqueado.Checked := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked     := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
@@ -710,7 +804,7 @@ begin
   //
   // Coloca o foco no código.
   //
-  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCodigo);
+  VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCEP);
 end;
 
 //
@@ -732,8 +826,10 @@ var
   locCEPLogDados   : string;
 
   locCEPID         : Integer;
-  locCodigo        : string;
-  locNome          : string;
+  locCEP           : string;
+  locLogradouroID  : Integer;
+  locEndereco      : string;
+  locComplemento   : string;
   locBloqueado     : Boolean;
   locAtivo         : Boolean;
   locInsLocalDtHr  : TDateTime;
@@ -756,8 +852,10 @@ begin
   // Carrega variáveis com o conteúdo dos componentes.
   //
   locCEPID         := StringIntegerConverter(edtCEPID.Text);
-  locCodigo        := StringTrim(edtCodigo.Text);
-  locNome          := StringTrim(edtNome.Text);
+  locCEP           := StringTrim(edtCEP.Text);
+  locLogradouroID  := StringIntegerConverter(edtLogradouroID.Text);
+  locEndereco      := StringTrim(edtEndereco.Text);
+  locComplemento   := StringTrim(edtComplemento.Text);
   locBloqueado     := chkBloqueado.Checked;
   locAtivo         := chkAtivo.Checked;
   locUsuarioBaseID := gloUsuarioBaseID;
@@ -769,17 +867,24 @@ begin
   //
   // Consiste as informações.
   //
-  if locCodigo = '' then
+  if locCEP = '' then
   begin
     VCLConsistenciaExibir('O código do CEP deve ser informado!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCodigo);
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtCEP);
     Exit;
   end;
 
-  if locNome = '' then
+  if locLogradouroID <= 0 then
   begin
-    VCLConsistenciaExibir('O nome do CEP deve ser informado!');
-    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtNome);
+    VCLConsistenciaExibir('Um logradouro para o endereço deve ser informado!');
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtLogradouroCodigo);
+    Exit;
+  end;
+
+  if locEndereco = '' then
+  begin
+    VCLConsistenciaExibir('O endereço do CEP deve ser informado!');
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtEndereco);
     Exit;
   end;
 
@@ -823,15 +928,15 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT TOP 1                    ');
-  locADOQuery.SQL.Add('  1                             ');
-  locADOQuery.SQL.Add('FROM                            ');
-  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)           ');
-  locADOQuery.SQL.Add('WHERE                           ');
-  locADOQuery.SQL.Add('  [cep].[codigo]  = :codigo AND ');
-  locADOQuery.SQL.Add('  [cep].[cep_id] <> :cep_id     ');
+  locADOQuery.SQL.Add('SELECT TOP 1                 ');
+  locADOQuery.SQL.Add('  1                          ');
+  locADOQuery.SQL.Add('FROM                         ');
+  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)        ');
+  locADOQuery.SQL.Add('WHERE                        ');
+  locADOQuery.SQL.Add('  [cep].[cep]     = :cep AND ');
+  locADOQuery.SQL.Add('  [cep].[cep_id] <> :cep_id  ');
 
-  locADOQuery.Parameters.ParamByName('codigo').Value := locCodigo;
+  locADOQuery.Parameters.ParamByName('cep').Value    := locCEP;
   locADOQuery.Parameters.ParamByName('cep_id').Value := locCEPID;
 
   try
@@ -856,7 +961,7 @@ begin
     FreeAndNil(locADOQuery);
     locADOConnection.Close;
     FreeAndNil(locADOConnection);
-    locLogMensagem := 'O código "' + locCodigo + '" informado para o CEP já existe em algum outro cadastro!';
+    locLogMensagem := 'O código "' + locCEP + '" informado para o CEP já existe em algum outro cadastro!';
     Plataforma_ERP_Logar(False, ERRO_MENSAGEM, locLogMensagem, FONTE_NOME, PROCEDIMENTO_NOME);
     VCLConsistenciaExibir(ERRO_MENSAGEM, locLogMensagem);
     Exit;
@@ -979,8 +1084,10 @@ begin
     //
     locADOQuery.SQL.Add('INSERT INTO [cep] (   ');
     locADOQuery.SQL.Add('  [cep_id],           ');
-    locADOQuery.SQL.Add('  [codigo],           ');
-    locADOQuery.SQL.Add('  [nome],             ');
+    locADOQuery.SQL.Add('  [cep],              ');
+    locADOQuery.SQL.Add('  [logradouro_id],    ');
+    locADOQuery.SQL.Add('  [endereco],         ');
+    locADOQuery.SQL.Add('  [complemento],      ');
     locADOQuery.SQL.Add('  [bloqueado],        ');
     locADOQuery.SQL.Add('  [ativo],            ');
     locADOQuery.SQL.Add('  [ins_local_dt_hr],  ');
@@ -991,8 +1098,10 @@ begin
     locADOQuery.SQL.Add(')                     ');
     locADOQuery.SQL.Add('VALUES (              ');
     locADOQuery.SQL.Add('  :cep_id,            '); // [cep_id].
-    locADOQuery.SQL.Add('  :codigo,            '); // [codigo].
-    locADOQuery.SQL.Add('  :nome,              '); // [nome].
+    locADOQuery.SQL.Add('  :cep,               '); // [cep].
+    locADOQuery.SQL.Add('  :logradouro_id,     '); // [logradouro_id].
+    locADOQuery.SQL.Add('  :endereco,          '); // [endereco].
+    locADOQuery.SQL.Add('  :complemento,       '); // [complemento].
     locADOQuery.SQL.Add('  :bloqueado,         '); // [bloqueado].
     locADOQuery.SQL.Add('  :ativo,             '); // [ativo].
     locADOQuery.SQL.Add('  :local_dt_hr,       '); // [ins_local_dt_hr].
@@ -1010,8 +1119,10 @@ begin
     locADOQuery.SQL.Add('UPDATE                                    ');
     locADOQuery.SQL.Add('  [cep]                                   ');
     locADOQuery.SQL.Add('SET                                       ');
-    locADOQuery.SQL.Add('  [codigo]           = :codigo,           ');
-    locADOQuery.SQL.Add('  [nome]             = :nome,             ');
+    locADOQuery.SQL.Add('  [cep]              = :cep,              ');
+    locADOQuery.SQL.Add('  [logradouro_id]    = :logradouro_id,    ');
+    locADOQuery.SQL.Add('  [endereco]         = :endereco,         ');
+    locADOQuery.SQL.Add('  [complemento]      = :complemento,      ');
     locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,        ');
     locADOQuery.SQL.Add('  [ativo]            = :ativo,            ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,      ');
@@ -1024,12 +1135,14 @@ begin
   //
   // Parâmetros.
   //
-  locADOQuery.Parameters.ParamByName('cep_id').Value      := locCEPID;
-  locADOQuery.Parameters.ParamByName('codigo').Value      := locCodigo;
-  locADOQuery.Parameters.ParamByName('nome').Value        := locNome;
-  locADOQuery.Parameters.ParamByName('bloqueado').Value   := BooleanStringConverter(locBloqueado);
-  locADOQuery.Parameters.ParamByName('ativo').Value       := BooleanStringConverter(locAtivo);
-  locADOQuery.Parameters.ParamByName('local_dt_hr').Value := Now;
+  locADOQuery.Parameters.ParamByName('cep_id').Value        := locCEPID;
+  locADOQuery.Parameters.ParamByName('cep').Value           := locCEP;
+  locADOQuery.Parameters.ParamByName('logradouro_id').Value := locLogradouroID;
+  locADOQuery.Parameters.ParamByName('endereco').Value      := locEndereco;
+  locADOQuery.Parameters.ParamByName('complemento').Value   := locComplemento;
+  locADOQuery.Parameters.ParamByName('bloqueado').Value     := BooleanStringConverter(locBloqueado);
+  locADOQuery.Parameters.ParamByName('ativo').Value         := BooleanStringConverter(locAtivo);
+  locADOQuery.Parameters.ParamByName('local_dt_hr').Value   := Now;
 
   try
     locADOQuery.ExecSQL;
@@ -1140,7 +1253,7 @@ begin
   // Grava log de ocorrência.
   //  
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locCEPID, locCodigo, 'cep', locCEPLogMsg, locCEPLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(locRegistroAcao, locCEPID, locCEP, 'cep', locCEPLogMsg, locCEPLogDados);
   except
     on locExcecao: Exception do
     begin
@@ -1309,7 +1422,7 @@ begin
   // Log de ocorrência.
   //
   try
-    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locCEPID, edtCodigo.Text, 'cep', 'Registro excluído com sucesso!', locCEPLogDados);
+    Plataforma_ERP_ADO_LogOcorrenciaInserir(REGISTRO_ACAO_EXCLUSAO, locCEPID, edtCEP.Text, 'cep', 'Registro excluído com sucesso!', locCEPLogDados);
   except
   end;
   VCLInformacaoExibir('CEP excluído com sucesso!');
@@ -1351,11 +1464,11 @@ begin
 end;
 
 //
-// Procedimento par sugerir o próximo código.
+// Procedimento par sugerir o próximo CEP.
 //
-procedure TPlataformaERPVCLCEPCadastro.FormularioCodigoSugerir;
+procedure TPlataformaERPVCLCEPCadastro.FormularioCEPSugerir;
 const
-  PROCEDIMENTO_NOME: string = 'FormularioCodigoSugerir';
+  PROCEDIMENTO_NOME: string = 'FormularioCEPSugerir';
   ERRO_MENSAGEM    : string = 'Impossível sugerir informações sobre o próximo código do CEP!';
 var
   locADOConnection : TADOConnection;
@@ -1370,8 +1483,8 @@ begin
   //
   // Limpa componente.
   //
-  VCLEditLimpar(edtCodigoCadastrado);
-  VCLEditLimpar(edtCodigoCadastradoID);
+  VCLEditLimpar(edtCEPCadastrado);
+  VCLEditLimpar(edtCEPCadastradoID);
 
   //
   // Conexão ao banco de dados.
@@ -1405,12 +1518,12 @@ begin
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT TOP 1                     ');
   locADOQuery.SQL.Add('  [cep].[cep_id],                ');
-  locADOQuery.SQL.Add('  [cep].[codigo]                 ');
+  locADOQuery.SQL.Add('  [cep].[cep]                    ');
   locADOQuery.SQL.Add('FROM                             ');
   locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)            ');
   locADOQuery.SQL.Add('ORDER BY                         ');
   locADOQuery.SQL.Add('  [cep].[ins_server_dt_hr] DESC, ');
-  locADOQuery.SQL.Add('  [cep].[codigo] DESC            ');
+  locADOQuery.SQL.Add('  [cep].[cep] DESC               ');
 
   //
   // Executa query.
@@ -1436,10 +1549,10 @@ begin
   //
   if locADOQuery.RecordCount > 0 then
   begin
-    edtCodigoCadastrado.Text   := locADOQuery.FieldByName('codigo').AsString;
-    edtCodigoCadastradoID.Text := IntegerStringConverter(locADOQuery.FieldByName('cep_id').AsInteger);
+    edtCEPCadastrado.Text   := locADOQuery.FieldByName('cep').AsString;
+    edtCEPCadastradoID.Text := IntegerStringConverter(locADOQuery.FieldByName('cep_id').AsInteger);
 
-    VCLEditClickControlar(edtCodigoCadastrado, True);
+    VCLEditClickControlar(edtCEPCadastrado, True);
   end;
 
   //
@@ -1466,11 +1579,15 @@ begin
     locCEPID := argCEPID;
 
   Result := '';
-  LogDadosIntegerDescrever('ID do CEP', locCEPID,             Result);
-  LogDadosStringDescrever ('Código',    edtCodigo.Text,       Result);
-  LogDadosStringDescrever ('Nome',      edtNome.Text,         Result);
-  LogDadosBooleanDescrever('Bloqueado', chkBloqueado.Checked, Result);
-  LogDadosBooleanDescrever('Ativo',     chkAtivo.Checked,     Result);
+  LogDadosIntegerDescrever('ID do CEP',            locCEPID,                    Result);
+  LogDadosStringDescrever ('CEP',                  edtCEP.Text,                 Result);
+  LogDadosStringDescrever ('ID do logradouro',     edtLogradouroID.Text,        Result);
+  LogDadosStringDescrever ('Código do logradouro', edtLogradouroCodigo.Text,    Result);
+  LogDadosStringDescrever ('Logradouro',           edtLogradouroDescricao.Text, Result);
+  LogDadosStringDescrever ('Endereço',             edtEndereco.Text,            Result);
+  LogDadosStringDescrever ('Complemento',          edtComplemento.Text,         Result);
+  LogDadosBooleanDescrever('Bloqueado',            chkBloqueado.Checked,        Result);
+  LogDadosBooleanDescrever('Ativo',                chkAtivo.Checked,            Result);
 end;
 
 end.

@@ -4,7 +4,7 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'CEP'
-  ClientHeight = 362
+  ClientHeight = 514
   ClientWidth = 601
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -72,7 +72,7 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
   end
   object imgBackground: TImage
     Left = 0
-    Top = 249
+    Top = 409
     Width = 105
     Height = 105
     Center = True
@@ -80,7 +80,7 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
   end
   object btnGravar: TBitBtn
     Left = 424
-    Top = 296
+    Top = 448
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -161,7 +161,7 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
   end
   object btnCancelar: TBitBtn
     Left = 536
-    Top = 296
+    Top = 448
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -242,7 +242,7 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
   end
   object btnMinimizar: TBitBtn
     Left = 480
-    Top = 296
+    Top = 448
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -315,7 +315,7 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
   end
   object btnAlterar: TBitBtn
     Left = 424
-    Top = 296
+    Top = 448
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -398,26 +398,23 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
     Left = 48
     Top = 16
     Width = 537
-    Height = 265
+    Height = 417
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
     Margins.Right = 8
     Margins.Bottom = 48
-    ActivePage = tabAuditoria
+    ActivePage = tabCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object lblCodigo: TLabel
+      ExplicitHeight = 237
+      object lblCEP: TLabel
         Left = 16
         Top = 16
-        Width = 41
+        Width = 25
         Height = 14
-        Caption = 'C'#243'digo:'
+        Caption = 'CEP:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -427,10 +424,10 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
       end
       object lblNome: TLabel
         Left = 16
-        Top = 72
-        Width = 36
+        Top = 128
+        Width = 56
         Height = 14
-        Caption = 'Nome:'
+        Caption = 'Endere'#231'o:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -438,12 +435,12 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
         Font.Style = []
         ParentFont = False
       end
-      object lblCodigoCadastrado: TLabel
-        Left = 280
+      object lblCEPCadastrado: TLabel
+        Left = 360
         Top = 16
-        Width = 141
+        Width = 126
         Height = 14
-        Caption = #218'ltimo c'#243'digo cadastrado:'
+        Caption = #218'ltimo CEP cadastrado:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clGray
         Font.Height = -12
@@ -451,10 +448,86 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
         Font.Style = []
         ParentFont = False
       end
-      object edtCodigo: TEdit
+      object lblComplemento: TLabel
+        Left = 16
+        Top = 184
+        Width = 80
+        Height = 14
+        Caption = 'Complemento:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblLogradouro: TLabel
+        Left = 16
+        Top = 72
+        Width = 66
+        Height = 14
+        Caption = 'Logradouro:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object imgLogradouroSelecionar: TImage
+        Left = 352
+        Top = 92
+        Width = 20
+        Height = 20
+        Cursor = crHandPoint
+        AutoSize = True
+        Picture.Data = {
+          07544269746D6170E6040000424DE60400000000000036000000280000001400
+          0000140000000100180000000000B00400000000000000000000000000000000
+          0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFDCD5CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFD6C9BCB57B45CAAB8EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          D6C9BCB57B45B3763CB57B45DBD5CDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD6C9BCB57B45B3
+          763CB57B45D6C9BCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD6C9BCB57B45B3763CB57B45D6C9
+          BCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE1DFDED6CABDD2
+          C0AED6CABDE0DFDEFFFFFFD9CEC4B57B45B3763CB57B45D6C9BCFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0DFDFCBAF93B57E48B3763CB3763CB376
+          3CB77E48CCB095CEB7A1B3763CB57B45D6C9BCFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFE0DFDFC19871B3763CBA8656CBAD92D1BAA5CBAD92B98554
+          B3763CB47840CFB8A3D9CFC6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFCBAF93B3763CC49E7AE1DFDEFFFFFFFFFFFFFFFFFFE1DFDEC39D79B3
+          763CCCB095FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE1DFDE
+          B57C46BA8655E0DFDDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0DFDDB98653B77E
+          48E1DFDEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD6C9BCB3763CCB
+          AE92FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCAAD91B3763CD6CABD
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD3C0AEB3763CD0BBA6FFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD0BBA6B3763CD3C0AEFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD7C9BCB3763CCBAF93FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCAAD91B3763CD7C9BDFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFE1DFDEB57C46BA8656E0DFDEFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFE0DFDDB98554B57C46E1DFDEFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFCBAD92B3763CC49E7AE0DFDEFFFFFFFFFFFFFFFF
+          FFE1DFDEC49E7AB3763CCBAF93FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFE0DFDFC19870B3763CBA8656CBAE92D0BBA7CBAE92BA8656
+          B3763CC19871E0DFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFE0DFDFCBAD92B67D45B3763CB3763CB3763CB57E48CBAE92E0
+          DFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFE0DFDDD6C9BCD2C0AED6C9BCE1DFDEFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+        OnClick = imgLogradouroSelecionarClick
+      end
+      object edtCEP: TEdit
         Left = 16
         Top = 32
-        Width = 225
+        Width = 153
         Height = 26
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -464,16 +537,16 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
         MaxLength = 25
         ParentFont = False
         TabOrder = 0
-        Text = '999.999.999.999.999.999.999'
-        OnEnter = edtCodigoEnter
-        OnExit = edtCodigoExit
-        OnKeyDown = edtCodigoKeyDown
-        OnKeyPress = edtCodigoKeyPress
+        Text = '999.999.999.999.999'
+        OnEnter = edtCEPEnter
+        OnExit = edtCEPExit
+        OnKeyDown = edtCEPKeyDown
+        OnKeyPress = edtCEPKeyPress
       end
-      object edtNome: TEdit
+      object edtEndereco: TEdit
         Left = 16
-        Top = 88
-        Width = 489
+        Top = 144
+        Width = 497
         Height = 26
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -482,19 +555,19 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
         Font.Style = []
         MaxLength = 250
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 4
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
-        OnEnter = edtNomeEnter
-        OnExit = edtNomeExit
-        OnKeyDown = edtNomeKeyDown
-        OnKeyPress = edtNomeKeyPress
+        OnEnter = edtEnderecoEnter
+        OnExit = edtEnderecoExit
+        OnKeyDown = edtEnderecoKeyDown
+        OnKeyPress = edtEnderecoKeyPress
       end
       object gbxOpcoes: TGroupBox
-        Left = 376
-        Top = 144
+        Left = 384
+        Top = 304
         Width = 129
         Height = 73
-        TabOrder = 2
+        TabOrder = 8
         object chkBloqueado: TCheckBox
           Left = 24
           Top = 16
@@ -536,10 +609,10 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
           OnKeyPress = chkAtivoKeyPress
         end
       end
-      object edtCodigoCadastrado: TEdit
-        Left = 280
+      object edtCEPCadastrado: TEdit
+        Left = 360
         Top = 32
-        Width = 225
+        Width = 153
         Height = 26
         TabStop = False
         Alignment = taCenter
@@ -552,12 +625,12 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
         MaxLength = 25
         ParentFont = False
         ReadOnly = True
-        TabOrder = 4
-        Text = '999.999.999.999.999.999.999'
-        OnClick = edtCodigoCadastradoClick
+        TabOrder = 6
+        Text = '999.999.999.999.999'
+        OnClick = edtCEPCadastradoClick
       end
-      object edtCodigoCadastradoID: TEdit
-        Left = 416
+      object edtCEPCadastradoID: TEdit
+        Left = 424
         Top = 32
         Width = 41
         Height = 26
@@ -572,14 +645,92 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
         MaxLength = 25
         ParentFont = False
         ReadOnly = True
-        TabOrder = 3
+        TabOrder = 5
         Text = 'ID'
+        Visible = False
+      end
+      object edtComplemento: TEdit
+        Left = 16
+        Top = 200
+        Width = 345
+        Height = 26
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 250
+        ParentFont = False
+        TabOrder = 7
+        Text = 'Xxxxxxxxxx Wwwwwwwwww'
+        OnEnter = edtComplementoEnter
+        OnExit = edtComplementoExit
+        OnKeyPress = edtComplementoKeyPress
+      end
+      object edtLogradouroCodigo: TEdit
+        Left = 16
+        Top = 88
+        Width = 73
+        Height = 26
+        Alignment = taCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        MaxLength = 25
+        ParentFont = False
+        TabOrder = 1
+        Text = '99'
+        OnEnter = edtLogradouroCodigoEnter
+        OnExit = edtLogradouroCodigoExit
+        OnKeyDown = edtLogradouroCodigoKeyDown
+        OnKeyPress = edtLogradouroCodigoKeyPress
+      end
+      object edtLogradouroDescricao: TEdit
+        Left = 96
+        Top = 88
+        Width = 249
+        Height = 26
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ReadOnly = True
+        ShowHint = False
+        TabOrder = 2
+        Text = 'Xxxxxxxxxx Dddddddddd'
+        OnClick = edtLogradouroDescricaoClick
+      end
+      object edtLogradouroID: TEdit
+        Left = 168
+        Top = 88
+        Width = 65
+        Height = 26
+        TabStop = False
+        Alignment = taRightJustify
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 3
+        Text = '999.999'
         Visible = False
       end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitHeight = 237
       object lblInsDtHt: TLabel
         Left = 16
         Top = 72
@@ -712,7 +863,7 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
   end
   object btnFechar: TBitBtn
     Left = 536
-    Top = 296
+    Top = 448
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -775,7 +926,7 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
   end
   object btnNovo: TBitBtn
     Left = 368
-    Top = 296
+    Top = 448
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -850,7 +1001,7 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     Left = 40
-    Top = 296
+    Top = 456
     object mniAtualizar: TMenuItem
       Caption = 'Atualizar'
       OnClick = mniAtualizarClick
