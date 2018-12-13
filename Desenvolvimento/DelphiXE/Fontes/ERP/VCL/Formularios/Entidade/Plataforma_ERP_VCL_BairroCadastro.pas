@@ -72,6 +72,11 @@ type
     lblCodigoCadastrado: TLabel;
     edtCodigoCadastrado: TEdit;
     edtCodigoCadastradoID: TEdit;
+    lblCidade: TLabel;
+    edtCidadeCodigo: TEdit;
+    edtCidadeNome: TEdit;
+    edtCidadeID: TEdit;
+    imgCidadeSelecionar: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -106,6 +111,12 @@ type
     procedure mniNovoClick(Sender: TObject);
     procedure mniAtualizarClick(Sender: TObject);
     procedure edtCodigoCadastradoClick(Sender: TObject);
+    procedure edtCidadeCodigoEnter(Sender: TObject);
+    procedure edtCidadeCodigoExit(Sender: TObject);
+    procedure edtCidadeCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtCidadeCodigoKeyPress(Sender: TObject; var Key: Char);
+    procedure imgCidadeSelecionarClick(Sender: TObject);
+    procedure edtCidadeNomeClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -177,13 +188,6 @@ begin
   //
   Plataforma_ERP_VCL_FormularioBackground(imgBackground);
 
-  //
-  // Controla os componentes de exibição de cadastro.
-  //
-  VCLEditClickControlar(edtCodigoCadastrado, False);
-  VCLEditClickControlar(edtInsLocalDtHr,     False);
-  VCLEditClickControlar(edtUpdLocalDtHr,     False);
-  
   //
   // Se nenhuma chave foi passada então é um novo cadastro.
   //
@@ -327,6 +331,44 @@ begin
 end;
 
 //
+// Eventos do componente "cidade".
+//
+procedure TPlataformaERPVCLBairroCadastro.edtCidadeCodigoEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtCidadeCodigo) then Exit;
+end;
+
+procedure TPlataformaERPVCLBairroCadastro.edtCidadeCodigoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
+end;
+
+procedure TPlataformaERPVCLBairroCadastro.edtCidadeCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = F2 then imgCidadeSelecionarClick(Sender);
+end;
+
+procedure TPlataformaERPVCLBairroCadastro.edtCidadeCodigoExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtCidadeCodigo) then Exit;
+
+  if not Plataforma_ERP_VCL_CidadeValidar((edtBairroID.Text = STR_NOVO),
+                                           edtCidadeID,
+                                           edtCidadeCodigo,
+                                           edtCidadeNome) then Exit;
+end;
+
+procedure TPlataformaERPVCLBairroCadastro.imgCidadeSelecionarClick(Sender: TObject);
+begin
+  if not Plataforma_ERP_VCL_CidadeSelecionar(edtCidadeID, edtCidadeCodigo, edtCidadeNome) then Exit;
+end;
+
+procedure TPlataformaERPVCLBairroCadastro.edtCidadeNomeClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_CidadeExibir(StringIntegerConverter(edtCidadeID.Text));
+end;
+
+//
 // Eventos do componente "bloqueado".
 //
 procedure TPlataformaERPVCLBairroCadastro.chkBloqueadoEnter(Sender: TObject);
@@ -437,8 +479,12 @@ begin
   VCLPageControlInicializar(pagFormulario);
 
   // Limpa componentes da aba "cadastro".
-  VCLEditLimpar    (edtCodigo);
-  VCLEditLimpar    (edtNome);
+  VCLEditLimpar(edtCodigo);
+  VCLEditLimpar(edtNome);
+
+  VCLEditLimpar(edtCidadeID);
+  VCLEditLimpar(edtCidadeCodigo);
+  VCLEditLimpar(edtCidadeNome);
 
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
@@ -453,6 +499,14 @@ begin
   VCLEditLimpar(edtInsLocalDtHr);
   VCLEditLimpar(edtUpdLocalDtHr);
   VCLEditLimpar(edtUpdContador);
+
+  //
+  // Controla os componentes de exibição de cadastro.
+  //  
+  VCLEditClickControlar(edtCodigoCadastrado, False);
+  VCLEditClickControlar(edtCidadeNome,       False);
+  VCLEditClickControlar(edtInsLocalDtHr,     False);
+  VCLEditClickControlar(edtUpdLocalDtHr,     False);
 end;
 
 //
@@ -485,6 +539,7 @@ begin
   //
   // Controla os componentes de exibição de cadastro.
   //
+  VCLEditClickControlar(edtCidadeNome,   True);
   VCLEditClickControlar(edtInsLocalDtHr, True);
   VCLEditClickControlar(edtUpdLocalDtHr, True);
 
@@ -632,19 +687,24 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                              ');
-  locADOQuery.SQL.Add('  [bairro].[bairro_id],             ');
-  locADOQuery.SQL.Add('  [bairro].[codigo],                ');
-  locADOQuery.SQL.Add('  [bairro].[nome],                  ');
-  locADOQuery.SQL.Add('  [bairro].[bloqueado],             ');
-  locADOQuery.SQL.Add('  [bairro].[ativo],                 ');
-  locADOQuery.SQL.Add('  [bairro].[ins_local_dt_hr],       ');
-  locADOQuery.SQL.Add('  [bairro].[upd_local_dt_hr],       ');
-  locADOQuery.SQL.Add('  [bairro].[upd_contador]           ');  
-  locADOQuery.SQL.Add('FROM                                ');
-  locADOQuery.SQL.Add('  [bairro] WITH (NOLOCK)            ');
-  locADOQuery.SQL.Add('WHERE                               ');
-  locADOQuery.SQL.Add('  [bairro].[bairro_id] = :bairro_id ');
+  locADOQuery.SQL.Add('SELECT                                             ');
+  locADOQuery.SQL.Add('  [bairro].[bairro_id],                            ');
+  locADOQuery.SQL.Add('  [bairro].[codigo],                               ');
+  locADOQuery.SQL.Add('  [bairro].[nome],                                 ');
+  locADOQuery.SQL.Add('  [cidade].[cidade_id] AS [cidade_id],             ');
+  locADOQuery.SQL.Add('  [cidade].[codigo]    AS [cidade_codigo],         ');
+  locADOQuery.SQL.Add('  [cidade].[nome]      AS [cidade_nome],           ');  
+  locADOQuery.SQL.Add('  [bairro].[bloqueado],                            ');
+  locADOQuery.SQL.Add('  [bairro].[ativo],                                ');
+  locADOQuery.SQL.Add('  [bairro].[ins_local_dt_hr],                      ');
+  locADOQuery.SQL.Add('  [bairro].[upd_local_dt_hr],                      ');
+  locADOQuery.SQL.Add('  [bairro].[upd_contador]                          ');  
+  locADOQuery.SQL.Add('FROM                                               ');
+  locADOQuery.SQL.Add('  [bairro] WITH (NOLOCK)                           ');
+  locADOQuery.SQL.Add('  INNER JOIN [cidade] WITH (NOLOCK)                ');
+  locADOQuery.SQL.Add('    ON [cidade].[cidade_id] = [bairro].[cidade_id] ');
+  locADOQuery.SQL.Add('WHERE                                              ');
+  locADOQuery.SQL.Add('  [bairro].[bairro_id] = :bairro_id                ');
 
   locADOQuery.Parameters.ParamByName('bairro_id').Value := argBairroID;
 
@@ -655,6 +715,7 @@ begin
     locADOQuery.Open;
   except
     on locExcecao: Exception do
+    
     begin
       locADOQuery.Close;
       FreeAndNil(locADOQuery);
@@ -677,6 +738,10 @@ begin
     //
     edtCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
     edtNome.Text   := locADOQuery.FieldByName('nome').AsString;
+
+    edtCidadeID.Text     := IntegerStringConverter(locADOQuery.FieldByName('cidade_id').AsInteger);
+    edtCidadeCodigo.Text := locADOQuery.FieldByName('cidade_codigo').AsString;
+    edtCidadeNome.Text   := locADOQuery.FieldByName('cidade_nome').AsString;
 
     chkBloqueado.Checked := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked     := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
@@ -734,6 +799,7 @@ var
   locBairroID      : Integer;
   locCodigo        : string;
   locNome          : string;
+  locCidadeID      : Integer;
   locBloqueado     : Boolean;
   locAtivo         : Boolean;
   locInsLocalDtHr  : TDateTime;
@@ -758,6 +824,7 @@ begin
   locBairroID      := StringIntegerConverter(edtBairroID.Text);
   locCodigo        := StringTrim(edtCodigo.Text);
   locNome          := StringTrim(edtNome.Text);
+  locCidadeID      := StringIntegerConverter(edtCidadeID.Text);
   locBloqueado     := chkBloqueado.Checked;
   locAtivo         := chkAtivo.Checked;
   locUsuarioBaseID := gloUsuarioBaseID;
@@ -779,6 +846,13 @@ begin
   if locNome = '' then
   begin
     VCLConsistenciaExibir('O nome do bairro deve ser informado!');
+    VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtNome);
+    Exit;
+  end;
+
+  if locCidadeID <= 0 then
+  begin
+    VCLConsistenciaExibir('Um cidade deve ser selecionada para o bairro!');
     VCLPageControlFocar(pagFormulario, TAB_CADASTRO, edtNome);
     Exit;
   end;
@@ -981,6 +1055,7 @@ begin
     locADOQuery.SQL.Add('  [bairro_id],         ');
     locADOQuery.SQL.Add('  [codigo],            ');
     locADOQuery.SQL.Add('  [nome],              ');
+    locADOQuery.SQL.Add('  [cidade_id],         ');
     locADOQuery.SQL.Add('  [bloqueado],         ');
     locADOQuery.SQL.Add('  [ativo],             ');
     locADOQuery.SQL.Add('  [ins_local_dt_hr],   ');
@@ -993,6 +1068,7 @@ begin
     locADOQuery.SQL.Add('  :bairro_id,          '); // [bairro_id].
     locADOQuery.SQL.Add('  :codigo,             '); // [codigo].
     locADOQuery.SQL.Add('  :nome,               '); // [nome].
+    locADOQuery.SQL.Add('  :cidade_id,          '); // [cidade_id].
     locADOQuery.SQL.Add('  :bloqueado,          '); // [bloqueado].
     locADOQuery.SQL.Add('  :ativo,              '); // [ativo].
     locADOQuery.SQL.Add('  :local_dt_hr,        '); // [ins_local_dt_hr].
@@ -1012,6 +1088,7 @@ begin
     locADOQuery.SQL.Add('SET                                       ');
     locADOQuery.SQL.Add('  [codigo]           = :codigo,           ');
     locADOQuery.SQL.Add('  [nome]             = :nome,             ');
+    locADOQuery.SQL.Add('  [cidade_id]        = :cidade_id,        ');
     locADOQuery.SQL.Add('  [bloqueado]        = :bloqueado,        ');
     locADOQuery.SQL.Add('  [ativo]            = :ativo,            ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]  = :local_dt_hr,      ');
@@ -1027,6 +1104,7 @@ begin
   locADOQuery.Parameters.ParamByName('bairro_id').Value   := locBairroID;
   locADOQuery.Parameters.ParamByName('codigo').Value      := locCodigo;
   locADOQuery.Parameters.ParamByName('nome').Value        := locNome;
+  locADOQuery.Parameters.ParamByName('cidade_id').Value   := locCidadeID;
   locADOQuery.Parameters.ParamByName('bloqueado').Value   := BooleanStringConverter(locBloqueado);
   locADOQuery.Parameters.ParamByName('ativo').Value       := BooleanStringConverter(locAtivo);
   locADOQuery.Parameters.ParamByName('local_dt_hr').Value := Now;
@@ -1466,11 +1544,14 @@ begin
     locBairroID := argBairroID;
 
   Result := '';
-  LogDadosIntegerDescrever('ID do bairro', locBairroID,          Result);
-  LogDadosStringDescrever ('Código',       edtCodigo.Text,       Result);
-  LogDadosStringDescrever ('Nome',         edtNome.Text,         Result);
-  LogDadosBooleanDescrever('Bloqueado',    chkBloqueado.Checked, Result);
-  LogDadosBooleanDescrever('Ativo',        chkAtivo.Checked,     Result);
+  LogDadosIntegerDescrever('ID do bairro',     locBairroID,          Result);
+  LogDadosStringDescrever ('Código',           edtCodigo.Text,       Result);
+  LogDadosStringDescrever ('Nome',             edtNome.Text,         Result);
+  LogDadosStringDescrever ('ID da cidade',     edtCidadeID.Text,     Result);
+  LogDadosStringDescrever ('Código da cidade', edtCidadeCodigo.Text, Result);
+  LogDadosStringDescrever ('Cidade',           edtCidadeNome.Text,   Result);  
+  LogDadosBooleanDescrever('Bloqueado',        chkBloqueado.Checked, Result);
+  LogDadosBooleanDescrever('Ativo',            chkAtivo.Checked,     Result);
 end;
 
 end.

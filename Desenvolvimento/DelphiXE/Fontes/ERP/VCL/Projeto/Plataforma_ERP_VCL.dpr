@@ -107,7 +107,9 @@ uses
   Plataforma_ERP_VCL_CEPLista in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPLista.pas' {PlataformaERPVCLCEPLista},
   Plataforma_ERP_VCL_CEPSelecao in '..\Formularios\Entidade\Plataforma_ERP_VCL_CEPSelecao.pas' {PlataformaERPVCLCEPSelecao},
   Plataforma_ERP_VCL_PaisSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisSelecaoFiltro.pas' {PlataformaERPVCLPaisSelecaoFiltro},
-  Plataforma_ERP_VCL_EstadoSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_EstadoSelecaoFiltro.pas' {PlataformaERPVCLEstadoSelecaoFiltro};
+  Plataforma_ERP_VCL_EstadoSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_EstadoSelecaoFiltro.pas' {PlataformaERPVCLEstadoSelecaoFiltro},
+  Plataforma_ERP_VCL_CidadeSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_CidadeSelecaoFiltro.pas' {PlataformaERPVCLCidadeSelecaoFiltro},
+  Plataforma_ERP_VCL_BairroSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_BairroSelecaoFiltro.pas' {PlataformaERPVCLBairroSelecaoFiltro};
 
 {$R *.res}
 

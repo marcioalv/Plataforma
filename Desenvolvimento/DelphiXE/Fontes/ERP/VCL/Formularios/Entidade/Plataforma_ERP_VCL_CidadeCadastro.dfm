@@ -439,7 +439,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
         Font.Style = []
         ParentFont = False
       end
-      object lblPais: TLabel
+      object lblEstado: TLabel
         Left = 16
         Top = 128
         Width = 41

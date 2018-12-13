@@ -234,15 +234,16 @@ object PlataformaERPVCLPaisSelecao: TPlataformaERPVCLPaisSelecao
       309)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 288
+      Top = 284
       Width = 142
       Height = 13
       Anchors = [akLeft, akBottom]
       Caption = 'Foram localizados 9 registros!'
+      ExplicitTop = 288
     end
     object lblListaFiltros: TLabel
-      Left = 437
-      Top = 288
+      Left = 433
+      Top = 284
       Width = 80
       Height = 13
       Anchors = [akRight, akBottom]
@@ -254,6 +255,8 @@ object PlataformaERPVCLPaisSelecao: TPlataformaERPVCLPaisSelecao
       Font.Style = []
       ParentFont = False
       Visible = False
+      ExplicitLeft = 437
+      ExplicitTop = 288
     end
     object lvwLista: TListView
       AlignWithMargins = True
@@ -305,7 +308,6 @@ object PlataformaERPVCLPaisSelecao: TPlataformaERPVCLPaisSelecao
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
-      ExplicitHeight = 265
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True

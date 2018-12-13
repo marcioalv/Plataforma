@@ -69,6 +69,7 @@ type
     procedure btnLocalizarClick(Sender: TObject);
     procedure lvwListaColumnClick(Sender: TObject; Column: TListColumn);
     procedure lvwListaCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
+    procedure FormActivate(Sender: TObject);
   private
     priListViewIndiceColuna   : Integer;
     priListViewOrdemAscendente: Boolean;
@@ -135,6 +136,22 @@ begin
   // Limpa componentes do formulário.
   //
   VCLListViewLimpar(lvwLista);
+end;
+
+//
+// Evento de ativação do formulário.
+//
+procedure TPlataformaERPVCLEstadoSelecao.FormActivate(Sender: TObject);
+begin
+  VCLListViewColunarDimensionar(lvwLista);
+
+  lblListaQtde.Left := lvwLista.Left;
+  lblListaQtde.Top  := (lvwLista.Top + lvwLista.Height) + 8;
+
+  lblListaFiltros.Left := (lvwLista.Left + lvwLista.Width) - lblListaFiltros.Width;
+  lblListaFiltros.Top  := (lvwLista.Top + lvwLista.Height) + 8;
+
+  lvwLista.Refresh;
 end;
 
 //
@@ -365,7 +382,7 @@ begin
   //
   // Order by.
   //  
-  locADOQuery.SQL.Add('ORDER BY                    ');
+  locADOQuery.SQL.Add('ORDER BY                ');
   locADOQuery.SQL.Add('  [estado].[codigo] ASC ');
 
   try

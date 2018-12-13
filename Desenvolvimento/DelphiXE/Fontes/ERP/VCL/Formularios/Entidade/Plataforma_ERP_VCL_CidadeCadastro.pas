@@ -72,7 +72,7 @@ type
     lblCodigoCadastrado: TLabel;
     edtCodigoCadastrado: TEdit;
     edtCodigoCadastradoID: TEdit;
-    lblPais: TLabel;
+    lblEstado: TLabel;
     edtEstadoCodigo: TEdit;
     edtEstadoNome: TEdit;
     edtEstadoID: TEdit;
