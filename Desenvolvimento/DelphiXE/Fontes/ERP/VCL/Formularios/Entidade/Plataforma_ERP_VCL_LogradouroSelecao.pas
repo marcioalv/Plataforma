@@ -47,6 +47,10 @@ type
     mniMinimizar: TMenuItem;
     mniAtualizar: TMenuItem;
     mniSelecionar: TMenuItem;
+    lblListaQtde: TLabel;
+    lblListaFiltros: TLabel;
+    mniLocalizar: TMenuItem;
+    btnLocalizar: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -61,7 +65,16 @@ type
     procedure mniMinimizarClick(Sender: TObject);
     procedure mniAtualizarClick(Sender: TObject);
     procedure mniSelecionarClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure mniLocalizarClick(Sender: TObject);
+    procedure btnLocalizarClick(Sender: TObject);
   private
+    priListViewIndiceColuna   : Integer;
+    priListViewOrdemAscendente: Boolean;
+
+    priFiltroDescricao        : string;
+
+    procedure FormularioLocalizar;
     procedure FormularioAtualizar;
     procedure FormularioSelecionar;
   public
@@ -83,7 +96,8 @@ uses
   Plataforma_Framework_Util,
   Plataforma_Framework_VCL,
   Plataforma_ERP_Global,
-  Plataforma_ERP_Generico;
+  Plataforma_ERP_Generico,
+  Plataforma_ERP_VCL_LogradouroSelecaoFiltro;
 
 const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_LogradouroSelecao';
@@ -100,6 +114,15 @@ const
 procedure TPlataformaERPVCLLogradouroSelecao.FormCreate(Sender: TObject);
 begin
   //
+  // Inicializa variáveis privadas.
+  //
+  priListViewIndiceColuna    := VCL_NENHUM_INDICE;
+  priListViewOrdemAscendente := False;
+
+  priFiltroDescricao := '';
+
+
+  //
   // Inicializa variáveis públicas.
   //
   pubClicouFechar := True;
@@ -112,6 +135,22 @@ begin
   // Limpa componentes do formulário.
   //
   VCLListViewLimpar(lvwLista);
+end;
+
+//
+// Evento de ativação do formulário.
+//
+procedure TPlataformaERPVCLLogradouroSelecao.FormActivate(Sender: TObject);
+begin
+  VCLListViewColunarDimensionar(lvwLista);
+
+  lblListaQtde.Left := lvwLista.Left;
+  lblListaQtde.Top  := (lvwLista.Top + lvwLista.Height) + 8;
+
+  lblListaFiltros.Left := (lvwLista.Left + lvwLista.Width) - lblListaFiltros.Width;
+  lblListaFiltros.Top  := (lvwLista.Top + lvwLista.Height) + 8;
+
+  lvwLista.Refresh;
 end;
 
 //
@@ -133,6 +172,11 @@ end;
 // 
 // Eventos de click nas opções do menu.
 //
+procedure TPlataformaERPVCLLogradouroSelecao.mniLocalizarClick(Sender: TObject);
+begin
+  FormularioLocalizar;
+end;
+
 procedure TPlataformaERPVCLLogradouroSelecao.mniSelecionarClick(Sender: TObject);
 begin
   FormularioSelecionar;
@@ -177,7 +221,15 @@ begin
 end;
 
 //
-// Evento de click no botão "Confirmar".
+// Evento de click no botão "localizar".
+//
+procedure TPlataformaERPVCLLogradouroSelecao.btnLocalizarClick(Sender: TObject);
+begin
+  FormularioLocalizar;
+end;
+
+//
+// Evento de click no botão "confirmar".
 //
 procedure TPlataformaERPVCLLogradouroSelecao.btnSelecionarClick(Sender: TObject);
 begin
@@ -201,6 +253,36 @@ begin
 end;
 
 //
+// Procedimento para localizar registros cadastrados.
+//
+procedure TPlataformaERPVCLLogradouroSelecao.FormularioLocalizar;
+var
+  locFormulario  : TPlataformaERPVCLLogradouroSelecaoFiltro;
+  locClicouFechar: Boolean;
+  locDescricao   : string;
+begin
+  locFormulario := TPlataformaERPVCLLogradouroSelecaoFiltro.Create(Self);
+
+  locFormulario.pubDescricao := priFiltroDescricao;
+
+  locFormulario.ShowModal;
+
+  locClicouFechar := locFormulario.pubClicouFechar;
+  locDescricao    := locFormulario.pubDescricao;
+
+  locFormulario.Release;
+  FreeAndNil(locFormulario);
+
+  if not locClicouFechar then
+  begin
+    priFiltroDescricao := locDescricao;
+
+    FormularioAtualizar;
+  end;
+end;
+
+
+//
 // Procedimento para atualizar a lista do formulário.
 //
 procedure TPlataformaERPVCLLogradouroSelecao.FormularioAtualizar;
@@ -213,6 +295,7 @@ var
   locLogMensagem  : string;
   locListItem     : TListItem;
   locIndice       : Integer;
+  locFiltros      : Boolean;  
 begin
   //
   // Troca cursor.
@@ -223,6 +306,8 @@ begin
   // Limpa listview.
   //
   VCLListViewLimpar(lvwLista);
+  lblListaQtde.Caption    := '';
+  lblListaFiltros.Visible := False;  
 
   //
   // Conexão ao banco de dados.
@@ -271,6 +356,18 @@ begin
   begin
     locADOQuery.SQL.Add(' AND [logradouro].[bloqueado] = ''N'' ');
   end;
+
+  //
+  // Filtros.
+  //
+  locFiltros := False;
+
+  if priFiltroDescricao <> '' then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND [logradouro].[descricao] LIKE :descricao ');
+    locADOQuery.Parameters.ParamByName('descricao').Value := StringLikeGerar(priFiltroDescricao);
+  end; 
 
   //
   // Order by.
@@ -331,6 +428,12 @@ begin
     end;
     lvwLista.Items.EndUpdate;
   end;
+
+  //
+  // Label de quantidade de linhas no listview.
+  //
+  VCLListViewQtdeLinhasMensagem(lblListaQtde, lvwLista, locFiltros);
+  lblListaFiltros.Visible := locFiltros;
 
   //
   // Finaliza.

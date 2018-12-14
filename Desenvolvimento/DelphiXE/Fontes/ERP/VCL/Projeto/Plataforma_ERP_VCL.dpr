@@ -109,7 +109,8 @@ uses
   Plataforma_ERP_VCL_PaisSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_PaisSelecaoFiltro.pas' {PlataformaERPVCLPaisSelecaoFiltro},
   Plataforma_ERP_VCL_EstadoSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_EstadoSelecaoFiltro.pas' {PlataformaERPVCLEstadoSelecaoFiltro},
   Plataforma_ERP_VCL_CidadeSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_CidadeSelecaoFiltro.pas' {PlataformaERPVCLCidadeSelecaoFiltro},
-  Plataforma_ERP_VCL_BairroSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_BairroSelecaoFiltro.pas' {PlataformaERPVCLBairroSelecaoFiltro};
+  Plataforma_ERP_VCL_BairroSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_BairroSelecaoFiltro.pas' {PlataformaERPVCLBairroSelecaoFiltro},
+  Plataforma_ERP_VCL_LogradouroSelecaoFiltro in '..\Formularios\Entidade\Plataforma_ERP_VCL_LogradouroSelecaoFiltro.pas' {PlataformaERPVCLLogradouroSelecaoFiltro};
 
 {$R *.res}
 
@@ -117,5 +118,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TPlataformaERPVCLMenuPrincipal, PlataformaERPVCLMenuPrincipal);
+  Application.CreateForm(TPlataformaERPVCLLogradouroSelecaoFiltro, PlataformaERPVCLLogradouroSelecaoFiltro);
   Application.Run;
 end.

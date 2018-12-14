@@ -170,6 +170,10 @@ function HorarioFormatar(argHorario: string): string;
 
 function HorarioValidar(argHorario: string): Boolean;
 
+function CEPFormatar(argCEP: string; argEstrangeiro: Boolean = False): string;
+
+function CEPValidar(argCEP: string; argEstrangeiro: Boolean = False): Boolean;
+
 function CurrencyFormatar(argValor: string; argSimboloMoeda: string = 'R$'; argCasasDecimais: Integer = 2; argVazio: Boolean = True; argSeparadorMilhar: Boolean = True) : string;
 
 procedure LogDadosStringDescrever (argCampo: string; argValor: string;  var outRetorno: string);
@@ -1326,6 +1330,59 @@ begin
 
   if (locHora   < 0) or (locHora   > 23) then Exit;
   if (locMinuto < 0) or (locMinuto > 59) then Exit;
+
+  Result := True;
+end;
+
+//
+// CEPFormatar.
+//
+function CEPFormatar(argCEP: string; argEstrangeiro: Boolean = False): string;
+var
+  locCEP: string;
+begin
+  //
+  // Estrangeiro.
+  //
+  if argEstrangeiro then
+  begin
+    Result := StringTrim(argCEP);
+    Exit;
+  end;
+
+  //
+  // Nacional.
+  //
+  Result  := EmptyStr;
+  locCEP  := SomenteNumerosRetornar(argCEP);
+  locCEP  := StringPreencher(locCEP, 8, '0');
+
+  if locCEP = '00000000' then Exit;
+  
+  Result  := Copy(locCEP, 1, 2) + '.' + Copy(locCEP, 3, 3) + '-' + Copy(locCEP, 6, 3);
+end;
+
+//
+// CEPValidar.
+//
+function CEPValidar(argCEP: string; argEstrangeiro: Boolean = False): Boolean;
+begin
+  //
+  // Estrangeiro.
+  //
+  if argEstrangeiro then
+  begin
+    Result := True;
+    Exit;
+  end;
+
+  //
+  // Nacional.
+  //
+  Result := False;
+  argCEP := CEPFormatar(argCEP);
+
+  if (argCEP = '') then Exit;
 
   Result := True;
 end;

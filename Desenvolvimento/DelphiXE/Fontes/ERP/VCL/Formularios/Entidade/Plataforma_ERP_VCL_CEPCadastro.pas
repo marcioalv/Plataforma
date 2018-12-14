@@ -333,6 +333,7 @@ end;
 procedure TPlataformaERPVCLCEPCadastro.edtCEPExit(Sender: TObject);
 begin
   if not VCLEditSair(edtCEP) then Exit;
+  if not VCLEditCEPValidar(edtCEP, chkEstrangeiro.Checked) then Exit;
 end;
 
 //
@@ -773,7 +774,8 @@ begin
   // Controla os componentes do formulário.
   //
   VCLEditControlar(edtCEP,              argEditar);
-  gbxGenerico.Enabled := argEditar;
+  gbxEstrangeiro.Enabled := argEditar;
+  gbxGenerico.Enabled    := argEditar;
   VCLEditControlar(edtLogradouroCodigo, argEditar);
   VCLEditControlar(edtEndereco,         argEditar);
   VCLEditControlar(edtComplemento,      argEditar);

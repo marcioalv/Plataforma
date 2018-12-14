@@ -172,6 +172,8 @@ function VCLMaskEditHorarioValidar(argComponente: TMaskEdit; argVazio: Boolean =
 
 function VCLEditTextoValidar(argComponente: TEdit; argVazio: Boolean = True): Boolean;
 
+function VCLEditCEPValidar(argComponente: TEdit; argEstrangeiro: Boolean; argVazio: Boolean = True): Boolean;
+
 procedure VCLToggleSwitchValidar(argComponente: TToggleSwitch);
 
 //
@@ -1363,6 +1365,60 @@ begin
     Exit
   end;
   
+  Result := True;
+end;
+
+//
+// VCLEditCEPValidar.
+//
+function VCLEditCEPValidar(argComponente: TEdit; argEstrangeiro: Boolean; argVazio: Boolean = True): Boolean;
+var
+  locCEP: String;
+begin
+  //
+  // Estrangeiro.
+  //
+  if argEstrangeiro then
+  begin
+    if StringTrim(argComponente.Text) = '' then
+    begin
+      if (not argVazio) then
+      begin
+        VCLConsistenciaExibir('Um número de código postal precisa ser informado!');
+        argComponente.SetFocus;
+      end;
+    end;
+  
+    Exit;
+  end;
+
+  //
+  // Nacional.
+  //
+  Result := False;
+
+  locCEP := FormatacaoRemover(argComponente.Text);
+
+  if locCEP = '' then
+  begin
+    if (not argVazio) then
+    begin
+      VCLConsistenciaExibir('Um número de CEP precisa ser informado!');
+      argComponente.SetFocus;
+    end;
+    Exit
+  end;
+
+  if not CEPValidar(locCEP) then
+  begin
+    VCLConsistenciaExibir('O número do CEP [' + argComponente.Text + '] informado não é válido!');
+    argComponente.Text := '';
+    argComponente.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  argComponente.Text := CEPFormatar(locCEP);
   Result := True;
 end;
 

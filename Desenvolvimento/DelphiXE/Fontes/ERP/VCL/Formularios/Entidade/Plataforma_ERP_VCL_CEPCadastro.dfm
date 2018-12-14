@@ -408,9 +408,6 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitTop = 48
-      ExplicitWidth = 529
-      ExplicitHeight = 525
       object lblCEP: TLabel
         Left = 16
         Top = 16
