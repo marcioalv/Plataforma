@@ -1144,9 +1144,9 @@ GO
 --
 -- Pais.
 --
-INSERT INTO [pais] VALUES (1, '001', 'Brasil',    'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [pais] VALUES (2, '002', 'Argentina', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [pais] VALUES (3, '003', 'Paraguai',  'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [pais] VALUES (1, '001', 'Brasil',                  'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [pais] VALUES (2, '002', 'Argentina',               'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [pais] VALUES (3, '003', 'Emirados Árabes Unidos',  'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 INSERT INTO [numerador_base] VALUES ('pais_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
@@ -1174,9 +1174,9 @@ GO
 --
 -- Bairro.
 --
-INSERT INTO [bairro] VALUES (1, '01', 'Centro',             1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [bairro] VALUES (2, '02', 'Pinheirinho Preto',  1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
-INSERT INTO [bairro] VALUES (3, '03', 'Boqueirão',          1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [bairro] VALUES (1, '01', 'Centro',               1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [bairro] VALUES (2, '02', 'Parque São Leopoldo',  1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [bairro] VALUES (3, '03', 'Boqueirão',            1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 INSERT INTO [numerador_base] VALUES ('bairro_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
