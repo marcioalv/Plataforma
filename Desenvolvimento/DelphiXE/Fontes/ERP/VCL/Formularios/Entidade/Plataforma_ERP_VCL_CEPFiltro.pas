@@ -42,12 +42,12 @@ type
     pagFormulario: TPageControl;
     tabCadastro: TTabSheet;
     tabAuditoria: TTabSheet;
-    lblCodigo: TLabel;
-    lblCodigoAte: TLabel;
-    lblNome: TLabel;
-    edtCodigoInicial: TEdit;
-    edtCodigoFinal: TEdit;
-    edtNome: TEdit;
+    lblCEP: TLabel;
+    lblCEPAte: TLabel;
+    lblEndereco: TLabel;
+    edtCEPInicial: TEdit;
+    edtCEPFinal: TEdit;
+    edtEndereco: TEdit;
     lblCEPID: TLabel;
     lblCEPIDAte: TLabel;
     edtCEPIDInicial: TEdit;
@@ -83,15 +83,15 @@ type
     procedure edtCEPIDFinalEnter(Sender: TObject);
     procedure edtCEPIDFinalExit(Sender: TObject);
     procedure edtCEPIDFinalKeyPress(Sender: TObject; var Key: Char);
-    procedure edtCodigoInicialEnter(Sender: TObject);
-    procedure edtCodigoInicialExit(Sender: TObject);
-    procedure edtCodigoInicialKeyPress(Sender: TObject; var Key: Char);
-    procedure edtCodigoFinalEnter(Sender: TObject);
-    procedure edtCodigoFinalExit(Sender: TObject);
-    procedure edtCodigoFinalKeyPress(Sender: TObject; var Key: Char);
-    procedure edtNomeEnter(Sender: TObject);
-    procedure edtNomeExit(Sender: TObject);
-    procedure edtNomeKeyPress(Sender: TObject; var Key: Char);
+    procedure edtCEPInicialEnter(Sender: TObject);
+    procedure edtCEPInicialExit(Sender: TObject);
+    procedure edtCEPInicialKeyPress(Sender: TObject; var Key: Char);
+    procedure edtCEPFinalEnter(Sender: TObject);
+    procedure edtCEPFinalExit(Sender: TObject);
+    procedure edtCEPFinalKeyPress(Sender: TObject; var Key: Char);
+    procedure edtEnderecoEnter(Sender: TObject);
+    procedure edtEnderecoExit(Sender: TObject);
+    procedure edtEnderecoKeyPress(Sender: TObject; var Key: Char);
     procedure cbxBloqueadoEnter(Sender: TObject);
     procedure cbxBloqueadoExit(Sender: TObject);
     procedure cbxBloqueadoKeyPress(Sender: TObject; var Key: Char);
@@ -132,9 +132,9 @@ type
     procedure FormularioLocalizar;
   public
     pubClicouFechar  : Boolean;
-    pubCodigoInicial : string;
-    pubCodigoFinal   : string;
-    pubNome          : string;
+    pubCEPInicial    : string;
+    pubCEPFinal      : string;
+    pubEndereco      : string;
     pubBloqueado     : string;
     pubAtivo         : string;
     pubCEPIDInicial  : Integer;
@@ -175,9 +175,9 @@ begin
   pubClicouFechar   := True;
   pubCEPIDInicial   := 0;
   pubCEPIDFinal     := 0;
-  pubCodigoInicial  := '';
-  pubCodigoFinal    := '';
-  pubNome           := '';
+  pubCEPInicial     := '';
+  pubCEPFinal       := '';
+  pubEndereco       := '';
   pubBloqueado      := '';
   pubAtivo          := '';
   pubInsDtHrInicial := 0;
@@ -214,9 +214,9 @@ begin
   //
   // Filtros memorizados.
   //
-  edtCodigoInicial.Text := pubCodigoInicial;
-  edtCodigoFinal.Text   := pubCodigoFinal;
-  edtNome.Text          := pubNome;
+  edtCEPInicial.Text := pubCEPInicial;
+  edtCEPFinal.Text   := pubCEPFinal;
+  edtEndereco.Text   := pubEndereco;
   VCLComboBoxPopular(cbxBloqueado, pubBloqueado);
   VCLComboBoxPopular(cbxAtivo,     pubAtivo);
 
@@ -231,7 +231,7 @@ begin
   //
   // Foco no componente desejado.
   //
-  if pagFormulario.ActivePageIndex = TAB_CADASTRO  then edtCodigoInicial.SetFocus;
+  if pagFormulario.ActivePageIndex = TAB_CADASTRO  then edtCEPInicial.SetFocus;
   if pagFormulario.ActivePageIndex = TAB_AUDITORIA then edtCEPIDInicial.SetFocus;
 end;
 
@@ -303,57 +303,57 @@ begin
 end;
 
 //
-// Eventos do componente "código inicial".
+// Eventos do componente "CEP inicial".
 //
-procedure TPlataformaERPVCLCEPFiltro.edtCodigoInicialEnter(Sender: TObject);
+procedure TPlataformaERPVCLCEPFiltro.edtCEPInicialEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtCodigoInicial) then Exit;
+  if not VCLEditEntrar(edtCEPInicial) then Exit;
 end;
 
-procedure TPlataformaERPVCLCEPFiltro.edtCodigoInicialKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLCEPFiltro.edtCEPInicialKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
 end;
 
-procedure TPlataformaERPVCLCEPFiltro.edtCodigoInicialExit(Sender: TObject);
+procedure TPlataformaERPVCLCEPFiltro.edtCEPInicialExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtCodigoInicial) then Exit;
+  if not VCLEditSair(edtCEPInicial) then Exit;
 end;
 
 //
-// Eventos do componente "código final".
+// Eventos do componente "CEP final".
 //
-procedure TPlataformaERPVCLCEPFiltro.edtCodigoFinalEnter(Sender: TObject);
+procedure TPlataformaERPVCLCEPFiltro.edtCEPFinalEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtCodigoFinal) then Exit;
+  if not VCLEditEntrar(edtCEPFinal) then Exit;
 end;
 
-procedure TPlataformaERPVCLCEPFiltro.edtCodigoFinalKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLCEPFiltro.edtCEPFinalKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
 end;
 
-procedure TPlataformaERPVCLCEPFiltro.edtCodigoFinalExit(Sender: TObject);
+procedure TPlataformaERPVCLCEPFiltro.edtCEPFinalExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtCodigoFinal) then Exit;
+  if not VCLEditSair(edtCEPFinal) then Exit;
 end;
 
 //
-// Eventos do componente "nome".
+// Eventos do componente "endereço".
 //
-procedure TPlataformaERPVCLCEPFiltro.edtNomeEnter(Sender: TObject);
+procedure TPlataformaERPVCLCEPFiltro.edtEnderecoEnter(Sender: TObject);
 begin
-  if not VCLEditEntrar(edtNome) then Exit;
+  if not VCLEditEntrar(edtEndereco) then Exit;
 end;
 
-procedure TPlataformaERPVCLCEPFiltro.edtNomeKeyPress(Sender: TObject; var Key: Char);
+procedure TPlataformaERPVCLCEPFiltro.edtEnderecoKeyPress(Sender: TObject; var Key: Char);
 begin
   VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
 end;
 
-procedure TPlataformaERPVCLCEPFiltro.edtNomeExit(Sender: TObject);
+procedure TPlataformaERPVCLCEPFiltro.edtEnderecoExit(Sender: TObject);
 begin
-  if not VCLEditSair(edtNome) then Exit;
+  if not VCLEditSair(edtEndereco) then Exit;
 end;
 
 //
@@ -525,7 +525,7 @@ procedure TPlataformaERPVCLCEPFiltro.btnLimparClick(Sender: TObject);
 begin
   FormularioLimpar;
 
-  if pagFormulario.ActivePageIndex = TAB_CADASTRO  then edtCodigoInicial.SetFocus;
+  if pagFormulario.ActivePageIndex = TAB_CADASTRO  then edtCEPInicial.SetFocus;
   if pagFormulario.ActivePageIndex = TAB_AUDITORIA then edtCEPIDInicial.SetFocus;
 end;
 
@@ -568,9 +568,9 @@ end;
 //
 procedure TPlataformaERPVCLCEPFiltro.FormularioLimpar;
 begin
-  VCLEditLimpar    (edtCodigoInicial);
-  VCLEditLimpar    (edtCodigoFinal);
-  VCLEditLimpar    (edtNome);
+  VCLEditLimpar    (edtCEPInicial);
+  VCLEditLimpar    (edtCEPFinal);
+  VCLEditLimpar    (edtEndereco);
   VCLComboBoxLimpar(cbxBloqueado);
   VCLComboBoxLimpar(cbxAtivo);
 
@@ -588,9 +588,9 @@ end;
 procedure TPlataformaERPVCLCEPFiltro.FormularioLocalizar;
 begin
   pubClicouFechar   := False;
-  pubCodigoInicial  := StringTrim(edtCodigoInicial.Text);
-  pubCodigoFinal    := StringTrim(edtCodigoFinal.Text);
-  pubNome           := StringTrim(edtNome.Text);
+  pubCEPInicial     := StringTrim(edtCEPInicial.Text);
+  pubCEPFinal       := StringTrim(edtCEPFinal.Text);
+  pubEndereco       := StringTrim(edtEndereco.Text);
   pubBloqueado      := Copy(cbxBloqueado.Text, 1, 1);
   pubAtivo          := Copy(cbxAtivo.Text, 1, 1);
   pubCEPIDInicial   := StringIntegerConverter(edtCEPIDInicial.Text);

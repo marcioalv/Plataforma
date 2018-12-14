@@ -76,9 +76,9 @@ type
     priListViewIndiceColuna   : Integer;
     priListViewOrdemAscendente: Boolean;
 
-    priFiltroCodigoInicial : string;
-    priFiltroCodigoFinal   : string;
-    priFiltroNome          : string;
+    priFiltroCEPInicial    : string;
+    priFiltroCEPFinal      : string;
+    priFiltroEndereco      : string;
     priFiltroBloqueado     : string;
     priFiltroAtivo         : string;
     priFiltroCEPIDInicial  : Integer;
@@ -116,8 +116,8 @@ const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_CEPLista.pas';
 
   LVW_LISTA_CEP_ID   : Integer = 0;
-  LVW_LISTA_CODIGO   : Integer = 1;
-  LVW_LISTA_NOME     : Integer = 2;
+  LVW_LISTA_CEP      : Integer = 1;
+  LVW_LISTA_ENDERECO : Integer = 2;
   LVW_LISTA_BLOQUEADO: Integer = 3;
   LVW_LISTA_ATIVO    : Integer = 4;
 
@@ -132,9 +132,9 @@ begin
   priListViewIndiceColuna    := VCL_NENHUM_INDICE;
   priListViewOrdemAscendente := False;
 
-  priFiltroCodigoInicial   := '';
-  priFiltroCodigoFinal     := '';
-  priFiltroNome            := '';
+  priFiltroCEPInicial      := '';
+  priFiltroCEPFinal        := '';
+  priFiltroEndereco        := '';
   priFiltroBloqueado       := '';
   priFiltroAtivo           := '';
   priFiltroCEPIDInicial    := 0;
@@ -176,8 +176,6 @@ end;
 //
 procedure TPlataformaERPVCLCEPLista.FormActivate(Sender: TObject);
 begin
-  VCLListViewColunarDimensionar(lvwLista);
-
   lblListaQtde.Left := lvwLista.Left;
   lblListaQtde.Top  := (lvwLista.Top + lvwLista.Height) + 8;
 
@@ -322,9 +320,9 @@ procedure TPlataformaERPVCLCEPLista.FormularioLocalizar;
 var
   locFormulario    : TPlataformaERPVCLCEPFiltro;
   locClicouFechar  : Boolean;
-  locCodigoInicial : string;
-  locCodigoFinal   : string;
-  locNome          : string;
+  locCEPInicial    : string;
+  locCEPFinal      : string;
+  locEndereco      : string;
   locBloqueado     : string;
   locAtivo         : string;
   locCEPIDInicial  : Integer;
@@ -336,9 +334,9 @@ var
 begin
   locFormulario := TPlataformaERPVCLCEPFiltro.Create(Self);
 
-  locFormulario.pubCodigoInicial  := priFiltroCodigoInicial;
-  locFormulario.pubCodigoFinal    := priFiltroCodigoFinal;
-  locFormulario.pubNome           := priFiltroNome;
+  locFormulario.pubCEPInicial     := priFiltroCEPInicial;
+  locFormulario.pubCEPFinal       := priFiltroCEPFinal;
+  locFormulario.pubEndereco       := priFiltroEndereco;
   locFormulario.pubBloqueado      := priFiltroBloqueado;
   locFormulario.pubAtivo          := priFiltroAtivo;
   locFormulario.pubCEPIDInicial   := priFiltroCEPIDInicial;
@@ -351,9 +349,9 @@ begin
   locFormulario.ShowModal;
 
   locClicouFechar   := locFormulario.pubClicouFechar;
-  locCodigoInicial  := locFormulario.pubCodigoInicial;
-  locCodigoFinal    := locFormulario.pubCodigoFinal;
-  locNome           := locFormulario.pubNome;
+  locCEPInicial     := locFormulario.pubCEPInicial;
+  locCEPFinal       := locFormulario.pubCEPFinal;
+  locEndereco       := locFormulario.pubEndereco;
   locBloqueado      := locFormulario.pubBloqueado;
   locAtivo          := locFormulario.pubAtivo;
   locCEPIDInicial   := locFormulario.pubCEPIDInicial;
@@ -368,9 +366,9 @@ begin
 
   if not locClicouFechar then
   begin
-    priFiltroCodigoInicial  := locCodigoInicial;
-    priFiltroCodigoFinal    := locCodigoFinal;
-    priFiltroNome           := locNome;
+    priFiltroCEPInicial     := locCEPInicial;
+    priFiltroCEPFinal       := locCEPFinal;
+    priFiltroEndereco       := locEndereco;
     priFiltroBloqueado      := locBloqueado;
     priFiltroAtivo          := locAtivo;
     priFiltroCEPIDInicial   := locCEPIDInicial;
@@ -441,8 +439,8 @@ begin
   locADOQuery.SQL.Clear;
   locADOQuery.SQL.Add('SELECT                              ');
   locADOQuery.SQL.Add('  [cep].[cep_id]    AS [cep_id],    ');
-  locADOQuery.SQL.Add('  [cep].[codigo]    AS [codigo],    ');
-  locADOQuery.SQL.Add('  [cep].[nome]      AS [nome],      ');
+  locADOQuery.SQL.Add('  [cep].[cep]       AS [cep],       ');
+  locADOQuery.SQL.Add('  [cep].[endereco]  AS [endereco],  ');
   locADOQuery.SQL.Add('  [cep].[bloqueado] AS [bloqueado], ');
   locADOQuery.SQL.Add('  [cep].[ativo]     AS [ativo]      ');
   locADOQuery.SQL.Add('FROM                                ');
@@ -469,25 +467,25 @@ begin
     locADOQuery.Parameters.ParamByName('cep_id_final').Value := priFiltroCEPIDFinal;
   end;
 
-  if priFiltroCodigoInicial <> '' then
+  if priFiltroCEPInicial <> '' then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [cep].[codigo] >= :codigo_inicial ');
-    locADOQuery.Parameters.ParamByName('codigo_inicial').Value := priFiltroCodigoInicial;
+    locADOQuery.SQL.Add(' AND [cep].[cep] >= :cep_inicial ');
+    locADOQuery.Parameters.ParamByName('cep_inicial').Value := priFiltroCEPInicial;
   end;
 
-  if priFiltroCodigoFinal <> '' then
+  if priFiltroCEPFinal <> '' then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [cep].[codigo] <= :codigo_final ');
-    locADOQuery.Parameters.ParamByName('codigo_final').Value := priFiltroCodigoFinal;
+    locADOQuery.SQL.Add(' AND [cep].[cep] <= :cep_final ');
+    locADOQuery.Parameters.ParamByName('cep_final').Value := priFiltroCEPFinal;
   end;
 
-  if priFiltroNome <> '' then
+  if priFiltroEndereco <> '' then
   begin
     locFiltros := True;
-    locADOQuery.SQL.Add(' AND [cep].[nome] LIKE :nome ');
-    locADOQuery.Parameters.ParamByName('nome').Value := StringLikeGerar(priFiltroNome);
+    locADOQuery.SQL.Add(' AND [cep].[endereco] LIKE :endereco ');
+    locADOQuery.Parameters.ParamByName('endereco').Value := StringLikeGerar(priFiltroEndereco);
   end;
   
   if (priFiltroBloqueado <> '') AND (priFiltroBloqueado <> FLAG_AMBOS) then
@@ -575,8 +573,8 @@ begin
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('cep_id').AsInteger));
-      locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
-      locListItem.SubItems.Add(locADOQuery.FieldByName('nome').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('cep').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('endereco').AsString);
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('ativo').AsString));
 

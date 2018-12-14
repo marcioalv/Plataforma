@@ -997,7 +997,7 @@ procedure VCLEditSelecaoControlar(argComponente: TEdit; argImage: TImage; argLig
 begin
   if not argLigar then
   begin
-    argComponente.Width := (argImage.Left + argImage.Width) - argComponente.Left - 1;
+    argComponente.Width := (argImage.Left + argImage.Width + 8) - argComponente.Left - 1;
   end
   else
   begin

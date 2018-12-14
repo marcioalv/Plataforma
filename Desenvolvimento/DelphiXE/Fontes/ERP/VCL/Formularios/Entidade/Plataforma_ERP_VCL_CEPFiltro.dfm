@@ -347,16 +347,16 @@ object PlataformaERPVCLCEPFiltro: TPlataformaERPVCLCEPFiltro
     Width = 361
     Height = 233
     Cursor = crHandPoint
-    ActivePage = tabAuditoria
+    ActivePage = tabCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      object lblCodigo: TLabel
+      object lblCEP: TLabel
         Left = 16
         Top = 16
-        Width = 41
+        Width = 25
         Height = 14
-        Caption = 'C'#243'digo:'
+        Caption = 'CEP:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -364,19 +364,19 @@ object PlataformaERPVCLCEPFiltro: TPlataformaERPVCLCEPFiltro
         Font.Style = []
         ParentFont = False
       end
-      object lblCodigoAte: TLabel
+      object lblCEPAte: TLabel
         Left = 169
         Top = 37
         Width = 16
         Height = 13
         Caption = 'at'#233
       end
-      object lblNome: TLabel
+      object lblEndereco: TLabel
         Left = 16
         Top = 72
-        Width = 36
+        Width = 56
         Height = 14
-        Caption = 'Nome:'
+        Caption = 'Endere'#231'o:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -410,7 +410,7 @@ object PlataformaERPVCLCEPFiltro: TPlataformaERPVCLCEPFiltro
         Font.Style = []
         ParentFont = False
       end
-      object edtCodigoInicial: TEdit
+      object edtCEPInicial: TEdit
         Left = 16
         Top = 32
         Width = 145
@@ -425,11 +425,11 @@ object PlataformaERPVCLCEPFiltro: TPlataformaERPVCLCEPFiltro
         ParentFont = False
         TabOrder = 0
         Text = '999.999'
-        OnEnter = edtCodigoInicialEnter
-        OnExit = edtCodigoInicialExit
-        OnKeyPress = edtCodigoInicialKeyPress
+        OnEnter = edtCEPInicialEnter
+        OnExit = edtCEPInicialExit
+        OnKeyPress = edtCEPInicialKeyPress
       end
-      object edtCodigoFinal: TEdit
+      object edtCEPFinal: TEdit
         Left = 192
         Top = 32
         Width = 145
@@ -444,11 +444,11 @@ object PlataformaERPVCLCEPFiltro: TPlataformaERPVCLCEPFiltro
         ParentFont = False
         TabOrder = 1
         Text = '999.999'
-        OnEnter = edtCodigoFinalEnter
-        OnExit = edtCodigoFinalExit
-        OnKeyPress = edtCodigoFinalKeyPress
+        OnEnter = edtCEPFinalEnter
+        OnExit = edtCEPFinalExit
+        OnKeyPress = edtCEPFinalKeyPress
       end
-      object edtNome: TEdit
+      object edtEndereco: TEdit
         Left = 16
         Top = 88
         Width = 321
@@ -462,9 +462,9 @@ object PlataformaERPVCLCEPFiltro: TPlataformaERPVCLCEPFiltro
         ParentFont = False
         TabOrder = 2
         Text = 'Xxxxxxxxxx Wwwwwwwwww'
-        OnEnter = edtNomeEnter
-        OnExit = edtNomeExit
-        OnKeyPress = edtNomeKeyPress
+        OnEnter = edtEnderecoEnter
+        OnExit = edtEnderecoExit
+        OnKeyPress = edtEnderecoKeyPress
       end
       object cbxBloqueado: TComboBox
         Left = 16

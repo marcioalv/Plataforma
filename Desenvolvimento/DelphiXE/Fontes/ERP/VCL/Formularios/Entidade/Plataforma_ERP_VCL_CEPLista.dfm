@@ -168,7 +168,7 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
       437)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 389
+      Top = 377
       Width = 142
       Height = 13
       Anchors = [akLeft, akBottom]
@@ -176,8 +176,8 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
       ExplicitTop = 413
     end
     object lblListaFiltros: TLabel
-      Left = 476
-      Top = 387
+      Left = 464
+      Top = 375
       Width = 80
       Height = 13
       Anchors = [akRight, akBottom]
@@ -216,11 +216,12 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
           Width = 0
         end
         item
-          Caption = 'C'#243'digo'
+          Alignment = taCenter
+          Caption = 'CEP'
           Width = 175
         end
         item
-          Caption = 'Nome'
+          Caption = 'Endere'#231'o'
           Width = 400
         end
         item
