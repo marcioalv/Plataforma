@@ -5,7 +5,7 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
   BorderStyle = bsSingle
   Caption = 'Lista de estados'
   ClientHeight = 537
-  ClientWidth = 825
+  ClientWidth = 978
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,7 +21,7 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   DesignSize = (
-    825
+    978
     537)
   PixelsPerInch = 96
   TextHeight = 13
@@ -78,7 +78,7 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
       6082}
   end
   object btnFechar: TBitBtn
-    Left = 760
+    Left = 913
     Top = 472
     Width = 49
     Height = 49
@@ -140,12 +140,13 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
     ShowHint = True
     TabOrder = 1
     OnClick = btnFecharClick
+    ExplicitLeft = 760
   end
   object panFormulario: TPanel
     AlignWithMargins = True
     Left = 48
     Top = 16
-    Width = 761
+    Width = 913
     Height = 441
     Margins.Left = 48
     Margins.Top = 16
@@ -159,20 +160,19 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
     ShowCaption = False
     TabOrder = 0
     DesignSize = (
-      757
+      909
       437)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 409
+      Top = 413
       Width = 142
       Height = 13
       Anchors = [akLeft, akBottom]
       Caption = 'Foram localizados 9 registros!'
-      ExplicitTop = 413
     end
     object lblListaFiltros: TLabel
-      Left = 496
-      Top = 407
+      Left = 820
+      Top = 409
       Width = 80
       Height = 13
       Anchors = [akRight, akBottom]
@@ -184,14 +184,12 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
       Font.Style = []
       ParentFont = False
       Visible = False
-      ExplicitLeft = 504
-      ExplicitTop = 415
     end
     object lvwLista: TListView
       AlignWithMargins = True
       Left = 8
       Top = 33
-      Width = 741
+      Width = 893
       Height = 374
       Cursor = crHandPoint
       Margins.Left = 8
@@ -212,11 +210,20 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
         end
         item
           Caption = 'C'#243'digo'
-          Width = 175
+          Width = 165
         end
         item
           Caption = 'Nome'
-          Width = 400
+          Width = 250
+        end
+        item
+          Alignment = taCenter
+          Caption = 'Sigla'
+          Width = 75
+        end
+        item
+          Caption = 'Pa'#237's'
+          Width = 230
         end
         item
           Alignment = taCenter
@@ -251,7 +258,7 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
       AlignWithMargins = True
       Left = 8
       Top = 8
-      Width = 741
+      Width = 893
       Height = 17
       Margins.Left = 8
       Margins.Top = 8
@@ -260,10 +267,11 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
       Align = alTop
       TabOrder = 1
       Visible = False
+      ExplicitWidth = 741
     end
   end
   object btnMinimizar: TBitBtn
-    Left = 704
+    Left = 857
     Top = 472
     Width = 49
     Height = 49
@@ -335,9 +343,10 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
     ShowHint = True
     TabOrder = 2
     OnClick = btnMinimizarClick
+    ExplicitLeft = 704
   end
   object btnNovo: TBitBtn
-    Left = 648
+    Left = 801
     Top = 472
     Width = 49
     Height = 49
@@ -409,9 +418,10 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
     ShowHint = True
     TabOrder = 3
     OnClick = btnNovoClick
+    ExplicitLeft = 648
   end
   object btnLocalizar: TBitBtn
-    Left = 592
+    Left = 745
     Top = 472
     Width = 49
     Height = 49
@@ -488,6 +498,7 @@ object PlataformaERPVCLEstadoLista: TPlataformaERPVCLEstadoLista
     ShowHint = True
     TabOrder = 4
     OnClick = btnLocalizarClick
+    ExplicitLeft = 592
   end
   object mnuFormulario: TMainMenu
     BiDiMode = bdLeftToRight

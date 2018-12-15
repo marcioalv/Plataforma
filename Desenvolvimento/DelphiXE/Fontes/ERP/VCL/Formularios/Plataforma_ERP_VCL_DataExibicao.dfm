@@ -269,7 +269,7 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       ParentFont = False
     end
     object lblPeriodo: TLabel
-      Left = 304
+      Left = 296
       Top = 128
       Width = 45
       Height = 14
@@ -321,7 +321,7 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       ParentFont = False
     end
     object lblMinuto: TLabel
-      Left = 88
+      Left = 80
       Top = 128
       Width = 41
       Height = 14
@@ -334,7 +334,7 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       ParentFont = False
     end
     object lblSegundo: TLabel
-      Left = 160
+      Left = 144
       Top = 128
       Width = 53
       Height = 14
@@ -347,11 +347,11 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       ParentFont = False
     end
     object lblMilesimos: TLabel
-      Left = 232
+      Left = 216
       Top = 128
-      Width = 53
+      Width = 48
       Height = 14
-      Caption = 'Mil'#233'simos:'
+      Caption = 'Mil'#233'simo:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -360,7 +360,7 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       ParentFont = False
     end
     object lblMinutoSeparador: TLabel
-      Left = 78
+      Left = 70
       Top = 150
       Width = 4
       Height = 14
@@ -373,7 +373,7 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       ParentFont = False
     end
     object lblSegundoSeparador: TLabel
-      Left = 151
+      Left = 135
       Top = 150
       Width = 4
       Height = 14
@@ -452,7 +452,7 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
     object edtHora: TEdit
       Left = 16
       Top = 144
-      Width = 57
+      Width = 49
       Height = 26
       TabStop = False
       Alignment = taCenter
@@ -469,9 +469,9 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       Text = '99'
     end
     object edtPeriodo: TEdit
-      Left = 304
+      Left = 296
       Top = 144
-      Width = 97
+      Width = 105
       Height = 26
       TabStop = False
       Alignment = taCenter
@@ -544,9 +544,9 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       Text = '9999'
     end
     object edtMinuto: TEdit
-      Left = 88
+      Left = 80
       Top = 144
-      Width = 57
+      Width = 49
       Height = 26
       TabStop = False
       Alignment = taCenter
@@ -563,9 +563,9 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       Text = '99'
     end
     object edtSegundo: TEdit
-      Left = 160
+      Left = 144
       Top = 144
-      Width = 57
+      Width = 49
       Height = 26
       TabStop = False
       Alignment = taCenter
@@ -582,7 +582,7 @@ object PlataformaERPVCLDataExibicao: TPlataformaERPVCLDataExibicao
       Text = '99'
     end
     object edtMilesimos: TEdit
-      Left = 232
+      Left = 216
       Top = 144
       Width = 57
       Height = 26

@@ -79,6 +79,10 @@ type
     priFiltroCodigoInicial    : string;
     priFiltroCodigoFinal      : string;
     priFiltroNome             : string;
+    priFiltroSigla            : string;
+    priFiltroPaisID           : Integer;
+    priFiltroPaisCodigo       : string;
+    priFiltroPaisNome         : string;
     priFiltroBloqueado        : string;
     priFiltroAtivo            : string;
     priFiltroEstadoIDInicial  : Integer;
@@ -118,8 +122,9 @@ const
   LVW_LISTA_ESTADO_ID: Integer = 0;
   LVW_LISTA_CODIGO   : Integer = 1;
   LVW_LISTA_NOME     : Integer = 2;
-  LVW_LISTA_BLOQUEADO: Integer = 3;
-  LVW_LISTA_ATIVO    : Integer = 4;
+  LVW_LISTA_PAIS_NOME: Integer = 3;
+  LVW_LISTA_BLOQUEADO: Integer = 4;
+  LVW_LISTA_ATIVO    : Integer = 5;
 
 //
 // Evento de criação do formulário.
@@ -135,6 +140,10 @@ begin
   priFiltroCodigoInicial   := '';
   priFiltroCodigoFinal     := '';
   priFiltroNome            := '';
+  priFiltroSigla           := '';
+  priFiltroPaisID          := 0;
+  priFiltroPaisCodigo      := '';
+  priFiltroPaisNome        := '';
   priFiltroBloqueado       := '';
   priFiltroAtivo           := '';
   priFiltroEstadoIDInicial := 0;
@@ -325,6 +334,10 @@ var
   locCodigoInicial  : string;
   locCodigoFinal    : string;
   locNome           : string;
+  locSigla          : string;
+  locPaisID         : Integer;
+  locPaisCodigo     : string;
+  locPaisNome       : string;  
   locBloqueado      : string;
   locAtivo          : string;
   locEstadoIDInicial: Integer;
@@ -339,6 +352,10 @@ begin
   locFormulario.pubCodigoInicial   := priFiltroCodigoInicial;
   locFormulario.pubCodigoFinal     := priFiltroCodigoFinal;
   locFormulario.pubNome            := priFiltroNome;
+  locFormulario.pubSigla           := priFiltroSigla;
+  locFormulario.pubPaisID          := priFiltroPaisID;
+  locFormulario.pubPaisCodigo      := priFiltroPaisCodigo;
+  locFormulario.pubPaisNome        := priFiltroPaisNome;
   locFormulario.pubBloqueado       := priFiltroBloqueado;
   locFormulario.pubAtivo           := priFiltroAtivo;
   locFormulario.pubEstadoIDInicial := priFiltroEstadoIDInicial;
@@ -354,6 +371,10 @@ begin
   locCodigoInicial   := locFormulario.pubCodigoInicial;
   locCodigoFinal     := locFormulario.pubCodigoFinal;
   locNome            := locFormulario.pubNome;
+  locSigla           := locFormulario.pubSigla;
+  locPaisID          := locFormulario.pubPaisID;
+  locPaisCodigo      := locFormulario.pubPaisCodigo;
+  locPaisNome        := locFormulario.pubPaisNome;
   locBloqueado       := locFormulario.pubBloqueado;
   locAtivo           := locFormulario.pubAtivo;
   locEstadoIDInicial := locFormulario.pubEstadoIDInicial;
@@ -371,6 +392,10 @@ begin
     priFiltroCodigoInicial   := locCodigoInicial;
     priFiltroCodigoFinal     := locCodigoFinal;
     priFiltroNome            := locNome;
+    priFiltroSigla           := locSigla;
+    priFiltroPaisID          := locPaisID;
+    priFiltroPaisCodigo      := locPaisCodigo;
+    priFiltroPaisNome        := locPaisNome;
     priFiltroBloqueado       := locBloqueado;
     priFiltroAtivo           := locAtivo;
     priFiltroEstadoIDInicial := locEstadoIDInicial;
@@ -439,16 +464,20 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                 ');
-  locADOQuery.SQL.Add('  [estado].[estado_id] AS [estado_id], ');
-  locADOQuery.SQL.Add('  [estado].[codigo]    AS [codigo],    ');
-  locADOQuery.SQL.Add('  [estado].[nome]      AS [nome],      ');
-  locADOQuery.SQL.Add('  [estado].[bloqueado] AS [bloqueado], ');
-  locADOQuery.SQL.Add('  [estado].[ativo]     AS [ativo]      ');
-  locADOQuery.SQL.Add('FROM                                   ');
-  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)               ');
-  locADOQuery.SQL.Add('WHERE                                  ');
-  locADOQuery.SQL.Add('  1 = 1                                ');
+  locADOQuery.SQL.Add('SELECT                                       ');
+  locADOQuery.SQL.Add('  [estado].[estado_id] AS [estado_id],       ');
+  locADOQuery.SQL.Add('  [estado].[codigo]    AS [codigo],          ');
+  locADOQuery.SQL.Add('  [estado].[nome]      AS [nome],            ');
+  locADOQuery.SQL.Add('  [estado].[sigla]     AS [sigla],           ');
+  locADOQuery.SQL.Add('  [pais].[nome]        AS [pais_nome],       ');  
+  locADOQuery.SQL.Add('  [estado].[bloqueado] AS [bloqueado],       ');
+  locADOQuery.SQL.Add('  [estado].[ativo]     AS [ativo]            ');
+  locADOQuery.SQL.Add('FROM                                         ');
+  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)                     ');
+  locADOQuery.SQL.Add('  INNER JOIN [pais] WITH (NOLOCK)            ');
+  locADOQuery.SQL.Add('    ON [pais].[pais_id] = [estado].[pais_id] ');
+  locADOQuery.SQL.Add('WHERE                                        ');
+  locADOQuery.SQL.Add('  1 = 1                                      ');
 
   //
   // Filtros.
@@ -490,6 +519,20 @@ begin
     locADOQuery.Parameters.ParamByName('nome').Value := StringLikeGerar(priFiltroNome);
   end;
   
+  if priFiltroSigla <> '' then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND [estado].[sigla] LIKE :sigla ');
+    locADOQuery.Parameters.ParamByName('sigla').Value := StringLikeGerar(priFiltroSigla);
+  end;
+
+  if priFiltroPaisID <> 0then
+  begin
+    locFiltros := True;
+    locADOQuery.SQL.Add(' AND [estado].[pais_id] = :pais_id ');
+    locADOQuery.Parameters.ParamByName('pais_id').Value := priFiltroPaisID;
+  end;
+
   if (priFiltroBloqueado <> '') AND (priFiltroBloqueado <> FLAG_AMBOS) then
   begin
     locFiltros := True;
@@ -577,6 +620,8 @@ begin
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('nome').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('sigla').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('pais_nome').AsString);
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('ativo').AsString));
 

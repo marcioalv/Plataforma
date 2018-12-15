@@ -74,6 +74,13 @@ type
     mniMinimizar: TMenuItem;
     mniLimpar: TMenuItem;
     mniLocalizar: TMenuItem;
+    lblPais: TLabel;
+    imgPaisSelecionar: TImage;
+    edtPaisCodigo: TEdit;
+    edtPaisNome: TEdit;
+    edtPaisID: TEdit;
+    lblSigla: TLabel;
+    edtSigla: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -126,6 +133,15 @@ type
     procedure mniMinimizarClick(Sender: TObject);
     procedure mniLimparClick(Sender: TObject);
     procedure mniLocalizarClick(Sender: TObject);
+    procedure edtPaisCodigoEnter(Sender: TObject);
+    procedure edtPaisCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtPaisCodigoKeyPress(Sender: TObject; var Key: Char);
+    procedure imgPaisSelecionarClick(Sender: TObject);
+    procedure edtPaisCodigoExit(Sender: TObject);
+    procedure edtPaisNomeClick(Sender: TObject);
+    procedure edtSiglaEnter(Sender: TObject);
+    procedure edtSiglaExit(Sender: TObject);
+    procedure edtSiglaKeyPress(Sender: TObject; var Key: Char);
   private
     procedure FormularioInicializar;
     procedure FormularioLimpar;
@@ -135,6 +151,10 @@ type
     pubCodigoInicial  : string;
     pubCodigoFinal    : string;
     pubNome           : string;
+    pubSigla          : string;
+    pubPaisID         : Integer;
+    pubPaisCodigo     : string;
+    pubPaisNome       : string;
     pubBloqueado      : string;
     pubAtivo          : string;
     pubEstadoIDInicial: Integer;
@@ -178,6 +198,10 @@ begin
   pubCodigoInicial   := '';
   pubCodigoFinal     := '';
   pubNome            := '';
+  pubSigla           := '';
+  pubPaisID          := 0;
+  pubPaisCodigo      := '';
+  pubPaisNome        := '';
   pubBloqueado       := '';
   pubAtivo           := '';
   pubInsDtHrInicial  := 0;
@@ -217,6 +241,12 @@ begin
   edtCodigoInicial.Text := pubCodigoInicial;
   edtCodigoFinal.Text   := pubCodigoFinal;
   edtNome.Text          := pubNome;
+  edtSigla.Text         := pubSigla;
+
+  edtPaisID.Text     := IntegerStringConverter(pubPaisID);
+  edtPaisCodigo.Text := pubPaisCodigo;
+  edtPaisNome.Text   := pubPaisNome;
+  
   VCLComboBoxPopular(cbxBloqueado, pubBloqueado);
   VCLComboBoxPopular(cbxAtivo,     pubAtivo);
 
@@ -226,8 +256,12 @@ begin
   medInsDtHrFinal.Text    := DateTimeStringConverter(pubInsDtHrFinal,   'dd/mm/yyyy hh:nn');
   medUpdDtHrInicial.Text  := DateTimeStringConverter(pubUpdDtHrInicial, 'dd/mm/yyyy hh:nn');
   medUpdDtHrFinal.Text    := DateTimeStringConverter(pubUpdDtHrFinal,   'dd/mm/yyyy hh:nn');
-  
 
+  //
+  // Controla os componentes de exibição de cadastro.
+  //
+  VCLEditClickControlar(edtPaisNome, True);  
+  
   //
   // Foco no componente desejado.
   //
@@ -354,6 +388,62 @@ end;
 procedure TPlataformaERPVCLEstadoFiltro.edtNomeExit(Sender: TObject);
 begin
   if not VCLEditSair(edtNome) then Exit;
+end;
+
+//
+// Eventos do componente "sigla".
+//
+procedure TPlataformaERPVCLEstadoFiltro.edtSiglaEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtSigla) then Exit;
+end;
+
+procedure TPlataformaERPVCLEstadoFiltro.edtSiglaKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_ALFANUMERICA);
+end;
+
+procedure TPlataformaERPVCLEstadoFiltro.edtSiglaExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtSigla) then Exit;
+end;
+
+//
+// Eventos do componente "país".
+//
+procedure TPlataformaERPVCLEstadoFiltro.edtPaisCodigoEnter(Sender: TObject);
+begin
+  if not VCLEditEntrar(edtPaisCodigo) then Exit;
+end;
+
+procedure TPlataformaERPVCLEstadoFiltro.edtPaisCodigoKeyPress(Sender: TObject; var Key: Char);
+begin
+  VCLDigitacaoHabilitar(Self, Key, VCL_DIGITACAO_CODIGO);
+end;
+
+procedure TPlataformaERPVCLEstadoFiltro.edtPaisCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = F2 then imgPaisSelecionarClick(Sender);
+end;
+
+procedure TPlataformaERPVCLEstadoFiltro.edtPaisCodigoExit(Sender: TObject);
+begin
+  if not VCLEditSair(edtPaisCodigo) then Exit;
+
+  if not Plataforma_ERP_VCL_PaisValidar(False,
+                                        edtPaisID,
+                                        edtPaisCodigo,
+                                        edtPaisNome) then Exit;
+end;
+
+procedure TPlataformaERPVCLEstadoFiltro.imgPaisSelecionarClick(Sender: TObject);
+begin
+  if not Plataforma_ERP_VCL_PaisSelecionar(edtPaisID, edtPaisCodigo, edtPaisNome) then Exit;
+end;
+
+procedure TPlataformaERPVCLEstadoFiltro.edtPaisNomeClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_PaisExibir(StringIntegerConverter(edtPaisID.Text));
 end;
 
 //
@@ -568,9 +658,15 @@ end;
 //
 procedure TPlataformaERPVCLEstadoFiltro.FormularioLimpar;
 begin
-  VCLEditLimpar    (edtCodigoInicial);
-  VCLEditLimpar    (edtCodigoFinal);
-  VCLEditLimpar    (edtNome);
+  VCLEditLimpar(edtCodigoInicial);
+  VCLEditLimpar(edtCodigoFinal);
+  VCLEditLimpar(edtNome);
+  VCLEditLimpar(edtSigla);
+
+  VCLEditLimpar(edtPaisID);
+  VCLEditLimpar(edtPaisCodigo);
+  VCLEditLimpar(edtPaisNome);
+  
   VCLComboBoxLimpar(cbxBloqueado);
   VCLComboBoxLimpar(cbxAtivo);
 
@@ -579,7 +675,7 @@ begin
   VCLMaskEditLimpar(medInsDtHrInicial);
   VCLMaskEditLimpar(medInsDtHrFinal);
   VCLMaskEditLimpar(medUpdDtHrInicial);
-  VCLMaskEditLimpar(medUpdDtHrFinal) ;
+  VCLMaskEditLimpar(medUpdDtHrFinal);
 end;
 
 //
@@ -591,6 +687,10 @@ begin
   pubCodigoInicial   := StringTrim(edtCodigoInicial.Text);
   pubCodigoFinal     := StringTrim(edtCodigoFinal.Text);
   pubNome            := StringTrim(edtNome.Text);
+  pubSigla           := StringTrim(edtSigla.Text);
+  pubPaisID          := StringIntegerConverter(edtPaisID.Text);
+  pubPaisCodigo      := StringTrim(edtPaisCodigo.Text);
+  pubPaisNome        := StringTrim(edtPaisNome.Text);
   pubBloqueado       := Copy(cbxBloqueado.Text, 1, 1);
   pubAtivo           := Copy(cbxAtivo.Text, 1, 1);
   pubEstadoIDInicial := StringIntegerConverter(edtEstadoIDInicial.Text);
