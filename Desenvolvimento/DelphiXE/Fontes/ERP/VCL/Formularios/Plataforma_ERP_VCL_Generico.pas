@@ -285,17 +285,10 @@ procedure Plataforma_ERP_VCL_CEPExibir(argCEPID: Integer);
 //
 // Plataforma_ERP_VCL_CEPValidar.
 //
-function Plataforma_ERP_VCL_CEPValidar(argNovo     : Boolean;
-                                       argCEPID    : TEdit;
-                                       argCEPCodigo: TEdit;
-                                       argCEPNome  : TEdit): Boolean;
-
-//
-// Plataforma_ERP_VCL_CEPSelecionar.
-//
-function Plataforma_ERP_VCL_CEPSelecionar(argCEPID    : TEdit;
-                                          argCEPCodigo: TEdit;
-                                          argCEPNome  : TEdit): Boolean;
+function Plataforma_ERP_VCL_CEPValidar(argCEP        : TEdit;
+                                       argEstrangeiro: TCheckBox;
+                                       argGenerico   : TCheckBox;
+                                       argEndereco   : TEdit): Boolean;
 
 //
 // EMPRESA!
@@ -2224,10 +2217,10 @@ end;
 //
 // Procedimento para validar um cep.
 //
-function Plataforma_ERP_VCL_CEPValidar(argNovo     : Boolean;
-                                       argCEPID    : TEdit;
-                                       argCEPCodigo: TEdit;
-                                       argCEPNome  : TEdit): Boolean;
+function Plataforma_ERP_VCL_CEPValidar(argCEP        : TEdit;
+                                       argEstrangeiro: TCheckBox;
+                                       argGenerico   : TCheckBox;
+                                       argEndereco   : TEdit): Boolean;
 const
   PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_CEPValidar';
   ERRO_MENSAGEM    : string = 'Impossível validar o CEP!';
@@ -2235,26 +2228,26 @@ var
   locADOConnection: TADOConnection;
   locADOQuery     : TADOQuery;
   locLogMensagem  : string;
-  locCEPCodigo    : string;
+  locCEP          : string;
 begin
   //
   // Retorno padrão.
   //
   Result := False;
-  VCLEditClickControlar(argCEPNome, False);  
+  VCLEditClickControlar(argCEP, False);  
 
   //
   // Carrega variáveis.
   //
-  locCEPCodigo := StringTrim(argCEPCodigo.Text);
+  locCEP := StringTrim(argCEP.Text);
 
   //
   // Componente vazio.
   //
-  if locCEPCodigo = '' then
+  if locCEP = '' then
   begin
-    argCEPID.Text   := '';
-    argCEPNome.Text := '';
+    VCLCheckBoxLimpar(argGenerico);
+    VCLEditLimpar(argEndereco);
     Result := True;
     Exit;
   end;
@@ -2294,24 +2287,20 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                         ');
-  locADOQuery.SQL.Add('  [cep].[cep_id],              ');
-  locADOQuery.SQL.Add('  [cep].[codigo],              ');
-  locADOQuery.SQL.Add('  [cep].[nome],                ');
-  locADOQuery.SQL.Add('  [cep].[bloqueado],           ');
-  locADOQuery.SQL.Add('  [cep].[ativo]                ');
-  locADOQuery.SQL.Add('FROM                           ');
-  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)          ');
-  locADOQuery.SQL.Add('WHERE                          ');
-  locADOQuery.SQL.Add('  [cep].[codigo] = :codigo AND ');
-  locADOQuery.SQL.Add('  [cep].[ativo]  = ''S''       ');
+  locADOQuery.SQL.Add('SELECT                          ');
+  locADOQuery.SQL.Add('  [cep].[cep],                  ');
+  locADOQuery.SQL.Add('  [cep].[estrangeiro],          ');
+  locADOQuery.SQL.Add('  [cep].[generico],             ');
+  locADOQuery.SQL.Add('  [cep].[endereco]              ');
+  locADOQuery.SQL.Add('FROM                            ');
+  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)           ');
+  locADOQuery.SQL.Add('WHERE                           ');
+  locADOQuery.SQL.Add('  [cep].[cep]       = :cep  AND ');
+  locADOQuery.SQL.Add('  [cep].[bloqueado] = ''N'' AND ');
+  locADOQuery.SQL.Add('  [cep].[ativo]     = ''S''     ');
 
-  locADOQuery.Parameters.ParamByName('codigo').Value := locCEPCodigo;
+  locADOQuery.Parameters.ParamByName('cep').Value := locCEP;
 
-  if argNovo then
-  begin   
-    locADOQuery.SQL.Add(' AND [cep].[bloqueado] = ''N'' ');
-  end;
 
   //
   // Executa query.
@@ -2341,10 +2330,9 @@ begin
     FreeAndNil(locADOQuery);
     locADOConnection.Close;
     FreeAndNil(locADOConnection);    
-    VCLConsistenciaExibir('Nenhum CEP encontrado com o código "' + locCEPCodigo + '" informado!');
-    argCEPID.Text   := '';
-    argCEPNome.Text := '';
-    argCEPCodigo.SetFocus;
+    VCLConsistenciaExibir('Nenhum CEP encontrado com o código "' + locCEP + '" informado!');
+    VCLCheckBoxLimpar(argGenerico);
+    VCLEditLimpar(argEndereco);
     Exit;
   end;
 
@@ -2353,9 +2341,7 @@ begin
   //
   if locADOQuery.RecordCount = 1 then
   begin
-    argCEPID.Text     := IntegerStringConverter(locADOQuery.FieldByName('cep_id').AsInteger);
-    argCEPCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
-    argCEPNome.Text   := locADOQuery.FieldByName('nome').AsString;
+    argCEP.Text := IntegerStringConverter(locADOQuery.FieldByName('cep').AsInteger);
   end;
 
   //
@@ -2366,56 +2352,10 @@ begin
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
 
-  VCLEditClickControlar(argCEPNome, True);  
+  VCLEditClickControlar(argCEP, True);
   VCLCursorTrocar;
 
   Result := True;
-end;
-
-//
-// Procedimento para selecionar um cep.
-//
-function Plataforma_ERP_VCL_CEPSelecionar(argCEPID    : TEdit;
-                                          argCEPCodigo: TEdit;
-                                          argCEPNome  : TEdit): Boolean;
-var
-  locFormulario  : TPlataformaERPVCLCEPSelecao;
-  locClicouFechar: Boolean;
-  locCEPID       : Integer;
-  locCEPCodigo   : string;
-  locCEPNome     : string;
-begin
-  Result := False;
-
-  locCEPID     := StringIntegerConverter(argCEPID.Text);
-  locCEPCodigo := StringTrim(argCEPCodigo.Text);
-  locCEPNome   := StringTrim(argCEPNome.Text);
-
-  locFormulario := TPlataformaERPVCLCEPSelecao.Create(nil);
-
-  locFormulario.pubCEPID  := locCEPID;
-  locFormulario.pubCodigo := locCEPCodigo;
-  locFormulario.pubNome   := locCEPNome;
-  
-  locFormulario.ShowModal;
-
-  locClicouFechar := locFormulario.pubClicouFechar;
-  locCEPID        := locFormulario.pubCEPID;
-  locCEPCodigo    := locFormulario.pubCodigo;
-  locCEPNome      := locFormulario.pubNome;
-  
-  locFormulario.Release;
-  FreeAndNil(locFormulario);
-
-  if not locClicouFechar then
-  begin
-    argCEPID.Text     := IntegerStringConverter(locCEPID);
-    argCEPCodigo.Text := locCEPCodigo;
-    argCEPNome.Text   := locCEPNome;
-    Result := False;
-  end;
-
-  VCLEditClickControlar(argCEPNome, (argCEPNome.Text <> ''));  
 end;
 
 //
