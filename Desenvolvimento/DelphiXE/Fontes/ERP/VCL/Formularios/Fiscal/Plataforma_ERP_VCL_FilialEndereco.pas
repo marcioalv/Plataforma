@@ -86,7 +86,6 @@ type
     mniLog: TMenuItem;
     lblFilialEnderecoSq: TLabel;
     edtFilialEnderecoSq: TEdit;
-    chkEstrangeiro: TCheckBox;
     lblLogradouro: TLabel;
     edtLogradouroCodigo: TEdit;
     edtLogradouroDescricao: TEdit;
@@ -111,11 +110,21 @@ type
     edtPaisNome: TEdit;
     edtPaisID: TEdit;
     imgPaisSelecionar: TImage;
-    chkGenerico: TCheckBox;
     edtBairroCodigo: TEdit;
     edtBairroNome: TEdit;
     edtBairroID: TEdit;
     imgBairroSelecionar: TImage;
+    edtCidadeCodigo: TEdit;
+    edtCidadeNome: TEdit;
+    edtCidadeID: TEdit;
+    imgCidadeSelecionar: TImage;
+    edtEstadoCodigo: TEdit;
+    edtEstadoNome: TEdit;
+    edtEstadoID: TEdit;
+    gbxEstrangeiro: TGroupBox;
+    chkEstrangeiro: TCheckBox;
+    chkGenerico: TCheckBox;
+    imgEstadoSelecionar: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure medVigenciaIniDtEnter(Sender: TObject);
@@ -765,8 +774,17 @@ begin
     VCLEditLimpar(edtNumero);
     VCLEditLimpar(edtComplemento);
     VCLEditLimpar(edtBairro);
+    VCLEditLimpar(edtBairroID);
+    VCLEditLimpar(edtBairroCodigo);
+    VCLEditLimpar(edtBairroNome);
     VCLEditLimpar(edtCidade);
+    VCLEditLimpar(edtCidadeID);
+    VCLEditLimpar(edtCidadeCodigo);
+    VCLEditLimpar(edtCidadeNome);
     VCLEditLimpar(edtEstado);
+    VCLEditLimpar(edtEstadoID);
+    VCLEditLimpar(edtEstadoCodigo);
+    VCLEditLimpar(edtEstadoNome);
     VCLEditLimpar(edtPaisID);
     VCLEditLimpar(edtPaisCodigo);
     VCLEditLimpar(EdtPaisNome);
@@ -805,48 +823,44 @@ begin
   locExibirSelecoes := (not locHabilitarPais) and chkGenerico.Checked;
 
   //
-  // Habilita seleção do país.
+  // País.
   //
-  if not locHabilitarPais then
+  chkGenerico.Visible := (not locHabilitarPais);
+
+  lblLogradouro.Visible          := (not locHabilitarPais);
+  edtLogradouroCodigo.Visible    := (not locHabilitarPais);
+  edtLogradouroDescricao.Visible := (not locHabilitarPais);
+  VCLEditSelecaoControlar(edtLogradouroDescricao, imgLogradouroSelecionar, (locExibirSelecoes and locFormularioEdicao));
+
+  VCLEditControlar(edtPaisCodigo, (locHabilitarPais and locFormularioEdicao));
+  VCLEditSelecaoControlar(edtPaisNome, imgPaisSelecionar, (locHabilitarPais and locFormularioEdicao));
+
+  if locHabilitarPais then
   begin
-    chkGenerico.Visible := True;
-  
-    edtPaisCodigo.Color := edtPaisNome.Color;
-    VCLEditControlar(edtPaisCodigo, False);
-    VCLEditSelecaoControlar(edtPaisNome, imgPaisSelecionar, False);
+    edtPaisCodigo.Color := clWindow;
   end
   else
   begin
-    chkGenerico.Visible := True;
-    chkGenerico.Checked := False;
-    edtPaisCodigo.Color := clWindow;
-    VCLEditControlar(edtPaisCodigo, locFormularioEdicao);
-    VCLEditSelecaoControlar(edtPaisNome, imgPaisSelecionar, locFormularioEdicao);    
+    edtPaisCodigo.Color := edtPaisNome.Color;
   end;
 
   //
-  // Exibe seleções.
+  // Seleção de bairro, cidade e estado.
   //
-  if not locExibirSelecoes then
-  begin
-    edtBairro.Visible := True;
-    VCLEditControlar(edtBairro, locFormularioEdicao);
+  edtBairro.Visible       := (not locExibirSelecoes);
+  edtBairroCodigo.Visible := locExibirSelecoes;
+  edtBairroNome.Visible   := locExibirSelecoes;
+  VCLEditSelecaoControlar(edtBairroNome, imgBairroSelecionar, (locExibirSelecoes and locFormularioEdicao));
 
-    edtBairroCodigo.Visible := False;
-    edtBairroNome.Visible   := False;
-    VCLEditControlar(edtBairroCodigo, False);
-    VCLEditSelecaoControlar(edtBairroNome, imgBairroSelecionar, False);
-  end
-  else  
-  begin
-    edtBairro.Visible := False;
-    VCLEditControlar(edtBairro, False);
+  edtCidade.Visible       := (not locExibirSelecoes);
+  edtCidadeCodigo.Visible := locExibirSelecoes;
+  edtCidadeNome.Visible   := locExibirSelecoes;
+  VCLEditSelecaoControlar(edtCidadeNome, imgCidadeSelecionar, (locExibirSelecoes and locFormularioEdicao));
 
-    edtBairroCodigo.Visible := True;
-    edtBairroNome.Visible   := True;
-    VCLEditControlar(edtBairroCodigo, locFormularioEdicao);
-    VCLEditSelecaoControlar(edtBairroNome, imgBairroSelecionar, locFormularioEdicao);
-  end;
+  edtEstado.Visible       := (not locExibirSelecoes);
+  edtEstadoCodigo.Visible := locExibirSelecoes;
+  edtEstadoNome.Visible   := locExibirSelecoes;
+  VCLEditSelecaoControlar(edtEstadoNome, imgEstadoSelecionar, (locExibirSelecoes and locFormularioEdicao));
 end;
 
 //
@@ -866,14 +880,19 @@ begin
   //
   VCLMaskEditControlar(medVigenciaIniDt,    argEditar);
   VCLMaskEditControlar(medVigenciaFimDt,    argEditar);
-  VCLEditControlar    (edtCEP,              argEditar);
-  VCLEditControlar    (edtLogradouroCodigo, argEditar);
-  VCLEditControlar    (edtEndereco,         argEditar);
-  VCLEditControlar    (edtNumero,           argEditar);
-  VCLEditControlar    (edtComplemento,      argEditar);
-  VCLEditControlar    (edtBairro,           argEditar);
-  VCLEditControlar    (edtCidade,           argEditar);
-  VCLEditControlar    (edtEstado,           argEditar);
+  gbxEstrangeiro.Enabled := argEditar;
+  VCLEditControlar(edtCEP,              argEditar);
+  VCLCheckBoxControlar(chkGenerico,     argEditar);
+  VCLEditControlar(edtLogradouroCodigo, argEditar);
+  VCLEditControlar(edtEndereco,         argEditar);
+  VCLEditControlar(edtNumero,           argEditar);
+  VCLEditControlar(edtComplemento,      argEditar);
+  VCLEditControlar(edtBairro,           argEditar);
+  VCLEditControlar(edtBairroCodigo,     argEditar);
+  VCLEditControlar(edtCidade,           argEditar);
+  VCLEditControlar(edtCidadeCodigo,     argEditar);
+  VCLEditControlar(edtEstado,           argEditar);
+  VCLEditControlar(edtEstadoCodigo,     argEditar);
 
   //
   // Controla os componentes de exibição de cadastro.
