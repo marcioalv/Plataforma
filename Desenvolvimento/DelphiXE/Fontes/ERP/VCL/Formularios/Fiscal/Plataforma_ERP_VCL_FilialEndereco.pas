@@ -112,6 +112,10 @@ type
     edtPaisID: TEdit;
     imgPaisSelecionar: TImage;
     chkGenerico: TCheckBox;
+    edtBairroCodigo: TEdit;
+    edtBairroNome: TEdit;
+    edtBairroID: TEdit;
+    imgBairroSelecionar: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure medVigenciaIniDtEnter(Sender: TObject);
@@ -176,11 +180,16 @@ type
     procedure edtPaisCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure edtPaisCodigoKeyPress(Sender: TObject; var Key: Char);
     procedure imgPaisSelecionarClick(Sender: TObject);
+    procedure panFormularioClick(Sender: TObject);
+    procedure chkEstrangeiroClick(Sender: TObject);
+    procedure chkGenericoClick(Sender: TObject);
   private
     procedure FormularioLimpar(argLista: Boolean = True;
                                argDados: Boolean = True);
 
     procedure FormularioControlar(argEditar: Boolean);
+
+    procedure FormularioComponentesConfigurar;
 
     procedure FormularioListaPopular(argLicencaID   : Integer;
                                      argFilialBaseID: Integer;
@@ -309,6 +318,11 @@ end;
 procedure TPlataformaERPVCLFilialEndereco.mniNovoClick(Sender: TObject);
 begin
   FormularioNovo;
+end;
+
+procedure TPlataformaERPVCLFilialEndereco.panFormularioClick(Sender: TObject);
+begin
+
 end;
 
 //
@@ -446,6 +460,14 @@ begin
 end;
 
 //
+// Estrangeiro?
+//
+procedure TPlataformaERPVCLFilialEndereco.chkEstrangeiroClick(Sender: TObject);
+begin
+  FormularioComponentesConfigurar;
+end;
+
+//
 // CEP.
 //
 procedure TPlataformaERPVCLFilialEndereco.edtCEPEnter(Sender: TObject);
@@ -475,6 +497,14 @@ begin
                                        edtPaisID,
                                        edtPaisCodigo,
                                        edtPaisNome) then Exit;
+end;
+
+//
+// Genérico?
+//
+procedure TPlataformaERPVCLFilialEndereco.chkGenericoClick(Sender: TObject);
+begin
+  FormularioComponentesConfigurar;
 end;
 
 //
@@ -673,6 +703,7 @@ end;
 procedure TPlataformaERPVCLFilialEndereco.btnAlterarClick(Sender: TObject);
 begin
   FormularioAlterar;
+  FormularioComponentesConfigurar;
 end;
 
 //
@@ -744,6 +775,77 @@ begin
     VCLEditLimpar(edtInsLocalDtHr);
     VCLEditLimpar(edtUpdLocalDtHr);
     VCLEditLimpar(edtUpdContador);
+  end;
+
+  FormularioComponentesConfigurar;
+end;
+
+//
+// Procedimento para configurar os componentes do formulário.
+//
+procedure TPlataformaERPVCLFilialEndereco.FormularioComponentesConfigurar;
+var
+  locFormularioEdicao: Boolean;
+  locHabilitarPais   : Boolean;
+  locExibirSelecoes  : Boolean;
+begin
+  //
+  // O formulário está em edição?
+  //
+  locFormularioEdicao := (not edtCEP.ReadOnly);
+
+  //
+  // Deve habilitar o país?
+  //
+  locHabilitarPais := chkEstrangeiro.Checked;
+
+  //
+  // Deve exibir os componentes de seleção como bairro, cidade e estado?
+  //
+  locExibirSelecoes := (not locHabilitarPais) and chkGenerico.Checked;
+
+  //
+  // Habilita seleção do país.
+  //
+  if not locHabilitarPais then
+  begin
+    chkGenerico.Visible := True;
+  
+    edtPaisCodigo.Color := edtPaisNome.Color;
+    VCLEditControlar(edtPaisCodigo, False);
+    VCLEditSelecaoControlar(edtPaisNome, imgPaisSelecionar, False);
+  end
+  else
+  begin
+    chkGenerico.Visible := True;
+    chkGenerico.Checked := False;
+    edtPaisCodigo.Color := clWindow;
+    VCLEditControlar(edtPaisCodigo, locFormularioEdicao);
+    VCLEditSelecaoControlar(edtPaisNome, imgPaisSelecionar, locFormularioEdicao);    
+  end;
+
+  //
+  // Exibe seleções.
+  //
+  if not locExibirSelecoes then
+  begin
+    edtBairro.Visible := True;
+    VCLEditControlar(edtBairro, locFormularioEdicao);
+
+    edtBairroCodigo.Visible := False;
+    edtBairroNome.Visible   := False;
+    VCLEditControlar(edtBairroCodigo, False);
+    VCLEditSelecaoControlar(edtBairroNome, imgBairroSelecionar, False);
+  end
+  else  
+  begin
+    edtBairro.Visible := False;
+    VCLEditControlar(edtBairro, False);
+
+    edtBairroCodigo.Visible := True;
+    edtBairroNome.Visible   := True;
+    VCLEditControlar(edtBairroCodigo, locFormularioEdicao);
+    VCLEditSelecaoControlar(edtBairroNome, imgBairroSelecionar, locFormularioEdicao);
   end;
 end;
 
@@ -1294,6 +1396,7 @@ begin
   // Componentes ligados para edição.
   //
   FormularioControlar(True);
+  FormularioComponentesConfigurar;
   
   //
   // Coloca o foco na data de vigência inicial.
