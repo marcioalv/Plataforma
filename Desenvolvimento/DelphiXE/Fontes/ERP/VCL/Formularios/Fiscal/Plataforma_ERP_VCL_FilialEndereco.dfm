@@ -420,8 +420,6 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       TabOrder = 1
       object tabCadastro: TTabSheet
         Caption = 'Cadastro'
-        ExplicitLeft = -68
-        ExplicitTop = 16
         object imgVigenciaFimDtSelecionar: TImage
           Left = 391
           Top = 35
@@ -558,7 +556,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           ParentFont = False
         end
         object lblLogradouro: TLabel
-          Left = 136
+          Left = 232
           Top = 72
           Width = 66
           Height = 14
@@ -571,7 +569,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           ParentFont = False
         end
         object imgLogradouroSelecionar: TImage
-          Left = 472
+          Left = 568
           Top = 92
           Width = 20
           Height = 20
@@ -855,7 +853,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           TabOrder = 3
         end
         object edtLogradouroCodigo: TEdit
-          Left = 136
+          Left = 232
           Top = 88
           Width = 73
           Height = 26
@@ -875,7 +873,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           OnKeyPress = edtLogradouroCodigoKeyPress
         end
         object edtLogradouroDescricao: TEdit
-          Left = 216
+          Left = 312
           Top = 88
           Width = 249
           Height = 26
@@ -894,7 +892,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Text = 'Xxxxxxxxxx Dddddddddd'
         end
         object edtLogradouroID: TEdit
-          Left = 288
+          Left = 384
           Top = 88
           Width = 65
           Height = 26
@@ -1026,6 +1024,7 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           Top = 88
           Width = 97
           Height = 26
+          Alignment = taCenter
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -15
@@ -1096,6 +1095,22 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           TabOrder = 16
           Text = '999.999'
           Visible = False
+        end
+        object chkGenerico: TCheckBox
+          Left = 128
+          Top = 93
+          Width = 81
+          Height = 17
+          Cursor = crHandPoint
+          TabStop = False
+          Caption = 'Gen'#233'rico?'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 17
         end
       end
       object tabAuditoria: TTabSheet

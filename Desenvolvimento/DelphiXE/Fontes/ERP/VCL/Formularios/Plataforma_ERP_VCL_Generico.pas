@@ -285,10 +285,19 @@ procedure Plataforma_ERP_VCL_CEPExibir(argCEPID: Integer);
 //
 // Plataforma_ERP_VCL_CEPValidar.
 //
-function Plataforma_ERP_VCL_CEPValidar(argCEP        : TEdit;
-                                       argEstrangeiro: TCheckBox;
-                                       argGenerico   : TCheckBox;
-                                       argEndereco   : TEdit): Boolean;
+function Plataforma_ERP_VCL_CEPValidar(argCEP                : TEdit;
+                                       argEstrangeiro        : TCheckBox;
+                                       argGenerico           : TCheckBox;
+                                       argLogradouroID       : TEdit;
+                                       argLogradouroCodigo   : TEdit;
+                                       argLogradouroDescricao: TEdit;
+                                       argEndereco           : TEdit;
+                                       argBairro             : TEdit;
+                                       argCidade             : TEdit;
+                                       argEstado             : TEdit;
+                                       argPaisID             : TEdit;
+                                       argPaisCodigo         : TEdit;
+                                       argPaisNome           : TEdit): Boolean;
 
 //
 // EMPRESA!
@@ -2217,10 +2226,19 @@ end;
 //
 // Procedimento para validar um cep.
 //
-function Plataforma_ERP_VCL_CEPValidar(argCEP        : TEdit;
-                                       argEstrangeiro: TCheckBox;
-                                       argGenerico   : TCheckBox;
-                                       argEndereco   : TEdit): Boolean;
+function Plataforma_ERP_VCL_CEPValidar(argCEP                : TEdit;
+                                       argEstrangeiro        : TCheckBox;
+                                       argGenerico           : TCheckBox;
+                                       argLogradouroID       : TEdit;
+                                       argLogradouroCodigo   : TEdit;
+                                       argLogradouroDescricao: TEdit;                                       
+                                       argEndereco           : TEdit;
+                                       argBairro             : TEdit;
+                                       argCidade             : TEdit;
+                                       argEstado             : TEdit;
+                                       argPaisID             : TEdit;
+                                       argPaisCodigo         : TEdit;
+                                       argPaisNome           : TEdit): Boolean;                                       
 const
   PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_CEPValidar';
   ERRO_MENSAGEM    : string = 'Impossível validar o CEP!';
@@ -2239,7 +2257,7 @@ begin
   //
   // Carrega variáveis.
   //
-  locCEP := StringTrim(argCEP.Text);
+  locCEP := CEPFormatar(argCEP.Text, argEstrangeiro.Checked);
 
   //
   // Componente vazio.
@@ -2287,17 +2305,42 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                          ');
-  locADOQuery.SQL.Add('  [cep].[cep],                  ');
-  locADOQuery.SQL.Add('  [cep].[estrangeiro],          ');
-  locADOQuery.SQL.Add('  [cep].[generico],             ');
-  locADOQuery.SQL.Add('  [cep].[endereco]              ');
-  locADOQuery.SQL.Add('FROM                            ');
-  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)           ');
-  locADOQuery.SQL.Add('WHERE                           ');
-  locADOQuery.SQL.Add('  [cep].[cep]       = :cep  AND ');
-  locADOQuery.SQL.Add('  [cep].[bloqueado] = ''N'' AND ');
-  locADOQuery.SQL.Add('  [cep].[ativo]     = ''S''     ');
+  locADOQuery.SQL.Add('SELECT                                                      ');
+  locADOQuery.SQL.Add('  [cep].[cep],                                              ');
+  locADOQuery.SQL.Add('  [cep].[estrangeiro],                                      ');
+  locADOQuery.SQL.Add('  [cep].[generico],                                         ');
+  locADOQuery.SQL.Add('  [logradouro].[logradouro_id] AS [logradouro_id],          ');
+  locADOQuery.SQL.Add('  [logradouro].[codigo]        AS [logradouro_codigo],      ');
+  locADOQuery.SQL.Add('  [logradouro].[descricao]     AS [logradouro_descricao],   ');    
+  locADOQuery.SQL.Add('  [cep].[endereco],                                         ');
+  locADOQuery.SQL.Add('  [bairro].[bairro_id]         AS [bairro_id],              ');
+  locADOQuery.SQL.Add('  [bairro].[codigo]            AS [bairro_codigo],          ');
+  locADOQuery.SQL.Add('  [bairro].[nome]              AS [bairro_nome],            ');
+  locADOQuery.SQL.Add('  [cidade].[cidade_id]         AS [cidade_id],              ');
+  locADOQuery.SQL.Add('  [cidade].[codigo]            AS [cidade_codigo],          ');
+  locADOQuery.SQL.Add('  [cidade].[nome]              AS [cidade_nome],            ');
+  locADOQuery.SQL.Add('  [estado].[estado_id]         AS [estado_id],              ');
+  locADOQuery.SQL.Add('  [estado].[codigo]            AS [estado_codigo],          ');
+  locADOQuery.SQL.Add('  [estado].[nome]              AS [estado_nome],            ');
+  locADOQuery.SQL.Add('  [pais].[pais_id]             AS [pais_id],                ');
+  locADOQuery.SQL.Add('  [pais].[codigo]              AS [pais_codigo],            ');
+  locADOQuery.SQL.Add('  [pais].[nome]                AS [pais_nome]               ');
+  locADOQuery.SQL.Add('FROM                                                        ');
+  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)                                       ');
+  locADOQuery.SQL.Add('  LEFT OUTER JOIN [logradouro] WITH (NOLOCK)                ');
+  locADOQuery.SQL.Add('    ON [logradouro].[logradouro_id] = [cep].[logradouro_id] ');
+  locADOQuery.SQL.Add('  LEFT OUTER JOIN [bairro] WITH (NOLOCK)                    ');
+  locADOQuery.SQL.Add('    ON [bairro].[bairro_id] = [cep].[bairro_id]             ');
+  locADOQuery.SQL.Add('  LEFT OUTER JOIN [cidade] WITH (NOLOCK)                    ');
+  locADOQuery.SQL.Add('    ON [cidade].[cidade_id] = [cep].[cidade_id]             ');
+  locADOQuery.SQL.Add('  LEFT OUTER JOIN [estado] WITH (NOLOCK)                    ');
+  locADOQuery.SQL.Add('    ON [estado].[estado_id] = [cep].[estado_id]             ');
+  locADOQuery.SQL.Add('  INNER JOIN [pais] WITH (NOLOCK)                           ');
+  locADOQuery.SQL.Add('    ON [pais].[pais_id] = [cep].[pais_id]                   ');
+  locADOQuery.SQL.Add('WHERE                                                       ');
+  locADOQuery.SQL.Add('  [cep].[cep]       = :cep  AND                             ');
+  locADOQuery.SQL.Add('  [cep].[bloqueado] = ''N'' AND                             ');
+  locADOQuery.SQL.Add('  [cep].[ativo]     = ''S''                                 ');
 
   locADOQuery.Parameters.ParamByName('cep').Value := locCEP;
 
@@ -2341,7 +2384,23 @@ begin
   //
   if locADOQuery.RecordCount = 1 then
   begin
-    argCEP.Text := IntegerStringConverter(locADOQuery.FieldByName('cep').AsInteger);
+    argCEP.Text                 := locADOQuery.FieldByName('cep').AsString;
+    argEstrangeiro.Checked      := StringBooleanConverter(locADOQuery.FieldByName('estrangeiro').AsString);
+    argGenerico.Checked         := StringBooleanConverter(locADOQuery.FieldByName('generico').AsString);
+
+    argLogradouroID.Text        := IntegerStringConverter(locADOQuery.FieldByName('logradouro_id').AsInteger);
+    argLogradouroCodigo.Text    := locADOQuery.FieldByName('logradouro_codigo').AsString;
+    argLogradouroDescricao.Text := locADOQuery.FieldByName('logradouro_descricao').AsString;
+
+    argEndereco.Text            := locADOQuery.FieldByName('endereco').AsString;
+
+    argBairro.Text              := locADOQuery.FieldByName('bairro_nome').AsString;
+    argCidade.Text              := locADOQuery.FieldByName('cidade_nome').AsString;
+    argEstado.Text              := locADOQuery.FieldByName('estado_nome').AsString;
+
+    argPaisID.Text              := IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger);
+    argPaisCodigo.Text          := locADOQuery.FieldByName('pais_codigo').AsString;
+    argPaisNome.Text            := locADOQuery.FieldByName('pais_nome').AsString;
   end;
 
   //

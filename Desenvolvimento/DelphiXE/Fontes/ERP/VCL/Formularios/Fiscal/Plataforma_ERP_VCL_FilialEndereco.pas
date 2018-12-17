@@ -111,6 +111,7 @@ type
     edtPaisNome: TEdit;
     edtPaisID: TEdit;
     imgPaisSelecionar: TImage;
+    chkGenerico: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure medVigenciaIniDtEnter(Sender: TObject);
@@ -460,6 +461,20 @@ end;
 procedure TPlataformaERPVCLFilialEndereco.edtCEPExit(Sender: TObject);
 begin
   if not VCLEditSair(edtCEP) then Exit;
+  
+  if not Plataforma_ERP_VCL_CEPValidar(edtCEP,
+                                       chkEstrangeiro,
+                                       chkGenerico,
+                                       edtLogradouroID,
+                                       edtLogradouroCodigo,
+                                       edtLogradouroDescricao,
+                                       edtEndereco,
+                                       edtBairro,
+                                       edtCidade,
+                                       edtEstado,
+                                       edtPaisID,
+                                       edtPaisCodigo,
+                                       edtPaisNome) then Exit;
 end;
 
 //
@@ -711,6 +726,7 @@ begin
 
     VCLCheckBoxLimpar(chkEstrangeiro);
     VCLEditLimpar(edtCEP);
+    VCLCheckBoxLimpar(chkGenerico);
     VCLEditLimpar(edtLogradouroID);
     VCLEditLimpar(edtLogradouroCodigo);
     VCLEditLimpar(edtLogradouroDescricao);
@@ -1033,6 +1049,7 @@ begin
   locADOQuery.SQL.Add('  [filial_endereco].[cidade],                                           ');
   locADOQuery.SQL.Add('  [filial_endereco].[estado],                                           ');
   locADOQuery.SQL.Add('  [filial_endereco].[cep],                                              ');
+  locADOQuery.SQL.Add('  [filial_endereco].[generico],                                         ');
 
   locADOQuery.SQL.Add('  [pais].[pais_id] AS [pais_id],                                        ');
   locADOQuery.SQL.Add('  [pais].[codigo]  AS [pais_codigo],                                    ');
@@ -1087,6 +1104,7 @@ begin
     medVigenciaFimDt.Text    := DateTimeStringConverter(locADOQuery.FieldByName('vigencia_fim_dt').AsDateTime, 'dd/mm/yyyy');
     edtFilialEnderecoSq.Text := IntegerStringConverter (locADOQuery.FieldByName('filial_endereco_sq').AsInteger);
     chkEstrangeiro.Checked   := StringBooleanConverter(locADOQuery.FieldByName('estrangeiro').AsString);
+    chkGenerico.Checked      := StringBooleanConverter(locADOQuery.FieldByName('generico').AsString);
 
     edtLogradouroID.Text        := IntegerStringConverter(locADOQuery.FieldByName('logradouro_id').AsInteger);
     edtLogradouroCodigo.Text    := locADOQuery.FieldByName('logradouro_codigo').AsString;
@@ -1335,6 +1353,7 @@ var
   locCidade                : string;
   locEstado                : string;
   locCEP                   : string;
+  locGenerico              : Boolean;
   locPaisID                : Integer;
 
   locInsLocalDtHr          : TDateTime;
@@ -1365,6 +1384,7 @@ begin
   locCidade           := StringTrim(edtCidade.Text);
   locEstado           := StringTrim(edtEstado.Text);
   locCEP              := StringTrim(edtCEP.Text);
+  locGenerico         := chkGenerico.Checked;
   locPaisID           := StringIntegerConverter(edtPaisID.Text);
 
   locUsuarioBaseID    := gloUsuarioBaseID;
@@ -1772,6 +1792,7 @@ begin
     locADOQuery.SQL.Add('  [cidade],                     ');
     locADOQuery.SQL.Add('  [estado],                     ');
     locADOQuery.SQL.Add('  [cep],                        ');
+    locADOQuery.SQL.Add('  [generico],                   ');
     locADOQuery.SQL.Add('  [pais_id],                    ');
     locADOQuery.SQL.Add('  [ins_local_dt_hr],            ');
     locADOQuery.SQL.Add('  [ins_server_dt_hr],           ');
@@ -1800,6 +1821,7 @@ begin
     locADOQuery.SQL.Add('  :cidade,                      '); // [cidade].
     locADOQuery.SQL.Add('  :estado,                      '); // [estado].
     locADOQuery.SQL.Add('  :cep,                         '); // [cep].
+    locADOQuery.SQL.Add('  :generico,                    '); // [generico].
     locADOQuery.SQL.Add('  :pais_id,                     '); // [pais_id].
     locADOQuery.SQL.Add('  :local_dt_hr,                 '); // [ins_local_dt_hr].
     locADOQuery.SQL.Add('  GETDATE(),                    '); // [ins_server_dt_hr].
@@ -1832,6 +1854,7 @@ begin
     locADOQuery.SQL.Add('  [cidade]              = :cidade,           ');
     locADOQuery.SQL.Add('  [estado]              = :estado,           ');
     locADOQuery.SQL.Add('  [cep]                 = :cep,              ');
+    locADOQuery.SQL.Add('  [generico]            = :generico,         ');
     locADOQuery.SQL.Add('  [pais_id]             = :pais_id,          ');
     locADOQuery.SQL.Add('  [upd_local_dt_hr]     = :local_dt_hr,      ');
     locADOQuery.SQL.Add('  [upd_server_dt_hr]    = GETDATE(),         ');
@@ -1864,6 +1887,7 @@ begin
   locADOQuery.Parameters.ParamByName('cidade').Value             := locCidade;
   locADOQuery.Parameters.ParamByName('estado').Value             := locEstado;
   locADOQuery.Parameters.ParamByName('cep').Value                := locCEP;
+  locADOQuery.Parameters.ParamByName('generico').Value           := BooleanStringConverter(locGenerico);
   locADOQuery.Parameters.ParamByName('pais_id').Value            := locPaisID;
   locADOQuery.Parameters.ParamByName('local_dt_hr').Value        := Now;
   locADOQuery.Parameters.ParamByName('usuario_base_id').Value    := locUsuarioBaseID;

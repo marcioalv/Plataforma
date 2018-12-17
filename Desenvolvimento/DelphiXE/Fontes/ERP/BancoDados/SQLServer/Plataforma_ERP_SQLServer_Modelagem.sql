@@ -844,6 +844,7 @@ CREATE TABLE [filial_endereco] (
   [estado_id]            SMALLINT                                  NULL,
   [estado]               VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [cep]                  VARCHAR(15)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
+  [generico]             CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [pais_id]              SMALLINT                                  NOT NULL,
   [ins_local_dt_hr]      DATETIME                                  NOT NULL,
   [ins_server_dt_hr]     DATETIME                                  NOT NULL,
@@ -860,6 +861,7 @@ CREATE TABLE [filial_endereco] (
   CONSTRAINT [filial_endereco_ix_vigencia]   UNIQUE ([licenca_id], [filial_base_id], [filial_id], [vigencia_ini_dt], [vigencia_fim_dt]),
 
   CONSTRAINT [filial_endereco_estrangeiro]   CHECK ([estrangeiro] IN ('S', 'N')),
+  CONSTRAINT [filial_endereco_generico]      CHECK ([generico]    IN ('S', 'N')),
 
   CONSTRAINT [filial_endereco_fk_filial]      FOREIGN KEY ([licenca_id], [filial_base_id], [filial_id])           REFERENCES [filial]     ([licenca_id], [filial_base_id],  [filial_id]),
   CONSTRAINT [filial_endereco_fk_logradouro]  FOREIGN KEY ([logradouro_id])                                       REFERENCES [logradouro] ([logradouro_id]),
@@ -1179,6 +1181,14 @@ INSERT INTO [bairro] VALUES (2, '02', 'Parque São Leopoldo',  1, 'N', 'S', GETDA
 INSERT INTO [bairro] VALUES (3, '03', 'Boqueirão',            1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 INSERT INTO [numerador_base] VALUES ('bairro_id', 3, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+
+--
+-- CEP.
+--
+INSERT INTO [cep] VALUES (1, '81.880-340', 'N', 2, 'Desembargador Ermelino de Leão', '', 2, 3, 3, 1, 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+GO
+INSERT INTO [numerador_base] VALUES ('cep_id', 1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 
 --
