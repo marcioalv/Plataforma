@@ -4,7 +4,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Cidade'
-  ClientHeight = 362
+  ClientHeight = 373
   ClientWidth = 601
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -64,7 +64,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
   end
   object imgBackground: TImage
     Left = 0
-    Top = 249
+    Top = 257
     Width = 105
     Height = 105
     Center = True
@@ -72,7 +72,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
   end
   object btnGravar: TBitBtn
     Left = 424
-    Top = 296
+    Top = 312
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -153,7 +153,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
   end
   object btnCancelar: TBitBtn
     Left = 536
-    Top = 296
+    Top = 312
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -234,7 +234,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
   end
   object btnMinimizar: TBitBtn
     Left = 480
-    Top = 296
+    Top = 312
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -307,7 +307,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
   end
   object btnAlterar: TBitBtn
     Left = 424
-    Top = 296
+    Top = 312
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -390,7 +390,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
     Left = 48
     Top = 16
     Width = 537
-    Height = 265
+    Height = 281
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
@@ -400,6 +400,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
+      ExplicitHeight = 237
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -501,6 +502,19 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
         OnClick = imgEstadoSelecionarClick
+      end
+      object lblPais: TLabel
+        Left = 16
+        Top = 184
+        Width = 24
+        Height = 14
+        Caption = 'Pa'#237's:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
       end
       object edtCodigo: TEdit
         Left = 16
@@ -686,6 +700,45 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
         Text = '999.999'
         Visible = False
       end
+      object edtPaisNome: TEdit
+        Left = 16
+        Top = 200
+        Width = 321
+        Height = 26
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ReadOnly = True
+        ShowHint = False
+        TabOrder = 8
+        Text = 'Xxxxxxxxxx Dddddddddd'
+        OnClick = edtPaisNomeClick
+      end
+      object edtPaisID: TEdit
+        Left = 224
+        Top = 200
+        Width = 65
+        Height = 26
+        TabStop = False
+        Alignment = taRightJustify
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 9
+        Text = '999.999'
+        Visible = False
+      end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
@@ -826,7 +879,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
   end
   object btnFechar: TBitBtn
     Left = 536
-    Top = 296
+    Top = 312
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -889,7 +942,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
   end
   object btnNovo: TBitBtn
     Left = 368
-    Top = 296
+    Top = 312
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -964,7 +1017,7 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     Left = 40
-    Top = 296
+    Top = 304
     object mniAtualizar: TMenuItem
       Caption = 'Atualizar'
       OnClick = mniAtualizarClick

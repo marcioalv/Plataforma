@@ -439,16 +439,22 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                 ');
-  locADOQuery.SQL.Add('  [cidade].[cidade_id] AS [cidade_id], ');
-  locADOQuery.SQL.Add('  [cidade].[codigo]    AS [codigo],    ');
-  locADOQuery.SQL.Add('  [cidade].[nome]      AS [nome],      ');
-  locADOQuery.SQL.Add('  [cidade].[bloqueado] AS [bloqueado], ');
-  locADOQuery.SQL.Add('  [cidade].[ativo]     AS [ativo]      ');
-  locADOQuery.SQL.Add('FROM                                   ');
-  locADOQuery.SQL.Add('  [cidade] WITH (NOLOCK)               ');
-  locADOQuery.SQL.Add('WHERE                                  ');
-  locADOQuery.SQL.Add('  1 = 1                                ');
+  locADOQuery.SQL.Add('SELECT                                             ');
+  locADOQuery.SQL.Add('  [cidade].[cidade_id] AS [cidade_id],             ');
+  locADOQuery.SQL.Add('  [cidade].[codigo]    AS [codigo],                ');
+  locADOQuery.SQL.Add('  [cidade].[nome]      AS [nome],                  ');
+  locADOQuery.SQL.Add('  [estado].[nome]      AS [estado_nome],           ');
+  locADOQuery.SQL.Add('  [pais].[nome]        AS [pais_nome],             ');
+  locADOQuery.SQL.Add('  [cidade].[bloqueado] AS [bloqueado],             ');
+  locADOQuery.SQL.Add('  [cidade].[ativo]     AS [ativo]                  ');
+  locADOQuery.SQL.Add('FROM                                               ');
+  locADOQuery.SQL.Add('  [cidade] WITH (NOLOCK)                           ');
+  locADOQuery.SQL.Add('  INNER JOIN [estado] WITH (NOLOCK)                ');
+  locADOQuery.SQL.Add('    ON [estado].[estado_id] = [cidade].[estado_id] ');
+  locADOQuery.SQL.Add('  INNER JOIN [pais] WITH (NOLOCK)                  ');
+  locADOQuery.SQL.Add('    ON [pais].[pais_id] = [estado].[pais_id]       ');
+  locADOQuery.SQL.Add('WHERE                                              ');
+  locADOQuery.SQL.Add('  1 = 1                                            ');
 
   //
   // Filtros.
@@ -577,6 +583,7 @@ begin
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('cidade_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('nome').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('estado_nome').AsString + '/' + locADOQuery.FieldByName('pais_nome').AsString);
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('ativo').AsString));
 

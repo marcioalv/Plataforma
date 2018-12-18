@@ -77,6 +77,9 @@ type
     edtEstadoNome: TEdit;
     edtEstadoID: TEdit;
     imgEstadoSelecionar: TImage;
+    lblPais: TLabel;
+    edtPaisNome: TEdit;
+    edtPaisID: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -117,6 +120,7 @@ type
     procedure edtEstadoCodigoKeyPress(Sender: TObject; var Key: Char);
     procedure imgEstadoSelecionarClick(Sender: TObject);
     procedure edtEstadoNomeClick(Sender: TObject);
+    procedure edtPaisNomeClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -362,7 +366,10 @@ begin
   if not Plataforma_ERP_VCL_EstadoValidar((edtCidadeID.Text = STR_NOVO),
                                           edtEstadoID,
                                           edtEstadoCodigo,
-                                          edtEstadoNome) then Exit;
+                                          edtEstadoNome,
+                                          nil,
+                                          nil,
+                                          nil) then Exit;
 end;
 
 procedure TPlataformaERPVCLCidadeCadastro.imgEstadoSelecionarClick(Sender: TObject);
@@ -373,6 +380,14 @@ end;
 procedure TPlataformaERPVCLCidadeCadastro.edtEstadoNomeClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_EstadoExibir(StringIntegerConverter(edtEstadoID.Text));
+end;
+
+//
+// Eventos do componente "país".
+//
+procedure TPlataformaERPVCLCidadeCadastro.edtPaisNomeClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_PaisExibir(StringIntegerConverter(edtPaisID.Text));
 end;
 
 //
@@ -493,6 +508,9 @@ begin
   VCLEditLimpar(edtEstadoCodigo);
   VCLEditLimpar(edtEstadoNome);
 
+  VCLEditLimpar(edtPaisNome);
+  VCLEditLimpar(edtPaisID);
+
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
 
@@ -511,6 +529,7 @@ begin
   // Controla os componentes de exibição de cadastro.
   //
   VCLEditClickControlar(edtEstadoNome,   False);
+  VCLEditClickControlar(edtPaisNome,     False);
   VCLEditClickControlar(edtInsLocalDtHr, False);
   VCLEditClickControlar(edtUpdLocalDtHr, False);
 end;
@@ -546,6 +565,7 @@ begin
   // Controla os componentes de exibição de cadastro.
   //
   VCLEditClickControlar(edtEstadoNome,   True);
+  VCLEditClickControlar(edtPaisNome,     True);
   VCLEditClickControlar(edtInsLocalDtHr, True);
   VCLEditClickControlar(edtUpdLocalDtHr, True);
 
@@ -705,6 +725,8 @@ begin
   locADOQuery.SQL.Add('  [estado].[estado_id] AS [estado_id],             ');
   locADOQuery.SQL.Add('  [estado].[codigo]    AS [estado_codigo],         ');
   locADOQuery.SQL.Add('  [estado].[nome]      AS [estado_nome],           ');
+  locADOQuery.SQL.Add('  [pais].[pais_id]     AS [pais_id],               ');
+  locADOQuery.SQL.Add('  [pais].[nome]        AS [pais_nome],             ');  
   locADOQuery.SQL.Add('  [cidade].[bloqueado],                            ');
   locADOQuery.SQL.Add('  [cidade].[ativo],                                ');
   locADOQuery.SQL.Add('  [cidade].[ins_local_dt_hr],                      ');
@@ -714,6 +736,8 @@ begin
   locADOQuery.SQL.Add('  [cidade] WITH (NOLOCK)                           ');
   locADOQuery.SQL.Add('  INNER JOIN [estado] WITH (NOLOCK)                ');
   locADOQuery.SQL.Add('    ON [estado].[estado_id] = [cidade].[estado_id] ');
+  locADOQuery.SQL.Add('  INNER JOIN [pais] WITH (NOLOCK)                  ');
+  locADOQuery.SQL.Add('    ON [pais].[pais_id] = [estado].[pais_id]       ');
   locADOQuery.SQL.Add('WHERE                                              ');
   locADOQuery.SQL.Add('  [cidade].[cidade_id] = :cidade_id                ');
 
@@ -752,6 +776,9 @@ begin
     edtEstadoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger);
     edtEstadoCodigo.Text := locADOQuery.FieldByName('estado_codigo').AsString;
     edtEstadoNome.Text   := locADOQuery.FieldByName('estado_nome').AsString;
+
+    edtPaisID.Text   := IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger);
+    edtPaisNome.Text := locADOQuery.FieldByName('pais_nome').AsString;
 
     chkBloqueado.Checked := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked     := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);
@@ -1560,6 +1587,8 @@ begin
   LogDadosStringDescrever ('ID do estado',     edtEstadoID.Text,     Result);
   LogDadosStringDescrever ('Código do estado', edtEstadoCodigo.Text, Result);
   LogDadosStringDescrever ('Estado',           edtEstadoNome.Text,   Result);
+  LogDadosStringDescrever ('País ID',          edtPaisID.Text,       Result);
+  LogDadosStringDescrever ('País',             edtPaisNome.Text,     Result);
   LogDadosBooleanDescrever('Bloqueado',        chkBloqueado.Checked, Result);
   LogDadosBooleanDescrever('Ativo',            chkAtivo.Checked,     Result);
 end;

@@ -5,7 +5,7 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
   BorderStyle = bsSingle
   Caption = 'Lista de cidades'
   ClientHeight = 537
-  ClientWidth = 825
+  ClientWidth = 1129
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,7 +21,7 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   DesignSize = (
-    825
+    1129
     537)
   PixelsPerInch = 96
   TextHeight = 13
@@ -75,7 +75,7 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
       BBE7F4CF3080B92A730EF01BFE59BA3F4B50AC770000000049454E44AE426082}
   end
   object btnFechar: TBitBtn
-    Left = 760
+    Left = 1064
     Top = 472
     Width = 49
     Height = 49
@@ -137,12 +137,13 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
     ShowHint = True
     TabOrder = 1
     OnClick = btnFecharClick
+    ExplicitLeft = 760
   end
   object panFormulario: TPanel
     AlignWithMargins = True
     Left = 48
     Top = 16
-    Width = 761
+    Width = 1065
     Height = 441
     Margins.Left = 48
     Margins.Top = 16
@@ -156,11 +157,11 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
     ShowCaption = False
     TabOrder = 0
     DesignSize = (
-      757
+      1061
       437)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 393
+      Top = 389
       Width = 142
       Height = 13
       Anchors = [akLeft, akBottom]
@@ -168,8 +169,8 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
       ExplicitTop = 413
     end
     object lblListaFiltros: TLabel
-      Left = 480
-      Top = 391
+      Left = 780
+      Top = 387
       Width = 80
       Height = 13
       Anchors = [akRight, akBottom]
@@ -188,7 +189,7 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
       AlignWithMargins = True
       Left = 8
       Top = 33
-      Width = 741
+      Width = 1045
       Height = 374
       Cursor = crHandPoint
       Margins.Left = 8
@@ -213,6 +214,10 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
         end
         item
           Caption = 'Nome'
+          Width = 300
+        end
+        item
+          Caption = 'Estado/Pa'#237's'
           Width = 400
         end
         item
@@ -243,12 +248,13 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
+      ExplicitWidth = 741
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True
       Left = 8
       Top = 8
-      Width = 741
+      Width = 1045
       Height = 17
       Margins.Left = 8
       Margins.Top = 8
@@ -257,10 +263,11 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
       Align = alTop
       TabOrder = 1
       Visible = False
+      ExplicitWidth = 741
     end
   end
   object btnMinimizar: TBitBtn
-    Left = 704
+    Left = 1008
     Top = 472
     Width = 49
     Height = 49
@@ -332,9 +339,10 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
     ShowHint = True
     TabOrder = 2
     OnClick = btnMinimizarClick
+    ExplicitLeft = 704
   end
   object btnNovo: TBitBtn
-    Left = 648
+    Left = 952
     Top = 472
     Width = 49
     Height = 49
@@ -406,9 +414,10 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
     ShowHint = True
     TabOrder = 3
     OnClick = btnNovoClick
+    ExplicitLeft = 648
   end
   object btnLocalizar: TBitBtn
-    Left = 592
+    Left = 896
     Top = 472
     Width = 49
     Height = 49
@@ -485,6 +494,7 @@ object PlataformaERPVCLCidadeLista: TPlataformaERPVCLCidadeLista
     ShowHint = True
     TabOrder = 4
     OnClick = btnLocalizarClick
+    ExplicitLeft = 592
   end
   object mnuFormulario: TMainMenu
     BiDiMode = bdLeftToRight

@@ -541,7 +541,10 @@ begin
   if not Plataforma_ERP_VCL_EstadoValidar((edtCEPID.Text = STR_NOVO),
                                            edtEstadoID,
                                            edtEstadoCodigo,
-                                           edtEstadoNome) then Exit;
+                                           edtEstadoNome,
+                                           nil,
+                                           nil,
+                                           nil) then Exit;
 end;
 
 procedure TPlataformaERPVCLCEPCadastro.imgEstadoSelecionarClick(Sender: TObject);

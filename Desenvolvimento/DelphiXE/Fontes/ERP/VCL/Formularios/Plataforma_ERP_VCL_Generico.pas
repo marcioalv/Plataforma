@@ -201,7 +201,10 @@ procedure Plataforma_ERP_VCL_EstadoExibir(argEstadoID: Integer);
 function Plataforma_ERP_VCL_EstadoValidar(argNovo        : Boolean;
                                           argEstadoID    : TEdit;
                                           argEstadoCodigo: TEdit;
-                                          argEstadoNome  : TEdit): Boolean;
+                                          argEstadoNome  : TEdit;
+                                          argPaisID      : TEdit;
+                                          argPaisCodigo  : TEdit;
+                                          argPaisNome    : TEdit): Boolean;                                         
 
 //
 // Plataforma_ERP_VCL_EstadoSelecionar.
@@ -1539,7 +1542,10 @@ end;
 function Plataforma_ERP_VCL_EstadoValidar(argNovo        : Boolean;
                                           argEstadoID    : TEdit;
                                           argEstadoCodigo: TEdit;
-                                          argEstadoNome  : TEdit): Boolean;
+                                          argEstadoNome  : TEdit;
+                                          argPaisID      : TEdit;
+                                          argPaisCodigo  : TEdit;
+                                          argPaisNome    : TEdit): Boolean;
 const
   PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_EstadoValidar';
   ERRO_MENSAGEM    : string = 'Impossível validar o estado!';
@@ -1606,17 +1612,20 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                            ');
-  locADOQuery.SQL.Add('  [estado].[estado_id],           ');
-  locADOQuery.SQL.Add('  [estado].[codigo],              ');
-  locADOQuery.SQL.Add('  [estado].[nome],                ');
-  locADOQuery.SQL.Add('  [estado].[bloqueado],           ');
-  locADOQuery.SQL.Add('  [estado].[ativo]                ');
-  locADOQuery.SQL.Add('FROM                              ');
-  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)          ');
-  locADOQuery.SQL.Add('WHERE                             ');
-  locADOQuery.SQL.Add('  [estado].[codigo] = :codigo AND ');
-  locADOQuery.SQL.Add('  [estado].[ativo]  = ''S''       ');
+  locADOQuery.SQL.Add('SELECT                               ');
+  locADOQuery.SQL.Add('  [estado].[estado_id],              ');
+  locADOQuery.SQL.Add('  [estado].[codigo],                 ');
+  locADOQuery.SQL.Add('  [estado].[nome],                   ');
+  locADOQuery.SQL.Add('  [pais].[pais_id] AS [pais_id],     ');
+  locADOQuery.SQL.Add('  [pais].[codigo]  AS [pais_codigo], ');
+  locADOQuery.SQL.Add('  [pais].[nome]    AS [pais_nome],   ');
+  locADOQuery.SQL.Add('  [estado].[bloqueado],              ');
+  locADOQuery.SQL.Add('  [estado].[ativo]                   ');
+  locADOQuery.SQL.Add('FROM                                 ');
+  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)             ');
+  locADOQuery.SQL.Add('WHERE                                ');
+  locADOQuery.SQL.Add('  [estado].[codigo] = :codigo AND    ');
+  locADOQuery.SQL.Add('  [estado].[ativo]  = ''S''          ');
 
   locADOQuery.Parameters.ParamByName('codigo').Value := locEstadoCodigo;
 
