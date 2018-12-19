@@ -85,6 +85,9 @@ type
     pubEstadoID    : Integer;
     pubCodigo      : string;
     pubNome        : string;
+    pubPaisID      : Integer;
+    pubPaisCodigo  : string;
+    pubPaisNome    : string;
   end;
 
 var
@@ -105,10 +108,13 @@ const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_EstadoSelecao';
 
 const
-  LVW_LISTA_ESTADO_ID: Integer = 0;
-  LVW_LISTA_CODIGO   : Integer = 1;
-  LVW_LISTA_NOME     : Integer = 2;
-  LVW_LISTA_BLOQUEADO: Integer = 3;
+  LVW_LISTA_ESTADO_ID  : Integer = 0;
+  LVW_LISTA_CODIGO     : Integer = 1;
+  LVW_LISTA_NOME       : Integer = 2;
+  LVW_LISTA_PAIS_ID    : Integer = 3;
+  LVW_LISTA_PAIS_CODIGO: Integer = 4;
+  LVW_LISTA_PAIS_NOME  : Integer = 5;
+  LVW_LISTA_BLOQUEADO  : Integer = 6;
 
 //
 // Evento de criação do formulário.
@@ -131,6 +137,9 @@ begin
   pubEstadoID     := 0;
   pubCodigo       := '';
   pubNome         := '';
+  pubPaisID       := 0;
+  pubPaisCodigo   := '';
+  pubPaisNome     := ''; 
 
   //
   // Limpa componentes do formulário.
@@ -352,15 +361,20 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                 ');
-  locADOQuery.SQL.Add('  [estado].[estado_id] AS [estado_id], ');
-  locADOQuery.SQL.Add('  [estado].[codigo]    AS [codigo],    ');
-  locADOQuery.SQL.Add('  [estado].[nome]      AS [nome],      ');
-  locADOQuery.SQL.Add('  [estado].[bloqueado] AS [bloqueado]  ');
-  locADOQuery.SQL.Add('FROM                                   ');
-  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)               ');
-  locADOQuery.SQL.Add('WHERE                                  ');
-  locADOQuery.SQL.Add('  [estado].[ativo] = ''S''             ');
+  locADOQuery.SQL.Add('SELECT                                       ');
+  locADOQuery.SQL.Add('  [estado].[estado_id] AS [estado_id],       ');
+  locADOQuery.SQL.Add('  [estado].[codigo]    AS [codigo],          ');
+  locADOQuery.SQL.Add('  [estado].[nome]      AS [nome],            ');
+  locADOQuery.SQL.Add('  [pais].[pais_id]     AS [pais_id],         ');
+  locADOQuery.SQL.Add('  [pais].[codigo]      AS [pais_codigo],     ');
+  locADOQuery.SQL.Add('  [pais].[nome]        AS [pais_nome],       ');
+  locADOQuery.SQL.Add('  [estado].[bloqueado] AS [bloqueado]        ');
+  locADOQuery.SQL.Add('FROM                                         ');
+  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)                     ');
+  locADOQuery.SQL.Add('  INNER JOIN [pais] WITH (NOLOCK)            ');
+  locADOQuery.SQL.Add('    ON [pais].[pais_id] = [estado].[pais_id] ');
+  locADOQuery.SQL.Add('WHERE                                        ');
+  locADOQuery.SQL.Add('  [estado].[ativo] = ''S''                   ');
 
   if pubNovo then
   begin
@@ -426,6 +440,9 @@ begin
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('nome').AsString);
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger));
+      locListItem.SubItems.Add(locADOQuery.FieldByName('pais_codigo').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('pais_nome').AsString);
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
 
       if pubEstadoID = locADOQuery.FieldByName('estado_id').AsInteger then
@@ -478,6 +495,9 @@ begin
   pubEstadoID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_ESTADO_ID]);
   pubCodigo       := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
   pubNome         := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_NOME];
+  pubPaisID       := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_PAIS_ID]);
+  pubPaisCodigo   := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_PAIS_CODIGO];
+  pubPaisNome     := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_PAIS_NOME];
   
   Close; 
 end;

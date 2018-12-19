@@ -4,7 +4,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Bairro'
-  ClientHeight = 398
+  ClientHeight = 433
   ClientWidth = 601
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -67,7 +67,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
   end
   object imgBackground: TImage
     Left = 0
-    Top = 297
+    Top = 329
     Width = 105
     Height = 105
     Center = True
@@ -75,7 +75,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
   end
   object btnGravar: TBitBtn
     Left = 424
-    Top = 336
+    Top = 368
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -156,7 +156,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
   end
   object btnCancelar: TBitBtn
     Left = 536
-    Top = 336
+    Top = 368
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -237,7 +237,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
   end
   object btnMinimizar: TBitBtn
     Left = 480
-    Top = 336
+    Top = 368
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -310,7 +310,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
   end
   object btnAlterar: TBitBtn
     Left = 424
-    Top = 336
+    Top = 368
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -393,7 +393,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
     Left = 48
     Top = 16
     Width = 537
-    Height = 305
+    Height = 337
     Cursor = crHandPoint
     Margins.Left = 48
     Margins.Top = 8
@@ -403,7 +403,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitHeight = 237
+      ExplicitHeight = 277
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -505,6 +505,70 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
         OnClick = imgCidadeSelecionarClick
+      end
+      object lblEstado: TLabel
+        Left = 16
+        Top = 184
+        Width = 41
+        Height = 14
+        Caption = 'Estado:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblPais: TLabel
+        Left = 16
+        Top = 240
+        Width = 24
+        Height = 14
+        Caption = 'Pa'#237's:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object edtEstadoNome: TEdit
+        Left = 16
+        Top = 200
+        Width = 321
+        Height = 26
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ReadOnly = True
+        ShowHint = False
+        TabOrder = 10
+        Text = 'Xxxxxxxxxx Dddddddddd'
+      end
+      object edtPaisNome: TEdit
+        Left = 16
+        Top = 256
+        Width = 321
+        Height = 26
+        TabStop = False
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ReadOnly = True
+        ShowHint = False
+        TabOrder = 11
+        Text = 'Xxxxxxxxxx Dddddddddd'
       end
       object edtCodigo: TEdit
         Left = 16
@@ -690,11 +754,48 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
         Text = '999.999'
         Visible = False
       end
+      object edtEstadoID: TEdit
+        Left = 232
+        Top = 200
+        Width = 65
+        Height = 26
+        TabStop = False
+        Alignment = taRightJustify
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 8
+        Text = '999.999'
+        Visible = False
+      end
+      object edtPaisID: TEdit
+        Left = 232
+        Top = 256
+        Width = 65
+        Height = 26
+        TabStop = False
+        Alignment = taRightJustify
+        Color = clInactiveBorder
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 9
+        Text = '999.999'
+        Visible = False
+      end
     end
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
-      ExplicitHeight = 237
       object lblInsDtHt: TLabel
         Left = 16
         Top = 72
@@ -827,7 +928,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
   end
   object btnFechar: TBitBtn
     Left = 536
-    Top = 336
+    Top = 368
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -890,7 +991,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
   end
   object btnNovo: TBitBtn
     Left = 368
-    Top = 336
+    Top = 368
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -965,7 +1066,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     Left = 40
-    Top = 336
+    Top = 368
     object mniAtualizar: TMenuItem
       Caption = 'Atualizar'
       OnClick = mniAtualizarClick

@@ -5,7 +5,7 @@ object PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao
   BorderStyle = bsSingle
   Caption = 'Selecionar estado'
   ClientHeight = 410
-  ClientWidth = 593
+  ClientWidth = 761
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,9 +20,6 @@ object PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  DesignSize = (
-    593
-    410)
   PixelsPerInch = 96
   TextHeight = 13
   object imgFormulario: TImage
@@ -78,7 +75,7 @@ object PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao
     Stretch = True
   end
   object btnSelecionar: TBitBtn
-    Left = 416
+    Left = 584
     Top = 344
     Width = 49
     Height = 49
@@ -142,7 +139,7 @@ object PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao
     OnClick = btnSelecionarClick
   end
   object btnFechar: TBitBtn
-    Left = 528
+    Left = 696
     Top = 344
     Width = 49
     Height = 49
@@ -207,7 +204,7 @@ object PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao
   object panFormulario: TPanel
     Left = 48
     Top = 16
-    Width = 529
+    Width = 697
     Height = 313
     Margins.Left = 48
     Margins.Top = 8
@@ -221,20 +218,19 @@ object PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao
     ShowCaption = False
     TabOrder = 0
     DesignSize = (
-      525
+      693
       309)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 280
+      Top = 284
       Width = 142
       Height = 13
       Anchors = [akLeft, akBottom]
       Caption = 'Foram localizados 9 registros!'
-      ExplicitTop = 288
     end
     object lblListaFiltros: TLabel
-      Left = 424
-      Top = 280
+      Left = 588
+      Top = 284
       Width = 80
       Height = 13
       Anchors = [akRight, akBottom]
@@ -246,14 +242,13 @@ object PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao
       Font.Style = []
       ParentFont = False
       Visible = False
-      ExplicitLeft = 432
-      ExplicitTop = 288
+      ExplicitLeft = 420
     end
     object lvwLista: TListView
       AlignWithMargins = True
       Left = 8
       Top = 36
-      Width = 509
+      Width = 677
       Height = 243
       Cursor = crHandPoint
       Margins.Left = 8
@@ -272,11 +267,23 @@ object PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao
         item
           Alignment = taCenter
           Caption = 'C'#243'digo'
-          Width = 175
+          Width = 150
         end
         item
           Caption = 'Nome'
-          Width = 300
+          Width = 250
+        end
+        item
+          Caption = 'ID Pa'#237's'
+          Width = 0
+        end
+        item
+          Caption = 'C'#243'digo Pa'#237's'
+          Width = 0
+        end
+        item
+          Caption = 'Pa'#237's'
+          Width = 250
         end
         item
           Alignment = taCenter
@@ -304,17 +311,18 @@ object PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao
       AlignWithMargins = True
       Left = 8
       Top = 8
-      Width = 509
+      Width = 677
       Height = 17
       Margins.Left = 8
       Margins.Top = 8
       Margins.Right = 8
       Align = alTop
       TabOrder = 1
+      ExplicitWidth = 509
     end
   end
   object btnMinimizar: TBitBtn
-    Left = 472
+    Left = 640
     Top = 344
     Width = 49
     Height = 49
@@ -387,13 +395,12 @@ object PlataformaERPVCLEstadoSelecao: TPlataformaERPVCLEstadoSelecao
     OnClick = btnMinimizarClick
   end
   object btnLocalizar: TBitBtn
-    Left = 360
+    Left = 528
     Top = 344
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Localizar'
-    Anchors = [akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12

@@ -202,16 +202,19 @@ function Plataforma_ERP_VCL_EstadoValidar(argNovo        : Boolean;
                                           argEstadoID    : TEdit;
                                           argEstadoCodigo: TEdit;
                                           argEstadoNome  : TEdit;
-                                          argPaisID      : TEdit;
-                                          argPaisCodigo  : TEdit;
-                                          argPaisNome    : TEdit): Boolean;                                         
+                                          argPaisID      : TEdit = nil;
+                                          argPaisCodigo  : TEdit = nil;
+                                          argPaisNome    : TEdit = nil): Boolean;                                         
 
 //
 // Plataforma_ERP_VCL_EstadoSelecionar.
 //
 function Plataforma_ERP_VCL_EstadoSelecionar(argEstadoID    : TEdit;
                                              argEstadoCodigo: TEdit;
-                                             argEstadoNome  : TEdit): Boolean;
+                                             argEstadoNome  : TEdit;
+                                             argPaisID      : TEdit = nil;
+                                             argPaisCodigo  : TEdit = nil;
+                                             argPaisNome    : TEdit = nil): Boolean;                                         
 
 //
 // CIDADE!
@@ -1543,9 +1546,9 @@ function Plataforma_ERP_VCL_EstadoValidar(argNovo        : Boolean;
                                           argEstadoID    : TEdit;
                                           argEstadoCodigo: TEdit;
                                           argEstadoNome  : TEdit;
-                                          argPaisID      : TEdit;
-                                          argPaisCodigo  : TEdit;
-                                          argPaisNome    : TEdit): Boolean;
+                                          argPaisID      : TEdit = nil;
+                                          argPaisCodigo  : TEdit = nil;
+                                          argPaisNome    : TEdit = nil): Boolean;
 const
   PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_EstadoValidar';
   ERRO_MENSAGEM    : string = 'Impossível validar o estado!';
@@ -1573,6 +1576,11 @@ begin
   begin
     argEstadoID.Text   := '';
     argEstadoNome.Text := '';
+
+    if argPaisID     <> nil then argPaisID.Text     := '';
+    if argPaisCodigo <> nil then argPaisCodigo.Text := '';
+    if argPaisNome   <> nil then argPaisNome.Text   := '';
+    
     Result := True;
     Exit;
   end;
@@ -1612,20 +1620,22 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                               ');
-  locADOQuery.SQL.Add('  [estado].[estado_id],              ');
-  locADOQuery.SQL.Add('  [estado].[codigo],                 ');
-  locADOQuery.SQL.Add('  [estado].[nome],                   ');
-  locADOQuery.SQL.Add('  [pais].[pais_id] AS [pais_id],     ');
-  locADOQuery.SQL.Add('  [pais].[codigo]  AS [pais_codigo], ');
-  locADOQuery.SQL.Add('  [pais].[nome]    AS [pais_nome],   ');
-  locADOQuery.SQL.Add('  [estado].[bloqueado],              ');
-  locADOQuery.SQL.Add('  [estado].[ativo]                   ');
-  locADOQuery.SQL.Add('FROM                                 ');
-  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)             ');
-  locADOQuery.SQL.Add('WHERE                                ');
-  locADOQuery.SQL.Add('  [estado].[codigo] = :codigo AND    ');
-  locADOQuery.SQL.Add('  [estado].[ativo]  = ''S''          ');
+  locADOQuery.SQL.Add('SELECT                                       ');
+  locADOQuery.SQL.Add('  [estado].[estado_id],                      ');
+  locADOQuery.SQL.Add('  [estado].[codigo],                         ');
+  locADOQuery.SQL.Add('  [estado].[nome],                           ');
+  locADOQuery.SQL.Add('  [pais].[pais_id] AS [pais_id],             ');
+  locADOQuery.SQL.Add('  [pais].[codigo]  AS [pais_codigo],         ');
+  locADOQuery.SQL.Add('  [pais].[nome]    AS [pais_nome],           ');
+  locADOQuery.SQL.Add('  [estado].[bloqueado],                      ');
+  locADOQuery.SQL.Add('  [estado].[ativo]                           ');
+  locADOQuery.SQL.Add('FROM                                         ');
+  locADOQuery.SQL.Add('  [estado] WITH (NOLOCK)                     ');
+  locADOQuery.SQL.Add('  INNER JOIN [pais] WITH (NOLOCK)            ');
+  locADOQuery.SQL.Add('    ON [pais].[pais_id] = [estado].[pais_id] ');
+  locADOQuery.SQL.Add('WHERE                                        ');
+  locADOQuery.SQL.Add('  [estado].[codigo] = :codigo AND            ');
+  locADOQuery.SQL.Add('  [estado].[ativo]  = ''S''                  ');
 
   locADOQuery.Parameters.ParamByName('codigo').Value := locEstadoCodigo;
 
@@ -1663,8 +1673,14 @@ begin
     locADOConnection.Close;
     FreeAndNil(locADOConnection);    
     VCLConsistenciaExibir('Nenhum estado encontrado com o código "' + locEstadoCodigo + '" informado!');
+
     argEstadoID.Text   := '';
     argEstadoNome.Text := '';
+
+    if argPaisID     <> nil then argPaisID.Text     := '';
+    if argPaisCodigo <> nil then argPaisCodigo.Text := '';
+    if argPaisNome   <> nil then argPaisNome.Text   := '';
+
     argEstadoCodigo.SetFocus;
     Exit;
   end;
@@ -1677,6 +1693,10 @@ begin
     argEstadoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger);
     argEstadoCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
     argEstadoNome.Text   := locADOQuery.FieldByName('nome').AsString;
+
+    if argPaisID     <> nil then argPaisID.Text     := IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger);
+    if argPaisCodigo <> nil then argPaisCodigo.Text := locADOQuery.FieldByName('pais_codigo').AsString;
+    if argPaisNome   <> nil then argPaisNome.Text   := locADOQuery.FieldByName('pais_nome').AsString;
   end;
 
   //
@@ -1687,7 +1707,8 @@ begin
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
 
-  VCLEditClickControlar(argEstadoNome, True);  
+  VCLEditClickControlar(argEstadoNome, True);
+  if argPaisNome <> nil then VCLEditClickControlar(argPaisNome, True);
   VCLCursorTrocar;
 
   Result := True;
@@ -1698,13 +1719,19 @@ end;
 //
 function Plataforma_ERP_VCL_EstadoSelecionar(argEstadoID    : TEdit;
                                              argEstadoCodigo: TEdit;
-                                             argEstadoNome  : TEdit): Boolean;
+                                             argEstadoNome  : TEdit;
+                                             argPaisID      : TEdit = nil;
+                                             argPaisCodigo  : TEdit = nil;
+                                             argPaisNome    : TEdit = nil): Boolean;
 var
   locFormulario  : TPlataformaERPVCLEstadoSelecao;
   locClicouFechar: Boolean;
   locEstadoID    : Integer;
   locEstadoCodigo: string;
   locEstadoNome  : string;
+  locPaisID      : Integer;
+  locPaisCodigo  : string;
+  locPaisNome    : string;
 begin
   Result := False;
 
@@ -1724,6 +1751,9 @@ begin
   locEstadoID     := locFormulario.pubEstadoID;
   locEstadoCodigo := locFormulario.pubCodigo;
   locEstadoNome   := locFormulario.pubNome;
+  locPaisID       := locFormulario.pubPaisID;
+  locPaisCodigo   := locFormulario.pubPaisCodigo;
+  locPaisNome     := locFormulario.pubPaisNome;
   
   locFormulario.Release;
   FreeAndNil(locFormulario);
@@ -1733,10 +1763,16 @@ begin
     argEstadoID.Text     := IntegerStringConverter(locEstadoID);
     argEstadoCodigo.Text := locEstadoCodigo;
     argEstadoNome.Text   := locEstadoNome;
+
+    if argPaisID     <> nil then argPaisID.Text     := IntegerStringConverter(locPaisID);
+    if argPaisCodigo <> nil then argPaisCodigo.Text := locPaisCodigo;
+    if argPaisNome   <> nil then argPaisNome.Text   := locPaisNome;
+    
     Result := False;
   end;
 
   VCLEditClickControlar(argEstadoNome, (argEstadoNome.Text <> ''));  
+  if argPaisNome <> nil then VCLEditClickControlar(argPaisNome, (argPaisNome.Text <> ''));  
 end;
 
 //

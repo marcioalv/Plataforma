@@ -77,6 +77,12 @@ type
     edtCidadeNome: TEdit;
     edtCidadeID: TEdit;
     imgCidadeSelecionar: TImage;
+    lblEstado: TLabel;
+    edtEstadoID: TEdit;
+    lblPais: TLabel;
+    edtPaisID: TEdit;
+    edtEstadoNome: TEdit;
+    edtPaisNome: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -486,6 +492,12 @@ begin
   VCLEditLimpar(edtCidadeCodigo);
   VCLEditLimpar(edtCidadeNome);
 
+  VCLEditLimpar(edtEstadoID);
+  VCLEditLimpar(edtEstadoNome);
+
+  VCLEditLimpar(edtPaisID);
+  VCLEditLimpar(edtPaisNome);
+
   VCLCheckBoxLimpar(chkBloqueado);
   VCLCheckBoxLimpar(chkAtivo);
 
@@ -505,6 +517,8 @@ begin
   //  
   VCLEditClickControlar(edtCodigoCadastrado, False);
   VCLEditClickControlar(edtCidadeNome,       False);
+  VCLEditClickControlar(edtEstadoNome,       False);
+  VCLEditClickControlar(edtPaisNome,         False);
   VCLEditClickControlar(edtInsLocalDtHr,     False);
   VCLEditClickControlar(edtUpdLocalDtHr,     False);
 end;
@@ -540,6 +554,8 @@ begin
   // Controla os componentes de exibição de cadastro.
   //
   VCLEditClickControlar(edtCidadeNome,   True);
+  VCLEditClickControlar(edtEstadoNome,   True);
+  VCLEditClickControlar(edtPaisNome,     True);
   VCLEditClickControlar(edtInsLocalDtHr, True);
   VCLEditClickControlar(edtUpdLocalDtHr, True);
 
@@ -693,7 +709,13 @@ begin
   locADOQuery.SQL.Add('  [bairro].[nome],                                 ');
   locADOQuery.SQL.Add('  [cidade].[cidade_id] AS [cidade_id],             ');
   locADOQuery.SQL.Add('  [cidade].[codigo]    AS [cidade_codigo],         ');
-  locADOQuery.SQL.Add('  [cidade].[nome]      AS [cidade_nome],           ');  
+  locADOQuery.SQL.Add('  [cidade].[nome]      AS [cidade_nome],           ');
+  locADOQuery.SQL.Add('  [estado].[estado_id] AS [estado_id],             ');
+  locADOQuery.SQL.Add('  [estado].[codigo]    AS [estado_codigo],         ');
+  locADOQuery.SQL.Add('  [estado].[nome]      AS [estado_nome],           ');
+  locADOQuery.SQL.Add('  [pais].[pais_id]     AS [pais_id],               ');
+  locADOQuery.SQL.Add('  [pais].[codigo]      AS [pais_codigo],           ');
+  locADOQuery.SQL.Add('  [pais].[nome]        AS [pais_nome],             ');
   locADOQuery.SQL.Add('  [bairro].[bloqueado],                            ');
   locADOQuery.SQL.Add('  [bairro].[ativo],                                ');
   locADOQuery.SQL.Add('  [bairro].[ins_local_dt_hr],                      ');
@@ -703,6 +725,10 @@ begin
   locADOQuery.SQL.Add('  [bairro] WITH (NOLOCK)                           ');
   locADOQuery.SQL.Add('  INNER JOIN [cidade] WITH (NOLOCK)                ');
   locADOQuery.SQL.Add('    ON [cidade].[cidade_id] = [bairro].[cidade_id] ');
+  locADOQuery.SQL.Add('  INNER JOIN [estado] WITH (NOLOCK)                ');
+  locADOQuery.SQL.Add('    ON [estado].[estado_id] = [cidade].[estado_id] ');
+  locADOQuery.SQL.Add('  INNER JOIN [pais] WITH (NOLOCK)                  ');
+  locADOQuery.SQL.Add('    ON [pais].[pais_id] = [estado].[pais_id]       ');
   locADOQuery.SQL.Add('WHERE                                              ');
   locADOQuery.SQL.Add('  [bairro].[bairro_id] = :bairro_id                ');
 
@@ -742,6 +768,12 @@ begin
     edtCidadeID.Text     := IntegerStringConverter(locADOQuery.FieldByName('cidade_id').AsInteger);
     edtCidadeCodigo.Text := locADOQuery.FieldByName('cidade_codigo').AsString;
     edtCidadeNome.Text   := locADOQuery.FieldByName('cidade_nome').AsString;
+
+    edtEstadoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger);
+    edtEstadoNome.Text   := locADOQuery.FieldByName('estado_nome').AsString;
+
+    edtPaisID.Text       := IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger);
+    edtPaisNome.Text     := locADOQuery.FieldByName('pais_nome').AsString;
 
     chkBloqueado.Checked := StringBooleanConverter(locADOQuery.FieldByName('bloqueado').AsString);
     chkAtivo.Checked     := StringBooleanConverter(locADOQuery.FieldByName('ativo').AsString);

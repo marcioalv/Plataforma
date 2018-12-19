@@ -367,14 +367,14 @@ begin
                                           edtEstadoID,
                                           edtEstadoCodigo,
                                           edtEstadoNome,
+                                          edtPaisID,
                                           nil,
-                                          nil,
-                                          nil) then Exit;
+                                          edtPaisNome) then Exit;
 end;
 
 procedure TPlataformaERPVCLCidadeCadastro.imgEstadoSelecionarClick(Sender: TObject);
 begin
-  if not Plataforma_ERP_VCL_EstadoSelecionar(edtEstadoID, edtEstadoCodigo, edtEstadoNome) then Exit;
+  if not Plataforma_ERP_VCL_EstadoSelecionar(edtEstadoID, edtEstadoCodigo, edtEstadoNome, edtPaisID, nil, edtPaisNome) then Exit;
 end;
 
 procedure TPlataformaERPVCLCidadeCadastro.edtEstadoNomeClick(Sender: TObject);

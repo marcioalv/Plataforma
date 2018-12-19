@@ -400,7 +400,6 @@ object PlataformaERPVCLCidadeCadastro: TPlataformaERPVCLCidadeCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitHeight = 237
       object lblCodigo: TLabel
         Left = 16
         Top = 16
