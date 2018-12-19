@@ -236,19 +236,31 @@ procedure Plataforma_ERP_VCL_CidadeExibir(argCidadeID: Integer);
 function Plataforma_ERP_VCL_CidadeValidar(argNovo        : Boolean;
                                           argCidadeID    : TEdit;
                                           argCidadeCodigo: TEdit;
-                                          argCidadeNome  : TEdit): Boolean;
+                                          argCidadeNome  : TEdit;
+                                          argEstadoID    : TEdit = nil;
+                                          argEstadoCodigo: TEdit = nil;
+                                          argEstadoNome  : TEdit = nil;
+                                          argPaisID      : TEdit = nil;
+                                          argPaisCodigo  : TEdit = nil;
+                                          argPaisNome    : TEdit = nil): Boolean;
 
 //
 // Plataforma_ERP_VCL_CidadeSelecionar.
 //
 function Plataforma_ERP_VCL_CidadeSelecionar(argCidadeID    : TEdit;
                                              argCidadeCodigo: TEdit;
-                                             argCidadeNome  : TEdit): Boolean;
+                                             argCidadeNome  : TEdit;
+                                             argEstadoID    : TEdit = nil;
+                                             argEstadoCodigo: TEdit = nil;
+                                             argEstadoNome  : TEdit = nil;
+                                             argPaisID      : TEdit = nil;
+                                             argPaisCodigo  : TEdit = nil;
+                                             argPaisNome    : TEdit = nil): Boolean;
 
 //
 // BAIRRO!
 //
-                                                  
+
 //
 // Plataforma_ERP_VCL_BairroListaExibir.
 //
@@ -1814,7 +1826,13 @@ end;
 function Plataforma_ERP_VCL_CidadeValidar(argNovo        : Boolean;
                                           argCidadeID    : TEdit;
                                           argCidadeCodigo: TEdit;
-                                          argCidadeNome  : TEdit): Boolean;
+                                          argCidadeNome  : TEdit;
+                                          argEstadoID    : TEdit = nil;
+                                          argEstadoCodigo: TEdit = nil;
+                                          argEstadoNome  : TEdit = nil;
+                                          argPaisID      : TEdit = nil;
+                                          argPaisCodigo  : TEdit = nil;
+                                          argPaisNome    : TEdit = nil): Boolean;
 const
   PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_CidadeValidar';
   ERRO_MENSAGEM    : string = 'Impossível validar a cidade!';
@@ -1842,6 +1860,12 @@ begin
   begin
     argCidadeID.Text   := '';
     argCidadeNome.Text := '';
+
+    if argEstadoID   <> nil then argEstadoID.Text   := '';
+    if argEstadoNome <> nil then argEstadoNome.Text := '';
+    if argPaisID     <> nil then argPaisID.Text     := '';
+    if argPaisNome   <> nil then argPaisNome.Text   := '';
+
     Result := True;
     Exit;
   end;
@@ -1881,17 +1905,27 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                            ');
-  locADOQuery.SQL.Add('  [cidade].[cidade_id],           ');
-  locADOQuery.SQL.Add('  [cidade].[codigo],              ');
-  locADOQuery.SQL.Add('  [cidade].[nome],                ');
-  locADOQuery.SQL.Add('  [cidade].[bloqueado],           ');
-  locADOQuery.SQL.Add('  [cidade].[ativo]                ');
-  locADOQuery.SQL.Add('FROM                              ');
-  locADOQuery.SQL.Add('  [cidade] WITH (NOLOCK)          ');
-  locADOQuery.SQL.Add('WHERE                             ');
-  locADOQuery.SQL.Add('  [cidade].[codigo] = :codigo AND ');
-  locADOQuery.SQL.Add('  [cidade].[ativo]  = ''S''       ');
+  locADOQuery.SQL.Add('SELECT                                             ');
+  locADOQuery.SQL.Add('  [cidade].[cidade_id],                            ');
+  locADOQuery.SQL.Add('  [cidade].[codigo],                               ');
+  locADOQuery.SQL.Add('  [cidade].[nome],                                 ');
+  locADOQuery.SQL.Add('  [estado].[estado_id] AS [estado_id],             ');
+  locADOQuery.SQL.Add('  [estado].[codigo]    AS [estado_codigo],         ');
+  locADOQuery.SQL.Add('  [estado].[nome]      AS [estado_nome],           ');
+  locADOQuery.SQL.Add('  [pais].[pais_id]     AS [pais_id],               ');
+  locADOQuery.SQL.Add('  [pais].[codigo]      AS [pais_codigo],           ');
+  locADOQuery.SQL.Add('  [pais].[nome]        AS [pais_nome],             ');
+  locADOQuery.SQL.Add('  [cidade].[bloqueado],                            ');
+  locADOQuery.SQL.Add('  [cidade].[ativo]                                 ');
+  locADOQuery.SQL.Add('FROM                                               ');
+  locADOQuery.SQL.Add('  [cidade] WITH (NOLOCK)                           ');
+  locADOQuery.SQL.Add('  INNER JOIN [estado] WITH (NOLOCK)                ');
+  locADOQuery.SQL.Add('    ON [estado].[estado_id] = [cidade].[estado_id] ');
+  locADOQuery.SQL.Add('  INNER JOIN [pais] WITH (NOLOCK)                  ');
+  locADOQuery.SQL.Add('    ON [pais].[pais_id] = [estado].[pais_id]       ');
+  locADOQuery.SQL.Add('WHERE                                              ');
+  locADOQuery.SQL.Add('  [cidade].[codigo] = :codigo AND                  ');
+  locADOQuery.SQL.Add('  [cidade].[ativo]  = ''S''                        ');
 
   locADOQuery.Parameters.ParamByName('codigo').Value := locCidadeCodigo;
 
@@ -1928,9 +1962,17 @@ begin
     FreeAndNil(locADOQuery);
     locADOConnection.Close;
     FreeAndNil(locADOConnection);    
+
     VCLConsistenciaExibir('Nenhuma cidade encontrada com o código "' + locCidadeCodigo + '" informado!');
+
     argCidadeID.Text   := '';
     argCidadeNome.Text := '';
+
+    if argEstadoID   <> nil then argEstadoID.Text   := '';
+    if argEstadoNome <> nil then argEstadoNome.Text := '';
+    if argPaisID     <> nil then argPaisID.Text     := '';
+    if argPaisNome   <> nil then argPaisNome.Text   := '';
+
     argCidadeCodigo.SetFocus;
     Exit;
   end;
@@ -1943,6 +1985,14 @@ begin
     argCidadeID.Text     := IntegerStringConverter(locADOQuery.FieldByName('cidade_id').AsInteger);
     argCidadeCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
     argCidadeNome.Text   := locADOQuery.FieldByName('nome').AsString;
+
+    if argEstadoID     <> nil then argEstadoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger);
+    if argEstadoCodigo <> nil then argEstadoCodigo.Text := locADOQuery.FieldByName('estado_codigo').AsString;
+    if argEstadoNome   <> nil then argEstadoNome.Text   := locADOQuery.FieldByName('estado_nome').AsString;
+
+    if argPaisID       <> nil then argPaisID.Text       := IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger);
+    if argPaisCodigo   <> nil then argPaisCodigo.Text   := locADOQuery.FieldByName('pais_codigo').AsString;
+    if argPaisNome     <> nil then argPaisNome.Text     := locADOQuery.FieldByName('pais_nome').AsString;
   end;
 
   //
@@ -1953,7 +2003,10 @@ begin
   locADOConnection.Close;
   FreeAndNil(locADOConnection);
 
-  VCLEditClickControlar(argCidadeNome, True);  
+  VCLEditClickControlar(argCidadeNome, True);
+  if argEstadoNome <> nil then VCLEditClickControlar(argEstadoNome, True);
+  if argPaisNome   <> nil then VCLEditClickControlar(argPaisNome,   True);
+
   VCLCursorTrocar;
 
   Result := True;
@@ -1964,13 +2017,25 @@ end;
 //
 function Plataforma_ERP_VCL_CidadeSelecionar(argCidadeID    : TEdit;
                                              argCidadeCodigo: TEdit;
-                                             argCidadeNome  : TEdit): Boolean;
+                                             argCidadeNome  : TEdit;
+                                             argEstadoID    : TEdit = nil;
+                                             argEstadoCodigo: TEdit = nil;
+                                             argEstadoNome  : TEdit = nil;
+                                             argPaisID      : TEdit = nil;
+                                             argPaisCodigo  : TEdit = nil;
+                                             argPaisNome    : TEdit = nil): Boolean;
 var
   locFormulario  : TPlataformaERPVCLCidadeSelecao;
   locClicouFechar: Boolean;
   locCidadeID    : Integer;
   locCidadeCodigo: string;
   locCidadeNome  : string;
+  locEstadoID    : Integer;
+  locEstadoCodigo: string;
+  locEstadoNome  : string;
+  locPaisID      : Integer;
+  locPaisCodigo  : string;
+  locPaisNome    : string;
 begin
   Result := False;
 
@@ -1983,14 +2048,20 @@ begin
   locFormulario.pubCidadeID := locCidadeID;
   locFormulario.pubCodigo   := locCidadeCodigo;
   locFormulario.pubNome     := locCidadeNome;
-  
+
   locFormulario.ShowModal;
 
   locClicouFechar := locFormulario.pubClicouFechar;
   locCidadeID     := locFormulario.pubCidadeID;
   locCidadeCodigo := locFormulario.pubCodigo;
   locCidadeNome   := locFormulario.pubNome;
-  
+  locEstadoID     := locFormulario.pubEstadoID;
+  locEstadoCodigo := locFormulario.pubEstadoCodigo;
+  locEstadoNome   := locFormulario.pubEstadoNome;
+  locPaisID       := locFormulario.pubPaisID;
+  locPaisCodigo   := locFormulario.pubPaisCodigo;
+  locPaisNome     := locFormulario.pubPaisNome;
+
   locFormulario.Release;
   FreeAndNil(locFormulario);
 
@@ -1999,10 +2070,21 @@ begin
     argCidadeID.Text     := IntegerStringConverter(locCidadeID);
     argCidadeCodigo.Text := locCidadeCodigo;
     argCidadeNome.Text   := locCidadeNome;
+
+    if argEstadoID     <> nil then argEstadoID.Text     := IntegerStringConverter(locEstadoID);
+    if argEstadoCodigo <> nil then argEstadoCodigo.Text := locEstadoCodigo;
+    if argEstadoNome   <> nil then argEstadoNome.Text   := locEstadoNome;
+
+    if argPaisID     <> nil then argPaisID.Text     := IntegerStringConverter(locPaisID);
+    if argPaisCodigo <> nil then argPaisCodigo.Text := locPaisCodigo;
+    if argPaisNome   <> nil then argPaisNome.Text   := locPaisNome;
+
     Result := False;
   end;
 
-  VCLEditClickControlar(argCidadeNome, (argCidadeNome.Text <> ''));  
+  VCLEditClickControlar(argCidadeNome, (argCidadeNome.Text <> ''));
+  if argEstadoNome <> nil then VCLEditClickControlar(argEstadoNome, True);
+  if argPaisNome   <> nil then VCLEditClickControlar(argPaisNome,   True);
 end;
 
 //

@@ -403,7 +403,6 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
     TabOrder = 0
     object tabCadastro: TTabSheet
       Caption = 'Cadastro'
-      ExplicitHeight = 277
       object lblCodigo: TLabel
         Left = 16
         Top = 16
@@ -550,6 +549,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
         ShowHint = False
         TabOrder = 10
         Text = 'Xxxxxxxxxx Dddddddddd'
+        OnClick = edtEstadoNomeClick
       end
       object edtPaisNome: TEdit
         Left = 16
@@ -569,6 +569,7 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
         ShowHint = False
         TabOrder = 11
         Text = 'Xxxxxxxxxx Dddddddddd'
+        OnClick = edtPaisNomeClick
       end
       object edtCodigo: TEdit
         Left = 16
@@ -796,6 +797,10 @@ object PlataformaERPVCLBairroCadastro: TPlataformaERPVCLBairroCadastro
     object tabAuditoria: TTabSheet
       Caption = 'Auditoria'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInsDtHt: TLabel
         Left = 16
         Top = 72

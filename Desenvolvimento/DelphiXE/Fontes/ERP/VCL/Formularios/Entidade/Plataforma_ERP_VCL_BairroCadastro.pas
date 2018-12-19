@@ -123,6 +123,8 @@ type
     procedure edtCidadeCodigoKeyPress(Sender: TObject; var Key: Char);
     procedure imgCidadeSelecionarClick(Sender: TObject);
     procedure edtCidadeNomeClick(Sender: TObject);
+    procedure edtEstadoNomeClick(Sender: TObject);
+    procedure edtPaisNomeClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioControlar(argEditar: Boolean);
@@ -361,17 +363,47 @@ begin
   if not Plataforma_ERP_VCL_CidadeValidar((edtBairroID.Text = STR_NOVO),
                                            edtCidadeID,
                                            edtCidadeCodigo,
-                                           edtCidadeNome) then Exit;
+                                           edtCidadeNome,
+                                           edtEstadoID,
+                                           nil,
+                                           edtEstadoNome,
+                                           edtPaisID,
+                                           nil,
+                                           edtPaisNome) then Exit;
 end;
 
 procedure TPlataformaERPVCLBairroCadastro.imgCidadeSelecionarClick(Sender: TObject);
 begin
-  if not Plataforma_ERP_VCL_CidadeSelecionar(edtCidadeID, edtCidadeCodigo, edtCidadeNome) then Exit;
+  if not Plataforma_ERP_VCL_CidadeSelecionar(edtCidadeID,
+                                             edtCidadeCodigo,
+                                             edtCidadeNome,
+                                             edtEstadoID,
+                                             nil,
+                                             edtEstadoNome,
+                                             edtPaisID,
+                                             nil,
+                                             edtPaisNome) then Exit;
 end;
 
 procedure TPlataformaERPVCLBairroCadastro.edtCidadeNomeClick(Sender: TObject);
 begin
   Plataforma_ERP_VCL_CidadeExibir(StringIntegerConverter(edtCidadeID.Text));
+end;
+
+//
+// Eventos do componente "estado".
+//
+procedure TPlataformaERPVCLBairroCadastro.edtEstadoNomeClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_EstadoExibir(StringIntegerConverter(edtEstadoID.Text));
+end;
+
+//
+// Eventos do componente "país".
+//
+procedure TPlataformaERPVCLBairroCadastro.edtPaisNomeClick(Sender: TObject);
+begin
+  Plataforma_ERP_VCL_PaisExibir(StringIntegerConverter(edtPaisID.Text));
 end;
 
 //
@@ -1581,7 +1613,11 @@ begin
   LogDadosStringDescrever ('Nome',             edtNome.Text,         Result);
   LogDadosStringDescrever ('ID da cidade',     edtCidadeID.Text,     Result);
   LogDadosStringDescrever ('Código da cidade', edtCidadeCodigo.Text, Result);
-  LogDadosStringDescrever ('Cidade',           edtCidadeNome.Text,   Result);  
+  LogDadosStringDescrever ('Cidade',           edtCidadeNome.Text,   Result);
+  LogDadosStringDescrever ('ID do estado',     edtEstadoID.Text,     Result);
+  LogDadosStringDescrever ('Estado',           edtEstadoNome.Text,   Result);
+  LogDadosStringDescrever ('ID do país',       edtPaisID.Text,       Result);
+  LogDadosStringDescrever ('País',             edtPaisNome.Text,     Result);
   LogDadosBooleanDescrever('Bloqueado',        chkBloqueado.Checked, Result);
   LogDadosBooleanDescrever('Ativo',            chkAtivo.Checked,     Result);
 end;
