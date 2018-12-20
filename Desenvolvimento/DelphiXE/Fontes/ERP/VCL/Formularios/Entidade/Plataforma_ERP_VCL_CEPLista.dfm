@@ -5,7 +5,7 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
   BorderStyle = bsSingle
   Caption = 'Lista de CEP'#39's'
   ClientHeight = 537
-  ClientWidth = 825
+  ClientWidth = 1010
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,9 +20,6 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  DesignSize = (
-    825
-    537)
   PixelsPerInch = 96
   TextHeight = 13
   object imgBackground: TImage
@@ -83,13 +80,12 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
       454E44AE426082}
   end
   object btnFechar: TBitBtn
-    Left = 760
+    Left = 944
     Top = 472
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Fechar'
-    Anchors = [akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -150,7 +146,7 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
     AlignWithMargins = True
     Left = 48
     Top = 16
-    Width = 761
+    Width = 953
     Height = 441
     Margins.Left = 48
     Margins.Top = 16
@@ -164,11 +160,11 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
     ShowCaption = False
     TabOrder = 0
     DesignSize = (
-      757
+      949
       437)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 377
+      Top = 373
       Width = 142
       Height = 13
       Anchors = [akLeft, akBottom]
@@ -176,8 +172,8 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
       ExplicitTop = 413
     end
     object lblListaFiltros: TLabel
-      Left = 464
-      Top = 375
+      Left = 652
+      Top = 371
       Width = 80
       Height = 13
       Anchors = [akRight, akBottom]
@@ -196,7 +192,7 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
       AlignWithMargins = True
       Left = 8
       Top = 33
-      Width = 741
+      Width = 933
       Height = 374
       Cursor = crHandPoint
       Margins.Left = 8
@@ -218,11 +214,27 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
         item
           Alignment = taCenter
           Caption = 'CEP'
-          Width = 175
+          Width = 125
         end
         item
           Caption = 'Endere'#231'o'
           Width = 400
+        end
+        item
+          Caption = 'Bairro'
+          Width = 200
+        end
+        item
+          Caption = 'Cidade'
+          Width = 200
+        end
+        item
+          Caption = 'Estado'
+          Width = 150
+        end
+        item
+          Caption = 'Pa'#237's'
+          Width = 150
         end
         item
           Alignment = taCenter
@@ -252,12 +264,13 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
+      ExplicitWidth = 741
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True
       Left = 8
       Top = 8
-      Width = 741
+      Width = 933
       Height = 17
       Margins.Left = 8
       Margins.Top = 8
@@ -266,16 +279,16 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
       Align = alTop
       TabOrder = 1
       Visible = False
+      ExplicitWidth = 741
     end
   end
   object btnMinimizar: TBitBtn
-    Left = 704
+    Left = 888
     Top = 472
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Minimizar'
-    Anchors = [akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -343,13 +356,12 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
     OnClick = btnMinimizarClick
   end
   object btnNovo: TBitBtn
-    Left = 648
+    Left = 832
     Top = 472
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Novo'
-    Anchors = [akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -417,13 +429,12 @@ object PlataformaERPVCLCEPLista: TPlataformaERPVCLCEPLista
     OnClick = btnNovoClick
   end
   object btnLocalizar: TBitBtn
-    Left = 592
+    Left = 776
     Top = 472
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Localizar'
-    Anchors = [akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12

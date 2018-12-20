@@ -118,8 +118,12 @@ const
   LVW_LISTA_CEP_ID   : Integer = 0;
   LVW_LISTA_CEP      : Integer = 1;
   LVW_LISTA_ENDERECO : Integer = 2;
-  LVW_LISTA_BLOQUEADO: Integer = 3;
-  LVW_LISTA_ATIVO    : Integer = 4;
+  LVW_LISTA_BAIRRO   : Integer = 3;
+  LVW_LISTA_CIDADE   : Integer = 4;
+  LVW_LISTA_ESTADO   : Integer = 5;
+  LVW_LISTA_PAIS     : Integer = 6;
+  LVW_LISTA_BLOQUEADO: Integer = 7;
+  LVW_LISTA_ATIVO    : Integer = 8;
 
 //
 // Evento de criação do formulário.
@@ -395,6 +399,7 @@ var
   locLogMensagem  : string;
   locListItem     : TListItem;
   locFiltros      : Boolean;
+  locEndereco     : string;  
 begin
   //
   // Troca cursor.
@@ -437,16 +442,29 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                              ');
-  locADOQuery.SQL.Add('  [cep].[cep_id]    AS [cep_id],    ');
-  locADOQuery.SQL.Add('  [cep].[cep]       AS [cep],       ');
-  locADOQuery.SQL.Add('  [cep].[endereco]  AS [endereco],  ');
-  locADOQuery.SQL.Add('  [cep].[bloqueado] AS [bloqueado], ');
-  locADOQuery.SQL.Add('  [cep].[ativo]     AS [ativo]      ');
-  locADOQuery.SQL.Add('FROM                                ');
-  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)               ');
-  locADOQuery.SQL.Add('WHERE                               ');
-  locADOQuery.SQL.Add('  1 = 1                             ');
+  locADOQuery.SQL.Add('SELECT                                             ');
+  locADOQuery.SQL.Add('  [cep].[cep_id]      AS [cep_id],                 ');
+  locADOQuery.SQL.Add('  [cep].[cep]         AS [cep],                    ');
+  locADOQuery.SQL.Add('  [cep].[endereco]    AS [endereco],               ');
+  locADOQuery.SQL.Add('  [cep].[complemento] AS [complemento],            ');
+  locADOQuery.SQL.Add('  [bairro].[nome]     AS [bairro_nome],            ');
+  locADOQuery.SQL.Add('  [cidade].[nome]     AS [cidade_nome],            ');
+  locADOQuery.SQL.Add('  [estado].[nome]     AS [estado_nome],            ');
+  locADOQuery.SQL.Add('  [pais].[nome]       AS [pais_nome],              ');
+  locADOQuery.SQL.Add('  [cep].[bloqueado]   AS [bloqueado],              ');
+  locADOQuery.SQL.Add('  [cep].[ativo]       AS [ativo]                   ');
+  locADOQuery.SQL.Add('FROM                                               ');
+  locADOQuery.SQL.Add('  [cep] WITH (NOLOCK)                              ');
+  locADOQuery.SQL.Add('  LEFT OUTER JOIN [bairro] WITH (NOLOCK)           ');
+  locADOQuery.SQL.Add('    ON [bairro].[bairro_id] = [cep].[bairro_id]    ');
+  locADOQuery.SQL.Add('  LEFT OUTER JOIN [cidade] WITH (NOLOCK)           ');
+  locADOQuery.SQL.Add('    ON [cidade].[cidade_id] = [cep].[cidade_id]    ');
+  locADOQuery.SQL.Add('  LEFT OUTER JOIN [estado] WITH (NOLOCK)           ');
+  locADOQuery.SQL.Add('    ON [estado].[estado_id] = [cidade].[estado_id] ');
+  locADOQuery.SQL.Add('  LEFT OUTER JOIN [pais] WITH (NOLOCK)             ');
+  locADOQuery.SQL.Add('    ON [pais].[pais_id] = [estado].[pais_id]       ');
+  locADOQuery.SQL.Add('WHERE                                              ');
+  locADOQuery.SQL.Add('  1 = 1                                            ');
 
   //
   // Filtros.
@@ -569,12 +587,23 @@ begin
     while not locADOQuery.EOF do
     begin
       VCLProgressBarIncrementar(pbaProgresso);
+
+      locEndereco := locADOQuery.FieldByName('endereco').AsString;
+
+      if locADOQuery.FieldByName('complemento').AsString <> '' then
+      begin
+        locEndereco := locEndereco + ' - ' + locADOQuery.FieldByName('complemento').AsString;
+      end;
     
       locListItem         := lvwLista.Items.Add;
       locListItem.Caption := '';
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('cep_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('cep').AsString);
-      locListItem.SubItems.Add(locADOQuery.FieldByName('endereco').AsString);
+      locListItem.SubItems.Add(locEndereco);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('bairro_nome').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('cidade_nome').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('estado_nome').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('pais_nome').AsString);      
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('ativo').AsString));
 

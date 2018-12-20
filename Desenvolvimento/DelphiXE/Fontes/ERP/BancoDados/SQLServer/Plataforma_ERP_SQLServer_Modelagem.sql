@@ -655,13 +655,11 @@ CREATE TABLE [cep] (
   [cep_id]           INT                                       NOT NULL,
   [cep]              VARCHAR(25)                               NOT NULL,
   [estrangeiro]      CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [logradouro_id]    SMALLINT                                  NOT NULL,
+  [logradouro_id]    SMALLINT                                  NULL,
   [endereco]         VARCHAR(100) COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [complemento]      VARCHAR(50)  COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
-  [bairro_id]        INT                                       NOT NULL,
+  [bairro_id]        INT                                       NULL,
   [cidade_id]        INT                                       NOT NULL,
-  [estado_id]        SMALLINT                                  NOT NULL,
-  [pais_id]          SMALLINT                                  NOT NULL,
   [generico]         CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [bloqueado]        CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
   [ativo]            CHAR(1)      COLLATE LATIN1_GENERAL_CI_AI NOT NULL,
@@ -672,7 +670,7 @@ CREATE TABLE [cep] (
   [upd_contador]     INT                                       NOT NULL,
   
   CONSTRAINT [cep_pk]     PRIMARY KEY CLUSTERED ([cep_id]),
-  CONSTRAINT [cep_ix_cep] UNIQUE ([cep], [pais_id]),
+  CONSTRAINT [cep_ix_cep] UNIQUE ([cep], [cidade_id]),
   
   CONSTRAINT [cep_ck_estrangeiro] CHECK ([estrangeiro] IN ('S', 'N')),
   CONSTRAINT [cep_ck_generico]    CHECK ([generico]    IN ('S', 'N')),
@@ -682,8 +680,6 @@ CREATE TABLE [cep] (
   CONSTRAINT [cep_fk_logradouro] FOREIGN KEY ([logradouro_id]) REFERENCES [logradouro] ([logradouro_id]),
   CONSTRAINT [cep_fk_bairro]     FOREIGN KEY ([bairro_id])     REFERENCES [bairro]     ([bairro_id]),
   CONSTRAINT [cep_fk_cidade]     FOREIGN KEY ([cidade_id])     REFERENCES [cidade]     ([cidade_id]),
-  CONSTRAINT [cep_fk_estado]     FOREIGN KEY ([estado_id])     REFERENCES [estado]     ([estado_id]),
-  CONSTRAINT [cep_fk_pais]       FOREIGN KEY ([pais_id])       REFERENCES [pais]       ([pais_id])
 )
 GO
 
@@ -1186,7 +1182,7 @@ GO
 --
 -- CEP.
 --
-INSERT INTO [cep] VALUES (1, '81.880-340', 'N', 2, 'Desembargador Ermelino de Leão', '', 2, 3, 3, 1, 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
+INSERT INTO [cep] VALUES (1, '81.880-340', 'N', 2, 'Desembargador Ermelino de Leão', '', 2, 3, 'N', 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO
 INSERT INTO [numerador_base] VALUES ('cep_id', 1, 'N', 'S', GETDATE(), GETDATE(), NULL, NULL, 0)
 GO

@@ -592,6 +592,11 @@ begin
   VCLEditClickControlar(edtUpdLocalDtHr, True);
 
   //
+  // Controle os componentes com seleção de dados.
+  //
+  VCLEditSelecaoControlar(edtCidadeNome, imgCidadeSelecionar, argEditar);
+
+  //
   // Controla os itens de menu do formulário.
   //
   mniAtualizar.Visible := (not argEditar) and (locDadosPopulados);
