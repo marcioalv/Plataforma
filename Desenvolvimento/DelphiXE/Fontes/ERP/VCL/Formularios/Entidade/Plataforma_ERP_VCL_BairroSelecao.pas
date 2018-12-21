@@ -85,6 +85,15 @@ type
     pubBairroID    : Integer;
     pubCodigo      : string;
     pubNome        : string;
+    pubCidadeID    : Integer;
+    pubCidadeCodigo: string;
+    pubCidadeNome  : string;
+    pubEstadoID    : Integer;
+    pubEstadoCodigo: string;
+    pubEstadoNome  : string;
+    pubPaisID      : Integer;
+    pubPaisCodigo  : string;
+    pubPaisNome    : string;
   end;
 
 var
@@ -105,10 +114,19 @@ const
   FONTE_NOME: string = 'Plataforma_ERP_VCL_BairroSelecao';
 
 const
-  LVW_LISTA_BAIRRO_ID: Integer = 0;
-  LVW_LISTA_CODIGO   : Integer = 1;
-  LVW_LISTA_NOME     : Integer = 2;
-  LVW_LISTA_BLOQUEADO: Integer = 3;
+  LVW_LISTA_BAIRRO_ID    : Integer = 0;
+  LVW_LISTA_CODIGO       : Integer = 1;
+  LVW_LISTA_NOME         : Integer = 2;
+  LVW_LISTA_CIDADE_ID    : Integer = 3;
+  LVW_LISTA_CIDADE_CODIGO: Integer = 4;
+  LVW_LISTA_CIDADE_NOME  : Integer = 5;
+  LVW_LISTA_ESTADO_ID    : Integer = 6;
+  LVW_LISTA_ESTADO_CODIGO: Integer = 7;
+  LVW_LISTA_ESTADO_NOME  : Integer = 8;
+  LVW_LISTA_PAIS_ID      : Integer = 9;
+  LVW_LISTA_PAIS_CODIGO  : Integer = 10;
+  LVW_LISTA_PAIS_NOME    : Integer = 11;
+  LVW_LISTA_BLOQUEADO    : Integer = 12;
 
 //
 // Evento de criação do formulário.
@@ -123,7 +141,6 @@ begin
 
   priFiltroNome := '';
 
-
   //
   // Inicializa variáveis públicas.
   //
@@ -132,6 +149,15 @@ begin
   pubBairroID     := 0;
   pubCodigo       := '';
   pubNome         := '';
+  pubCidadeID     := 0;
+  pubCidadeCodigo := '';
+  pubCidadeNome   := '';
+  pubEstadoID     := 0;
+  pubEstadoCodigo := '';
+  pubEstadoNome   := '';
+  pubPaisID       := 0;
+  pubPaisCodigo   := '';
+  pubPaisNome     := '';
 
   //
   // Limpa componentes do formulário.
@@ -353,15 +379,30 @@ begin
   //
   locADOQuery.Close;
   locADOQuery.SQL.Clear;
-  locADOQuery.SQL.Add('SELECT                                 ');
-  locADOQuery.SQL.Add('  [bairro].[bairro_id] AS [bairro_id], ');
-  locADOQuery.SQL.Add('  [bairro].[codigo]    AS [codigo],    ');
-  locADOQuery.SQL.Add('  [bairro].[nome]      AS [nome],      ');
-  locADOQuery.SQL.Add('  [bairro].[bloqueado] AS [bloqueado]  ');
-  locADOQuery.SQL.Add('FROM                                   ');
-  locADOQuery.SQL.Add('  [bairro] WITH (NOLOCK)               ');
-  locADOQuery.SQL.Add('WHERE                                  ');
-  locADOQuery.SQL.Add('  [bairro].[ativo] = ''S''             ');
+  locADOQuery.SQL.Add('SELECT                                             ');
+  locADOQuery.SQL.Add('  [bairro].[bairro_id] AS [bairro_id],             ');
+  locADOQuery.SQL.Add('  [bairro].[codigo]    AS [codigo],                ');
+  locADOQuery.SQL.Add('  [bairro].[nome]      AS [nome],                  ');
+  locADOQuery.SQL.Add('  [cidade].[cidade_id] AS [cidade_id],             ');
+  locADOQuery.SQL.Add('  [cidade].[codigo]    AS [cidade_codigo],         ');
+  locADOQuery.SQL.Add('  [cidade].[nome]      AS [cidade_nome],           ');
+  locADOQuery.SQL.Add('  [estado].[estado_id] AS [estado_id],             ');
+  locADOQuery.SQL.Add('  [estado].[codigo]    AS [estado_codigo],         ');
+  locADOQuery.SQL.Add('  [estado].[nome]      AS [estado_nome],           ');
+  locADOQuery.SQL.Add('  [pais].[pais_id]     AS [pais_id],               ');
+  locADOQuery.SQL.Add('  [pais].[codigo]      AS [pais_codigo],           ');
+  locADOQuery.SQL.Add('  [pais].[nome]        AS [pais_nome],             ');
+  locADOQuery.SQL.Add('  [bairro].[bloqueado] AS [bloqueado]              ');
+  locADOQuery.SQL.Add('FROM                                               ');
+  locADOQuery.SQL.Add('  [bairro] WITH (NOLOCK)                           ');
+  locADOQuery.SQL.Add('  INNER JOIN [cidade] WITH (NOLOCK)                ');
+  locADOQuery.SQL.Add('    ON [cidade].[cidade_id] = [bairro].[cidade_id] ');
+  locADOQuery.SQL.Add('  INNER JOIN [estado] WITH (NOLOCK)                ');
+  locADOQuery.SQL.Add('    ON [estado].[estado_id] = [cidade].[estado_id] ');
+  locADOQuery.SQL.Add('  INNER JOIN [pais] WITH (NOLOCK)                  ');
+  locADOQuery.SQL.Add('    ON [pais].[pais_id] = [estado].[pais_id]       ');
+  locADOQuery.SQL.Add('WHERE                                              ');
+  locADOQuery.SQL.Add('  [bairro].[ativo] = ''S''                         ');
 
   if pubNovo then
   begin
@@ -427,6 +468,19 @@ begin
       locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('bairro_id').AsInteger));
       locListItem.SubItems.Add(locADOQuery.FieldByName('codigo').AsString);
       locListItem.SubItems.Add(locADOQuery.FieldByName('nome').AsString);
+
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('cidade_id').AsInteger));
+      locListItem.SubItems.Add(locADOQuery.FieldByName('cidade_codigo').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('cidade_nome').AsString);
+
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger));
+      locListItem.SubItems.Add(locADOQuery.FieldByName('estado_codigo').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('estado_nome').AsString);
+
+      locListItem.SubItems.Add(IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger));
+      locListItem.SubItems.Add(locADOQuery.FieldByName('pais_codigo').AsString);
+      locListItem.SubItems.Add(locADOQuery.FieldByName('pais_nome').AsString);
+
       locListItem.SubItems.Add(FlagSimNaoStringConverter(locADOQuery.FieldByName('bloqueado').AsString));
 
       if pubBairroID = locADOQuery.FieldByName('bairro_id').AsInteger then
@@ -479,7 +533,16 @@ begin
   pubBairroID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_BAIRRO_ID]);
   pubCodigo       := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CODIGO];
   pubNome         := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_NOME];
-  
+  pubCidadeID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CIDADE_ID]);
+  pubCidadeCodigo := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CIDADE_CODIGO];
+  pubCidadeNome   := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_CIDADE_NOME];
+  pubEstadoID     := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_ESTADO_ID]);
+  pubEstadoCodigo := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_ESTADO_CODIGO];
+  pubEstadoNome   := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_ESTADO_NOME];
+  pubPaisID       := StringIntegerConverter(lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_PAIS_ID]);
+  pubPaisCodigo   := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_PAIS_CODIGO];
+  pubPaisNome     := lvwLista.Items.Item[locIndice].SubItems.Strings[LVW_LISTA_PAIS_NOME];
+
   Close; 
 end;
 

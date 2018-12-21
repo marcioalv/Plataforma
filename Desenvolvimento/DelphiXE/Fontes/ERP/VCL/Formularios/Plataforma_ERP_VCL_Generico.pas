@@ -277,14 +277,32 @@ procedure Plataforma_ERP_VCL_BairroExibir(argBairroID: Integer);
 function Plataforma_ERP_VCL_BairroValidar(argNovo        : Boolean;
                                           argBairroID    : TEdit;
                                           argBairroCodigo: TEdit;
-                                          argBairroNome  : TEdit): Boolean;
+                                          argBairroNome  : TEdit;
+                                          argCidadeID    : TEdit = nil;
+                                          argCidadeCodigo: TEdit = nil;
+                                          argCidadeNome  : TEdit = nil;
+                                          argEstadoID    : TEdit = nil;
+                                          argEstadoCodigo: TEdit = nil;
+                                          argEstadoNome  : TEdit = nil;
+                                          argPaisID      : TEdit = nil;
+                                          argPaisCodigo  : TEdit = nil;
+                                          argPaisNome    : TEdit = nil): Boolean;
 
 //
 // Plataforma_ERP_VCL_BairroSelecionar.
 //
 function Plataforma_ERP_VCL_BairroSelecionar(argBairroID    : TEdit;
                                              argBairroCodigo: TEdit;
-                                             argBairroNome  : TEdit): Boolean;
+                                             argBairroNome  : TEdit;
+                                             argCidadeID    : TEdit = nil;
+                                             argCidadeCodigo: TEdit = nil;
+                                             argCidadeNome  : TEdit = nil;
+                                             argEstadoID    : TEdit = nil;
+                                             argEstadoCodigo: TEdit = nil;
+                                             argEstadoNome  : TEdit = nil;
+                                             argPaisID      : TEdit = nil;
+                                             argPaisCodigo  : TEdit = nil;
+                                             argPaisNome    : TEdit = nil): Boolean;
 
 //
 // CEP!
@@ -1861,10 +1879,12 @@ begin
     argCidadeID.Text   := '';
     argCidadeNome.Text := '';
 
-    if argEstadoID   <> nil then argEstadoID.Text   := '';
-    if argEstadoNome <> nil then argEstadoNome.Text := '';
-    if argPaisID     <> nil then argPaisID.Text     := '';
-    if argPaisNome   <> nil then argPaisNome.Text   := '';
+    if argEstadoID     <> nil then argEstadoID.Text     := '';
+    if argEstadoCodigo <> nil then argEstadoCodigo.Text := '';
+    if argEstadoNome   <> nil then argEstadoNome.Text   := '';
+    if argPaisID       <> nil then argPaisID.Text       := '';
+    if argPaisCodigo   <> nil then argPaisCodigo.Text   := '';
+    if argPaisNome     <> nil then argPaisNome.Text     := '';
 
     Result := True;
     Exit;
@@ -1968,10 +1988,12 @@ begin
     argCidadeID.Text   := '';
     argCidadeNome.Text := '';
 
-    if argEstadoID   <> nil then argEstadoID.Text   := '';
-    if argEstadoNome <> nil then argEstadoNome.Text := '';
-    if argPaisID     <> nil then argPaisID.Text     := '';
-    if argPaisNome   <> nil then argPaisNome.Text   := '';
+    if argEstadoID     <> nil then argEstadoID.Text     := '';
+    if argEstadoCodigo <> nil then argEstadoCodigo.Text := '';
+    if argEstadoNome   <> nil then argEstadoNome.Text   := '';
+    if argPaisID       <> nil then argPaisID.Text       := '';
+    if argPaisCodigo   <> nil then argPaisCodigo.Text   := '';
+    if argPaisNome     <> nil then argPaisNome.Text     := '';
 
     argCidadeCodigo.SetFocus;
     Exit;
@@ -2126,7 +2148,16 @@ end;
 function Plataforma_ERP_VCL_BairroValidar(argNovo        : Boolean;
                                           argBairroID    : TEdit;
                                           argBairroCodigo: TEdit;
-                                          argBairroNome  : TEdit): Boolean;
+                                          argBairroNome  : TEdit;
+                                          argCidadeID    : TEdit = nil;
+                                          argCidadeCodigo: TEdit = nil;
+                                          argCidadeNome  : TEdit = nil;
+                                          argEstadoID    : TEdit = nil;
+                                          argEstadoCodigo: TEdit = nil;
+                                          argEstadoNome  : TEdit = nil;
+                                          argPaisID      : TEdit = nil;
+                                          argPaisCodigo  : TEdit = nil;
+                                          argPaisNome    : TEdit = nil): Boolean;
 const
   PROCEDIMENTO_NOME: string = 'Plataforma_ERP_VCL_BairroValidar';
   ERRO_MENSAGEM    : string = 'Impossível validar o bairro!';
@@ -2154,6 +2185,17 @@ begin
   begin
     argBairroID.Text   := '';
     argBairroNome.Text := '';
+
+    if argCidadeID     <> nil then argCidadeID.Text     := '';
+    if argCidadeCodigo <> nil then argCidadeCodigo.Text := '';
+    if argCidadeNome   <> nil then argCidadeNome.Text   := '';
+    if argEstadoID     <> nil then argEstadoID.Text     := '';
+    if argEstadoCodigo <> nil then argEstadoCodigo.Text := '';
+    if argEstadoNome   <> nil then argEstadoNome.Text   := '';
+    if argPaisID       <> nil then argPaisID.Text       := '';
+    if argPaisCodigo   <> nil then argPaisCodigo.Text   := '';
+    if argPaisNome     <> nil then argPaisNome.Text     := '';
+
     Result := True;
     Exit;
   end;
@@ -2240,9 +2282,22 @@ begin
     FreeAndNil(locADOQuery);
     locADOConnection.Close;
     FreeAndNil(locADOConnection);    
+
     VCLConsistenciaExibir('Nenhum bairro encontrado com o código "' + locBairroCodigo + '" informado!');
+
     argBairroID.Text   := '';
     argBairroNome.Text := '';
+
+    if argCidadeID     <> nil then argCidadeID.Text     := '';
+    if argCidadeCodigo <> nil then argCidadeCodigo.Text := '';
+    if argCidadeNome   <> nil then argCidadeNome.Text   := '';
+    if argEstadoID     <> nil then argEstadoID.Text     := '';
+    if argEstadoCodigo <> nil then argEstadoCodigo.Text := '';
+    if argEstadoNome   <> nil then argEstadoNome.Text   := '';
+    if argPaisID       <> nil then argPaisID.Text       := '';
+    if argPaisCodigo   <> nil then argPaisCodigo.Text   := '';
+    if argPaisNome     <> nil then argPaisNome.Text     := '';
+
     argBairroCodigo.SetFocus;
     Exit;
   end;
@@ -2255,6 +2310,16 @@ begin
     argBairroID.Text     := IntegerStringConverter(locADOQuery.FieldByName('bairro_id').AsInteger);
     argBairroCodigo.Text := locADOQuery.FieldByName('codigo').AsString;
     argBairroNome.Text   := locADOQuery.FieldByName('nome').AsString;
+
+    if argCidadeID     <> nil then argCidadeID.Text     := IntegerStringConverter(locADOQuery.FieldByName('cidade_id').AsInteger);
+    if argCidadeCodigo <> nil then argCidadeCodigo.Text := locADOQuery.FieldByName('cidade_codigo').AsString;
+    if argCidadeNome   <> nil then argCidadeNome.Text   := locADOQuery.FieldByName('cidade_nome').AsString;
+    if argEstadoID     <> nil then argEstadoID.Text     := IntegerStringConverter(locADOQuery.FieldByName('estado_id').AsInteger);
+    if argEstadoCodigo <> nil then argEstadoCodigo.Text := locADOQuery.FieldByName('estado_codigo').AsString;
+    if argEstadoNome   <> nil then argEstadoNome.Text   := locADOQuery.FieldByName('estado_nome').AsString;
+    if argPaisID       <> nil then argPaisID.Text       := IntegerStringConverter(locADOQuery.FieldByName('pais_id').AsInteger);
+    if argPaisCodigo   <> nil then argPaisCodigo.Text   := locADOQuery.FieldByName('pais_codigo').AsString;
+    if argPaisNome     <> nil then argPaisNome.Text     := locADOQuery.FieldByName('pais_nome').AsString;
   end;
 
   //
@@ -2266,6 +2331,9 @@ begin
   FreeAndNil(locADOConnection);
 
   VCLEditClickControlar(argBairroNome, True);  
+  if argCidadeNome <> nil then VCLEditClickControlar(argCidadeNome, True);
+  if argEstadoNome <> nil then VCLEditClickControlar(argEstadoNome, True);
+  if argPaisNome   <> nil then VCLEditClickControlar(argPaisNome,   True);
   VCLCursorTrocar;
 
   Result := True;
@@ -2276,13 +2344,31 @@ end;
 //
 function Plataforma_ERP_VCL_BairroSelecionar(argBairroID    : TEdit;
                                              argBairroCodigo: TEdit;
-                                             argBairroNome  : TEdit): Boolean;
+                                             argBairroNome  : TEdit;
+                                             argCidadeID    : TEdit = nil;
+                                             argCidadeCodigo: TEdit = nil;
+                                             argCidadeNome  : TEdit = nil;
+                                             argEstadoID    : TEdit = nil;
+                                             argEstadoCodigo: TEdit = nil;
+                                             argEstadoNome  : TEdit = nil;
+                                             argPaisID      : TEdit = nil;
+                                             argPaisCodigo  : TEdit = nil;
+                                             argPaisNome    : TEdit = nil): Boolean;
 var
   locFormulario  : TPlataformaERPVCLBairroSelecao;
   locClicouFechar: Boolean;
   locBairroID    : Integer;
   locBairroCodigo: string;
   locBairroNome  : string;
+  locCidadeID    : Integer;
+  locCidadeCodigo: string;
+  locCidadeNome  : string;
+  locEstadoID    : Integer;
+  locEstadoCodigo: string;
+  locEstadoNome  : string;
+  locPaisID      : Integer;
+  locPaisCodigo  : string;
+  locPaisNome    : string;
 begin
   Result := False;
 
@@ -2302,7 +2388,16 @@ begin
   locBairroID     := locFormulario.pubBairroID;
   locBairroCodigo := locFormulario.pubCodigo;
   locBairroNome   := locFormulario.pubNome;
-  
+  locCidadeID     := locFormulario.pubCidadeID;
+  locCidadeCodigo := locFormulario.pubCidadeCodigo;
+  locCidadeNome   := locFormulario.pubCidadeNome;
+  locEstadoID     := locFormulario.pubEstadoID;
+  locEstadoCodigo := locFormulario.pubEstadoCodigo;
+  locEstadoNome   := locFormulario.pubEstadoNome;
+  locPaisID       := locFormulario.pubPaisID;
+  locPaisCodigo   := locFormulario.pubPaisCodigo;
+  locPaisNome     := locFormulario.pubPaisNome;
+
   locFormulario.Release;
   FreeAndNil(locFormulario);
 
@@ -2311,10 +2406,24 @@ begin
     argBairroID.Text     := IntegerStringConverter(locBairroID);
     argBairroCodigo.Text := locBairroCodigo;
     argBairroNome.Text   := locBairroNome;
+
+    if argCidadeID     <> nil then argCidadeID.Text     := IntegerStringConverter(locCidadeID);
+    if argCidadeCodigo <> nil then argCidadeCodigo.Text := locCidadeCodigo;
+    if argCidadeNome   <> nil then argCidadeNome.Text   := locCidadeNome;
+    if argEstadoID     <> nil then argEstadoID.Text     := IntegerStringConverter(locEstadoID);
+    if argEstadoCodigo <> nil then argEstadoCodigo.Text := locEstadoCodigo;
+    if argEstadoNome   <> nil then argEstadoNome.Text   := locEstadoNome;
+    if argPaisID       <> nil then argPaisID.Text       := IntegerStringConverter(locPaisID);
+    if argPaisCodigo   <> nil then argPaisCodigo.Text   := locPaisCodigo;
+    if argPaisNome     <> nil then argPaisNome.Text     := locPaisNome;
+
     Result := False;
   end;
 
   VCLEditClickControlar(argBairroNome, (argBairroNome.Text <> ''));  
+  if argCidadeNome <> nil then VCLEditClickControlar(argCidadeNome, True);
+  if argEstadoNome <> nil then VCLEditClickControlar(argEstadoNome, True);
+  if argPaisNome   <> nil then VCLEditClickControlar(argPaisNome,   True);
 end;
 
 //

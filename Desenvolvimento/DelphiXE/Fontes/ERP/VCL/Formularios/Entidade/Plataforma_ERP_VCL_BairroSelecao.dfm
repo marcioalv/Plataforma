@@ -4,8 +4,8 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Selecionar bairro'
-  ClientHeight = 410
-  ClientWidth = 593
+  ClientHeight = 483
+  ClientWidth = 1027
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,9 +20,6 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  DesignSize = (
-    593
-    410)
   PixelsPerInch = 96
   TextHeight = 13
   object imgFormulario: TImage
@@ -71,15 +68,15 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
   end
   object imgBackground: TImage
     Left = 0
-    Top = 305
+    Top = 377
     Width = 105
     Height = 105
     Center = True
     Stretch = True
   end
   object btnSelecionar: TBitBtn
-    Left = 416
-    Top = 344
+    Left = 848
+    Top = 416
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -142,8 +139,8 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
     OnClick = btnSelecionarClick
   end
   object btnFechar: TBitBtn
-    Left = 528
-    Top = 344
+    Left = 960
+    Top = 416
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -207,8 +204,8 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
   object panFormulario: TPanel
     Left = 48
     Top = 16
-    Width = 529
-    Height = 313
+    Width = 961
+    Height = 385
     Margins.Left = 48
     Margins.Top = 8
     Margins.Right = 8
@@ -220,24 +217,18 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    DesignSize = (
-      525
-      309)
     object lblListaQtde: TLabel
       Left = 8
-      Top = 280
+      Top = 356
       Width = 142
       Height = 13
-      Anchors = [akLeft, akBottom]
       Caption = 'Foram localizados 9 registros!'
-      ExplicitTop = 288
     end
     object lblListaFiltros: TLabel
-      Left = 424
-      Top = 280
+      Left = 868
+      Top = 356
       Width = 80
       Height = 13
-      Anchors = [akRight, akBottom]
       Caption = 'Filtros aplicados!'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
@@ -246,15 +237,13 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
       Font.Style = []
       ParentFont = False
       Visible = False
-      ExplicitLeft = 432
-      ExplicitTop = 288
     end
     object lvwLista: TListView
       AlignWithMargins = True
       Left = 8
       Top = 36
-      Width = 509
-      Height = 243
+      Width = 941
+      Height = 315
       Cursor = crHandPoint
       Margins.Left = 8
       Margins.Top = 8
@@ -272,11 +261,47 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
         item
           Alignment = taCenter
           Caption = 'C'#243'digo'
-          Width = 175
+          Width = 150
         end
         item
           Caption = 'Nome'
-          Width = 300
+          Width = 200
+        end
+        item
+          Caption = 'ID Cidade'
+          Width = 0
+        end
+        item
+          Caption = 'C'#243'digo Cidade'
+          Width = 0
+        end
+        item
+          Caption = 'Cidade'
+          Width = 200
+        end
+        item
+          Caption = 'ID Estado'
+          Width = 0
+        end
+        item
+          Caption = 'C'#243'digo Estado'
+          Width = 0
+        end
+        item
+          Caption = 'Estado'
+          Width = 200
+        end
+        item
+          Caption = 'ID Pa'#237's'
+          Width = 0
+        end
+        item
+          Caption = 'C'#243'digo Pa'#237's'
+          Width = 0
+        end
+        item
+          Caption = 'Pa'#237's'
+          Width = 150
         end
         item
           Alignment = taCenter
@@ -299,23 +324,26 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
       OnCustomDrawSubItem = lvwListaCustomDrawSubItem
       OnDblClick = lvwListaDblClick
       OnKeyPress = lvwListaKeyPress
+      ExplicitTop = 68
+      ExplicitHeight = 283
     end
     object pbaProgresso: TProgressBar
       AlignWithMargins = True
       Left = 8
       Top = 8
-      Width = 509
+      Width = 941
       Height = 17
       Margins.Left = 8
       Margins.Top = 8
       Margins.Right = 8
       Align = alTop
       TabOrder = 1
+      ExplicitWidth = 509
     end
   end
   object btnMinimizar: TBitBtn
-    Left = 472
-    Top = 344
+    Left = 904
+    Top = 416
     Width = 49
     Height = 49
     Cursor = crHandPoint
@@ -387,13 +415,12 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
     OnClick = btnMinimizarClick
   end
   object btnLocalizar: TBitBtn
-    Left = 360
-    Top = 344
+    Left = 792
+    Top = 416
     Width = 49
     Height = 49
     Cursor = crHandPoint
     Hint = 'Localizar'
-    Anchors = [akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -469,7 +496,7 @@ object PlataformaERPVCLBairroSelecao: TPlataformaERPVCLBairroSelecao
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     Left = 32
-    Top = 336
+    Top = 408
     object mniLocalizar: TMenuItem
       Caption = 'Localizar'
       OnClick = mniLocalizarClick

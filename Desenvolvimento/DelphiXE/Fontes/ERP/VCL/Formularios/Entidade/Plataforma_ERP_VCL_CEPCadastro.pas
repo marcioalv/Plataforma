@@ -451,12 +451,32 @@ begin
   if not Plataforma_ERP_VCL_BairroValidar((edtCEPID.Text = STR_NOVO),
                                           edtBairroID,
                                           edtBairroCodigo,
-                                          edtBairroNome) then Exit;
+                                          edtBairroNome,
+                                          edtCidadeID,
+                                          edtCidadeCodigo,
+                                          edtCidadeNome,
+                                          edtEstadoID,
+                                          nil,
+                                          edtEstadoNome,
+                                          edtPaisID,
+                                          nil,
+                                          edtPaisNome) then Exit;
 end;
 
 procedure TPlataformaERPVCLCEPCadastro.imgBairroSelecionarClick(Sender: TObject);
 begin
-  if not Plataforma_ERP_VCL_BairroSelecionar(edtBairroID, edtBairroCodigo, edtBairroNome) then Exit;
+  if not Plataforma_ERP_VCL_BairroSelecionar(edtBairroID,
+                                             edtBairroCodigo,
+                                             edtBairroNome,
+                                             edtCidadeID,
+                                             edtCidadeCodigo,
+                                             edtCidadeNome,
+                                             edtEstadoID,
+                                             nil,
+                                             edtEstadoNome,
+                                             edtPaisID,
+                                             nil,
+                                             edtPaisNome) then Exit;
 end;
 
 procedure TPlataformaERPVCLCEPCadastro.edtBairroNomeClick(Sender: TObject);
@@ -489,12 +509,26 @@ begin
   if not Plataforma_ERP_VCL_CidadeValidar((edtCEPID.Text = STR_NOVO),
                                           edtCidadeID,
                                           edtCidadeCodigo,
-                                          edtCidadeNome) then Exit;
+                                          edtCidadeNome,
+                                          edtEstadoID,
+                                          nil,
+                                          edtEstadoNome,
+                                          edtPaisID,
+                                          nil,
+                                          edtPaisNome) then Exit;
 end;
 
 procedure TPlataformaERPVCLCEPCadastro.imgCidadeSelecionarClick(Sender: TObject);
 begin
-  if not Plataforma_ERP_VCL_CidadeSelecionar(edtCidadeID, edtCidadeCodigo, edtCidadeNome) then Exit;
+  if not Plataforma_ERP_VCL_CidadeSelecionar(edtCidadeID,
+                                             edtCidadeCodigo,
+                                             edtCidadeNome,
+                                             edtEstadoID,
+                                             nil,
+                                             edtEstadoNome,
+                                             edtPaisID,
+                                             nil,
+                                             edtPaisNome) then Exit;
 end;
 
 procedure TPlataformaERPVCLCEPCadastro.edtCidadeNomeClick(Sender: TObject);
