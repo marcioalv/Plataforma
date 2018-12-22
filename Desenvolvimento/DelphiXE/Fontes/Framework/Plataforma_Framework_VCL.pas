@@ -111,6 +111,7 @@ procedure VCLToggleSwitchLimpar(argComponente: TToggleSwitch);
 //
 procedure VCLMaskEditControlar(argComponente: TMaskEdit; argLigar: Boolean);
 procedure VCLEditControlar(argComponente: TEdit; argLigar: Boolean);
+procedure VCLEditHabilitar(argComponente: TEdit; argLigar: Boolean);
 procedure VCLRadioButtonControlar(argComponente: TRadioButton; argLigar: Boolean);
 procedure VCLCheckBoxControlar(argComponente: TCheckBox; argLigar: Boolean);
 procedure VCLMemoControlar(argComponente: TMemo; argLigar: Boolean);
@@ -740,6 +741,22 @@ procedure VCLEditControlar(argComponente: TEdit; argLigar: Boolean);
 begin
   argComponente.ReadOnly := (not argLigar);
   argComponente.TabStop  := argLigar;
+end;
+
+//
+// VCLEditHabilitar.
+//
+procedure VCLEditHabilitar(argComponente: TEdit; argLigar: Boolean);
+var
+  locCorFundo: Integer;
+begin
+  if argLigar then
+    locCorFundo := clWindow
+  else
+    locCorFundo := clInactiveBorder;
+
+  VCLEditControlar(argComponente, argLigar);
+  argComponente.Color := locCorFundo;
 end;
 
 //
@@ -1381,10 +1398,13 @@ begin
   //
   if argEstrangeiro then
   begin
+    Result := True;
+
     if StringTrim(argComponente.Text) = '' then
     begin
       if (not argVazio) then
       begin
+        Result := False;
         VCLConsistenciaExibir('Um número de código postal precisa ser informado!');
         argComponente.SetFocus;
       end;

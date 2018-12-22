@@ -158,6 +158,7 @@ type
     procedure edtPaisNomeClick(Sender: TObject);
   private
     procedure FormularioLimpar;
+    procedure FormularioComponentesHabilitar;
     procedure FormularioControlar(argEditar: Boolean);
     procedure FormularioAtualizar;
     procedure FormularioNovo;
@@ -713,6 +714,13 @@ begin
   VCLEditClickControlar(edtPaisNome,            False);
   VCLEditClickControlar(edtInsLocalDtHr,        False);
   VCLEditClickControlar(edtUpdLocalDtHr,        False);
+end;
+
+//
+// Formulário 
+//
+procedure TPlataformaERPVCLCEPCadastro.FormularioComponentesHabilitar;
+begin
 end;
 
 //
