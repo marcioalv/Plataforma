@@ -1118,6 +1118,7 @@ object PlataformaERPVCLCEPCadastro: TPlataformaERPVCLCEPCadastro
           Font.Style = []
           ParentFont = False
           TabOrder = 0
+          OnClick = chkEstrangeiroClick
         end
       end
     end

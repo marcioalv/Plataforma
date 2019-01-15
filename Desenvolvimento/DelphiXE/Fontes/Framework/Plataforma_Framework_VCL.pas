@@ -126,6 +126,7 @@ function  VCLToggleSwitchRecuperar(argComponente: TToggleSwitch): Boolean;
 
 procedure VCLLabelHabilitar(argComponente: TLabel; argLigar: Boolean);
 procedure VCLMaskEditHabilitar(argComponente: TMaskEdit; argLigar: Boolean);
+procedure VCLCheckBoxHabilitar(argComponente: TCheckBox; argLigar: Boolean);
 
 //
 // Entrada/Saída componentes.
@@ -816,6 +817,15 @@ begin
   begin
     argComponente.Font.Color := clBlack;
   end;
+end;
+
+//
+// VCLCheckBoxHabilitar.
+//
+procedure VCLCheckBoxHabilitar(argComponente: TCheckBox; argLigar: Boolean);
+begin
+  VCLCheckBoxControlar(argComponente, argLigar);
+  argComponente.Checked := argLigar;
 end;
 
 //

@@ -156,6 +156,7 @@ type
     procedure edtCidadeNomeClick(Sender: TObject);
     procedure edtEstadoNomeClick(Sender: TObject);
     procedure edtPaisNomeClick(Sender: TObject);
+    procedure chkEstrangeiroClick(Sender: TObject);
   private
     procedure FormularioLimpar;
     procedure FormularioComponentesHabilitar;
@@ -297,6 +298,14 @@ end;
 procedure TPlataformaERPVCLCEPCadastro.mniFecharClick(Sender: TObject);
 begin
   Close;
+end;
+
+//
+// Eventos do componente "estrangeiro".
+//
+procedure TPlataformaERPVCLCEPCadastro.chkEstrangeiroClick(Sender: TObject);
+begin
+  FormularioComponentesHabilitar;
 end;
 
 //
@@ -717,10 +726,22 @@ begin
 end;
 
 //
-// Formulário 
+// Procedimento para controlar os componentes que serão habilitar ou desabilitados.
 //
 procedure TPlataformaERPVCLCEPCadastro.FormularioComponentesHabilitar;
+var
+  locEstrangeiro: Boolean;
 begin
+  locEstrangeiro := chkEstrangeiro.Checked;
+
+  VCLCheckBoxHabilitar(chkGenerico, (not locEstrangeiro));
+  VCLEditSelecaoControlar(edtLogradouroDescricao, imgLogradouroSelecionar, (not locEstrangeiro));
+
+  VCLLabelHabilitar(lblLogradouro,         (not locEstrangeiro));
+  VCLEditHabilitar(edtLogradouroCodigo,    (not locEstrangeiro));
+  VCLEditHabilitar(edtLogradouroDescricao, (not locEstrangeiro));
+
+
 end;
 
 //
