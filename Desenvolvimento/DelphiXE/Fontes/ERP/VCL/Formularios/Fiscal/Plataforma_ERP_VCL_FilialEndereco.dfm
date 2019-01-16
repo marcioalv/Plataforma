@@ -421,7 +421,6 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
       TabOrder = 1
       object tabCadastro: TTabSheet
         Caption = 'Cadastro'
-        ExplicitLeft = 12
         object imgVigenciaFimDtSelecionar: TImage
           Left = 375
           Top = 27
@@ -1188,7 +1187,6 @@ object PlataformaERPVCLFilialEndereco: TPlataformaERPVCLFilialEndereco
           OnEnter = edtEstadoEnter
           OnExit = edtEstadoExit
           OnKeyPress = edtEstadoKeyPress
-          OnMouseEnter = btnAlterarClick
         end
         object edtCEP: TEdit
           Left = 16
